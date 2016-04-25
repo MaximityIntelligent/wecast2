@@ -66,7 +66,7 @@ function($scope, $http){
           $scope.shareCount = data.shareCount;
           $scope.credit = data.credit;
           $scope.prizeRedeem = data.prizeRedeem;
-          alert("credit"+$scope.credit);
+          //alert($scope.shareCount);
           //$scope.drawChance = data.drawChance;
           //alert("user drawChance: "+$scope.drawChance);
           wx.config({
