@@ -93,6 +93,7 @@ module.exports = {
 
         User.create(openId, function(err, userOne){
           if(err){
+            console.log("user errr");
             res.status(500);
             res.end();
             return;
@@ -103,6 +104,7 @@ module.exports = {
             console.log("94");
             User.shareAd_c(sharedBy, openId, adId, function(err){
               if(err){
+                console.log("errrrrr");
                 res.status(500);
                 res.end();
                 return;
