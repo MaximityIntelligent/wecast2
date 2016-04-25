@@ -183,7 +183,6 @@ function($scope, $http){
       }
     }).success(function(data) {
       $scope.redeemErrMsg = "领取";
-      $scope.credit = data.credit;
       $("#prize-redeem").trigger('click');
     }).error(function(data) {
       $scope.redeemErrMsg = "兑换失败";
