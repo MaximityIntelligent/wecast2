@@ -98,9 +98,6 @@ module.exports = {
             return;
           }
           credit = userOne.credit;
-          if(!credit){
-            credit = 0;
-          }
           redeem_c.findOne({user: openId, advertisement: 'easywash'}).exec(function(err, redeemOne){
             console.log("151");
             console.log("94");
@@ -145,7 +142,7 @@ module.exports = {
                 retResult.timestamp = timestamp;
                 retResult.noncestr = noncestr;
                 retResult.ticket = jsapiTicket;
-                retResult.credit = 20;
+                retResult.credit = credit;
                 res.json(retResult);
                 return;
             });
@@ -183,9 +180,9 @@ module.exports = {
               }
               console.log("183");
               console.log("172");
-              userOne.credit = 0;
+              userOne.credit = userOne.credit - 18;
               userOne.save(function(){
-                res.end();
+                res.json({credit: userOne.credit});
                 return;
               });
 
@@ -195,9 +192,9 @@ module.exports = {
                 res.end();
                 return;
               }
-              userOne.credit = 0;
+              userOne.credit = userOne.credit - 38;
               userOne.save(function(){
-                res.end();
+                res.json({credit: userOne.credit});
                 return;
               });
 
