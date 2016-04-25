@@ -144,6 +144,7 @@ module.exports = {
                 retResult.ticket = jsapiTicket;
                 retResult.credit = credit;
                 res.json(retResult);
+                console.log('147');
                 return;
             });
           });
