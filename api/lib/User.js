@@ -219,7 +219,7 @@ User.create = function(userOpenId, cb){
     console.log("217");
     if(!userOne){
       console.log("219");
-      user.create({openId: userOpenId, credit: 20}).exec(function(err, userCreated){
+      user.create({openId: userOpenId}).exec(function(err, userCreated){
         if(err){
           cb(err);
           return;
