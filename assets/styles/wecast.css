@@ -1,0 +1,62 @@
+body {
+  margin-top: 53px;
+  background-color: #e7e7e7;
+}
+.container {
+  border:1px solid #00CC33; background-color: white;
+}
+.header_wecast {
+  background-color: #8A2BE2;
+  color: #fff;
+}
+#custom-bootstrap-menu  .navbar-brand {
+    color: rgba(255, 255, 255, 1);
+}
+#custom-bootstrap-menu  {
+    font-size: 12px;
+    background-color: rgba(0, 0, 0, 1);
+    border-bottom-width: 1px;
+}
+#custom-bootstrap-menu  .navbar-nav>li>a {
+    color: rgba(221, 221, 221, 1);
+    background-color: rgba(248, 248, 248, 0);
+}
+#custom-bootstrap-menu  .navbar-nav>li>a:hover,
+#custom-bootstrap-menu  .navbar-nav>li>a:focus {
+    color: rgba(255, 255, 255, 1);
+    background-color: rgba(248, 248, 248, 0);
+}
+#custom-bootstrap-menu  .navbar-nav>.active>a,
+#custom-bootstrap-menu  .navbar-nav>.active>a:hover,
+#custom-bootstrap-menu  .navbar-nav>.active>a:focus {
+    color: rgba(0, 0, 0, 1);
+    background-color: rgba(231, 231, 231, 1);
+}
+#custom-bootstrap-menu  .navbar-toggle {
+    border-color: #ddd;
+}
+#custom-bootstrap-menu  .navbar-toggle:hover,
+#custom-bootstrap-menu  .navbar-toggle:focus {
+    background-color: #ddd;
+}
+#custom-bootstrap-menu  .navbar-toggle .icon-bar {
+    background-color: #888;
+}
+#custom-bootstrap-menu  .navbar-toggle:hover .icon-bar,
+#custom-bootstrap-menu  .navbar-toggle:focus .icon-bar {
+    background-color: #000000;
+}
+.fade-in {
+	opacity:0;  /* make things invisible upon start */
+	-webkit-animation:fadeIn ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+	-moz-animation:fadeIn ease-in 1;
+	animation:fadeIn ease-in 1;
+
+	-webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+	-moz-animation-fill-mode:forwards;
+	animation-fill-mode:forwards;
+
+	-webkit-animation-duration:1s;
+	-moz-animation-duration:1s;
+	animation-duration:1s;
+}

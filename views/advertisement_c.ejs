@@ -1,0 +1,229 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>微播 Wecast App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://blueimp.github.io/jQuery-File-Upload/css/jquery.fileupload.css">
+    <link rel="stylesheet" href="http://blueimp.github.io/jQuery-File-Upload/css/jquery.fileupload-ui.css">
+    <link rel="stylesheet" href="/styles/wecast.css">
+  </head>
+  <body ng-app="wecast.advertisement" ng-controller="AdvertisementCtrl">
+    <nav id="custom-bootstrap-menu" class="navbar navbar-fixed-top">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#"><font color="white">微播</font></a>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">业务<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/advertisement-mod">广告</a></li>
+              <li><a href="/advertisement_c-mod">自定义广告</a></li>
+              <li><a href="luckydraw.html">抽奖设定</a></li>
+              <li><a href="winner.html">获奖信息</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+    </nav>
+
+
+
+    <div class="container-fluid">
+      <div class="row header_wecast">
+        <div class="col-xs-4 ">
+          <h4><span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;广告</h4>
+        </div>
+        <div class="col-xs-4 ">
+          <h4 id="message"></h4>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="container">
+      <div class="loader" data-ng-init="init()" data-ng-hide="1">
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="btn-group" role="group">
+            <button class="btn" data-ng-show="!showForm" data-ng-click="showForm=true;advertisement={};showUpdateForm=false;"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; 创建
+            <button class="btn" type="button" data-ng-show="showForm" data-ng-click="showForm=false;advertisement={}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp; 取消</button><!-- <input type="button" class="btn" ng-show="!showForm" ng-click="showForm=true;"/> -->
+            <button class="btn" data-ng-hide="action" data-ng-click="action=!action"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp; 编辑</button>
+            <button class="btn btn-primary" data-ng-show="action" data-ng-click="action=!action;advertisement={};showUpdateForm=false;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp; 完成</button>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-xs-12">
+        <form id="advertisement-add-form" method="POST" class="form-horizontal col-sm-6 well" name="addAdvertisementForm" data-ng-show="showForm">
+          <div ng-repeat="error in advertisementError" class="col-sm-12">
+              <div class="alert alert-danger animated fadeIn">{{error.msg}}</div>
+          </div>
+          <div data-ng-repeat="field in advertisementSchema" >
+            <div class="form-group row">
+                  <label for="advertisement-add-{{field['title']}}" class="col-sm-2 control-label">{{field['title']}}</label>
+                  <div class="col-sm-10">
+                      <input name="{{field['schemaKey']}}" data-ng-if="(field['type'] == 'text' || field['type'] == 'email' || field['type'] == 'password')" type="{{field['type']}}" class="span2 form-control" data-ng-model="advertisement[field['schemaKey']]" placeholder="{{field['title']}}" id="advertisement-add-{{field['title']}}" required/>
+                      <select data-ng-if="field['type'] == 'select'" data-ng-model="advertisement[field['schemaKey']]" ng-multiple="true" multiple ng-options="option for option in field['options']" class="form-control" required>
+                          <option value="">-- Choose Role --</option>
+                      </select>
+                  </div>
+              </div>
+            </div>
+            <div class="col-sm-offset-2 col-sm-4">
+              <button  class="btn" data-ng-click="add(advertisement)">创建</button>
+            </div>
+        </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+        <form id="advertisement-update-form" method="POST" class="form-horizontal col-sm-6 well" name="updateAdvertisementForm" data-ng-show="showUpdateForm">
+          <div ng-repeat="error in advertisementError" class="col-sm-12">
+              <div class="alert alert-danger animated fadeIn">{{error.msg}}</div>
+          </div>
+          <div class="form-group row">
+                <div class="col-sm-10">
+                    {{advertisement.id}}
+                </div>
+          </div>
+          <div data-ng-repeat="field in advertisementSchema">
+            <div class="form-group row">
+                  <label for="advertisement-add-{{field['title']}}" class="col-sm-2 control-label">{{field['title']}}</label>
+                  <div class="col-sm-10">
+                      <input name="{{field['schemaKey']}}" data-ng-if="(field['type'] == 'text' || field['type'] == 'email' || field['type'] == 'password')" type="{{field['type']}}" class="span2 form-control" data-ng-model="advertisement[field['schemaKey']]" placeholder="{{field['title']}}" id="advertisement-add-{{field['title']}}" required/>
+                      <select data-ng-if="field['type'] == 'select'" data-ng-model="advertisement[field['schemaKey']]" ng-multiple="true" multiple ng-options="option for option in field['options']" class="form-control" required>
+                          <option value="">-- Choose Role --</option>
+                      </select>
+                  </div>
+            </div>
+            </div>
+            <div class="col-sm-offset-2 col-sm-4">
+              <button  class="btn" data-ng-click="update(advertisement);">更新</button>
+            </div>
+        </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <form id="advertisement-image-form" method="POST" enctype="multipart/form-data" class="form-horizontal col-sm-6 well" name="adImageForm" data-ng-show="showUpdateForm" data-file-upload="options" data-ng-class="{'fileupload-processing': processing() || loadingFiles}">
+            <div ng-repeat="error in advertisementError" class="col-sm-12">
+                <div class="alert alert-danger animated fadeIn">{{error.msg}}</div>
+            </div>
+
+            <div class="form-group row fileupload-buttonbar">
+                <div class="col-lg-7">
+                    <!-- The fileinput-button span is used to style the file input field as button -->
+                    <span class="btn fileinput-button" ng-class="{disabled: disabled}">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <span>加图片...</span>
+                        <input type="file" name="files[]" multiple ng-disabled="disabled">
+                    </span>
+                    <span class="fileupload-process"></span>
+                    <table class="table">
+                      <tr data-ng-repeat="file in queue" data-ng-class="{'processing': file.$processing()}">
+                        <td data-ng-switch data-on="!!file.thumbnailUrl">
+                            <div class="preview" data-ng-switch-when="true">
+                                <a data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}" data-gallery><img data-ng-src="{{file.thumbnailUrl}}" alt=""></a>
+                            </div>
+                            <div class="preview" data-ng-switch-default data-file-upload-preview="file"></div>
+                        </td>
+                        <td>
+                            <p class="name" data-ng-switch data-on="!!file.url">
+                                <span data-ng-switch-when="true" data-ng-switch data-on="!!file.thumbnailUrl">
+                                    <a data-ng-switch-when="true" data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}" data-gallery>{{file.name}}</a>
+                                    <a data-ng-switch-default data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}">{{file.name}}</a>
+                                </span>
+                                <span data-ng-switch-default>{{file.name}}</span>
+                            </p>
+                            <strong data-ng-show="file.error" class="error text-danger">{{file.error}}</strong>
+                        </td>
+                        <td>
+                            <p class="size">{{file.size | formatFileSize}}</p>
+                            <div class="progress progress-striped active fade" data-ng-class="{pending: 'in'}[file.$state()]" data-file-upload-progress="file.$progress()"><div class="progress-bar progress-bar-success" data-ng-style="{width: num + '%'}"></div></div>
+                        </td>
+                        <td>
+                            <button type="button" class="btn cancel" data-ng-click="file.$cancel()" data-ng-hide="!file.$cancel">
+                                <i class="glyphicon glyphicon-ban-circle"></i>
+                                <span>Cancel</span>
+                            </button>
+                        </td>
+                      </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-offset-2 col-sm-4">
+              <button  class="btn" data-ng-click="submit()">上传</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <hr>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <table class="table table-striped table-bordered table-hover editable-table" data-ng-show="advertisements.length">
+              <tr>
+                  <th data-ng-show="action">
+                  </th>
+                  <th data-ng-repeat="field in advertisementSchema" data-ng-if="field.inTable">{{field.title}}</th>
+                  <th>广告图</th>
+              </tr>
+              <tr data-ng-repeat="advertisement in advertisements">
+                  <td data-ng-show="action">
+                      <button class="btn glyphicon glyphicon-trash" data-ng-click="remove(advertisement)" value="del">
+                          <i class="icon-trash icon-white"></i>
+                      </button>
+                      <button class="btn glyphicon glyphicon-edit" data-ng-click="edit(advertisement)" value="del">
+                          <i class="icon-trash icon-white"></i>
+                      </button>
+                  </td>
+                  <td class="table-editable-cell" data-ng-repeat="field in advertisementSchema" data-ng-if="field.inTable">
+                      <span data-ng-if="(field['type'] == 'text' || field['type'] == 'email')" class="editable-span" data-ng-editable="update(advertisement)" data-ng-editable-model="advertisement[field['schemaKey']]">{{advertisement[field['schemaKey']]}}</span>
+                      <span data-ng-click="beforeSelect(field['schemaKey'], advertisement)" data-ng-if="(field['type'] == 'select')" class="editable-span" data-ng-editable-select="update(advertisement, field['schemaKey'])" data-ng-editable-select-model="advertisement[field['schemaKey']]" data-ng-editable-select-options="field['options']">
+                      </span>
+                  </td>
+                  <td>
+                      {{advertisement.image.publicId}}
+                  </td>
+              </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>-->
+
+
+    <script src="http://blueimp.github.io/jQuery-File-Upload/js/vendor/jquery.ui.widget.js"></script>
+    <script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+    <script src="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+    <script src="http://blueimp.github.io/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>
+    <script src="http://blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload.js"></script>
+    <script src="https://blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload-process.js"></script>
+    <script src="http://blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload-image.js"></script>
+    <script src="https://blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload-validate.js"></script>
+    <script src="https://code.angularjs.org/1.3.15/angular.min.js"></script>
+    <script src="/js/jquery.fileupload-angular.js"></script>
+    <script src="https://code.angularjs.org/1.3.15/angular-resource.min.js"></script>
+    <script src="/controllers/advertisement.js"></script>
+    </body>
+</html>
