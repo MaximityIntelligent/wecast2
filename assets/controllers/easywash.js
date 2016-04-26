@@ -66,7 +66,8 @@ function($scope, $http){
           $scope.userId = data.openId;
           $scope.shareCount = data.shareCount;
           $scope.credit = data.credit;
-          $scope.prizeRedeem = data.prizeRedeem;
+          //$scope.prizeRedeem = data.prizeRedeem;
+          alert("init success");
           //alert($scope.shareCount);
           //$scope.drawChance = data.drawChance;
           //alert("user drawChance: "+$scope.drawChance);
