@@ -77,10 +77,9 @@ function($scope, $http){
           timestamp: $scope.timestamp, // 必填，生成签名的时间戳
           nonceStr: $scope.noncestr, // 必填，生成签名的随机串
           signature: $scope.signature,// 必填，签名，见附录1
-          jsApiList: ['openLocation','getLocation', 'onMenuShareTimeline'
- ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          jsApiList: ['onMenuShareTimeline'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
           });
-          wx.ready(function(){
+          wx.ready(function(res){
             alert("wx.ready");
             wx.showMenuItems({
               menuList: ['menuItem:share:timeline'] // 要显示的菜单项，所有menu项见附录3
@@ -105,7 +104,7 @@ function($scope, $http){
 
         });
         wx.error(function(res){
-          //alert('fail');
+          alert('fail'+JSON.stringify(res));
         });
       }).
       error(function(data, status, headers, config) {
