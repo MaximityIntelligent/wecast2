@@ -11,7 +11,7 @@
   	<!--<script type="text/javascript" src="http://fgnass.github.io/spin.js/spin.min.js"></script>-->
   </head>
   <body data-ng-app="easywash" data-ng-controller="IndexCtrl">
-    <!--
+
     <script>
     var opts = {
       lines: 13
@@ -37,7 +37,7 @@
     }
     var target = document.getElementById('loader');
     var spinner = new Spinner(opts).spin(target);
-  </script>-->
+  </script>
 
     <div ng-init="init()" data-ng-hide="1">
     </div>
@@ -297,9 +297,8 @@
 
 
     <script>
-    alert("302");
+
     $("document").ready(function(){
-      alert("303");
       $("body").css("background-color", "black");
       var containerWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
       var containerHeight = containerWidth*1320/750;
@@ -461,11 +460,11 @@
         overlayShow: true,
         overlayOpacity: 1
     	});
-      /*
+
       setTimeout(function(){
         spinner.stop();
         $('body').addClass('loaded');
-      }, 3000);*/
+      }, 3000);
     });
     </script>
   </body>
