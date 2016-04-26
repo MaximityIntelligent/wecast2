@@ -461,6 +461,9 @@
         overlayShow: true,
         overlayOpacity: 1
     	});
+      if(spinner){
+        alert("spinner");
+      }
       setTimeout(function(){
         spinner.stop();
         $('body').addClass('loaded');
