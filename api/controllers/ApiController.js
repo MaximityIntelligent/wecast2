@@ -145,8 +145,9 @@ module.exports = {
                 retResult.timestamp = timestamp;
                 retResult.noncestr = noncestr;
                 retResult.ticket = jsapiTicket;
-                retResult.credit = credit;
+                retResult.credit = userOne.credit;
                 res.json(retResult);
+                console.log("150end");
                 return;
             });
           });
@@ -197,7 +198,7 @@ module.exports = {
               }
               userOne.credit = userOne.credit - 38;
               userOne.save(function(){
-                res.json({credit: userOne.credit})
+                res.json({credit: userOne.credit});
                 return;
               });
 
