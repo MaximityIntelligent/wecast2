@@ -39,7 +39,7 @@ function($scope, $http){
   $scope.ABOUT_EASYWASH = "about_easywash";
   $scope.THANKYOU = "thankyou";
   $scope.atPage = $scope.MAIN;
-  $scope.credit = 40;
+  $scope.credit = 0;
   $scope.map = false;
   $scope.prizeRedeem = "";
   $scope.redeemErrMsg = "";
@@ -53,7 +53,7 @@ function($scope, $http){
     //$("#veri-code-errModal").modal('show');
     //veri-credit-errModal
 //
-/*
+
     $http.get('/api/init_c?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad=easywash'
       ).
       success(function(data, status, headers, config) {
@@ -110,8 +110,9 @@ function($scope, $http){
       error(function(data, status, headers, config) {
           //alert("error");
       });
-  }*/
-  /*
+
+  }
+
   $scope.showRedeem = function(prize){
     if(prize=="prize1"){
       $scope.prizeRedeem = "prize1";
@@ -184,11 +185,12 @@ function($scope, $http){
         "verificationCode": verificationCode
       }
     }).success(function(data) {
-      $scope.redeemErrMsg = "领取";
+      $scope.credit = data.credit;
       $("#prize-redeem").trigger('click');
+
     }).error(function(data) {
       $scope.redeemErrMsg = "兑换失败";
-      $("#veri-code-errModal").modal('show');
+      $("#errModal").modal('show');
     });
   },
   $scope.continueEntry = function(){
@@ -202,7 +204,7 @@ function($scope, $http){
     }
 
   }
-  */
+
   /*
   $scope.draw = function() {
     $http.get('/api/draw?userid='+$scope.userId+'&ad=56f0bf95b955d4f916852073'

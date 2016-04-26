@@ -53,14 +53,14 @@
       </div>
       <div id="main-2">
         <a href="#top">
-        <img class="img-responsive" src="/images/easywash/main/prize1.png" ng-show="" ng-click="atPage=PRIZE1">
-        <img class="img-responsive" src="/images/easywash/main/prize1-dim.png" ng-show="" ng-click="atPage=PRIZE1">
+        <img class="img-responsive" src="/images/easywash/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1">
+        <img class="img-responsive" src="/images/easywash/main/prize1-dim.png" ng-show="showPrize1Dim();" ng-click="atPage=PRIZE1">
         </a>
       </div>
       <div id="main-3">
         <a href="#top">
-        <img class="img-responsive" src="/images/easywash/main/prize2.png" ng-show="" ng-click="atPage=PRIZE2">
-        <img class="img-responsive" src="/images/easywash/main/prize2-dim.png" ng-show="" ng-click="atPage=PRIZE2">
+        <img class="img-responsive" src="/images/easywash/main/prize2.png" ng-show="showPrize2();" ng-click="atPage=PRIZE2">
+        <img class="img-responsive" src="/images/easywash/main/prize2-dim.png" ng-show="showPrize2Dim();" ng-click="atPage=PRIZE2">
         </a>
       </div>
       <div id="main-4">
@@ -130,7 +130,7 @@
           <img name="continue-bubble" class="img-responsive" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE">
           </a>
           <a href="#top">
-          <img name="redeem" class="img-responsive" src="/images/easywash/prize/redeem.png" ng-click="" >
+          <img name="redeem" class="img-responsive" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');" >
           </a>
           <a class="fancybox" href="/images/easywash/map.png">
           <img name="go-wash" class="img-responsive" src="/images/easywash/prize/go-wash.png">
@@ -159,7 +159,7 @@
           <img name="continue-bubble" class="img-responsive" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE">
           </a>
           <a href="#top">
-          <img name="redeem" class="img-responsive" src="/images/easywash/prize/redeem.png" ng-click=""> <!--//ng-click="redeem('2')">-->
+          <img name="redeem" class="img-responsive" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize2');"> <!--//ng-click="redeem('2')">-->
           </a>
           <a class="fancybox" href="/images/easywash/map.png"><img name="go-wash" class="img-responsive" src="/images/easywash/prize/go-wash.png"></a>
         </center>
@@ -234,7 +234,7 @@
           </div>
           <div class="modal-footer" style="text-align: center">
             <button type="button" class="btn" data-dismiss="modal">关闭</button>
-            <button type="button" class="btn" data-dismiss="modal" ng-click="">提交</button>
+            <button type="button" class="btn" data-dismiss="modal" ng-click="redeem_c('prize1')">提交</button>
           </div>
         </div>
       </div>
@@ -256,7 +256,7 @@
 
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="">提交</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="redeem_c('prize2')">提交</button>
           </div>
         </div>
       </div>
@@ -264,7 +264,7 @@
     <div class="container-fluid" id="container_easywash" data-ng-show="ABOUT_EASYWASH==atPage">
       <div class="back">
         <a href="#top">
-          <img class="img-responsive" src="/images/easywash/back.png" ng-click="atPage=MAIN">
+          <img class="img-responsive" src="/images/easywash/back.png" ng-click="document.getElementById('easywash-video').setAttribute('src', '');atPage=MAIN"<!--ng-click="atPage=MAIN"-->>
         </a>
       </div>
       <div>
@@ -299,8 +299,9 @@
 
 
     <script>
-
+    alert("302");
     $("document").ready(function(){
+      alert("303");
       $("body").css("background-color", "black");
       var containerWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
       var containerHeight = containerWidth*1320/750;
@@ -447,7 +448,7 @@
       $('img[name="redeem"]').css("width", containerWidth*189/750);
       $('img[name="go-wash"]').css("width", containerWidth*153/750);
       $('img[name="continue-bubble"]').css("width", containerWidth*153/750);
-
+      alert("450");
       $(".fancybox").fancybox({
     		fitToView	: true,
     		width		: '100%',

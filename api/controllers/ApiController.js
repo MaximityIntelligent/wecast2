@@ -67,7 +67,7 @@ module.exports = {
             retResult.timestamp = timestamp;
             retResult.noncestr = noncestr;
             retResult.ticket = jsapiTicket;
-            retResult.prizeRedeem = ['prize1'];
+            retResult.prizeRedeem = "";
             res.json(retResult);
             return;
         });
@@ -145,7 +145,7 @@ module.exports = {
                 retResult.timestamp = timestamp;
                 retResult.noncestr = noncestr;
                 retResult.ticket = jsapiTicket;
-                retResult.credit = 20;
+                retResult.credit = credit;
                 res.json(retResult);
                 return;
             });
@@ -183,9 +183,9 @@ module.exports = {
               }
               console.log("183");
               console.log("172");
-              userOne.credit = 0;
+              userOne.credit = userOne.credit - 18;
               userOne.save(function(){
-                res.end();
+                res.json({credit: userOne.credit});
                 return;
               });
 
@@ -195,9 +195,9 @@ module.exports = {
                 res.end();
                 return;
               }
-              userOne.credit = 0;
+              userOne.credit = userOne.credit - 38;
               userOne.save(function(){
-                res.end();
+                res.json({credit: userOne.credit})
                 return;
               });
 
