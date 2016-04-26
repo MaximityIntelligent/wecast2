@@ -11,9 +11,10 @@
   	<script type="text/javascript" src="http://fgnass.github.io/spin.js/spin.min.js"></script>
   </head>
   <body data-ng-app="easywash" data-ng-controller="IndexCtrl">
-    <div id="loader-wrapper">
+    <div id="loader-wrapper2">
 			<div id="loader"></div>
 		</div>
+    <!--
     <script>
     var opts = {
       lines: 13
@@ -39,7 +40,7 @@
     }
     var target = document.getElementById('loader');
     var spinner = new Spinner(opts).spin(target);
-    </script>
+  </script>-->
 
     <div ng-init="init()" data-ng-hide="1">
     </div>
@@ -463,11 +464,11 @@
     	});
       if(spinner){
         alert("spinner");
-      }
+      }/*
       setTimeout(function(){
         spinner.stop();
         $('body').addClass('loaded');
-      }, 3000);
+      }, 3000);*/
     });
     </script>
   </body>
