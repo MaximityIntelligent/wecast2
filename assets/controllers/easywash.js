@@ -50,7 +50,7 @@ function($scope, $http){
     //alert("url:"+url);
     //$("#redeem1Modal").modal('show');
     //$("#veri-credit-errModal").modal('show');
-    $("#veri-code-errModal").modal('show');
+    //$("#veri-code-errModal").modal('show');
     //veri-credit-errModal
 //
 /*
@@ -111,6 +111,7 @@ function($scope, $http){
           //alert("error");
       });
   }*/
+  /*
   $scope.showRedeem = function(prize){
     if(prize=="prize1"){
       $scope.prizeRedeem = "prize1";
@@ -201,7 +202,7 @@ function($scope, $http){
     }
 
   }
-
+  */
   /*
   $scope.draw = function() {
     $http.get('/api/draw?userid='+$scope.userId+'&ad=56f0bf95b955d4f916852073'
