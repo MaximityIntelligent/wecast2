@@ -324,8 +324,10 @@
       $("#main-2").css("top", containerHeight*1143/1320);
       $("#main-2").css("left", containerWidth*283/750);
       $("#main-2 img").css("width", containerWidth*155/750);
-      var imgHeight = $("#main-2 img").css("height");
+      var imgHeight = $("#main-2").css("height");
+
       imgHeight = imgHeight.replace("px", "");
+      //alert('imgHeight'+imgHeight);
 
       $("#main-2").css("margin-top", "-"+imgHeight+"px");
       $("#main-2").css("margin-left", "-"+containerWidth*155/750*0.5+"px");
@@ -334,7 +336,7 @@
       $("#main-3").css("top", containerHeight*1143/1320);
       $("#main-3").css("left", containerWidth*481/750);
       $("#main-3 img").css("width", containerWidth*155/750);
-      var imgHeight = $("#main-2 img").css("height");
+      var imgHeight = $("#main-2").css("height");
       imgHeight = imgHeight.replace("px", "");
 
       $("#main-3").css("margin-top", "-"+imgHeight+"px");
