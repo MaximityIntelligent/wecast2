@@ -52,7 +52,8 @@ function($scope, $http){
     //$("#veri-credit-errModal").modal('show');
     $("#veri-code-errModal").modal('show');
     //veri-credit-errModal
-
+//
+/*
     $http.get('/api/init_c?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad=easywash'
       ).
       success(function(data, status, headers, config) {
@@ -109,7 +110,7 @@ function($scope, $http){
       error(function(data, status, headers, config) {
           //alert("error");
       });
-  }
+  }*/
   $scope.showRedeem = function(prize){
     if(prize=="prize1"){
       $scope.prizeRedeem = "prize1";
