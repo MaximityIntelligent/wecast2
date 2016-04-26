@@ -81,7 +81,7 @@ function($scope, $http){
  ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
           });
           wx.ready(function(){
-
+            alert("wx.ready");
             wx.showMenuItems({
               menuList: ['menuItem:share:timeline'] // 要显示的菜单项，所有menu项见附录3
             });
