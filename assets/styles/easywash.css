@@ -27,6 +27,7 @@
   background-image:url('/images/easywash/event/event-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
+  width: 100%;
 }
 #container_easywash {
   background-image:url('/images/easywash/about-easywash/about-easywash-background.png');
