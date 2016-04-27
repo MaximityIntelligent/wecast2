@@ -77,12 +77,12 @@ function($scope, $http){
           timestamp: $scope.timestamp, // 必填，生成签名的时间戳
           nonceStr: $scope.noncestr, // 必填，生成签名的随机串
           signature: $scope.signature,// 必填，签名，见附录1
-          jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          jsApiList: ['onMenuShareTimeline',"onMenuShareAppMessage" ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
           });
           wx.ready(function(res){
             //alert("wx.ready");
             wx.showMenuItems({
-              menuList: ['menuItem:share:timeline', 'menuItem:share:appMessage'] // 要显示的菜单项，所有menu项见附录3
+              menuList: ['menuItem:share:timeline', 'menuItem:share:appMessage' ] // 要显示的菜单项，所有menu项见附录3
             });
             wx.showOptionMenu();
             wx.onMenuShareTimeline({
@@ -91,7 +91,7 @@ function($scope, $http){
                 imgUrl: '', // 分享图标
                 success: function() {
                     // 用户确认分享后执行的回调函数
-                    alert('已分享朋友圈');
+                    //alert('已分享');
                 },
                 cancel: function() {
                     // 用户取消分享后执行的回调函数
@@ -101,16 +101,30 @@ function($scope, $http){
                 }
             });
             wx.onMenuShareAppMessage({
+
               title: 'wecast', // 分享标题
+
               desc: '', // 分享描述
-              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash.html%3FsharedBy%3D'+$scope.userId+'%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base&state=123',// 分享链接
+
+              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash.html%3FsharedBy%3D'+$scope.userId+'%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base&state=123',
+
               imgUrl: '', // 分享图标
+
               success: function () {
-                  alert('已分享给朋友');
+
+                  // 用户确认分享后执行的回调函数
+                  alert("已分享");
+
               },
+
               cancel: function () {
+
+                  // 用户取消分享后执行的回调函数
+
               }
+
           });
+
 
         });
         wx.error(function(res){
@@ -145,26 +159,37 @@ function($scope, $http){
     }
   }
 
-  $scope.showPrize1 = function(id){
-    var dim = "-dim";
+  $scope.showPrize1 = function(){
+    alert("2");
     if($scope.credit>18){
-      dim = "";
+      return true;
+    }else{
+      return false;
     }
-    $(id).attr("src", "/images/easywash/main/prize1" + dim + ".png");
-    return true;
-
 
   }
-  $scope.showPrize2 = function(id){
-    var dim = "-dim";
+  $scope.showPrize1Dim = function(){
+    if($scope.credit<18){
+      return true;
+    }else {
+      return false;
+    }
+  }
+  $scope.showPrize2 = function(){
     if($scope.credit>38){
-      dim = "";
+      return true;
+    }else{
+      return false;
     }
-    $(id).attr("src", "/images/easywash/main/prize2" + dim + ".png");
-    return true;
 
   }
-
+  $scope.showPrize2Dim = function(){
+    if($scope.credit<38){
+      return true;
+    }else{
+      return false;
+    }
+  }
   $scope.redeem_c = function(prize){
     if(prize=="prize1"){
       verificationCode = $("#verification1").val();
