@@ -295,7 +295,7 @@
       $(".back").css("float", "left");
       $(".back").css("margin-right", "2%");
       $(".back").css("margin-top", "2%");
-      $(".back img").css("width", containerWidth*126/750);
+      $(".back img").css("width", containerWidth*63/750);
 
       $("#main-container").css("width", containerWidth);
       $("#main-container").css("height", containerHeight);
@@ -329,7 +329,7 @@
       $("#main-4").css("top", containerHeight*737.5/1320);
       $("#main-4").css("left", containerWidth*602.5/750);
       $("#main-4").css("color", "black");
-      $("#main-4 font").css("font-size", containerHeight*25/1320);
+      $("#main-4 font").css("font-size", containerHeight*30/1320);
       var main4Width = $("#main-4").css("width");
       var main4Height = $("#main-4").css("height");
       $("#main-4").css("margin-left", "-"+main4Width.replace("px", "")*0.5+"px");
@@ -356,23 +356,23 @@
       $("#thankyou-1").css("left", containerWidth*0.5);
       $("#thankyou-1").css("margin-left", "-"+containerWidth*391/750*0.5+"px");
 
-
+      var containerHeight_easywash = containerWidth*1206/750;
       $("#container_easywash").css("width", containerWidth);
-      $("#container_easywash").css("height", containerHeight);
+      $("#container_easywash").css("height", containerHeight_easywash);
       $("#easywash-1").css("position", "absolute");
-      $("#easywash-1").css("top", containerHeight*408/1206);
+      $("#easywash-1").css("top", containerHeight_easywash*408/1206);
       $("#easywash-1").css("left", containerWidth*66/750);
       $("#easywash-1").css("width", containerWidth*618/750);
-      $("#easywash-1").css("height", containerHeight*357/1206);
+      $("#easywash-1").css("height", containerHeight_easywash*357/1206);
       $("#easywash-1").css("border", "2px solid yellow");
       $("#event-rule").css("float", "right");
       $("#event-rule").css("margin-right", "2%");
       $("#event-rule").css("margin-top", "2%");
       $("#event-rule img").css("width", containerWidth*126/750);
 
-      $("#easywash-2").css("margin-top", containerHeight*803/1206);
+      $("#easywash-2").css("margin-top", containerHeight_easywash*803/1206);
       $("#easywash-2").css("width", "100%");
-      $("#easywash-3").css("margin-top", "10%");
+      $("#easywash-3").css("margin-top", "5%");
       $('img[name="address"]').css("width", containerWidth*340/750);
       $('img[name="call"]').css("width", containerWidth*340/750);
 
@@ -435,8 +435,8 @@
       //alert("450");
       $(".fancybox").fancybox({
     		fitToView	: true,
-    		width		: '100%',
-    		height		: '100%',
+    		width		: '95%',
+    		height		: '95%',
     		autoSize	: true,
     		closeClick	: false,
     		openEffect	: 'none',
