@@ -171,7 +171,7 @@ console.log("136");
               cb(err);
               return;
             }
-            User.incrementCredit(sharedBy, 2, cb);
+            User.incrementCredit(sharedBy, 1, cb);
             return;
           })
         }
