@@ -156,7 +156,7 @@ function($scope, $http){
 
   }
   $scope.showPrize2 = function(id){
-    var dim = "dim";
+    var dim = "-dim";
     if($scope.credit>38){
       dim = "";
     }
