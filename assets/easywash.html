@@ -65,18 +65,16 @@
       </div>
       <div id="main-2">
         <a href="#top">
-        <img class="img-responsive" src="/images/easywash/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1">
-        <img class="img-responsive" src="/images/easywash/main/prize1-dim.png" ng-show="showPrize1Dim();" ng-click="atPage=PRIZE1">
+        <img id="prize1Img" class="img-responsive" ng-show="showPrize1('#prize1Img');" ng-click="atPage=PRIZE1">
         </a>
       </div>
       <div id="main-3">
         <a href="#top">
-        <img class="img-responsive" src="/images/easywash/main/prize2.png" ng-show="showPrize2();" ng-click="atPage=PRIZE2">
-        <img class="img-responsive" src="/images/easywash/main/prize2-dim.png" ng-show="showPrize2Dim();" ng-click="atPage=PRIZE2">
+        <img id="prize2Img" class="img-responsive" ng-show="showPrize2('#prize2Img');" ng-click="atPage=PRIZE2">
         </a>
       </div>
       <div id="main-4">
-        <font><b>{{credit}}</b></font>
+        <font color="black"><b>{{credit}}</b></font>
       </div>
       <a href="#top">
       <div id="main-5" ng-click="atPage=THANKYOU;">
@@ -234,11 +232,10 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-
           </div>
           <div class="modal-body" style="text-align: center;;">
             <form class="form-inline" style="position: relative;top: 20%">
-              <h2>请交由工作人员输入领奖码</h2>
+              <h3>请交由工作人员输入领奖码</h3>
               <div class="form-group">
                 <input type="text" id="verification1" class="form-control">
               </div>
@@ -252,20 +249,19 @@
       </div>
     </div>
     <div class="modal fade" id="redeem2Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
+      <div class="modal-dialog" role="document" >
+        <div class="modal-content"  >
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body" style="text-align: center">
             <form class="form-inline" style="position: relative;top: 20%">
-              <h2>请交由工作人员输入领奖码</h2>
+              <h3>请交由工作人员输入领奖码</h3>
               <div class="form-group">
                 <input type="text" id="verification1" class="form-control">
               </div>
             </form>
           </div>
-
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="redeem_c('prize2')">提交</button>
@@ -309,6 +305,7 @@
     <script>
 
     $("document").ready(function(){
+      //$("#redeem2Modal").modal('show');
       $("body").css("background-color", "black");
       var containerWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
       var containerHeight = containerWidth*1320/750;
@@ -354,7 +351,7 @@
       $("#main-4").css("position", "absolute");
       $("#main-4").css("top", containerHeight*737.5/1320);
       $("#main-4").css("left", containerWidth*602.5/750);
-      $("#main-4 font").css("font-size", containerHeight*18/1320);
+      $("#main-4 font").css("font-size", containerHeight*25/1320);
       var main4Width = $("#main-4").css("width");
       var main4Height = $("#main-4").css("height");
       $("#main-4").css("margin-left", "-"+main4Width.replace("px", "")*0.5+"px");
@@ -381,21 +378,21 @@
       $("#thankyou-1").css("left", containerWidth*0.5);
       $("#thankyou-1").css("margin-left", "-"+containerWidth*391/750*0.5+"px");
 
-
+      var containerHeight_easywash = containerWidth*1206/750;
       $("#container_easywash").css("width", containerWidth);
-      $("#container_easywash").css("height", containerHeight);
+      $("#container_easywash").css("height", containerHeight_easywash);
       $("#easywash-1").css("position", "absolute");
-      $("#easywash-1").css("top", containerHeight*408/1206);
+      $("#easywash-1").css("top", containerHeight_easywash*412/1206);
       $("#easywash-1").css("left", containerWidth*66/750);
       $("#easywash-1").css("width", containerWidth*618/750);
-      $("#easywash-1").css("height", containerHeight*357/1206);
+      $("#easywash-1").css("height", containerHeight_easywash*357/1206);
       $("#easywash-1").css("border", "2px solid yellow");
       $("#event-rule").css("float", "right");
       $("#event-rule").css("margin-right", "2%");
       $("#event-rule").css("margin-top", "2%");
       $("#event-rule img").css("width", containerWidth*126/750);
 
-      $("#easywash-2").css("margin-top", containerHeight*803/1206);
+      $("#easywash-2").css("margin-top", containerHeight_easywash*803/1206);
       $("#easywash-2").css("width", "100%");
       $("#easywash-3").css("margin-top", "10%");
       $('img[name="address"]').css("width", containerWidth*340/750);
@@ -471,10 +468,7 @@
         overlayOpacity: 1
     	});
 
-      setTimeout(function(){
-        spinner.stop();
-        $('body').addClass('loaded');
-      }, 3000);
+
     });
     </script>
 
