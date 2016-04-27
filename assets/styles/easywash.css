@@ -45,8 +45,14 @@
   display: inline
 }
 #prize1-2 a + a, #prize2-2 a + a{
-  margin-left: 6%;
-  
+  margin-left: 15px;
+
+}
+#prize1-2 {
+  margin-left: -15px;
+}
+#prize2-2 {
+  margin-left: -15px;
 }
 #loader-wrapper {
     position: fixed;
