@@ -80,14 +80,11 @@
 .modal {
   background-color: black;
   width: 100%;
-  text-align: center;
 }
 .modal-content{
   border: 2px solid yellow;
   background-color: black;
   color: yellow;
-  width: 70%;
-  margin: auto;
 }
 .modal-dialog{
   width: 70%;
