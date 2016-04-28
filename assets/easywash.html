@@ -15,7 +15,7 @@
     <script src="js/modernizr.custom.js"></script>
   -->
   </head>
-  <body data-ng-app="easywash" data-ng-controller="IndexCtrl" id="ip-container" class="ip-container">
+  <body data-ng-app="easywash" data-ng-controller="IndexCtrl" >
     <!--
     <header class="ip-header">
 
@@ -99,7 +99,7 @@
     </div>
 
     <div class="container-fluid" id="container_p1" data-ng-show="PRIZE1==atPage" >
-      <div class="close">
+      <div class="close-btn">
         <a href="#top">
           <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN">
         </a>
@@ -128,7 +128,7 @@
     </div>
 
     <div class="container-fluid" id="container_p2" data-ng-show="PRIZE2==atPage" >
-      <div class="close">
+      <div class="close-btn">
         <a href="#top">
           <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN">
         </a>
@@ -252,7 +252,7 @@
       </div>
     </div>
     <div class="container-fluid" id="container_easywash" data-ng-show="ABOUT_EASYWASH==atPage">
-      <div class="close">
+      <div class="close-btn">
         <a href="#top">
           <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN"/>
         </a>
@@ -297,10 +297,10 @@
       //$(".back").css("margin-right", "2%");
       //$(".back").css("margin-top", "2%");
       //$(".back img").css("width", containerWidth*63/750);
-      $(".close").css("float", "right");
-      $(".close").css("margin-right", "2%");
-      $(".close").css("margin-top", "2%");
-      $(".close img").css("width", containerWidth*115/750);
+      $(".close-btn").css("float", "right");
+      $(".close-btn").css("margin-right", "2%");
+      $(".close-btn").css("margin-top", "2%");
+      $(".close-btn img").css("width", containerWidth*115/750);
 
       $("#main-container").css("width", containerWidth);
       $("#main-container").css("height", containerHeight);
