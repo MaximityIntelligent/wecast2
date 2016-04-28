@@ -7,6 +7,8 @@
   background-image:url('/images/easywash/share/share-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
+  animation-name: share;
+  animation-duration: 1s;
 }
 #container_e-inner {
   background-image:url('/images/easywash/event-background.png');
@@ -105,6 +107,11 @@
 #redeem1Modal form-control {
   width: 50%;
 }
+@keyframes share {
+    from {background-size:60%;}
+    to {background-size:100%;}
+}
+
 
 
 
