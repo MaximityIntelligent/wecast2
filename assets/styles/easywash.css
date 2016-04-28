@@ -84,12 +84,11 @@
   border: 2px solid yellow;
   background-color: black;
   color: yellow;
-
-
-}
-.modal-dialog{
   width: 70%;
+
+
 }
+
 .modal-body{
     height: 220px;
 }
