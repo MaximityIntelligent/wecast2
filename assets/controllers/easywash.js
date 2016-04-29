@@ -124,17 +124,19 @@ function($scope, $http){
               }
 
           });
+          $('body').addClass("loaded");
 
 
         });
         wx.error(function(res){
           alert('fail'+JSON.stringify(res));
+
         });
       }).
       error(function(data, status, headers, config) {
-
+        $('body').addClass("loaded");
       });
-      $('body').addClass("loaded");
+
 
   }
 
