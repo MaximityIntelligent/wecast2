@@ -181,26 +181,30 @@ module.exports = {
                 res.status(500);
                 res.end();
                 return;
+              }else{
+                console.log("183");
+                console.log("172");
+                userOne.credit = userOne.credit - 18;
+                userOne.save(function(){
+                  res.json({credit: userOne.credit});
+                  return;
+                });
               }
-              console.log("183");
-              console.log("172");
-              userOne.credit = userOne.credit - 18;
-              userOne.save(function(){
-                res.json({credit: userOne.credit});
-                return;
-              });
+
 
             }else if(prize=="prize2"){
               if(credit<38){
                 res.status(500);
                 res.end();
                 return;
+              }else{
+                userOne.credit = userOne.credit - 38;
+                userOne.save(function(){
+                  res.json({credit: userOne.credit});
+                  return;
+                });
               }
-              userOne.credit = userOne.credit - 38;
-              userOne.save(function(){
-                res.json({credit: userOne.credit});
-                return;
-              });
+
 
             }else{
               res.end();
