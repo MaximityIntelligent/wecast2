@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
     <link rel="stylesheet" href="/fancybox2.1.5/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
     <link rel="stylesheet" href="/styles/easywash.css">
+    <!--<script type="text/javascript" src="http://fgnass.github.io/spin.js/spin.min.js"></script>-->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!--
   	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
@@ -16,7 +17,48 @@
   -->
   </head>
   <body data-ng-app="easywash" data-ng-controller="IndexCtrl" >
+    <div id="loader-wrapper">
+      <div class="cssload-thecube">
+        <div class="cssload-cube cssload-c1"></div>
+        <div class="cssload-cube cssload-c2"></div>
+        <div class="cssload-cube cssload-c4"></div>
+        <div class="cssload-cube cssload-c3"></div>
+      </div>
+			<div id="loader">
+
+      </div>
+    </div>
     <!--
+        <script>
+
+        var opts = {
+          lines: 13
+        , length: 28
+        , width: 14
+        , radius: 42
+        , scale: 1
+        , corners: 1
+        , color: '#000'
+        , opacity: 0.25
+        , rotate: 0
+        , direction: 1
+        , speed: 1
+        , trail: 60
+        , fps: 20
+        , zIndex: 2e9
+        , className: 'spinner'
+        , top: '50%'
+        , left: '50%'
+        , shadow: false
+        , hwaccel: false
+        , position: 'absolute'
+        }
+        var target = document.getElementById('loader');
+        var spinner = new Spinner(opts).spin(target);
+      </script>
+
+
+
     <header class="ip-header">
 
 				<div class="ip-loader">
@@ -452,6 +494,8 @@
         overlayShow: true,
         overlayOpacity: 1
     	});
+      //spinner.stop();
+
 
 
     });

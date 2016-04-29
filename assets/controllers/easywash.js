@@ -134,6 +134,7 @@ function($scope, $http){
       error(function(data, status, headers, config) {
 
       });
+      $('body').addClass("loaded");
 
   }
 
