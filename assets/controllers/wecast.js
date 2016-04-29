@@ -26,6 +26,7 @@ var QueryString = function () {
 var code = QueryString.code;
 var ad = QueryString.ad;
 var sharedBy = QueryString.sharedBy;
+var pg
 alert("code: "+code+" sharedBy: "+sharedBy);
 app.controller('IndexCtrl', [
 '$scope','$http',
