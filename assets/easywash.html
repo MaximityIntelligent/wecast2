@@ -594,9 +594,9 @@
           <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN"/>
         </a>
       </div>
-      <div>
-        <a id="event-rule" class="fancybox" href="#container_e">
-          <img class="img-responsive" src="/images/easywash/about-easywash/event-rule.png">
+      <div id="rules">
+        <a class="fancybox" href="#container_e">
+          <img class="img-responsive" src="/images/easywash/about-easywash/rules.png">
         </a>
       </div>
       <div id="easywash-1">
@@ -707,10 +707,15 @@
       $("#easywash-1").css("width", containerWidth*618/750);
       $("#easywash-1").css("height", containerHeight_easywash*357/1206);
       $("#easywash-1").css("border", "2px solid yellow");
-      $("#event-rule").css("float", "left");
+      $("#event-rule").css("float", "right");
+      /*
+      $("#event-rule").css("top", "18%");
+      $("#event-rule").css("right", "2%");
+      $("#event-rule").css("float", "right");
       $("#event-rule").css("margin-right", "2%");
       $("#event-rule").css("margin-top", "2%");
-      $("#event-rule img").css("width", containerWidth*126/750);
+      */
+      //$("#event-rule img").css("width", containerWidth*126/750);
 
       $("#easywash-2").css("margin-top", containerHeight_easywash*803/1206);
       $("#easywash-2").css("width", "100%");
@@ -783,8 +788,8 @@
     		height		: '95%',
     		autoSize	: true,
     		closeClick	: false,
-    		openEffect	: 'none',
-    		closeEffect	: 'none',
+    		openEffect	: 'elastic',
+    		closeEffect	: 'elastic',
         overlayColor: '#000',
         overlayShow: true,
         overlayOpacity: 1

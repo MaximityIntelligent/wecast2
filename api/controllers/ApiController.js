@@ -223,5 +223,8 @@ module.exports = {
   });
 
   },
+  easywash: function(req, res){
+    res.view('easywash');
+  }
 
 };

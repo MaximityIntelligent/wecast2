@@ -56,6 +56,10 @@ module.exports.routes = {
   '/api/redeem_c': {
     controller: 'ApiController',
     action: 'redeem_c'
+  },
+  '/easywash': {
+    controller: 'ApiController',
+    action: 'easywash'
   }
 
 

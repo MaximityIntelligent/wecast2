@@ -1035,3 +1035,25 @@ i:nth-child(100) b {
     transform: scale(1);
   }
 }
+#rules {
+    position: absolute;
+    float: right;
+    right: 3%;
+    top: 56%;
+    width: 20%;
+    background-color: transparent;
+    border: 2px solid yellow;
+}
+#rules img {
+
+  animation-name: rules;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  border: 2px solid red;
+}
+
+@keyframes rules {
+    from {width:100%;top:50%;}
+    to {width:99%;top:49%;}
+}
