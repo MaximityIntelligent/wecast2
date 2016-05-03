@@ -1037,20 +1037,19 @@ i:nth-child(100) b {
 }
 #rules {
     position: absolute;
-    /*float: right;*/
     right: 2%;
     top: 18%;
     width: 22%;
     background-color: transparent;
 }
 #rules img {
-
   animation-name: rules;
   animation-duration: 0.5s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
 }
+
 @keyframes rules {
-    from {width:22%;top:18%;right:2%}
-    to {width:24%;top:17.5%;right:1%}
+    from {width:90%;top:18%;right:2%}
+    to {width:100%;top:19%;right:3%;}
 }
