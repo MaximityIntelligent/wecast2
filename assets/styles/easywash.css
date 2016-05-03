@@ -1052,6 +1052,6 @@ i:nth-child(100) b {
 }
 
 @keyframes rules {
-    from {width:100%;top:18%;right:2%;}
-    to {width:90%;top:17.5%;right:1%;}
+    from {width:90%;top:18%;right:2%;}
+    to {width:100%;top:17.5%;right:1%;}
 }
