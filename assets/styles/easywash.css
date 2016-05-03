@@ -303,7 +303,7 @@
   top: 50%;
   left: 50%;
   z-index: 2;
-  perspective: 200px;
+  perspective: 70px;
 }
 
 i {
