@@ -1037,7 +1037,7 @@ i:nth-child(100) b {
 }
 #rules {
     position: absolute;
-    float: right;
+    /*float: right;*/
     right: 2%;
     top: 18%;
     width: 22%;
@@ -1053,5 +1053,5 @@ i:nth-child(100) b {
 
 @keyframes rules {
     from {width:100%;top:18%;right:2%;}
-    to {width:80%;top:17.5%;right:1%;}
+    to {width:90%;top:17.5%;right:1%;}
 }
