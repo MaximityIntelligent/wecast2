@@ -60,18 +60,18 @@ function($scope, $http){
           timestamp: $scope.timestamp, // 必填，生成签名的时间戳
           nonceStr: $scope.noncestr, // 必填，生成签名的随机串
           signature: $scope.signature,// 必填，签名，见附录1
-          jsApiList: ['openLocation','getLocation', 'onMenuShareTimeline'
+          jsApiList: ['openLocation','getLocation', 'onMenuShareTimeline', 'onMenuShareAppMessage'
  ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
           });
           wx.ready(function(){
-            /*wx.showMenuItems({
-              menuList: ['menuItem:share:timeline'] // 要显示的菜单项，所有menu项见附录3
-            });*/
+            wx.showMenuItems({
+              menuList: ['menuItem:share:timeline', 'menuItem:share:appMessage'] // 要显示的菜单项，所有menu项见附录3
+            });
             wx.showOptionMenu();
             wx.onMenuShareTimeline({
-                title: 'wecast', // 分享标题
+                title: 'Easywash送你小米手環及智能洗車', // 分享标题
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Findex.html%3FsharedBy%3D'+$scope.userId+'%26ad%3D56f0bf95b955d4f916852073&response_type=code&scope=snsapi_userinfo&state=123',
-                imgUrl: '', // 分享图标
+                imgUrl: 'http://wecast.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
                 success: function() {
                     // 用户确认分享后执行的回调函数
                     alert('已分享');
@@ -82,6 +82,33 @@ function($scope, $http){
                 fail: function(){
                   alert(JSON.stringify(res));
                 }
+            });
+            wx.onMenuShareAppMessage({
+
+                title: 'Easywash送你小米手環及智能洗車', // 分享标题
+
+                desc: 'Share比朋友幫手儲泡泡, 小米手環, 美光深層去污等你黎帶走!', // 分享描述
+
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Findex.html%3FsharedBy%3D'+$scope.userId+'%26ad%3D56f0bf95b955d4f916852073&response_type=code&scope=snsapi_userinfo&state=123', // 分享链接
+
+                imgUrl: 'http://wecast.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
+
+                type: 'link', // 分享类型,music、video或link，不填默认为link
+
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+
+                success: function () {
+
+                    // 用户确认分享后执行的回调函数
+
+                },
+
+                cancel: function () {
+
+                    // 用户取消分享后执行的回调函数
+
+                }
+
             });
             //alert('71');
             /*
