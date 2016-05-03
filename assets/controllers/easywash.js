@@ -66,11 +66,6 @@ function($scope, $http){
           $scope.userId = data.openId;
           $scope.shareCount = data.shareCount;
           $scope.credit = data.credit;
-          //$scope.prizeRedeem = data.prizeRedeem;
-          //alert("init success");
-          //alert($scope.shareCount);
-          //$scope.drawChance = data.drawChance;
-          //alert($scope.timestamp+" "+$scope.noncestr+" "+$scope.signature);
           wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
           appId: 'wxab261de543656952', // 必填，公众号的唯一标识
@@ -87,7 +82,7 @@ function($scope, $http){
             wx.showOptionMenu();
             wx.onMenuShareTimeline({
                 title: 'wecast', // 分享标题
-                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash.html%3FsharedBy%3D'+$scope.userId+'%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base&state=123',
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3D'+$scope.userId+'%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base&state=123',
                 imgUrl: '', // 分享图标
                 success: function() {
                     // 用户确认分享后执行的回调函数
@@ -106,7 +101,7 @@ function($scope, $http){
 
               desc: '', // 分享描述
 
-              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash.html%3FsharedBy%3D'+$scope.userId+'%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base&state=123',
+              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3D'+$scope.userId+'%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base&state=123',
 
               imgUrl: '', // 分享图标
 
