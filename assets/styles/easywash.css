@@ -11,9 +11,10 @@
   animation-duration: 1s;
 }
 #container_e-inner {
-  background-image:url('/images/easywash/event/event-background.png');
+  background-image:url('/images/easywash/event-background.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  width: 90%;
 }
 #container_p1 {
   background-image:url('/images/easywash/prize/prize1-background.png');
@@ -25,12 +26,12 @@
   background-repeat: no-repeat;;
   background-size: 100% 100%;
 }
-/*#container_e {
+#container_e {
   background-image:url('/images/easywash/event/event-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
   width: 100%;
-}*/
+}
 #container_easywash {
   background-image:url('/images/easywash/about-easywash/about-easywash-background.png');
   background-repeat: no-repeat;;

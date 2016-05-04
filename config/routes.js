@@ -60,6 +60,10 @@ module.exports.routes = {
   '/easywash': {
     controller: 'ApiController',
     action: 'easywash'
+  },
+  '/api/clickCount': {
+    controller: 'ApiController',
+    action: 'clickCount'
   }
 
 
