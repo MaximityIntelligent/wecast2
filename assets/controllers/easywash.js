@@ -230,7 +230,7 @@ function($scope, $http){
       url:'api/clickCount?clickCountName='+clickCountName,
       method:'GET'
       }).success(function(data,header,config,status){
-
+        
       }).error(function(data,header,config,status){
 
       });
