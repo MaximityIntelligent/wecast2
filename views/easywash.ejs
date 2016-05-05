@@ -16,7 +16,7 @@
     <script src="js/modernizr.custom.js"></script>
   -->
   </head>
-  <body data-ng-app="easywash" data-ng-controller="IndexCtrl" >
+  <body data-ng-app="easywash" data-ng-controller="IndexCtrl" orient="portrait" >
     <div id="loader-wrapper">
       <!--<div class="cssload-thecube">
         <div class="cssload-cube cssload-c1"></div>
@@ -792,12 +792,38 @@
         overlayShow: true,
         overlayOpacity: 1
     	});
-      screen.lockOrientation('portrait');
-      //spinner.stop();
 
+      $(window)
+      .bind('orientationchange', function(){
+        alert(window.orientation);
+         if (window.orientation % 180 == 0){
+           alert('800');
+           $(document.body).css("-webkit-transform-origin", "")
+             .css("-webkit-transform", "");
+         }
+         else {
+           if ( window.orientation > 0) { //clockwise
+             alert('805');
+            $(document.body)
+             .css("-webkit-transform", "rotate(-90deg)");
+           }
+           else {
+             alert("809")
+            $(document.body)
+             .css("-webkit-transform", "rotate(90deg)");
+           }
+         }
+       })
+      .trigger('orientationchange');
+      //window.onorientationchange = reorient;
+      //window.setTimeout(reorient, 0);
+      //window.onorientationchange = reorient;
+      //window.setTimeout(reorient, 0);
 
     });
-    
+
+
+
 
 
 

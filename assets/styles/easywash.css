@@ -1,3 +1,6 @@
+@viewport {
+   orientation: portrait;
+ }
 #main-container {
   background-image:url('/images/easywash/main/main-background.png');
   background-repeat: no-repeat;;
@@ -1053,3 +1056,24 @@ i:nth-child(100) b {
     from {width:90%;top:18%;right:2%}
     to {width:100%;top:19%;right:3%;}
 }
+/*
+@media (max-height: 480px) and (min-width: 480px) and (max-width: 600px) {
+    html{
+        -webkit-transform: rotate(-90deg);
+           -moz-transform: rotate(-90deg);
+            -ms-transform: rotate(-90deg);
+             -o-transform: rotate(-90deg);
+                transform: rotate(-90deg);
+        -webkit-transform-origin: left top;
+           -moz-transform-origin: left top;
+            -ms-transform-origin: left top;
+             -o-transform-origin: left top;
+                transform-origin: left top;
+                width: 100%; /*this is the iPhone screen width.
+                position: absolute;
+                top: 100%;
+                    left: 0
+
+    }
+}
+*/
