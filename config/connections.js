@@ -28,7 +28,7 @@ module.exports.connections = {
   * Installed by default.                                                    *
   *                                                                          *
   ***************************************************************************/
-  
+  /*
   mongo_dev: {
       adapter: 'sails-mongo',
       host: 'ds021689.mlab.com',
@@ -37,13 +37,14 @@ module.exports.connections = {
       password: 'wecastdev',
       database: 'wecast'
   },
-  /*
+  */
+
   mongo_local: {
       adapter: 'sails-mongo',
       host: 'localhost',
       port: 27017,
       database: 'wecast'
-  },*/
+  },
 
 
   /***************************************************************************
