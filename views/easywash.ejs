@@ -792,10 +792,10 @@
         overlayShow: true,
         overlayOpacity: 1
     	});
-/*
+
       $(window)
       .bind('orientationchange', function(){
-        alert(window.orientation);
+        //alert(window.orientation);
          if (window.orientation % 180 == 0){
            alert('800');
            $(document.body).css("-webkit-transform-origin", "")
@@ -810,13 +810,13 @@
            else {
              alert("809")
             $(document.body)
-             .css("top", "100%");
-             .css("left", "0");
-             .css("-webkit-transform", "rotate(90deg)");
+            .css("-webkit-transform", "rotate(90deg)")
+            .css("top", "0")
+            .css("left", "0");
            }
          }
        })
-      .trigger('orientationchange');*/
+      .trigger('orientationchange');
       //window.onorientationchange = reorient;
       //window.setTimeout(reorient, 0);
       //window.onorientationchange = reorient;

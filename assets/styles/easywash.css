@@ -1057,7 +1057,7 @@ i:nth-child(100) b {
     to {width:100%;top:19%;right:3%;}
 }
 
-
+/*
 @media (max-height: 480px) and (min-width: 480px) and (max-width: 600px) {
     html{
         -webkit-transform: rotate(-90deg);
@@ -1076,4 +1076,4 @@ i:nth-child(100) b {
                     left: 0
 
     }
-}
+}*/
