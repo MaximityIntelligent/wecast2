@@ -61,10 +61,13 @@ function($scope, $http){
     alert(window.orientation);
       if (window.orientation % 180 == 0){
       $scope.atPage = $scope.MAIN;
+      alert($scope.atPage);
       $('body').addClass("portrait");
       }
       else {
+
       $scope.atPage = $scope.LANDSCAPE;
+      alert($scope.atPage);
       $('body').removeClass('portrait');
 
       }
