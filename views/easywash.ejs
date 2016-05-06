@@ -17,6 +17,11 @@
   -->
   </head>
   <body data-ng-app="easywash" data-ng-controller="IndexCtrl" orient="portrait" >
+    <div id="landscape-container" data-ng-show="LANDSCAPE==atPage" >
+      <div id="" style="color:white">
+        dfdsfdsfdsfdsdsfdsf
+      </div>
+    </div>
     <div id="loader-wrapper">
       <!--<div class="cssload-thecube">
         <div class="cssload-cube cssload-c1"></div>
@@ -611,6 +616,7 @@
         <center><a href="tel:85363539002"><img name="call" src="/images/easywash/about-easywash/call.png"></a></center>
       </div>
     </div>
+
     <a id="prize-redeem" class="fancybox" href="/images/easywash/verification/prize-redeem.png"></a>
     <!--
     <script src="js/classie.js"></script>
@@ -793,7 +799,7 @@
         overlayOpacity: 1
     	});
 
-      
+
       //window.onorientationchange = reorient;
       //window.setTimeout(reorient, 0);
       //window.onorientationchange = reorient;
