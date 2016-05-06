@@ -44,6 +44,28 @@ function($scope, $http){
   $scope.map = false;
   $scope.prizeRedeem = "";
   $scope.redeemErrMsg = "";
+  $(window)
+  .bind('orientationchange', function(){
+  alert(window.orientation);
+    if (window.orientation % 180 == 0){
+      $scope.apply(function(){
+          $scope.atPage = $scope.MAIN;
+      });
+      alert($scope.atPage);
+    //$('body').addClass("portrait");
+    }
+    else {
+      $scope.apply(function(){
+          $scope.atPage = $scope.LANDSCAPE;
+      });
+
+      alert($scope.atPage);
+    //$('body').removeClass('portrait');
+
+    }
+  })
+  .trigger('orientationchange');
+
   $scope.init = function()
   {
 
@@ -56,27 +78,7 @@ function($scope, $http){
     //veri-credit-errModal
 
 
-    $(window)
-    .bind('orientationchange', function(){
-    alert(window.orientation);
-      if (window.orientation % 180 == 0){
-        $scope.apply(function(){
-            $scope.atPage = $scope.MAIN;
-        });
-      alert($scope.atPage);
-      //$('body').addClass("portrait");
-      }
-      else {
-        $scope.apply(function(){
-            $scope.atPage = $scope.LANDSCAPE;
-        });
 
-      alert($scope.atPage);
-      //$('body').removeClass('portrait');
-
-      }
-    })
-    .trigger('orientationchange');
 //
 
     $http.get('/api/init_c?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad=easywash'
