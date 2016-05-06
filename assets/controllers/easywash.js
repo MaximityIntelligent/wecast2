@@ -38,6 +38,7 @@ function($scope, $http){
   $scope.PRIZE2 = "prize2";
   $scope.ABOUT_EASYWASH = "about_easywash";
   $scope.THANKYOU = "thankyou";
+  $scope.LANDSCAPE = "landscape";
   $scope.atPage = (typeof QueryString.pg == 'undefined') ? $scope.MAIN: $scope.THANKYOU;
   $scope.credit = 0;
   $scope.map = false;
@@ -57,26 +58,17 @@ function($scope, $http){
 
     $(window)
     .bind('orientationchange', function(){
-      alert(window.orientation);
-       if (window.orientation % 180 == 0){
+    alert(window.orientation);
+      if (window.orientation % 180 == 0){
+      $scope.atPage = $scope.MAIN;
+      $('body').addClass("portrait");
+      }
+      else {
+      $scope.atPage = $scope.LANDSCAPE;
+      $('body').removeClass('portrait');
 
-         alert($scope.atPage+"portrait");
-       }
-       else {
-         if ( window.orientation > 0) { //clockwise
-           alert($scope.atPage+"landscape");
-
-         }
-         else {
-           alert($scope.atPage+"landscape");
-
-          $(document.body)
-
-          .css("top", "0")
-          .css("left", "0");
-         }
-       }
-     })
+      }
+    })
     .trigger('orientationchange');
 //
 
