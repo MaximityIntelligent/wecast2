@@ -45,7 +45,7 @@ function($scope, $http){
   $scope.redeemErrMsg = "";
   $scope.init = function()
   {
-    
+
     var url = window.location.href;
     url = encodeURIComponent(url);
     //alert("url:"+url);
@@ -53,6 +53,31 @@ function($scope, $http){
     //$("#veri-credit-errModal").modal('show');
     //$("#veri-code-errModal").modal('show');
     //veri-credit-errModal
+
+
+    $(window)
+    .bind('orientationchange', function(){
+      alert(window.orientation);
+       if (window.orientation % 180 == 0){
+
+         alert($scope.atPage+"portrait");
+       }
+       else {
+         if ( window.orientation > 0) { //clockwise
+           alert($scope.atPage+"landscape");
+
+         }
+         else {
+           alert($scope.atPage+"landscape");
+
+          $(document.body)
+
+          .css("top", "0")
+          .css("left", "0");
+         }
+       }
+     })
+    .trigger('orientationchange');
 //
 
     $http.get('/api/init_c?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad=easywash'
