@@ -45,7 +45,30 @@ function($scope, $http){
   $scope.prizeRedeem = "";
   $scope.redeemErrMsg = "";
 
+  $scope.prevPage = "":
+  $(window)
+  .bind('orientationchange', function(){
 
+    if (window.orientation % 180 == 0){
+      $scope.$apply(function(){
+          if($scope.prevPage == "")
+            $scope.atPage = $scope.MAIN;
+          else {
+            $scope.atPage = $scope.prevPage;
+          };
+      });
+      $('body').addClass("portrait");
+    }
+    else {
+      $scope.$apply(function(){
+          $scope.prevPage = $scope.atPage;
+          $scope.atPage = $scope.LANDSCAPE;
+          //$("#landscapeModal").modal('show');
+      });
+      $('body').removeClass('portrait');
+    }
+  })
+  .trigger('orientationchange');
   $scope.init = function()
   {
 
@@ -137,30 +160,7 @@ function($scope, $http){
 
         });
 
-        $scope.prevPage = "":
-        $(window)
-        .bind('orientationchange', function(){
 
-          if (window.orientation % 180 == 0){
-            $scope.$apply(function(){
-                if($scope.prevPage == "")
-                  $scope.atPage = $scope.MAIN;
-                else {
-                  $scope.atPage = $scope.prevPage;
-                };
-            });
-            $('body').addClass("portrait");
-          }
-          else {
-            $scope.$apply(function(){
-                $scope.prevPage = $scope.atPage;
-                $scope.atPage = $scope.LANDSCAPE;
-                //$("#landscapeModal").modal('show');
-            });
-            $('body').removeClass('portrait');
-          }
-        })
-        .trigger('orientationchange');
 
       }).
       error(function(data, status, headers, config) {
