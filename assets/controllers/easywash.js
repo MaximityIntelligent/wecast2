@@ -52,7 +52,7 @@ function($scope, $http){
           $scope.atPage = $scope.MAIN;
       });
       alert($scope.atPage);
-    //$('body').addClass("portrait");
+      $('body').addClass("portrait");
     }
     else {
       $scope.apply(function(){
@@ -60,7 +60,7 @@ function($scope, $http){
       });
 
       alert($scope.atPage);
-    //$('body').removeClass('portrait');
+      $('body').removeClass('portrait');
 
     }
   })
