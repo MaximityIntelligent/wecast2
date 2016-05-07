@@ -45,30 +45,7 @@ function($scope, $http){
   $scope.prizeRedeem = "";
   $scope.redeemErrMsg = "";
 
-  $scope.prevPage = "":
-  $(window)
-  .bind('orientationchange', function(){
 
-    if (window.orientation % 180 == 0){
-      $scope.$apply(function(){
-          if($scope.prevPage == "")
-            $scope.atPage = $scope.MAIN;
-          else {
-            $scope.atPage = $scope.prevPage;
-          };
-      });
-      $('body').addClass("portrait");
-    }
-    else {
-      $scope.$apply(function(){
-          $scope.prevPage = $scope.atPage;
-          $scope.atPage = $scope.LANDSCAPE;
-          //$("#landscapeModal").modal('show');
-      });
-      $('body').removeClass('portrait');
-    }
-  })
-  .trigger('orientationchange');
   $scope.init = function()
   {
 
@@ -80,7 +57,30 @@ function($scope, $http){
     //$("#veri-code-errModal").modal('show');
     //veri-credit-errModal
 
+    $scope.prevPage = "":
+    $(window)
+    .bind('orientationchange', function(){
 
+      if (window.orientation % 180 == 0){
+        $scope.$apply(function(){
+            if($scope.prevPage == "")
+              $scope.atPage = $scope.MAIN;
+            else {
+              $scope.atPage = $scope.prevPage;
+            };
+        });
+        $('body').addClass("portrait");
+      }
+      else {
+        $scope.$apply(function(){
+            $scope.prevPage = $scope.atPage;
+            $scope.atPage = $scope.LANDSCAPE;
+            //$("#landscapeModal").modal('show');
+        });
+        $('body').removeClass('portrait');
+      }
+    })
+    .trigger('orientationchange');
 
 //
 
@@ -140,7 +140,7 @@ function($scope, $http){
                   // 用户确认分享后执行的回调函数
                   alert("已分享");
 
-                  $('body').addClass("loaded");
+
 
               },
 
@@ -166,6 +166,7 @@ function($scope, $http){
       error(function(data, status, headers, config) {
         $('body').addClass("loaded");
       });
+      $('body').addClass("loaded");
 
 
   }
