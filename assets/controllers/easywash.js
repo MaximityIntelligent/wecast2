@@ -48,14 +48,14 @@ function($scope, $http){
   .bind('orientationchange', function(){
   alert(window.orientation);
     if (window.orientation % 180 == 0){
-      $scope.apply(function(){
+      $scope.$apply(function(){
           $scope.atPage = $scope.MAIN;
       });
       alert($scope.atPage);
       $('body').addClass("portrait");
     }
     else {
-      $scope.apply(function(){
+      $scope.$apply(function(){
           $scope.atPage = $scope.LANDSCAPE;
       });
 
