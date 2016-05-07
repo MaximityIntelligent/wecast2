@@ -45,23 +45,29 @@ function($scope, $http){
   $scope.prizeRedeem = "";
   $scope.redeemErrMsg = "";
   $scope.prevPage = "";
-  $(window).trigger('orientationchange');
+  //$(window).trigger('orientationchange');
   $(window)
   .bind('orientationchange', function(){
 
     if (window.orientation % 180 == 0){
       $scope.$apply(function(){
-          if($scope.prevPage == "")
-            $scope.atPage = $scope.MAIN;
-          else {
-            $scope.atPage = $scope.prevPage;
-          };
+          if( typeof $scope.landscape != 'undefined'){
+            window.location.href = '/easywash';
+          } else {
+            if($scope.prevPage == "")
+              $scope.atPage = $scope.MAIN;
+            else {
+              $scope.atPage = $scope.prevPage;
+            };
+          }
+
       });
       $('body').addClass("portrait");
     }
     else {
       alert('landscape');
       $scope.$apply(function(){
+          $scope.landscape = 'landscape-first';
           $scope.prevPage = $scope.atPage;
           $scope.atPage = $scope.LANDSCAPE;
           //$("#landscapeModal").modal('show');
@@ -70,7 +76,7 @@ function($scope, $http){
 
     }
   })
-  .trigger('orientationchange');
+
   $scope.init = function()
   {
     $(window).trigger('orientationchange');
