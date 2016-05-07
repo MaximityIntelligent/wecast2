@@ -45,7 +45,7 @@ function($scope, $http){
   $scope.prizeRedeem = "";
   $scope.redeemErrMsg = "";
 
-
+  $(window).trigger('orientationchange');
   $scope.init = function()
   {
 
@@ -78,8 +78,9 @@ function($scope, $http){
             $scope.prevPage = $scope.atPage;
             $scope.atPage = $scope.LANDSCAPE;
             //$("#landscapeModal").modal('show');
+            $('body').removeClass('portrait');
         });
-        $('body').removeClass('portrait');
+
       }
     })
     .trigger('orientationchange');
