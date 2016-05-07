@@ -45,7 +45,7 @@ function($scope, $http){
   $scope.prizeRedeem = "";
   $scope.redeemErrMsg = "";
   $scope.prevPage = "";
-  //$(window).trigger('orientationchange');
+  $(window).trigger('orientationchange');
   $(window)
   .bind('orientationchange', function(){
 
