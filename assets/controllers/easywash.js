@@ -45,7 +45,7 @@ function($scope, $http){
   $scope.prizeRedeem = "";
   $scope.redeemErrMsg = "";
   $scope.prevPage = "";
-  $(window).trigger('orientationchange');
+  //$(window).trigger('orientationchange');
   $(window)
   .bind('orientationchange', function(){
 
@@ -65,7 +65,7 @@ function($scope, $http){
       $('body').addClass("portrait");
     }
     else {
-      alert('landscape');
+      //alert('landscape');
       $scope.$apply(function(){
           $scope.landscape = 'landscape-first';
           $scope.prevPage = $scope.atPage;
@@ -79,7 +79,7 @@ function($scope, $http){
 
   $scope.init = function()
   {
-    $(window).trigger('orientationchange');
+
     var url = window.location.href;
     url = encodeURIComponent(url);
     //alert("url:"+url);
@@ -177,7 +177,7 @@ function($scope, $http){
         $('body').addClass("loaded");
       });
 
-
+      $(window).trigger('orientationchange');
 
   }
 
