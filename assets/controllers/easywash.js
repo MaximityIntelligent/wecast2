@@ -73,7 +73,7 @@ function($scope, $http){
   .trigger('orientationchange');
   $scope.init = function()
   {
-
+    $(window).trigger('orientationchange');
     var url = window.location.href;
     url = encodeURIComponent(url);
     //alert("url:"+url);
