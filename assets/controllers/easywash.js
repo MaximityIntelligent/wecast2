@@ -46,22 +46,20 @@ function($scope, $http){
   $scope.redeemErrMsg = "";
   $(window)
   .bind('orientationchange', function(){
-  alert(window.orientation);
+
     if (window.orientation % 180 == 0){
       $scope.$apply(function(){
-          $scope.atPage = $scope.MAIN;
+          $scope.atPage = $scope.prevPage;
       });
-      alert($scope.atPage);
       $('body').addClass("portrait");
     }
     else {
       $scope.$apply(function(){
+          $scope.prevPage = $scope.atPage;
           $scope.atPage = $scope.LANDSCAPE;
+          $("#landscapeModal").modal('show');
       });
-
-      alert($scope.atPage);
       $('body').removeClass('portrait');
-
     }
   })
   .trigger('orientationchange');

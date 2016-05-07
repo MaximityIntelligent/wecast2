@@ -18,8 +18,21 @@
   </head>
   <body data-ng-app="easywash" data-ng-controller="IndexCtrl" orient="portrait" >
     <div id="landscape-container" data-ng-show="LANDSCAPE==atPage" >
-      <div id="" style="color:white">
-        dfdsfdsfdsfdsdsfdsf
+      <div class="modal fade" id="landscapeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+
+            <div class="modal-body" style="text-align: center;">
+              <div style="position: relative;top: 20%">
+              <h4 class="modal-title" id="myModalLabel">泡泡不足，暫時無法兌換</h4>
+              </div>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+              <button type="button" class="btn" data-dismiss="modal">關閉</button>
+              <button type="button" class="btn" data-dismiss="modal" ng-click="atPage=SHARE">繼續儲泡</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div id="loader-wrapper">
