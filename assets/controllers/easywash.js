@@ -75,7 +75,7 @@ function($scope, $http){
       });
 
     }
-  })
+  }).trigger('orientationchange');
 
   $scope.init = function()
   {
