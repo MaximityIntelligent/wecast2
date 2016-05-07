@@ -73,6 +73,7 @@ function($scope, $http){
         $('body').addClass("portrait");
       }
       else {
+        alert('landscape');
         $scope.$apply(function(){
             $scope.prevPage = $scope.atPage;
             $scope.atPage = $scope.LANDSCAPE;
