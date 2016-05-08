@@ -77,7 +77,7 @@ function($scope, $http){
 
     }
   }).trigger('orientationchange');
-  
+
 
   $scope.init = function()
   {
@@ -152,6 +152,7 @@ function($scope, $http){
 
           });
           $('body').addClass('loaded');
+          $()
 
 
 
@@ -168,7 +169,7 @@ function($scope, $http){
         $('body').addClass("loaded");
       });
 
-      //$(window).trigger('orientationchange');
+      $(window).trigger('orientationchange');
 
   }
 
