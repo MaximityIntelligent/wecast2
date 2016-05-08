@@ -46,7 +46,7 @@ function($scope, $http){
   $scope.redeemErrMsg = "";
   $scope.prevPage = "";
   //$(window).trigger('orientationchange');
-  /*
+  
   $(window)
   .bind('orientationchange', function(){
 
@@ -84,7 +84,7 @@ function($scope, $http){
       requestFullScreen.bind(playerElement)();
     }
   }
-  */
+
   $scope.init = function()
   {
     var url = window.location.href;
