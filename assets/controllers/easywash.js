@@ -45,8 +45,8 @@ function($scope, $http){
   $scope.prizeRedeem = "";
   $scope.redeemErrMsg = "";
   $scope.prevPage = "";
-  //$(window).trigger('orientationchange');
-  
+  $(window).trigger('orientationchange');
+
   $(window)
   .bind('orientationchange', function(){
 
@@ -77,13 +77,7 @@ function($scope, $http){
 
     }
   }).trigger('orientationchange');
-  $scope.fullscreen = function(){
-    var playerElement = $("#easywash-video");
-    var requestFullScreen = playerElement.requestFullScreen || playerElement.mozRequestFullScreen || playerElement.webkitRequestFullScreen;
-    if (requestFullScreen) {
-      requestFullScreen.bind(playerElement)();
-    }
-  }
+  
 
   $scope.init = function()
   {
