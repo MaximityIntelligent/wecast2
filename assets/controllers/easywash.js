@@ -46,6 +46,7 @@ function($scope, $http){
   $scope.redeemErrMsg = "";
   $scope.prevPage = "";
   //$(window).trigger('orientationchange');
+  /*
   $(window)
   .bind('orientationchange', function(){
 
@@ -83,9 +84,9 @@ function($scope, $http){
       requestFullScreen.bind(playerElement)();
     }
   }
+  */
   $scope.init = function()
   {
-
     var url = window.location.href;
     url = encodeURIComponent(url);
     $http.get('/api/init_c?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad=easywash'
@@ -156,6 +157,7 @@ function($scope, $http){
               }
 
           });
+          $('body').addClass('loaded');
 
 
 
@@ -164,7 +166,7 @@ function($scope, $http){
           alert('fail'+JSON.stringify(res));
 
         });
-        $('body').addClass('loaded');
+
 
 
       }).
@@ -172,7 +174,7 @@ function($scope, $http){
         $('body').addClass("loaded");
       });
 
-      $(window).trigger('orientationchange');
+      //$(window).trigger('orientationchange');
 
   }
 

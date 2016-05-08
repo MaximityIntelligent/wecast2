@@ -392,7 +392,20 @@
 			</header>
     -->
 
+    <div id="map" style="display: none;width:100%;text-align: center;color:white">
+      <p>
+      <img src="/images/easywash/map.png" width="95%" style="margin: auto"><br>
+      </p>
+      <p><a href="#qingzhou-iframe" id="qingzhou-google-map">青州店</a><br>
+      <iframe id="qingzhou-iframe" src="http://www.baidu.com" style="display: none" width="90%"></iframe></p>
+      <p><a href="#heishahuan-iframe" id="heishahuan-google-map">黑沙环店</a><br></p>
+      <iframe id="heishahuan-iframe" src="http://www.baidu.com" style="display: none" width="90%"></iframe>
+      <br>
 
+
+      <div id="google-map-iframe-container" sytle="width:100%"></div>
+
+    </div>
 
     <div ng-init="init()" data-ng-hide="1">
     </div>
@@ -424,8 +437,8 @@
       </div>
       </a>
     </div>
-    <div class="container-fluid" id="container_e" >
-      <div id="container_e-inner" style="width=80%">
+    <div class="container" id="container_e" >
+      <div id="container_e-inner" >
       <center>
 
       <div id="event-1">
@@ -453,12 +466,15 @@
       </center>
       </div>
     </div>
-    <div class="container-fluid" id="container_share" data-ng-show="SHARE==atPage" ng-click="atPage=MAIN;" >
-
+    <div class="container-fluid" id="container_share" data-ng-show="SHARE==atPage" >
+      <div id="share-1" ng-click="atPage=MAIN"></div>
     </div>
     <div class="container-fluid" id="container_thankyou" data-ng-show="THANKYOU==atPage" >
       <div id="thankyou-1">
-        <a href="#top"><img name="iwant" src="/images/easywash/thankyou/iwant.png" ng-click="atPage=MAIN;"></a>
+        <a href="#top"><img name="iwant" src="/images/easywash/thankyou/iwant.gif" ng-click="atPage=MAIN;"></a>
+      </div>
+      <div id="qrcode" style="position: absolute;right: 0;bottom: 0;left: 0;">
+        <img src="/images/easywash/thankyou/qrcode.png" style="max-width:100%;max-height:20%;">
       </div>
     </div>
 
@@ -470,10 +486,7 @@
       </div>
       <div id="prize1-1" style="color: white">
         <font>
-          <b>
-            兌換泡泡<br>
-            現有泡泡 {{credit}}
-          </b>
+          {{credit}}
         </font>
       </div>
       <div id="prize1-2">
@@ -498,12 +511,7 @@
         </a>
       </div>
       <div id="prize2-1" style="color: white">
-        <font>
-          <b>
-            兌換泡泡<br>
-            現有泡泡 {{credit}}
-          </b>
-        </font>
+        <font>{{credit}}</font>
       </div>
       <div id="prize2-2">
         <center>
@@ -526,11 +534,10 @@
 
           <div class="modal-body" style="text-align: center;">
             <div style="position: relative;top: 20%">
-            <h4 class="modal-title" id="myModalLabel">泡泡不足，暫時無法兌換</h4>
+            <h4 class="modal-title" id="myModalLabel">泡泡唔夠喔，請繼續"些牙"比多D朋友一齊玩啦</h4>
             </div>
           </div>
           <div class="modal-footer" style="text-align: center">
-            <button type="button" class="btn" data-dismiss="modal">關閉</button>
             <button type="button" class="btn" data-dismiss="modal" ng-click="atPage=SHARE">繼續儲泡</button>
           </div>
         </div>
@@ -624,13 +631,13 @@
       </div>
 
       <div id="easywash-2" ng-click="clickCount('map')">
-        <center><a class="fancybox" href="/images/easywash/map.png"><img name="address" src="/images/easywash/about-easywash/address.png"></a></center>
+        <center><a class="fancybox" href="#map"><img name="address" src="/images/easywash/about-easywash/address.png"></a></center>
       </div>
       <div id="easywash-3" ng-click="clickCount('tel')">
         <center><a href="tel:85363539002"><img name="call" src="/images/easywash/about-easywash/call.png"></a></center>
       </div>
     </div>
-
+<!--href="/images/easywash/map.png"
     <a id="prize-redeem" class="fancybox" href="/images/easywash/verification/prize-redeem.png"></a>
     <!--
     <script src="js/classie.js"></script>
@@ -702,19 +709,26 @@
       $("#main-5").css("width", containerWidth*109/750);
 
 
-      var containerHeight_share = containerWidth*1206/750;
+      var containerHeight_share = containerWidth*1200/750;
       $("#container_share").css("width", containerWidth);
       $("#container_share").css("height", containerHeight_share);
+      $("#share-1").css("position", "absolute");
+      $("#share-1").css("top", containerHeight_share*1028/1200);
+      $("#share-1").css("left", containerWidth*331/750);
+      $("#share-1").css("width", containerWidth*90/750);
+      $("#share-1").css("height", containerWidth*90/750);
+      $("#share-1").css("border", "1px solid red");
+      $("#share-1").css("position", "absolute");
 
       var containerHeight_thankyou = containerWidth*1206/750;
       $("#container_thankyou").css("width", containerWidth);
       $("#container_thankyou").css("height", containerHeight_thankyou);
       $("#thankyou-1").css("position", "absolute");
-      $("#thankyou-1 img").css("width", containerWidth*391/750);
+      $("#thankyou-1 img").css("width", containerWidth*413/750);
 
       $("#thankyou-1").css("top", containerHeight_thankyou*382/1206);
       $("#thankyou-1").css("left", containerWidth*0.5);
-      $("#thankyou-1").css("margin-left", "-"+containerWidth*391/750*0.5+"px");
+      $("#thankyou-1").css("margin-left", "-"+containerWidth*413/750*0.5+"px");
 
       var containerHeight_easywash = containerWidth*1206/750;
       $("#container_easywash").css("width", containerWidth);
@@ -741,21 +755,21 @@
       $('img[name="address"]').css("width", containerWidth*340/750);
       $('img[name="call"]').css("width", containerWidth*340/750);
 
-      var containerWidth_e = containerWidth*0.8;
+      var containerWidth_e = containerWidth*0.75;
       var containerHeight_e = containerWidth_e*736/532;
       $("#container_e").css("width", containerWidth_e);
       $("#container_e").css("height", containerHeight_e);
       $("#container_e").css("display", "none");
-      $("#container_e").css("margin-right", "10%");
+      //$("#container_e").css("margin-right", "10%");
       $("#event-1").css("position", "absolute");
       $("#event-1").css("top", containerHeight_e*100/736);
       $("#event-1").css("width", "80%");
       $("#event-1").css("margin", "auto");
       $("#event-1").css("color", "white");
-      $("#event-1 p").css("margin-left", "5%");
+      //$("#event-1 p").css("margin-left", "5%");
 
       $("#event-1-content").css("height", containerHeight_e*0.7);
-      $("#event-1-content").css("overflow-x", "hidden");
+      //$("#event-1-content").css("overflow-x", "hidden");
       $("#event-1-content").css("overflow-y", "scroll");
       //$("#event-1").css("overflow", "hidden");
 
@@ -765,6 +779,22 @@
       var containerHeight_p1 = containerWidth*1206/750;
       $("#container_p1").css("width", containerWidth);
       $("#container_p1").css("height", containerHeight_p1);
+
+      $("#prize1-1").css("position", "absolute");
+      $("#prize1-1").css("top", containerHeight_p1*301/1206);
+      $("#prize1-1").css("left", containerWidth*612/750);
+      $("#prize1-1").css("color", "yellow");
+      //$("#prize1-1").css("width", containerHeight_p1*40/1206);
+      $("#prize1-1 font").css("font-size", containerHeight_p1*40/1206);
+
+      $("#prize1-1").css("margin-left", "-"+containerWidth*40/1206*0.5+"px");
+      $("#prize1-1").css("margin-top", "-"+containerHeight_p1*40/1206*0.5+"px");
+
+
+
+
+/*
+
       $("#prize1-1").css("position", "absolute");
       $("#prize1-1").css("top", containerHeight_p1*200.5/1206);
       $("#prize1-1").css("left", containerWidth*565.5/750);
@@ -773,7 +803,7 @@
       var prize11Width = $("#prize1-1").css("width");
       var prize11Height = $("#prize1-1").css("height");
       $("#prize1-1").css("margin-left", "-"+36*0.5+"px");
-      $("#prize1-1").css("margin-top", "-"+20*0.5+"px");
+      $("#prize1-1").css("margin-top", "-"+20*0.5+"px");*/
 
       $("#prize1-2").css("position", "absolute");
       $("#prize1-2").css("width", "100%");
@@ -782,6 +812,17 @@
       var containerHeight_p2 = containerWidth*1206/750;
       $("#container_p2").css("width", containerWidth);
       $("#container_p2").css("height", containerHeight_p2);
+
+      $("#prize2-1").css("position", "absolute");
+      $("#prize2-1").css("top", containerHeight_p2*301/1206);
+      $("#prize2-1").css("left", containerWidth*612/750);
+      $("#prize2-1").css("color", "yellow");
+      //$("#prize1-1").css("width", containerHeight_p1*40/1206);
+      $("#prize2-1 font").css("font-size", containerHeight_p2*40/1206);
+
+      $("#prize2-1").css("margin-left", "-"+containerWidth*40/1206*0.5+"px");
+      $("#prize2-1").css("margin-top", "-"+containerHeight_p2*40/1206*0.5+"px");
+      /*
       $("#prize2-1").css("position", "absolute");
       $("#prize2-1").css("top", containerHeight_p1*200.5/1206);
       $("#prize2-1").css("left", containerWidth*565.5/750);
@@ -790,7 +831,7 @@
       var prize11Width = $("#prize2-1").css("width");
       var prize11Height = $("#prize2-1").css("height");
       $("#prize2-1").css("margin-left", "-"+36*0.5+"px");
-      $("#prize2-1").css("margin-top", "-"+20*0.5+"px");
+      $("#prize2-1").css("margin-top", "-"+20*0.5+"px");*/
 
       $("#prize2-2").css("position", "absolute");
       $("#prize2-2").css("width", "100%");
@@ -812,6 +853,13 @@
         overlayShow: true,
         overlayOpacity: 1
     	});
+      $("#qingzhou-google-map").click(function(){
+        $("#qingzhou-iframe").css('display', "block");
+
+      });
+      $("#heishahuan-google-map").click(function(){
+        $("#heishahuan-iframe").css('display', "block");
+      });
 
 
       //window.onorientationchange = reorient;
