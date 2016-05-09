@@ -8,7 +8,8 @@
 }
 #container_share {
   background-image:url('/images/easywash/share/share-background.png');
-  background-repeat: no-repeat;;
+  background-repeat: no-repeat;
+  background-position: top right;
   background-size: 100% 100%;
   animation-name: share;
   animation-duration: 1s;
@@ -126,7 +127,7 @@
   width: 50%;
 }
 @keyframes share {
-    from {background-size:60%;}
+    from {background-size:10%;}
     to {background-size:100%;}
 }
 

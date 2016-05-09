@@ -278,6 +278,9 @@ function($scope, $http){
   $scope.resetVideo = function(){
     document.getElementById("easywash-video").src = "";
   }
+  $scope.setVideo = function(){
+    document.getElementById("easywash-video").src = "http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0";
+  }
 
   /*
   $scope.draw = function() {

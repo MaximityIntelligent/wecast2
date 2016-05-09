@@ -608,7 +608,7 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid" id="container_easywash" data-ng-show="ABOUT_EASYWASH==atPage">
+    <div class="container-fluid" id="container_easywash" data-ng-show="ABOUT_EASYWASH==atPage;setVideo();">
       <div class="close-btn">
         <a href="#top">
           <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;resetVideo()"/>
@@ -620,7 +620,7 @@
         </a>
       </div>
       <div id="easywash-1" ng-click="clickCount('video');fullscreen()">
-        <iframe id="easywash-video" class="video_iframe" style="z-index:1;" src="http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0" allowfullscreen="" frameborder="0" height="100%" width="100%">
+        <iframe id="easywash-video" class="video_iframe" style="z-index:1;" ng-src="http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0" allowfullscreen="" frameborder="0" height="100%" width="100%">
         </iframe>
       </div>
 
