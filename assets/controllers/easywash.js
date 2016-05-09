@@ -44,7 +44,7 @@ function($scope, $http){
   $scope.THANKYOU = "thankyou";
   $scope.LANDSCAPE = "landscape";
   $scope.atPage = (typeof QueryString.pg == 'undefined') ? $scope.MAIN: $scope.THANKYOU;
-  $scope.credit = 0;
+  //s$scope.credit = 0;
   $scope.map = false;
   $scope.prizeRedeem = "";
   $scope.redeemErrMsg = "";
