@@ -25,6 +25,10 @@ var QueryString = function () {
     return query_string;
 }();
 var code = QueryString.code;
+if(typeof QueryString.code == 'undefined'){
+  window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_base#wechat_redirect';
+  return;
+}
 var ad = QueryString.ad;
 var sharedBy = QueryString.sharedBy;
 
@@ -46,6 +50,7 @@ function($scope, $http){
   $scope.redeemErrMsg = "";
   $scope.prevPage = "";
   $(window).trigger('orientationchange');
+
 
   $(window)
   .bind('orientationchange', function(){
