@@ -611,7 +611,7 @@
     <div class="container-fluid" id="container_easywash" data-ng-show="ABOUT_EASYWASH==atPage">
       <div class="close-btn">
         <a href="#top">
-          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN"/>
+          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;resetVideo()"/>
         </a>
       </div>
       <div id="rules" ng-click="clickCount('rules')">
@@ -847,13 +847,7 @@
         overlayShow: true,
         overlayOpacity: 1
     	});
-      $("#qingzhou-google-map").click(function(){
-        $("#qingzhou-iframe").css('display', "block");
 
-      });
-      $("#heishahuan-google-map").click(function(){
-        $("#heishahuan-iframe").css('display', "block");
-      });
 
 
       //window.onorientationchange = reorient;

@@ -113,7 +113,6 @@ module.exports = {
             })
             console.log("102");
             User.sharedToUsers_c(userOne, adId, function(err, sharedToUsers){
-              console.log("105");
               var shareCount = sharedToUsers.length;
               var appAccessToken;
               var wait = true;
@@ -169,13 +168,8 @@ module.exports = {
         }
         User.sharedToUsers_c(userOne, "easywash", function(err, sharedToUsers){
           var credit = userOne.credit;
-          console.log("credit"+credit);
-
-          console.log("174");
           if(verificationCode==VERIFICATION_CODE){
-
             if(prize=="prize1"){
-              credit = 20;
               if(credit<18){
                 console.log("179");
                 res.status(500);
@@ -190,8 +184,6 @@ module.exports = {
                   return;
                 });
               }
-
-
             }else if(prize=="prize2"){
               if(credit<38){
                 res.status(500);
@@ -204,8 +196,6 @@ module.exports = {
                   return;
                 });
               }
-
-
             }else{
               res.end();
               return;

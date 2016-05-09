@@ -53,7 +53,12 @@ function($scope, $http){
     if (window.orientation % 180 == 0){
       $scope.$apply(function(){
           if( typeof $scope.landscape != 'undefined'){
-            window.location.href = '/easywash';
+            if(typeof QueryString.pg == 'undefined'){
+              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_base#wechat_redirect';
+            }
+            else {
+              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base#wechat_redirect';
+            }
           } else {
             if($scope.prevPage == "")
               if($scope.atPage!=$scope.THANKYOU)
@@ -96,7 +101,7 @@ function($scope, $http){
           $scope.shareCount = data.shareCount;
           $scope.credit = data.credit;
           wx.config({
-          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
           appId: 'wxab261de543656952', // 必填，公众号的唯一标识
           timestamp: $scope.timestamp, // 必填，生成签名的时间戳
           nonceStr: $scope.noncestr, // 必填，生成签名的随机串
@@ -152,9 +157,6 @@ function($scope, $http){
 
           });
           $('body').addClass('loaded');
-          $()
-
-
 
         });
         wx.error(function(res){
@@ -272,6 +274,9 @@ function($scope, $http){
       }).error(function(data,header,config,status){
 
       });
+  }
+  $scope.resetVideo = function(){
+    document.getElementById("easywash-video").src = "";
   }
 
   /*
