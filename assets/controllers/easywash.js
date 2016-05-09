@@ -121,6 +121,7 @@ function($scope, $http){
                 success: function() {
                     // 用户确认分享后执行的回调函数
                     //alert('已分享');
+                    alert("<h4>分享成功</h4> <br><h4>多謝您支持Easywash易洗智能洗車</h4>");
                 },
                 cancel: function() {
                     // 用户取消分享后执行的回调函数
@@ -140,13 +141,7 @@ function($scope, $http){
               imgUrl: 'http://wecast.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
 
               success: function () {
-
-                  // 用户确认分享后执行的回调函数
-                  alert("已分享");
-
-
-
-
+                  alert("<h4>分享成功</h4> <br><h4>多謝您支持Easywash易洗智能洗車</h4>");
               },
 
               cancel: function () {
