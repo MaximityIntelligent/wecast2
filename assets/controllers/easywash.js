@@ -71,7 +71,6 @@ function($scope, $http){
           $scope.landscape = 'landscape-first';
           $scope.prevPage = $scope.atPage;
           $scope.atPage = $scope.LANDSCAPE;
-          //$("#landscapeModal").modal('show');
           $('body').removeClass('portrait');
       });
 
