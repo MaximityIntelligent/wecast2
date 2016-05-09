@@ -56,7 +56,8 @@ function($scope, $http){
             window.location.href = '/easywash';
           } else {
             if($scope.prevPage == "")
-              $scope.atPage = $scope.MAIN;
+              if($scope.atPage!=$scope.THANKYOU)
+                $scope.atPage = $scope.MAIN;
             else {
               $scope.atPage = $scope.prevPage;
             };
