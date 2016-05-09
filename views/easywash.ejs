@@ -405,7 +405,7 @@
 
     <div class="container-fluid" id="main-container" data-ng-show="MAIN==atPage" >
       <div id="main-event-info">
-        <a href="#top"><img name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;clickCount('about_easywash_page');"></a>
+        <a href="#top"><img name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;initAboutEasywash();clickCount('about_easywash_page');"></a>
       </div>
       <div id="main-1">
         <a href="#top"><img class="img-responsive" src="/images/easywash/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_page')"></a>
@@ -608,7 +608,7 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid" id="container_easywash" data-ng-show="ABOUT_EASYWASH==atPage;setVideo();">
+    <div class="container-fluid" id="container_easywash" data-ng-show="ABOUT_EASYWASH==atPage">
       <div class="close-btn">
         <a href="#top">
           <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;resetVideo()"/>
