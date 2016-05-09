@@ -121,7 +121,7 @@ function($scope, $http){
                 success: function() {
                     // 用户确认分享后执行的回调函数
                     //alert('已分享');
-                    alert("<h4>分享成功</h4> <br><h4>多謝您支持Easywash易洗智能洗車</h4>");
+                    alert("\n分享成功\n多謝您支持Easywash易洗智能洗車");
                 },
                 cancel: function() {
                     // 用户取消分享后执行的回调函数
@@ -141,7 +141,7 @@ function($scope, $http){
               imgUrl: 'http://wecast.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
 
               success: function () {
-                  alert("<h4>分享成功</h4> <br><h4>多謝您支持Easywash易洗智能洗車</h4>");
+                  alert("\n分享成功</h4> <br><h4>多謝您支持Easywash易洗智能洗車</h4>");
               },
 
               cancel: function () {
@@ -271,7 +271,7 @@ function($scope, $http){
       });
   }
   $scope.resetVideo = function(){
-    document.getElementById("easywash-video").src = "";
+    document.getElementById("easywash-video").src = "http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0";
   }
   $scope.initAboutEasywash = function(){
     document.getElementById("easywash-video").src = "http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0";
