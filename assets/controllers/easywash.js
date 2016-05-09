@@ -53,19 +53,13 @@ function($scope, $http){
     if (window.orientation % 180 == 0){
       $scope.$apply(function(){
           if( typeof $scope.landscape != 'undefined'){
+
             if(typeof QueryString.pg == 'undefined'){
               window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_base#wechat_redirect';
             }
             else {
               window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base#wechat_redirect';
             }
-          } else {
-            if($scope.prevPage == "")
-              if($scope.atPage!=$scope.THANKYOU)
-                $scope.atPage = $scope.MAIN;
-            else {
-              $scope.atPage = $scope.prevPage;
-            };
           }
 
       });
@@ -75,7 +69,7 @@ function($scope, $http){
       //alert('landscape');
       $scope.$apply(function(){
           $scope.landscape = 'landscape-first';
-          $scope.prevPage = $scope.atPage;
+          //$scope.prevPage = $scope.atPage;
           $scope.atPage = $scope.LANDSCAPE;
           $('body').removeClass('portrait');
       });
@@ -121,7 +115,7 @@ function($scope, $http){
                 success: function() {
                     // 用户确认分享后执行的回调函数
                     //alert('已分享');
-                    alert("\n分享成功\n多謝您支持Easywash易洗智能洗車");
+
                 },
                 cancel: function() {
                     // 用户取消分享后执行的回调函数
@@ -141,7 +135,7 @@ function($scope, $http){
               imgUrl: 'http://wecast.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
 
               success: function () {
-                  alert("\n分享成功</h4> <br><h4>多謝您支持Easywash易洗智能洗車</h4>");
+
               },
 
               cancel: function () {
