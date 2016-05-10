@@ -25,7 +25,7 @@
 
             <div class="modal-body" style="text-align: center;">
               <div style="position: relative;top: 20%">
-                <p><h4 class="modal-title">溫馨提示</h4></p>
+                <h4 class="modal-title">溫馨提示</h4>
                 <br>
                 <h4 class="modal-title" id="myModalLabel">本遊戲需要手機螢幕於直向模式時操作</h4>
                 <br>
@@ -392,11 +392,12 @@
 			</header>
     -->
 
-    <div id="map" style="display: none;width:100%;text-align: center;color:white">
+    <div id="map" style="display: none;width:100%;text-align: center;color:white;overflow-y: scroll">
       <p>
       <img src="/images/easywash/map.png" width="95%" style="margin: auto"><br>
       </p>
-      <p><a href="https://www.google.com/maps/d/u/0/edit?hl=zh-TW&hl=zh-TW&authuser=0&authuser=0&mid=1f6-mO8B76h8qNMWl6EO7uH_Evdg"><h4>立即前往</h4></a>
+      <p>
+        <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1f6-mO8B76h8qNMWl6EO7uH_Evdg" width="640" height="480"></iframe>
       </p>
     </div>
 
@@ -526,7 +527,7 @@
         <div class="modal-content">
 
           <div class="modal-body" style="text-align: center;">
-            <div style="position: relative;top: 20%">
+            <div style="position: relative;top: 10%">
             <h4 class="modal-title" id="myModalLabel">泡泡唔夠喔</h4>
             <h4>請繼續"些牙"比多D朋友一齊玩啦</h4>
             </div>
@@ -543,7 +544,7 @@
         <div class="modal-content">
 
           <div class="modal-body" style="text-align: center">
-            <div style="position: relative;top: 20%">
+            <div style="position: relative;top: 10%">
             <h4 class="modal-title" id="myModalLabel">Sorry 領獎碼有誤</h4>
             </div>
           </div>
@@ -559,7 +560,7 @@
         <div class="modal-content">
 
           <div class="modal-body" style="text-align: center;">
-            <div style="position: relative;top: 20%">
+            <div style="position: relative;top: 10%">
             <h4 class="modal-title" id="myModalLabel">{{redeemErrMsg}}</h4>
             </div>
           </div>
@@ -575,7 +576,7 @@
         <div class="modal-content">
 
           <div class="modal-body" style="text-align: center;;">
-            <form class="form-inline" style="position: relative;top: 20%">
+            <form class="form-inline" style="position: relative;top: 10%">
               <h4>請交由工作人員輸入領獎碼</h4>
               <div class="form-group">
                 <input type="text" id="verification1" class="form-control">
@@ -593,7 +594,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-body" style="text-align: center">
-            <form class="form-inline" style="position: relative;top: 20%">
+            <form class="form-inline" style="position: relative;top: 10%">
               <h4>請交由工作人員輸入領獎碼</h4>
               <div class="form-group">
                 <input type="text" id="verification1" class="form-control">
@@ -619,7 +620,7 @@
           <img style="width:100%;height:100%;border:0" class="img-responsive" src="/images/easywash/about-easywash/rules.png">
         </a>
       </div>
-      <div id="easywash-1" ng-click="clickCount('video');fullscreen()">
+      <div id="easywash-1" ng-click="clickCount('video');">
         <iframe id="easywash-video" class="video_iframe" style="z-index:1;" ng-src="http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0" allowfullscreen="" frameborder="0" height="100%" width="100%">
         </iframe>
       </div>
@@ -631,8 +632,9 @@
         <center><a href="tel:85363539002"><img name="call" src="/images/easywash/about-easywash/call.png"></a></center>
       </div>
     </div>
-<!--href="/images/easywash/map.png"
     <a id="prize-redeem" class="fancybox" href="/images/easywash/verification/prize-redeem.png"></a>
+<!--href="/images/easywash/map.png"
+
     <!--
     <script src="js/classie.js"></script>
 		<script src="js/pathLoader.js"></script>
