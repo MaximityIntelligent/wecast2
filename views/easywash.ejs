@@ -483,16 +483,16 @@
           {{credit}}
         </font>
       </div>
-      <div id="prize1-2">
+      <div id="prize1-2" class="row">
         <center>
           <a href="#top">
-          <img name="continue-bubble" class="img-responsive" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('main_page')">
+          <img name="continue-bubble" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('main_page')">
           </a>
           <a href="#top">
-          <img name="redeem" class="img-responsive" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('redeem')" >
+          <img name="redeem" class="redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('redeem')" >
           </a>
           <a class="fancybox" href="#map">
-          <img name="go-wash" class="img-responsive" src="/images/easywash/prize/go-wash.png">
+          <img name="go-wash" src="/images/easywash/prize/go-wash.png">
           </a>
         </center>
       </div>
@@ -507,13 +507,13 @@
       <div id="prize2-1" style="color: white">
         <font>{{credit}}</font>
       </div>
-      <div id="prize2-2">
+      <div id="prize2-2" class="row">
         <center>
           <a href="#top">
-          <img name="continue-bubble" class="img-responsive" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('share_page')">
+          <img name="continue-bubble" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('share_page')">
           </a>
           <a href="#top">
-          <img name="redeem" class="img-responsive" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem')"> <!--//ng-click="redeem('2')">-->
+          <img name="redeem" class="img-responsive redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem')"> <!--//ng-click="redeem('2')">-->
           </a>
           <a class="fancybox" href="#map">
             <img name="go-wash" class="img-responsive" src="/images/easywash/prize/go-wash.png">
@@ -696,8 +696,7 @@
       $("#main-4 font").css("font-size", containerHeight*45/1320);
       var width = $("#main-4").css("width");
       var height = $("#main-4").css("height");
-      alert(width+ " " + height);
-      alert(containerHeight*45/1320*2*0.5+" ");
+      
       //$("#main-4").css("margin-left", "-"+width*0.5+"px");
       //$("#main-4").css("margin-top", "-"+height*0.5+"px");
       $("#main-4").css("margin-left", "-"+containerHeight*45/1320*2*0.5+"px");
@@ -788,7 +787,7 @@
       //$("#prize1-1").css("width", containerHeight_p1*40/1206);
       $("#prize1-1 font").css("font-size", containerHeight_p1*40/1206);
 
-      $("#prize1-1").css("margin-left", "-"+containerWidth*40/1206*0.5+"px");
+      $("#prize1-1").css("margin-left", "-"+containerHeight_p1*40/1206*0.7+"px");
       $("#prize1-1").css("margin-top", "-"+containerHeight_p1*40/1206*0.5+"px");
 
 
@@ -821,7 +820,7 @@
       //$("#prize1-1").css("width", containerHeight_p1*40/1206);
       $("#prize2-1 font").css("font-size", containerHeight_p2*40/1206);
 
-      $("#prize2-1").css("margin-left", "-"+containerWidth*40/1206*0.5+"px");
+      $("#prize2-1").css("margin-left", "-"+containerHeight_p2*40/1206*0.7+"px");
       $("#prize2-1").css("margin-top", "-"+containerHeight_p2*40/1206*0.5+"px");
       /*
       $("#prize2-1").css("position", "absolute");

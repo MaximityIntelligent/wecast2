@@ -42,21 +42,29 @@
   background-repeat: no-repeat;;
   background-size: 100% 100%;
 }
+
 #prize1-2 img, #prize2-2 img {
   display: inline
 }
 #prize1-2 a, #prize2-2 a {
   display: inline
 }
+/*
 #prize1-2 a + a, #prize2-2 a + a{
   margin-left: 15px;
 
 }
+/*
 #prize1-2 {
   margin-left: -15px;
 }
 #prize2-2 {
   margin-left: -15px;
+}
+*/
+.redeem {
+  margin-left: 7px;
+  margin-right: 7px;
 }
 #loader-wrapper {
     position: fixed;
