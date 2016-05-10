@@ -690,11 +690,16 @@
 
       $("#main-4").css("position", "absolute");
       $("#main-4").css("top", containerHeight*735/1320);
-      $("#main-4").css("left", containerWidth*604/750);
+      $("#main-4").css("left", containerWidth*616/750);
       $("#main-4").css("color", "black");
       //$("#main-4").css("width", containerHeight*45/1320);
       $("#main-4 font").css("font-size", containerHeight*45/1320);
-
+      var width = $("#main-4").css("width");
+      var height = $("#main-4").css("height");
+      alert(width+ " " + height);
+      alert(containerHeight*45/1320*2*0.5+" ");
+      //$("#main-4").css("margin-left", "-"+width*0.5+"px");
+      //$("#main-4").css("margin-top", "-"+height*0.5+"px");
       $("#main-4").css("margin-left", "-"+containerHeight*45/1320*2*0.5+"px");
       $("#main-4").css("margin-top", "-"+containerHeight*45/1320*0.5+4+"px");
 
