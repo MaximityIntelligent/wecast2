@@ -37,7 +37,7 @@ module.exports.connections = {
       password: 'wecastdev',
       database: 'wecast'
   },
-  /*
+
 
   mongo_local: {
       adapter: 'sails-mongo',
@@ -45,7 +45,7 @@ module.exports.connections = {
       port: 27017,
       database: 'wecast'
   },
-  */
+  
 
 
   /***************************************************************************

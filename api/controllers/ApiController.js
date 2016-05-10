@@ -9,7 +9,7 @@
  //var reqSync = require('request-sync');
  var sha1 = require('sha1');
  var User = require('../lib/User');
- var VERIFICATION_CODE=123456;
+ var VERIFICATION_CODE="ew001";
 module.exports = {
 	init: function(req, res){
 		var code = req.param("code");
