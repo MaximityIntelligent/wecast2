@@ -86,12 +86,13 @@ function($scope, $http){
 
   $scope.init = function()
   {
-    alert("init");
+    //alert("init");
     var url = window.location.href;
     url = encodeURIComponent(url);
     $http.get('/api/init_c?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad=easywash'
       ).
       success(function(data, status, headers, config) {
+          alert("success");
           //$scope.nickname = data.nickname;
           $scope.noncestr = data.noncestr;
           $scope.signature = data.signature;
@@ -167,6 +168,7 @@ function($scope, $http){
 
       }).
       error(function(data, status, headers, config) {
+        alert("error");
         window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_base#wechat_redirect';
         //$('body').addClass("loaded");
       });
