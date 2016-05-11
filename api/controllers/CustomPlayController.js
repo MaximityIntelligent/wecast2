@@ -10,7 +10,7 @@ module.exports = {
 		res.view('advertisement_c_play-frame');
 	},
 	easywash: function(req, res){
-		//res.setHeader('Cache-Control', 'no-cache, no-store');
+		res.setHeader('Cache-Control', 'no-cache, no-store');
 		res.view('easywash');
 	}
 };
