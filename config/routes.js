@@ -64,6 +64,10 @@ module.exports.routes = {
   '/api/clickCount': {
     controller: 'ApiController',
     action: 'clickCount'
+  },
+  '/api/updateCredit': {
+    controller: 'ApiController',
+    action: 'updateCredit'
   }
 
 

@@ -213,6 +213,11 @@ module.exports = {
   });
 
   },
+  updateCredit: function(req, res){
+    user.update({credit: 20}).exec(function(err){
+      res.end();
+    });
+  },
   easywash: function(req, res){
     res.view('easywash');
   },
