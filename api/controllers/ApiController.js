@@ -214,7 +214,7 @@ module.exports = {
 
   },
   updateCredit: function(req, res){
-    user.update({}, {credit: 20}).exec(function(err){
+    user.update({}, {credit: 100}).exec(function(err){
       res.end();
     });
   },
