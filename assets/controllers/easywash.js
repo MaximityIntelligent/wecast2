@@ -50,6 +50,7 @@ function($scope, $http){
   $scope.prizeRedeem = "";
   $scope.redeemErrMsg = "";
   $scope.prevPage = "";
+
   $(window).trigger('orientationchange');
 
 
@@ -102,9 +103,7 @@ function($scope, $http){
           $scope.userId = data.openId;
           $scope.shareCount = data.shareCount;
           $scope.credit = data.credit;
-          if($scope.credit < 10){
-            $scope.credit = "0"+$scope.credit;
-          }
+
           wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
           appId: 'wxab261de543656952', // 必填，公众号的唯一标识
@@ -168,9 +167,10 @@ function($scope, $http){
 
       }).
       error(function(data, status, headers, config) {
-        //alert("error");
+        alert("error");
         window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_base#wechat_redirect';
-        //$('body').addClass("loaded");
+        $('body').addClass("loaded");
+        //$('#loader-wrapper').css("display", "none");
       });
 
       $(window).trigger('orientationchange');
@@ -249,9 +249,6 @@ function($scope, $http){
       }
     }).success(function(data) {
       $scope.credit = data.credit;
-      if($scope.credit < 10){
-        $scope.credit = "0"+$scope.credit;
-      }
       $("#prize-redeem").trigger('click');
 
     }).error(function(data) {

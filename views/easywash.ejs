@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
   <head>
-    <title>Easy Wash Wecast Play</title>
+    <title>Easywash 儲泡泡送洗車</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
@@ -43,6 +43,7 @@
         <div class="cssload-cube cssload-c4"></div>
         <div class="cssload-cube cssload-c3"></div>
       </div>-->
+      
       <div class='spinner'>
         <i>
           <b></b>
@@ -397,7 +398,7 @@
       <img src="/images/easywash/map.png" width="95%" style="margin: auto"><br>
       </p>
       <p>
-        <a href="https://www.google.com/maps/d/u/0/embed?mid=1f6-mO8B76h8qNMWl6EO7uH_Evdg">立即前往</a>
+        <h3><a href="https://www.google.com/maps/d/u/0/embed?mid=1f6-mO8B76h8qNMWl6EO7uH_Evdg">立即前往</a></h3>
       </p>
     </div>
 
@@ -407,9 +408,13 @@
     <div class="container-fluid" id="main-container" data-ng-show="MAIN==atPage" >
       <div id="main-event-info">
         <a href="#top"><img name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;initAboutEasywash();clickCount('about_easywash_page');"></a>
+
       </div>
-      <div id="main-1">
+      <div id="main-1" style="text-align: center;color: yellow">
+        <div>
         <a href="#top"><img class="img-responsive" src="/images/easywash/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_page')"></a>
+        </div>
+        我的泡泡: {{credit}}
       </div>
       <div id="main-2">
         <a href="#top">
@@ -422,9 +427,6 @@
         <img class="img-responsive" src="/images/easywash/main/prize2.png" ng-show="showPrize2();" ng-click="atPage=PRIZE2;clickCount('prize2_page')">
         <img class="img-responsive" src="/images/easywash/main/prize2-dim.png" ng-show="showPrize2Dim();" ng-click="atPage=PRIZE2;clickCount('prize2_page')">
         </a>
-      </div>
-      <div id="main-4">
-        <font><b>{{credit}}</b></font>
       </div>
       <a href="#top">
       <div id="main-5" ng-click="atPage=THANKYOU;clickCount('thankyou_page')">
@@ -462,6 +464,8 @@
     </div>
     <div class="container-fluid" id="container_share" data-ng-show="SHARE==atPage" >
       <div id="share-1" ng-click="atPage=MAIN"></div>
+      <div id="share-2" class="row" style="position: absolute;top:0;width:100%;index-z:1000;">
+      </div>
     </div>
     <div class="container-fluid" id="container_thankyou" data-ng-show="THANKYOU==atPage" >
       <div id="thankyou-1">
@@ -579,7 +583,7 @@
             <form class="form-inline" style="position: relative;top: 10%">
               <h4>請交由工作人員輸入領獎碼</h4>
               <div class="form-group">
-                <input type="text" id="verification1" class="form-control">
+                <input type="password" id="verification1" class="form-control">
               </div>
             </form>
           </div>
@@ -597,7 +601,7 @@
             <form class="form-inline" style="position: relative;top: 10%">
               <h4>請交由工作人員輸入領獎碼</h4>
               <div class="form-group">
-                <input type="text" id="verification1" class="form-control">
+                <input type="password" id="verification1" class="form-control">
               </div>
             </form>
           </div>
@@ -664,43 +668,34 @@
 
       $("#main-container").css("width", containerWidth);
       $("#main-container").css("height", containerHeight);
-      $("#main-event-info").css("float", "right");
+      $("#main-event-info").addClass("row");
+      $("#main-event-info").css("position", "absolute");
+      $("#main-event-info").css("width", "100%");
+      $("#main-event-info").css("top", containerHeight*520/1320);
+      $("#main-event-info").css("text-align", "right");
       $('img[name="event-info"]').css("width", containerWidth*132/750);
 
       $("#main-1").css("position", "absolute");
-      $("#main-1").css("top", containerHeight*713/1320);
+      $("#main-1").css("top", containerHeight*620/1320);
       $("#main-1").css("left", containerWidth*375/750);
       $("#main-1 img").css("width", containerWidth*298/750);
       $("#main-1").css("margin-left", "-"+containerWidth*298/750*0.5+"px");
-      $("#main-2 img").css("width", containerWidth*155/750);
-      var imgHeight = containerWidth*155/750*1.122;//$("#main-2").css("height");
+
+      var imgHeight = containerWidth*155/750*1.1*1.122;//$("#main-2").css("height");
       //imgHeight = imgHeight.replace("px", "");
       $("#main-2").css("position", "absolute");
-      $("#main-2").css("top", containerHeight*1143/1320-imgHeight);
+      $("#main-2").css("top", containerHeight*1143/1320);
       $("#main-2").css("left", containerWidth*283/750);
+      $("#main-2 img").css("width", containerWidth*155/750*1.1);
+      $("#main-2").css("margin-top", "-"+imgHeight+"px");
       $("#main-2").css("margin-left", "-"+containerWidth*155/750*0.5+"px");
 
       $("#main-3").css("position", "absolute");
       $("#main-3").css("top", containerHeight*1143/1320);
       $("#main-3").css("left", containerWidth*481/750);
-      $("#main-3 img").css("width", containerWidth*155/750);
-
-      $("#main-3 img").css("margin-top", "-"+imgHeight+"px");
+      $("#main-3 img").css("width", containerWidth*155/750*1.1);
+      $("#main-3").css("margin-top", "-"+imgHeight+"px");
       $("#main-3").css("margin-left", "-"+containerWidth*155/750*0.5+"px");
-
-      $("#main-4").css("position", "absolute");
-      $("#main-4").css("top", containerHeight*735/1320);
-      $("#main-4").css("left", containerWidth*616/750);
-      $("#main-4").css("color", "black");
-      //$("#main-4").css("width", containerHeight*45/1320);
-      $("#main-4 font").css("font-size", containerHeight*45/1320);
-      var width = $("#main-4").css("width");
-      var height = $("#main-4").css("height");
-
-      //$("#main-4").css("margin-left", "-"+width*0.5+"px");
-      //$("#main-4").css("margin-top", "-"+height*0.5+"px");
-      $("#main-4").css("margin-left", "-"+containerHeight*45/1320*2*0.5+"px");
-      $("#main-4").css("margin-top", "-"+containerHeight*45/1320*0.5+4+"px");
 
       $("#main-5").css("position", "absolute");
       $("#main-5").css("top", containerHeight*576/1320);
@@ -709,7 +704,7 @@
       $("#main-5").css("width", containerWidth*109/750);
 
 
-      var containerHeight_share = containerWidth*1200/750;
+      var containerHeight_share = containerWidth*1206/750;
       $("#container_share").css("width", containerWidth);
       $("#container_share").css("height", containerHeight_share);
       $("#share-1").css("position", "absolute");
@@ -717,6 +712,8 @@
       $("#share-1").css("left", containerWidth*331/750);
       $("#share-1").css("width", containerWidth*90/750);
       $("#share-1").css("height", containerWidth*90/750);
+      $("#share-2").css("height", containerHeight_share*581/1206);
+      //$("#share-2").css("height", "581px");
       //$("#share-1").css("border", "1px solid red");
       $("#share-1").css("position", "absolute");
 
@@ -781,14 +778,14 @@
       $("#container_p1").css("height", containerHeight_p1);
 
       $("#prize1-1").css("position", "absolute");
-      $("#prize1-1").css("top", containerHeight_p1*301/1206);
-      $("#prize1-1").css("left", containerWidth*612/750);
+      $("#prize1-1").css("top", containerHeight_p1*240/1206);
+      $("#prize1-1").css("left", containerWidth*586/750);
       $("#prize1-1").css("color", "yellow");
       //$("#prize1-1").css("width", containerHeight_p1*40/1206);
       $("#prize1-1 font").css("font-size", containerHeight_p1*40/1206);
 
-      $("#prize1-1").css("margin-left", "-"+containerHeight_p1*40/1206*0.7+"px");
-      $("#prize1-1").css("margin-top", "-"+containerHeight_p1*40/1206*0.5+"px");
+      //$("#prize1-1").css("margin-left", "-"+containerHeight_p1*40/1206*0.7+"px");
+      //$("#prize1-1").css("margin-top", "-"+containerHeight_p1*40/1206*0.5+"px");
 
 
 
@@ -814,14 +811,14 @@
       $("#container_p2").css("height", containerHeight_p2);
 
       $("#prize2-1").css("position", "absolute");
-      $("#prize2-1").css("top", containerHeight_p2*301/1206);
-      $("#prize2-1").css("left", containerWidth*612/750);
+      $("#prize2-1").css("top", containerHeight_p2*240/1206);
+      $("#prize2-1").css("left", containerWidth*586/750);
       $("#prize2-1").css("color", "yellow");
       //$("#prize1-1").css("width", containerHeight_p1*40/1206);
       $("#prize2-1 font").css("font-size", containerHeight_p2*40/1206);
 
-      $("#prize2-1").css("margin-left", "-"+containerHeight_p2*40/1206*0.7+"px");
-      $("#prize2-1").css("margin-top", "-"+containerHeight_p2*40/1206*0.5+"px");
+      //$("#prize2-1").css("margin-left", "-"+containerHeight_p2*40/1206*0.7+"px");
+      //$("#prize2-1").css("margin-top", "-"+containerHeight_p2*40/1206*0.5+"px");
       /*
       $("#prize2-1").css("position", "absolute");
       $("#prize2-1").css("top", containerHeight_p1*200.5/1206);
