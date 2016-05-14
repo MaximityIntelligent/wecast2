@@ -135,7 +135,10 @@
 .modal-footer-2{
   background-color: yellow;
   color: black;
-  height: 50px;
+  height: 55px;
+}
+.modal-footer-2 .btn{
+  background-color: yellow;
 }
 .modal-footer .btn{
   background-color: yellow;
