@@ -129,9 +129,13 @@
 .modal-body{
     height: 200px;
 }
+.modal-body-sm{
+    height: 200px;
+}
 .modal-footer{
   background-color: yellow;
   color: black;
+  height: 50px;
 }
 .modal-footer .btn{
   background-color: yellow;
