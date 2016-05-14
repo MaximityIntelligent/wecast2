@@ -9,12 +9,6 @@
     <link rel="stylesheet" href="/styles/easywash.css">
     <!--<script type="text/javascript" src="http://fgnass.github.io/spin.js/spin.min.js"></script>-->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <!--
-  	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
-		<link rel="stylesheet" type="text/css" href="css/demo.css" />
-		<link rel="stylesheet" type="text/css" href="css/effect1.css" />
-    <script src="js/modernizr.custom.js"></script>
-  -->
   </head>
   <body data-ng-app="easywash" data-ng-controller="IndexCtrl" orient="portrait" >
     <div id="landscape-container" data-ng-show="LANDSCAPE==atPage" >
@@ -235,7 +229,7 @@
 
           <div class="modal-body" style="text-align: center;">
             <div style="position: relative;top: 10%">
-            <h4 class="modal-title" id="myModalLabel">泡泡唔夠喔</h4>
+            <h4>泡泡唔夠喔</h4>
             <h4>請繼續"些牙"比多D朋友一齊玩啦</h4>
             </div>
           </div>
@@ -252,7 +246,8 @@
 
           <div class="modal-body" style="text-align: center">
             <div style="position: relative;top: 10%">
-            <h4 class="modal-title" id="myModalLabel">Sorry 領獎碼有誤</h4>
+            <h4>Sorry領獎碼有誤</h4>
+            <h4>請交由Easywash工作人員輸入領獎碼</h4>
             </div>
           </div>
           <div class="modal-footer" style="text-align: center">
@@ -284,15 +279,15 @@
 
           <div class="modal-body" style="text-align: center;;">
             <form class="form-inline" style="position: relative;top: 10%">
-              <h4>請交由工作人員輸入領獎碼</h4>
+              <h4>恭喜您儲夠泡泡</h4>
+<h4>請交由Easywash工作人員輸入領獎碼</h4>
               <div class="form-group">
                 <input type="password" id="verification1" class="form-control">
               </div>
             </form>
           </div>
           <div class="modal-footer" style="text-align: center">
-            <button type="button" class="btn" data-dismiss="modal">關閉</button>
-            <button type="button" class="btn" data-dismiss="modal" ng-click="redeem_c('prize1');clickCount('redeem')">提交</button>
+            <button type="button" class="btn" data-dismiss="modal" ng-click="redeem_c('prize1');clickCount('redeem')"><h4>確&nbsp;認</h4></button>
           </div>
         </div>
       </div>
@@ -302,7 +297,8 @@
         <div class="modal-content">
           <div class="modal-body" style="text-align: center">
             <form class="form-inline" style="position: relative;top: 10%">
-              <h4>請交由工作人員輸入領獎碼</h4>
+              <h4>恭喜您儲夠泡泡</h4>
+<h4>請交由Easywash工作人員輸入領獎碼</h4>
               <div class="form-group">
                 <input type="password" id="verification2" class="form-control">
               </div>
@@ -310,8 +306,7 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="redeem_c('prize2');clickCount('redeem')">提交</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="redeem_c('prize2');clickCount('redeem')"><h4>確&nbsp;認</h4></button>
           </div>
         </div>
       </div>
@@ -379,7 +374,7 @@
       $('img[name="event-info"]').css("width", containerWidth*132/750);
 
       $("#main-1").css("position", "absolute");
-      $("#main-1").css("top", containerHeight*610/1320);
+      $("#main-1").css("top", containerHeight*600/1320);
       $("#main-1").css("left", containerWidth*375/750);
       $("#main-1 img").css("width", containerWidth*298/750);
       $("#main-1").css("margin-left", "-"+containerWidth*298/750*0.5+"px");
@@ -387,14 +382,14 @@
       var imgHeight = containerWidth*155/750*1.1*1.122;//$("#main-2").css("height");
       //imgHeight = imgHeight.replace("px", "");
       $("#main-2").css("position", "absolute");
-      $("#main-2").css("top", containerHeight*1143/1320);
+      $("#main-2").css("top", containerHeight*1120/1320);
       $("#main-2").css("left", containerWidth*283/750);
       $("#main-2 img").css("width", containerWidth*155/750*1.1);
       $("#main-2").css("margin-top", "-"+imgHeight+"px");
       $("#main-2").css("margin-left", "-"+containerWidth*155/750*1.1*0.5+"px");
 
       $("#main-3").css("position", "absolute");
-      $("#main-3").css("top", containerHeight*1143/1320);
+      $("#main-3").css("top", containerHeight*1120/1320);
       $("#main-3").css("left", containerWidth*481/750);
       $("#main-3 img").css("width", containerWidth*155/750*1.1);
       $("#main-3").css("margin-top", "-"+imgHeight+"px");
