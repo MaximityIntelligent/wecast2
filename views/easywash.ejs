@@ -159,8 +159,8 @@
       </center>
       </div>
     </div>
-    <div class="container-fluid" id="container_share" data-ng-show="SHARE==atPage" >
-      <div id="share-1" ng-click="atPage=MAIN"></div>
+    <div class="container-fluid" id="container_share" data-ng-show="SHARE==atPage" ng-click="atPage=MAIN">
+      <!--<div id="share-1" ng-click="atPage=MAIN"></div>-->
       <div id="share-2" class="row" style="position: absolute;top:0;width:100%;index-z:1000;">
       </div>
     </div>
@@ -223,18 +223,17 @@
       </div>
     </div>
 
-    <div class="modal fade" id="veri-credit-errModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade"  id="veri-credit-errModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-
-          <div class="modal-body-sm" style="text-align: center;">
+          <div class="modal-body" style="text-align: center;">
             <div style="position: relative;top: 10%">
             <h4>泡泡唔夠喔</h4>
             <h4>請繼續"些牙"比多D朋友一齊玩啦</h4>
             </div>
           </div>
           <div class="modal-footer-2" style="text-align: center">
-            <button type="button" class="btn" data-dismiss="modal" ng-click="atPage=SHARE">繼續儲泡</button>
+            <button type="button" class="btn" data-dismiss="modal" ng-click="atPage=SHARE"><h4>繼續儲泡</h4></button>
           </div>
         </div>
       </div>
@@ -244,15 +243,15 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
 
-          <div class="modal-body-sm" style="text-align: center">
+          <div class="modal-body" style="text-align: center">
             <div style="position: relative;top: 10%">
             <h4>Sorry領獎碼有誤</h4>
             <h4>請交由Easywash工作人員輸入領獎碼</h4>
-
+            <br>
             </div>
           </div>
           <div class="modal-footer-2" style="text-align: center">
-            <button type="button" class="btn" data-dismiss="modal">關閉</button>
+            <button type="button" class="btn" data-dismiss="modal"><h4>關&nbsp;閉</h4></button>
           </div>
         </div>
       </div>
@@ -297,7 +296,7 @@
     <div class="modal fade" id="redeem2Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <div class="modal-body" style="text-align: center">
+          <div class="modal-body" style="text-align: center;">
             <form class="form-inline" style="position: relative;top: 10%">
               <h4>恭喜您儲夠泡泡</h4>
               <h4>請交由Easywash工作人員輸入領獎碼</h4>
@@ -308,8 +307,7 @@
             </br><br>
             </form>
           </div>
-
-          <div class="modal-footer-2" style="text-align: center">
+          <div class="modal-footer-2" style="text-align: center;">
             <button type="button" class="btn" data-dismiss="modal" ng-click="redeem_c('prize2');clickCount('redeem')"><h4>確&nbsp;認</h4></button>
           </div>
         </div>
@@ -414,7 +412,7 @@
       $("#share-1").css("left", containerWidth*331/750);
       $("#share-1").css("width", containerWidth*90/750);
       $("#share-1").css("height", containerWidth*90/750);
-      $("#share-2").css("height", containerHeight_share*581/1206);
+      $("#share-2").css("height", containerHeight_share*612/1206);
       //$("#share-2").css("height", "581px");
       //$("#share-1").css("border", "1px solid red");
       $("#share-1").css("position", "absolute");

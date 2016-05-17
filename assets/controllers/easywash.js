@@ -177,6 +177,10 @@ function($scope, $http){
   }
 
   $scope.showRedeem = function(prize){
+
+    //$("#redeem2Modal").modal('show');
+    ///return;
+
     if(prize=="prize1"){
       $scope.prizeRedeem = "prize1";
       if($scope.credit<18){
