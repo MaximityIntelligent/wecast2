@@ -70,6 +70,7 @@ function($scope, $http){
 
       });
       $('body').addClass("portrait");
+
     }
     else {
       //alert('landscape');
@@ -77,6 +78,7 @@ function($scope, $http){
           $scope.landscape = 'landscape-first';
           $scope.atPage = $scope.LANDSCAPE;
           $('body').removeClass('portrait');
+          $('body').remove(".spinner");
       });
 
     }
