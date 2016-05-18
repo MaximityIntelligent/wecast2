@@ -14,5 +14,12 @@ module.exports = {
 			res.end();
 			return;
 		});
+	},
+	find: function(req, res){
+		//var action = req.param('action');
+		var dateTo = req.param('dateTo');
+		var dateFrom = req.param('dateFrom');
+
+
 	}
 };

@@ -284,7 +284,7 @@ function($scope, $http){
   }
   $scope.log = function(actionName){
     $http({
-      url:'log/log?action='+actionName+'&openId='+$scope.openId,
+      url:'log/log?action='+actionName+'&openId='+$scope.userId,
       method:'GET'
       }).success(function(data,header,config,status){
 
