@@ -68,6 +68,10 @@ module.exports.routes = {
   '/api/updateCredit': {
     controller: 'ApiController',
     action: 'updateCredit'
+  },
+  '/log/log': {
+    controller: 'LogController',
+    action: 'log'
   }
 
 

@@ -104,29 +104,29 @@
 
     <div class="container-fluid" id="main-container" data-ng-show="MAIN==atPage" >
       <div id="main-event-info">
-        <a href="#top"><img name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;initAboutEasywash();clickCount('about_easywash_page');"></a>
+        <a href="#top"><img name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;initAboutEasywash();clickCount('about_easywash_page');log('about_easywash_page')"></a>
 
       </div>
       <div id="main-1" style="text-align: center;color: yellow">
         <div>
-        <a href="#top"><img class="img-responsive" src="/images/easywash/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_page')"></a>
+        <a href="#top"><img class="img-responsive" src="/images/easywash/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_page');log('share_page')"></a>
         </div>
         我的泡泡: {{credit}}
       </div>
       <div id="main-2">
         <a href="#top">
-        <img class="img-responsive" src="/images/easywash/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1;clickCount('prize1_page')">
-        <img class="img-responsive" src="/images/easywash/main/prize1-dim.png" ng-show="showPrize1Dim();" ng-click="atPage=PRIZE1;clickCount('prize1_page')">
+        <img class="img-responsive" src="/images/easywash/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1;clickCount('prize1_page');log('prize1_page')">
+        <img class="img-responsive" src="/images/easywash/main/prize1-dim.png" ng-show="showPrize1Dim();" ng-click="atPage=PRIZE1;clickCount('prize1_page');log('prize1_page')">
         </a>
       </div>
       <div id="main-3">
         <a href="#top">
-        <img class="img-responsive" src="/images/easywash/main/prize2.png" ng-show="showPrize2();" ng-click="atPage=PRIZE2;clickCount('prize2_page')">
-        <img class="img-responsive" src="/images/easywash/main/prize2-dim.png" ng-show="showPrize2Dim();" ng-click="atPage=PRIZE2;clickCount('prize2_page')">
+        <img class="img-responsive" src="/images/easywash/main/prize2.png" ng-show="showPrize2();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
+        <img class="img-responsive" src="/images/easywash/main/prize2-dim.png" ng-show="showPrize2Dim();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
         </a>
       </div>
       <a href="#top">
-      <div id="main-5" ng-click="atPage=THANKYOU;clickCount('thankyou_page')">
+      <div id="main-5" ng-click="atPage=THANKYOU;clickCount('thankyou_page');log('thankyou_page')">
       </div>
       </a>
     </div>
@@ -187,10 +187,10 @@
       <div id="prize1-2" class="row">
         <center>
           <a href="#top">
-          <img name="continue-bubble" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('main_page')">
+          <img name="continue-bubble" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('main_page');log('main_page')">
           </a>
           <a href="#top">
-          <img name="redeem" class="redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('redeem')" >
+          <img name="redeem" class="redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('redeem');log('redeem')" >
           </a>
           <a class="fancybox" href="#map">
           <img name="go-wash" src="/images/easywash/prize/go-wash.png">
@@ -211,10 +211,10 @@
       <div id="prize2-2" class="row">
         <center>
           <a href="#top">
-          <img name="continue-bubble" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('share_page')">
+          <img name="continue-bubble" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('share_page');log('share_page')">
           </a>
           <a href="#top">
-          <img name="redeem" class="img-responsive redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem')"> <!--//ng-click="redeem('2')">-->
+          <img name="redeem" class="img-responsive redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')"> <!--//ng-click="redeem('2')">-->
           </a>
           <a class="fancybox" href="#map">
             <img name="go-wash" class="img-responsive" src="/images/easywash/prize/go-wash.png">
@@ -288,7 +288,7 @@
             </form>
           </div>
           <div class="modal-footer-2" style="text-align: center">
-            <button type="button" class="btn" data-dismiss="modal" ng-click="redeem_c('prize1');clickCount('redeem')"><h4>確&nbsp;認</h4></button>
+            <button type="button" class="btn" data-dismiss="modal" ng-click="redeem_c('prize1');clickCount('redeem');log('redeem')"><h4>確&nbsp;認</h4></button>
           </div>
         </div>
       </div>
@@ -304,11 +304,11 @@
               <div class="form-group">
                 <input type="password" id="verification2" class="form-control">
               </div>
-            
+
             </form>
           </div>
           <div class="modal-footer-2" style="text-align: center;">
-            <button type="button" class="btn" data-dismiss="modal" ng-click="redeem_c('prize2');clickCount('redeem')"><h4>確&nbsp;認</h4></button>
+            <button type="button" class="btn" data-dismiss="modal" ng-click="redeem_c('prize2');clickCount('redeem');log('redeem')"><h4>確&nbsp;認</h4></button>
           </div>
         </div>
       </div>
@@ -319,20 +319,20 @@
           <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;resetVideo()"/>
         </a>
       </div>
-      <div id="rules" ng-click="clickCount('rules')">
+      <div id="rules" ng-click="clickCount('rules');log('rules');">
         <a class="fancybox" href="#container_e">
           <img style="width:100%;height:100%;border:0" class="img-responsive" src="/images/easywash/about-easywash/rules.png">
         </a>
       </div>
-      <div id="easywash-1" ng-click="clickCount('video');">
+      <div id="easywash-1" ng-click="clickCount('video');log('video');">
         <iframe id="easywash-video" class="video_iframe" style="z-index:1;" ng-src="http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0" allowfullscreen="" frameborder="0" height="100%" width="100%">
         </iframe>
       </div>
 
-      <div id="easywash-2" ng-click="clickCount('map')">
+      <div id="easywash-2" ng-click="clickCount('map');log('map')">
         <center><a class="fancybox" href="#map"><img name="address" src="/images/easywash/about-easywash/address.png"></a></center>
       </div>
-      <div id="easywash-3" ng-click="clickCount('tel')">
+      <div id="easywash-3" ng-click="clickCount('tel');log('tel')">
         <center><a href="tel:85363539002"><img name="call" src="/images/easywash/about-easywash/call.png"></a></center>
       </div>
     </div>

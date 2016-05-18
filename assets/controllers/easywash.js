@@ -50,7 +50,7 @@ function($scope, $http){
   $scope.prizeRedeem = "";
   $scope.redeemErrMsg = "";
   $scope.prevPage = "";
-
+  /*
   $(window).trigger('orientationchange');
 
 
@@ -75,14 +75,13 @@ function($scope, $http){
       //alert('landscape');
       $scope.$apply(function(){
           $scope.landscape = 'landscape-first';
-          //$scope.prevPage = $scope.atPage;
           $scope.atPage = $scope.LANDSCAPE;
           $('body').removeClass('portrait');
       });
 
     }
   }).trigger('orientationchange');
-
+*/
 
   $scope.init = function()
   {
@@ -167,7 +166,7 @@ function($scope, $http){
       }).
       error(function(data, status, headers, config) {
         //alert("error");
-        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_base#wechat_redirect';
+        //window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_base#wechat_redirect';
         $('body').addClass("loaded");
         //$('#loader-wrapper').css("display", "none");
       });
@@ -282,6 +281,15 @@ function($scope, $http){
       }).error(function(data,header,config,status){
 
       });
+  }
+  $scope.log = function(actionName){
+    $http({
+      url:'log/log?action='+actionName+'&openId='+$scope.openId,
+      method:'GET'
+      }).success(function(data,header,config,status){
+
+      }).error(function(data,header,config,status){
+    });
   }
   $scope.resetVideo = function(){
     document.getElementById("easywash-video").src = "http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0";
