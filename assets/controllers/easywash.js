@@ -75,9 +75,12 @@ function($scope, $http){
     else {
       //alert('landscape');
       $scope.$apply(function(){
+          $(".spinner").remove();
+          $('body').remove(".spinner");
           $scope.landscape = 'landscape-first';
           $scope.atPage = $scope.LANDSCAPE;
           $('body').removeClass('portrait');
+          $(".spinner").remove();
           $('body').remove(".spinner");
       });
 

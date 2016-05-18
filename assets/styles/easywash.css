@@ -196,7 +196,9 @@
     from {background-size:10%;}
     to {background-size:100%;}
 }
-
+.yellow {
+  color: yellow;
+}
 
 /*
 .spinner {
