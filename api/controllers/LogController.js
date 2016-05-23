@@ -10,11 +10,12 @@ module.exports = {
 		var action = req.param('action');
 		var openId = req.param('openId');
 		var date = new Date();
-		log.create({action: action, openId: openId, date: new Date()}).exec(function(){
+		log.create({action: action, openId: openId, date: new Date()}).exec(function(err, results){
+			//res.json(results);
 			res.end();
 			return;
 		});
-	},
+	}/*
 	find: function(req, res){
 		var dateToStr = req.param('dateTo');
 		var dateFromStr = req.param('dateFrom');
@@ -27,5 +28,5 @@ module.exports = {
 
 
 
-	}
+	}*/
 };
