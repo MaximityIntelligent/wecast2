@@ -261,7 +261,7 @@ function($scope, $http){
       $scope.credit = data.credit;
       var prize = data.prize;
       $("#prize-redeem").trigger('click');
-      log('redeem_'+prize);
+      $scope.log('redeem_'+prize);
 
 
     }).error(function(data) {
