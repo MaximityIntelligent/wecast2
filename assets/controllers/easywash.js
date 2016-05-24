@@ -128,7 +128,7 @@ function($scope, $http){
                 success: function() {
                     // 用户确认分享后执行的回调函数
                     //alert('已分享');
-                    log('share_timeline');
+                    $scope.log('share_timeline');
 
                 },
                 cancel: function() {
@@ -149,7 +149,7 @@ function($scope, $http){
               imgUrl: 'http://wecast.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
 
               success: function () {
-                log('share_friend');
+                $scope.log('share_friend');
               },
 
               cancel: function () {
