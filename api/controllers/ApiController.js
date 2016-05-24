@@ -102,8 +102,6 @@ module.exports = {
             credit = 0;
           }
           redeem_c.findOne({user: openId, advertisement: 'easywash'}).exec(function(err, redeemOne){
-            console.log("151");
-            console.log("94");
             User.shareAd_c(sharedBy, openId, adId, function(err){
               if(err){
                 res.status(500);
@@ -111,7 +109,6 @@ module.exports = {
                 return;
               }
             })
-            console.log("102");
             User.sharedToUsers_c(userOne, adId, function(err, sharedToUsers){
               var shareCount = sharedToUsers.length;
               var appAccessToken;
@@ -171,16 +168,13 @@ module.exports = {
           if(verificationCode==VERIFICATION_CODE){
             if(prize=="prize1"){
               if(credit<18){
-                console.log("179");
                 res.status(500);
                 res.end();
                 return;
               }else{
-                console.log("183");
-                console.log("172");
                 userOne.credit = userOne.credit - 18;
                 userOne.save(function(){
-                  res.json({credit: userOne.credit});
+                  res.json({credit: userOne.credit, prize: prize});
                   return;
                 });
               }
@@ -192,7 +186,7 @@ module.exports = {
               }else{
                 userOne.credit = userOne.credit - 38;
                 userOne.save(function(){
-                  res.json({credit: userOne.credit});
+                  res.json({credit: userOne.credit, prize: prize});
                   return;
                 });
               }

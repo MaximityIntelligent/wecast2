@@ -128,6 +128,7 @@ function($scope, $http){
                 success: function() {
                     // 用户确认分享后执行的回调函数
                     //alert('已分享');
+                    log('share_timeline');
 
                 },
                 cancel: function() {
@@ -148,7 +149,7 @@ function($scope, $http){
               imgUrl: 'http://wecast.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
 
               success: function () {
-
+                log('share_friend');
               },
 
               cancel: function () {
@@ -258,7 +259,10 @@ function($scope, $http){
       }
     }).success(function(data) {
       $scope.credit = data.credit;
+      var prize = data.prize;
       $("#prize-redeem").trigger('click');
+      log('redeem_'+prize);
+
 
     }).error(function(data) {
       //$scope.redeemErrMsg = "兑换失败";

@@ -95,7 +95,7 @@
       <img src="/images/easywash/map.png" width="95%" style="margin: auto"><br>
       </p>
       <p>
-        <h3><a href="https://www.google.com/maps/d/u/0/embed?mid=1f6-mO8B76h8qNMWl6EO7uH_Evdg">立即前往</a></h3>
+        <h3><a href="https://www.google.com/maps/d/u/0/embed?mid=1f6-mO8B76h8qNMWl6EO7uH_Evdg" ng-click="log('google_map')">立即前往</a></h3>
       </p>
     </div>
 
@@ -104,12 +104,12 @@
 
     <div class="container-fluid" id="main-container" data-ng-show="MAIN==atPage" >
       <div id="main-event-info">
-        <a href="#top"><img name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;initAboutEasywash();clickCount('about_easywash_page');log('about_easywash_page')"></a>
+        <a href="#top"><img name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;initAboutEasywash();clickCount('about_easywash');log('about_easywash')"></a>
 
       </div>
       <div id="main-1" style="text-align: center;color: yellow">
         <div>
-        <a href="#top"><img class="img-responsive" src="/images/easywash/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_page');log('share_page')"></a>
+        <a href="#top"><img class="img-responsive" src="/images/easywash/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_button');log('share_button')"></a>
         </div>
         我的泡泡: {{credit}}
       </div>
@@ -159,7 +159,7 @@
       </center>
       </div>
     </div>
-    <div class="container-fluid" id="container_share" data-ng-show="SHARE==atPage" ng-click="atPage=MAIN">
+    <div class="container-fluid" id="container_share" data-ng-show="SHARE==atPage" ng-click="atPage=MAIN;">
       <!--<div id="share-1" ng-click="atPage=MAIN"></div>-->
       <div id="share-2" class="row" style="position: absolute;top:0;width:100%;index-z:1000;">
       </div>
@@ -176,7 +176,7 @@
     <div class="container-fluid" id="container_p1" data-ng-show="PRIZE1==atPage" >
       <div class="close-btn">
         <a href="#top">
-          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;">
+          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('prize1_return')">
         </a>
       </div>
       <div id="prize1-1" style="color: white">
@@ -187,13 +187,13 @@
       <div id="prize1-2" class="row">
         <center>
           <a href="#top">
-          <img name="continue-bubble" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('main_page');log('main_page')">
+          <img name="continue-bubble" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('continue_collect');log('continue_collect')">
           </a>
           <a href="#top">
           <img name="redeem" class="redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('redeem');log('redeem')" >
           </a>
           <a class="fancybox" href="#map">
-          <img name="go-wash" src="/images/easywash/prize/go-wash.png">
+          <img name="go-wash" src="/images/easywash/prize/go-wash.png" ng-click="log('go_wash')">
           </a>
         </center>
       </div>
@@ -202,7 +202,7 @@
     <div class="container-fluid" id="container_p2" data-ng-show="PRIZE2==atPage" >
       <div class="close-btn">
         <a href="#top">
-          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;">
+          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('prize2_return')">
         </a>
       </div>
       <div id="prize2-1" style="color: white">
@@ -211,13 +211,13 @@
       <div id="prize2-2" class="row">
         <center>
           <a href="#top">
-          <img name="continue-bubble" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('share_page');log('share_page')">
+          <img name="continue-bubble" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('continue_collect');log('continue_collect')">
           </a>
           <a href="#top">
           <img name="redeem" class="img-responsive redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')"> <!--//ng-click="redeem('2')">-->
           </a>
           <a class="fancybox" href="#map">
-            <img name="go-wash" class="img-responsive" src="/images/easywash/prize/go-wash.png">
+            <img name="go-wash" class="img-responsive" src="/images/easywash/prize/go-wash.png" ng-click="log('go_wash')">
           </a>
         </center>
       </div>
@@ -316,7 +316,7 @@
     <div class="container-fluid" id="container_easywash" data-ng-show="ABOUT_EASYWASH==atPage">
       <div class="close-btn">
         <a href="#top">
-          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;resetVideo()"/>
+          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;resetVideo();log('about_easywash_return')"/>
         </a>
       </div>
       <div id="rules" ng-click="clickCount('rules');log('rules');">
@@ -329,7 +329,7 @@
         </iframe>
       </div>
 
-      <div id="easywash-2" ng-click="clickCount('map');log('map')">
+      <div id="easywash-2" ng-click="clickCount('map');log('address')">
         <center><a class="fancybox" href="#map"><img name="address" src="/images/easywash/about-easywash/address.png"></a></center>
       </div>
       <div id="easywash-3" ng-click="clickCount('tel');log('tel')">
