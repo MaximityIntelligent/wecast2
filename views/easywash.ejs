@@ -126,7 +126,7 @@
         </a>
       </div>
       <a href="#top">
-      <div id="main-5" ng-click="atPage=THANKYOU;log('thankyou_page')">
+      <div id="main-5" ng-click="atPage=THANKYOU;">
       </div>
       </a>
     </div>
@@ -164,7 +164,7 @@
       <div id="share-2" class="row" style="position: absolute;top:0;width:100%;index-z:1000;">
       </div>
     </div>
-    <div class="container-fluid" id="container_thankyou" data-ng-show="THANKYOU==atPage" >
+    <div class="container-fluid" id="container_thankyou" data-ng-show="THANKYOU==atPage" ng-click="log('thankyou_page');" >
       <div id="thankyou-1">
         <a href="#top"><img name="iwant" src="/images/easywash/thankyou/iwant.gif" ng-click="atPage=MAIN;"></a>
       </div>
