@@ -109,7 +109,7 @@ function($scope, $http){
 
           wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: 'wxab261de543656952', // 必填，公众号的唯一标识
+          appId: 'wx5b57ddac4e2e1e88', // 必填，公众号的唯一标识
           timestamp: $scope.timestamp, // 必填，生成签名的时间戳
           nonceStr: $scope.noncestr, // 必填，生成签名的随机串
           signature: $scope.signature,// 必填，签名，见附录1
@@ -180,7 +180,7 @@ function($scope, $http){
         //$('#loader-wrapper').css("display", "none");
       });
 
-      //$(window).trigger('orientationchange');
+      $(window).trigger('orientationchange');
 
   }
   $scope.shareSuccess = function(){

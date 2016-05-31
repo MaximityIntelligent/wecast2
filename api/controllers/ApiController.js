@@ -83,8 +83,8 @@ module.exports = {
     var retResult = {};
     var resp;
     var result;
-    var appId = "wxab261de543656952";
-    var appSecret = "389f230302fe9c047ec56c39889b8843";
+    //var appId = "wxab261de543656952";
+    //var appSecret = "389f230302fe9c047ec56c39889b8843";
     resp = request('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx5b57ddac4e2e1e88&secret=e73e71f132807e7827849ca0ebf739e6&code='+code+'&grant_type=authorization_code');
         console.log("85");
         result = JSON.parse(resp.getBody());
