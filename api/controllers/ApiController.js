@@ -43,7 +43,7 @@ module.exports = {
           var appAccessToken;
           var wait = true;
           if(true){
-            var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843');
+            var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx5b57ddac4e2e1e88&secret=e73e71f132807e7827849ca0ebf739e6');
             result = JSON.parse(resp.getBody());
             appAccessToken = result.access_token;
           }else{
