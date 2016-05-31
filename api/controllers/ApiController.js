@@ -12,87 +12,21 @@
  var VERIFICATION_CODE="ew001";
 
 module.exports = {
-	init: function(req, res){
-		var code = req.param("code");
+	init_c: function(req, res){
+    var code = req.param("code");
     var sharedBy = req.param("sharedBy");
     var adId = req.param("ad");
     var url = req.param("url");
-    console.log("code:"+code+" sharedBy:"+sharedBy+" ad:"+adId+"\n");
-    var retResult = {};
-    var resp;
-    var result;
-
-    resp = request('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&grant_type=authorization_code');
-        result = JSON.parse(resp.getBody());
-        console.log("openId: "+result.openid);
-        var accessToken = result.access_token;
-        var openId = result.openid;
-        User.create(openId, function(err, userOne){
-          if(err){
-            res.status(500);
-            res.end();
-            return;
-          }
-          User.shareAd(sharedBy, openId, adId, function(err){
-            if(err){
-              res.status(500);
-              res.end();
-              return;
-            }
-          })
-          var appAccessToken;
-          var wait = true;
-          if(true){
-            var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx5b57ddac4e2e1e88&secret=e73e71f132807e7827849ca0ebf739e6');
-            result = JSON.parse(resp.getBody());
-            appAccessToken = result.access_token;
-          }else{
-            appAccessToken = req.session.appAccessToken;
-          }
-          req.session.appAccessToken = appAccessToken;
-          resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+appAccessToken+'&type=jsapi');
-            result = JSON.parse(resp.getBody());
-            appAccessToken = result.access_token;
-            req.session.appAccessToken = appAccessToken;
-            //console.log('ticket: '+resp.body);
-            var jsapiTicket = result.ticket;
-            var timestamp = Math.floor(Date.now() / 1000);
-            var noncestr = "Wm3WZYTPz0wzccnW";
-            //console.log('url: '+url);
-            var string1 = "jsapi_ticket="+jsapiTicket+"&noncestr="+noncestr+"&timestamp="+timestamp+"&url="+url;
-            var signature = sha1(string1);
-            retResult.accessToken = accessToken;
-            retResult.openId = openId;
-            retResult.drawChance = userOne.drawChance;
-            retResult.signature = signature;
-            retResult.timestamp = timestamp;
-            retResult.noncestr = noncestr;
-            retResult.ticket = jsapiTicket;
-            retResult.prizeRedeem = "";
-            res.json(retResult);
-            return;
-        });
-	},
-  init_c: function(req, res){
-    console.log("74")
-		var code = req.param("code");
-    var sharedBy = req.param("sharedBy");
-    var adId = req.param("ad");
-    var url = req.param("url");
-    console.log("code:"+code+" sharedBy:"+sharedBy+" ad:"+adId+"\n");
     var retResult = {};
     var resp;
     var result;
     //var appId = "wxab261de543656952";
     //var appSecret = "389f230302fe9c047ec56c39889b8843";
     resp = request('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx5b57ddac4e2e1e88&secret=e73e71f132807e7827849ca0ebf739e6&code='+code+'&grant_type=authorization_code');
-        console.log("85");
         result = JSON.parse(resp.getBody());
-        console.log("86")
         //console.log("openId: "+result.openid);
         var accessToken = result.access_token;
         var openId = result.openid;
-        console.log(openId);
 
         User.create(openId, function(err, userOne){
           if(err){
@@ -236,6 +170,16 @@ module.exports = {
 			}
 
 		});
-	}
+	},
+  initialization: function(req, res){
+    log.destroy().exec();
+    redeem_c.destroy().exec();
+    share_c.destroy().exec();
+    user.destroy().exec(function(){
+      res.end();
+      return;
+    });
+
+  }
 
 };
