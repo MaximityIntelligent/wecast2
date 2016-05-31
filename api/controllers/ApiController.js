@@ -172,9 +172,9 @@ module.exports = {
 		});
 	},
   initialization: function(req, res){
-    log.destroy().exec();
-    redeem_c.destroy().exec();
-    share_c.destroy().exec();
+    log.destroy().exec(function(){});
+    redeem_c.destroy().exec(function(){});
+    share_c.destroy().exec(function(){});
     user.destroy().exec(function(){
       res.end();
       return;
