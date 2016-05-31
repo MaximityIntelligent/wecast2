@@ -128,7 +128,9 @@ function($scope, $http){
                 success: function() {
                     // 用户确认分享后执行的回调函数
                     //alert('已分享');
-                    $scope.log('share_timeline');
+                    $("#share-success").trigger('click');
+                    //$scope.log('share_timeline');
+
 
                 },
                 cancel: function() {
@@ -149,7 +151,8 @@ function($scope, $http){
               imgUrl: 'http://wecast.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
 
               success: function () {
-                $scope.log('share_friend');
+                //$scope.log('share_friend');
+                $("#share-success").trigger('click');
               },
 
               cancel: function () {
@@ -177,15 +180,17 @@ function($scope, $http){
         //$('#loader-wrapper').css("display", "none");
       });
 
-      $(window).trigger('orientationchange');
+      //$(window).trigger('orientationchange');
 
   }
-
+  $scope.shareSuccess = function(){
+    $scope.atPage=$scope.MAIN;$.fancybox.close();$.fn.fancybox.close();
+  }
   $scope.showRedeem = function(prize){
 
     //$("#redeem2Modal").modal('show');
     ///return;
-
+    
     if(prize=="prize1"){
       $scope.prizeRedeem = "prize1";
       if($scope.credit<18){
