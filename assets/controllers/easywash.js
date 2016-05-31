@@ -93,7 +93,7 @@ function($scope, $http){
     //alert("init");
     var url = window.location.href;
     url = encodeURIComponent(url);
-    $http.get('/api/init_c?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad=easywash'
+    $http.get('/api/init_c?appid=wx5b57ddac4e2e1e88&secret=e73e71f132807e7827849ca0ebf739e6&code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad=easywash'
       ).
       success(function(data, status, headers, config) {
           //alert("success");
@@ -190,7 +190,7 @@ function($scope, $http){
 
     //$("#redeem2Modal").modal('show');
     ///return;
-    
+
     if(prize=="prize1"){
       $scope.prizeRedeem = "prize1";
       if($scope.credit<18){
