@@ -24,10 +24,8 @@ module.exports = {
     //var appSecret = "389f230302fe9c047ec56c39889b8843";
     resp = request('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx5b57ddac4e2e1e88&secret=e73e71f132807e7827849ca0ebf739e6&code='+code+'&grant_type=authorization_code');
         result = JSON.parse(resp.getBody());
-        //console.log("openId: "+result.openid);
         var accessToken = result.access_token;
         var openId = result.openid;
-
         User.create(openId, function(err, userOne){
           if(err){
             res.status(500);
@@ -63,11 +61,9 @@ module.exports = {
                 result = JSON.parse(resp.getBody());
                 appAccessToken = result.access_token;
                 req.session.appAccessToken = appAccessToken;
-                //console.log('ticket: '+resp.body);
                 var jsapiTicket = result.ticket;
                 var timestamp = Math.floor(Date.now() / 1000);
                 var noncestr = "Wm3WZYTPz0wzccnW";
-                //console.log('url: '+url);
                 var string1 = "jsapi_ticket="+jsapiTicket+"&noncestr="+noncestr+"&timestamp="+timestamp+"&url="+url;
                 var signature = sha1(string1);
                 retResult.accessToken = accessToken;
@@ -80,7 +76,6 @@ module.exports = {
                 retResult.ticket = jsapiTicket;
                 retResult.credit = userOne.credit;
                 res.json(retResult);
-                console.log("150end");
                 return;
             });
           });
@@ -93,7 +88,6 @@ module.exports = {
     var userOpenId = req.param("user");
     var prize = req.param("prize");
     redeem_c.findOne({user: userOpenId, advertisement: 'easywash'}).exec(function(err, redeemOne){
-      console.log("151");
       user.findOne({openId: userOpenId}).exec(function(err, userOne){
         if(!userOne){
           res.status(500);
@@ -123,8 +117,8 @@ module.exports = {
               }else{
                 userOne.credit = userOne.credit - 38;
                 userOne.save(function(){
-                  res.json({credit: userOne.credit, prize: prize});
-                  return;
+                res.json({credit: userOne.credit, prize: prize});
+                return;
                 });
               }
             }else{

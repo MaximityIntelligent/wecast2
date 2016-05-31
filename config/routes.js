@@ -31,24 +31,8 @@ module.exports.routes = {
   * `assets` directory)                                                      *
   *                                                                          *
   ***************************************************************************/
-  '/advertisement-mod': {
-    view: 'advertisement'
-  },
-  '/advertisement_c-mod': {
-    view: 'advertisement_c'
-  },
-  '/advertisement/image/:id': {
-    controller: 'AdvertisementController',
-    action: 'image'
-  },
-  '/c_play-frame': {
-    controller: 'CustomPlayController',
-    action: 'customPlayFrame'
-  },
-  '/easywash': {
-    controller: 'CustomPlayController',
-    action: 'easywash'
-  },
+
+
   '/api/init_c': {
     controller: 'ApiController',
     action: 'init_c'
