@@ -126,7 +126,9 @@ function($scope, $http){
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5b57ddac4e2e1e88&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3D'+$scope.userId+'%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base&state=123',
                 imgUrl: 'http://wecast.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
                 success: function() {
+                    $scope.log('share_timeline');
                     $("#share-success").trigger('click');
+
                 },
                 cancel: function() {
                     // 用户取消分享后执行的回调函数
@@ -146,7 +148,7 @@ function($scope, $http){
               imgUrl: 'http://wecast.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
 
               success: function () {
-                //$scope.log('share_friend');
+                $scope.log('share_friend');
                 $("#share-success").trigger('click');
               },
 

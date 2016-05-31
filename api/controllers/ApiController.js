@@ -6,7 +6,6 @@
  */
  var request = require('sync-request');
  var weixin = require('../../config/weixin');
- //var reqSync = require('request-sync');
  var sha1 = require('sha1');
  var User = require('../lib/User');
  var VERIFICATION_CODE="ew001";
@@ -20,8 +19,6 @@ module.exports = {
     var retResult = {};
     var resp;
     var result;
-    //var appId = "wxab261de543656952";
-    //var appSecret = "389f230302fe9c047ec56c39889b8843";
     resp = request('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx5b57ddac4e2e1e88&secret=e73e71f132807e7827849ca0ebf739e6&code='+code+'&grant_type=authorization_code');
         result = JSON.parse(resp.getBody());
         var accessToken = result.access_token;
@@ -36,49 +33,49 @@ module.exports = {
           if(!credit){
             credit = 0;
           }
-          redeem_c.findOne({user: openId, advertisement: 'easywash'}).exec(function(err, redeemOne){
-            User.shareAd_c(sharedBy, openId, adId, function(err){
-              if(err){
-                res.status(500);
-                res.end();
-                return;
-              }
-            })
-            User.sharedToUsers_c(userOne, adId, function(err, sharedToUsers){
-              var shareCount = sharedToUsers.length;
-              var appAccessToken;
-              var wait = true;
-              if(true){
-                var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx5b57ddac4e2e1e88&secret=e73e71f132807e7827849ca0ebf739e6');
-                result = JSON.parse(resp.getBody());
-                appAccessToken = result.access_token;
-              }else{
-                appAccessToken = req.session.appAccessToken;
-              }
 
+          User.shareAd_c(sharedBy, openId, adId, function(err){
+            if(err){
+              res.status(500);
+              res.end();
+              return;
+            }
+          })
+          User.sharedToUsers_c(userOne, adId, function(err, sharedToUsers){
+            var shareCount = sharedToUsers.length;
+            var appAccessToken;
+            var wait = true;
+            if(true){
+              var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx5b57ddac4e2e1e88&secret=e73e71f132807e7827849ca0ebf739e6');
+              result = JSON.parse(resp.getBody());
+              appAccessToken = result.access_token;
+            }else{
+              appAccessToken = req.session.appAccessToken;
+            }
+
+            req.session.appAccessToken = appAccessToken;
+            resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+appAccessToken+'&type=jsapi');
+              result = JSON.parse(resp.getBody());
+              appAccessToken = result.access_token;
               req.session.appAccessToken = appAccessToken;
-              resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+appAccessToken+'&type=jsapi');
-                result = JSON.parse(resp.getBody());
-                appAccessToken = result.access_token;
-                req.session.appAccessToken = appAccessToken;
-                var jsapiTicket = result.ticket;
-                var timestamp = Math.floor(Date.now() / 1000);
-                var noncestr = "Wm3WZYTPz0wzccnW";
-                var string1 = "jsapi_ticket="+jsapiTicket+"&noncestr="+noncestr+"&timestamp="+timestamp+"&url="+url;
-                var signature = sha1(string1);
-                retResult.accessToken = accessToken;
-                retResult.openId = openId;
-                retResult.shareCount = shareCount;
-                retResult.drawChance = userOne.drawChance;
-                retResult.signature = signature;
-                retResult.timestamp = timestamp;
-                retResult.noncestr = noncestr;
-                retResult.ticket = jsapiTicket;
-                retResult.credit = userOne.credit;
-                res.json(retResult);
-                return;
-            });
+              var jsapiTicket = result.ticket;
+              var timestamp = Math.floor(Date.now() / 1000);
+              var noncestr = "Wm3WZYTPz0wzccnW";
+              var string1 = "jsapi_ticket="+jsapiTicket+"&noncestr="+noncestr+"&timestamp="+timestamp+"&url="+url;
+              var signature = sha1(string1);
+              retResult.accessToken = accessToken;
+              retResult.openId = openId;
+              retResult.shareCount = shareCount;
+              retResult.drawChance = userOne.drawChance;
+              retResult.signature = signature;
+              retResult.timestamp = timestamp;
+              retResult.noncestr = noncestr;
+              retResult.ticket = jsapiTicket;
+              retResult.credit = userOne.credit;
+              res.json(retResult);
+              return;
           });
+
 
         });
 
