@@ -49,18 +49,20 @@ module.exports.routes = {
     controller: 'ApiController',
     action: 'clickCount'
   },
+  /*
   '/api/updateCredit': {
     controller: 'ApiController',
     action: 'updateCredit'
-  },
+  },*/
   '/log/log': {
     controller: 'LogController',
     action: 'log'
-  },
+  }
+  /*,
   'api/initialization': {
     controller: 'ApiController',
     action: 'initialization'
-  }
+  }*/
 
 
 
