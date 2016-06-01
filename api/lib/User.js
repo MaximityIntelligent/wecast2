@@ -129,7 +129,12 @@ User.incrementCredit = function(userOpenId, increment, cb){
         cb(err);
         return;
       }
-      cb(null);
+      var date = new Date();
+  		log.create({action: "total_share_friends", openId: userOpenId, date: new Date()}).exec(function(err, results){
+  			//res.json(results);
+        cb(null);
+  		});
+
     })
   });
 }
