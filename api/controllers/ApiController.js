@@ -19,7 +19,7 @@ module.exports = {
     var retResult = {};
     var resp;
     var result;
-    resp = request('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx5b57ddac4e2e1e88&secret=e73e71f132807e7827849ca0ebf739e6&code='+code+'&grant_type=authorization_code');
+    resp = request('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&grant_type=authorization_code');
         result = JSON.parse(resp.getBody());
         var accessToken = result.access_token;
         var openId = result.openid;
@@ -46,7 +46,7 @@ module.exports = {
             var appAccessToken;
             var wait = true;
             if(true){
-              var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx5b57ddac4e2e1e88&secret=e73e71f132807e7827849ca0ebf739e6');
+              var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843');
               result = JSON.parse(resp.getBody());
               appAccessToken = result.access_token;
             }else{

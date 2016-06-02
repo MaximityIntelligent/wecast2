@@ -61,10 +61,10 @@ function($scope, $http){
       $scope.$apply(function(){
           if( typeof $scope.landscape != 'undefined'){
             if(typeof QueryString.pg == 'undefined'){
-              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5b57ddac4e2e1e88&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_base#wechat_redirect';
+              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fapi.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_base#wechat_redirect';
             }
             else {
-              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5b57ddac4e2e1e88&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base#wechat_redirect';
+              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fapi.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base#wechat_redirect';
             }
           }
 
@@ -93,7 +93,7 @@ function($scope, $http){
     //alert("init");
     var url = window.location.href;
     url = encodeURIComponent(url);
-    $http.get('/api/init_c?appid=wx5b57ddac4e2e1e88&secret=e73e71f132807e7827849ca0ebf739e6&code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad=easywash'
+    $http.get('/api/init_c?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad=easywash'
       ).
       success(function(data, status, headers, config) {
           //alert("success");
@@ -109,7 +109,7 @@ function($scope, $http){
 
           wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: 'wx5b57ddac4e2e1e88', // 必填，公众号的唯一标识
+          appId: 'wxab261de543656952', // 必填，公众号的唯一标识
           timestamp: $scope.timestamp, // 必填，生成签名的时间戳
           nonceStr: $scope.noncestr, // 必填，生成签名的随机串
           signature: $scope.signature,// 必填，签名，见附录1
@@ -123,8 +123,8 @@ function($scope, $http){
             wx.showOptionMenu();
             wx.onMenuShareTimeline({
                 title: 'Easywash送你小米手環及智能洗車', // 分享标题
-                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5b57ddac4e2e1e88&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3D'+$scope.userId+'%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base&state=123',
-                imgUrl: 'http://wecast.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fapi.ibeacon-macau.com%2Feasywash%3FsharedBy%3D'+$scope.userId+'%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base&state=123',
+                imgUrl: 'http://api.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
                 success: function() {
                     $scope.log('share_timeline');
                     $("#share-success").trigger('click');
@@ -143,9 +143,9 @@ function($scope, $http){
 
               desc: 'Share比朋友幫手儲泡泡, 小米手環, 美光深層去污等你黎帶走!', // 分享描述
 
-              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5b57ddac4e2e1e88&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3D'+$scope.userId+'%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base&state=123',
+              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fapi.ibeacon-macau.com%2Feasywash%3FsharedBy%3D'+$scope.userId+'%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_base&state=123',
 
-              imgUrl: 'http://wecast.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
+              imgUrl: 'http://api.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
 
               success: function () {
                 $scope.log('share_friend');
@@ -172,7 +172,7 @@ function($scope, $http){
       }).
       error(function(data, status, headers, config) {
         //alert("error");
-        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5b57ddac4e2e1e88&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_base#wechat_redirect';
+        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fapi.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_base#wechat_redirect';
         //$('body').addClass("loaded");
         //$('#loader-wrapper').css("display", "none");
       });
@@ -210,7 +210,7 @@ function($scope, $http){
   }
 
   $scope.showPrize1 = function(){
-    if($scope.credit>18){
+    if($scope.credit>=18){
       return true;
     }else{
       return false;
@@ -225,7 +225,7 @@ function($scope, $http){
     }
   }
   $scope.showPrize2 = function(){
-    if($scope.credit>38){
+    if($scope.credit>=38){
       return true;
     }else{
       return false;
