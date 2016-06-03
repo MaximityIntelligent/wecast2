@@ -113,6 +113,13 @@
         </div>
         我的泡泡: {{credit}} (只作測試用途)
       </div>
+      <div id="prize1-2" class="row">
+        <center>
+          <a href="#top">
+          <img name="redeem" class="redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" >
+          </a>
+        </center>
+      </div>
       <div id="main-2">
         <a href="#top">
         <img class="img-responsive" src="/images/easywash/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1;clickCount('prize1_page');log('prize1_page')">
@@ -186,19 +193,7 @@
           {{credit}}
         </font>
       </div>
-      <div id="prize1-2" class="row">
-        <center>
-          <a href="#top">
-          <img name="continue-bubble" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('continue_collect');log('continue_collect')">
-          </a>
-          <a href="#top">
-          <img name="redeem" class="redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');" >
-          </a>
-          <a class="fancybox" href="#map">
-          <img name="go-wash" src="/images/easywash/prize/go-wash.png" ng-click="log('go_wash')">
-          </a>
-        </center>
-      </div>
+
     </div>
 
     <div class="container-fluid" id="container_p2" data-ng-show="PRIZE2==atPage" >
@@ -402,6 +397,7 @@
       $("#main-2").css("top", containerHeight*main2Top/mainScaleY);
       $("#main-2").css("left", containerWidth*main2Center/mainScaleX);
       $("#main-2 img").css("width", containerWidth*main2Width/mainScaleX);
+      $("#main-2 img").css("height", containerWidth*main2Height/mainScaleY);
       //$("#main-2").css("margin-top", "-"+imgHeight+"px");
       $("#main-2").css("margin-left", "-"+containerWidth*main2Width/mainScaleX*0.5+"px");
 
@@ -413,6 +409,7 @@
       $("#main-3").css("top", containerHeight*main3Top/mainScaleY);
       $("#main-3").css("left", containerWidth*main3Center/mainScaleX);
       $("#main-3 img").css("width", containerWidth*main3Width/mainScaleX);
+      $("#main-3 img").css("height", containerWidth*main3Height/mainScaleY);
       //$("#main-3").css("margin-top", "-"+imgHeight+"px");
       $("#main-3").css("margin-left", "-"+containerWidth*main3Width/mainScaleX*0.5+"px");
 
@@ -521,9 +518,10 @@
       $("#prize1-1").css("margin-left", "-"+36*0.5+"px");
       $("#prize1-1").css("margin-top", "-"+20*0.5+"px");*/
 
+      var prize12Top = 872;
       $("#prize1-2").css("position", "absolute");
       $("#prize1-2").css("width", "100%");
-      $("#prize1-2").css("top", containerHeight_p1*970/1206);
+      $("#prize1-2").css("top", containerHeight_p1*prize12Top/mainScaleY);
 
       var containerHeight_p2 = containerWidth*1206/mainScaleX;
       $("#container_p2").css("width", containerWidth);
