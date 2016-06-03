@@ -376,7 +376,7 @@
       $("#main-container").css("height", containerHeight);
 
       var mainEventInfoTop = 160;
-      var mainEventInfoWidth = 44;
+      var mainEventInfoWidth = 132;
       $("#main-event-info").addClass("row");
       $("#main-event-info").css("position", "absolute");
       $("#main-event-info").css("width", "100%");
@@ -392,21 +392,29 @@
       $("#main-1 img").css("width", containerWidth*main1Width/mainScaleX);
       $("#main-1").css("margin-left", "-"+containerWidth*main1Width/mainScaleX*0.5+"px");
 
-      var imgHeight = containerWidth*155/mainScaleX*1.1*1.122;//$("#main-2").css("height");
+      var main2Top = 1070;
+      var main2Center = 199;
+      var main2Height = 114;
+      var main2Width = 326;
+      var imgHeight = containerHeight*main2Height/mainScaleX;//$("#main-2").css("height");
       //imgHeight = imgHeight.replace("px", "");
       $("#main-2").css("position", "absolute");
-      $("#main-2").css("top", containerHeight*1120/mainScaleY);
-      $("#main-2").css("left", containerWidth*283/mainScaleX);
-      $("#main-2 img").css("width", containerWidth*155/mainScaleX*1.1);
-      $("#main-2").css("margin-top", "-"+imgHeight+"px");
-      $("#main-2").css("margin-left", "-"+containerWidth*155/mainScaleX*1.1*0.5+"px");
+      $("#main-2").css("top", containerHeight*main2Top/mainScaleY);
+      $("#main-2").css("left", containerWidth*main2Center/mainScaleX);
+      $("#main-2 img").css("width", containerWidth*main2Width/mainScaleX);
+      //$("#main-2").css("margin-top", "-"+imgHeight+"px");
+      $("#main-2").css("margin-left", "-"+containerWidth*main2Width/mainScaleX*0.5+"px");
 
+      var main3Top = 1070;
+      var main3Center = 543;
+      var main3Height = 114;
+      var main3Width = 326;
       $("#main-3").css("position", "absolute");
-      $("#main-3").css("top", containerHeight*1120/mainScaleY);
-      $("#main-3").css("left", containerWidth*481/mainScaleX);
-      $("#main-3 img").css("width", containerWidth*155/mainScaleX*1.1);
-      $("#main-3").css("margin-top", "-"+imgHeight+"px");
-      $("#main-3").css("margin-left", "-"+containerWidth*155/mainScaleX*1.1*0.5+"px");
+      $("#main-3").css("top", containerHeight*main3Top/mainScaleY);
+      $("#main-3").css("left", containerWidth*main3Center/mainScaleX);
+      $("#main-3 img").css("width", containerWidth*main3Width/mainScaleX);
+      //$("#main-3").css("margin-top", "-"+imgHeight+"px");
+      $("#main-3").css("margin-left", "-"+containerWidth*main3Width/mainScaleX*0.5+"px");
 
       $("#main-5").css("position", "absolute");
       $("#main-5").css("top", containerHeight*576/mainScaleY);
