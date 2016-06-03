@@ -358,88 +358,93 @@
 
     $("document").ready(function(){
       $("body").css("background-color", "black");
-      var scaleX = 750;
-      var scaleY = 1290;
+      var mainScaleX = 750;
+      var mainScaleY = 1290;
       var containerWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-      var containerHeight = containerWidth*scaleY/scaleX;
+      var containerHeight = containerWidth*mainScaleY/mainScaleX;
 
       //$(".back").css("float", "left");
       //$(".back").css("margin-right", "2%");
       //$(".back").css("margin-top", "2%");
-      //$(".back img").css("width", containerWidth*63/scaleX);
+      //$(".back img").css("width", containerWidth*63/mainScaleX);
       $(".close-btn").css("float", "right");
       $(".close-btn").css("margin-right", "2%");
       $(".close-btn").css("margin-top", "2%");
-      $(".close-btn img").css("width", containerWidth*115/scaleX);
+      $(".close-btn img").css("width", containerWidth*115/mainScaleX);
 
       $("#main-container").css("width", containerWidth);
       $("#main-container").css("height", containerHeight);
+
+      var mainEventInfoTop = 160;
+      var mainEventInfoWidth = 44;
       $("#main-event-info").addClass("row");
       $("#main-event-info").css("position", "absolute");
       $("#main-event-info").css("width", "100%");
-      $("#main-event-info").css("top", containerHeight*520/scaleY);
+      $("#main-event-info").css("top", containerHeight*mainEventInfoTop/mainScaleY);
       $("#main-event-info").css("text-align", "right");
-      $('img[name="event-info"]').css("width", containerWidth*132/scaleX);
+      $('img[name="event-info"]').css("width", containerWidth*mainEventInfoWidth/mainScaleX);
 
+      var main1Top = 414;
+      var main1Width = 240;
       $("#main-1").css("position", "absolute");
-      $("#main-1").css("top", containerHeight*600/scaleY);
-      $("#main-1").css("left", containerWidth*375/scaleX);
-      $("#main-1 img").css("width", containerWidth*298/scaleX);
-      $("#main-1").css("margin-left", "-"+containerWidth*298/scaleX*0.5+"px");
+      $("#main-1").css("top", containerHeight*main1Top/mainScaleY);
+      $("#main-1").css("left", containerWidth*(mainScaleX/2)/mainScaleX);
+      $("#main-1 img").css("width", containerWidth*main1Width/mainScaleX);
+      $("#main-1").css("margin-left", "-"+containerWidth*main1Width/mainScaleX*0.5+"px");
 
-      var imgHeight = containerWidth*155/scaleX*1.1*1.122;//$("#main-2").css("height");
+      var imgHeight = containerWidth*155/mainScaleX*1.1*1.122;//$("#main-2").css("height");
       //imgHeight = imgHeight.replace("px", "");
       $("#main-2").css("position", "absolute");
-      $("#main-2").css("top", containerHeight*1120/scaleY);
-      $("#main-2").css("left", containerWidth*283/scaleX);
-      $("#main-2 img").css("width", containerWidth*155/scaleX*1.1);
+      $("#main-2").css("top", containerHeight*1120/mainScaleY);
+      $("#main-2").css("left", containerWidth*283/mainScaleX);
+      $("#main-2 img").css("width", containerWidth*155/mainScaleX*1.1);
       $("#main-2").css("margin-top", "-"+imgHeight+"px");
-      $("#main-2").css("margin-left", "-"+containerWidth*155/scaleX*1.1*0.5+"px");
+      $("#main-2").css("margin-left", "-"+containerWidth*155/mainScaleX*1.1*0.5+"px");
 
       $("#main-3").css("position", "absolute");
-      $("#main-3").css("top", containerHeight*1120/scaleY);
-      $("#main-3").css("left", containerWidth*481/scaleX);
-      $("#main-3 img").css("width", containerWidth*155/scaleX*1.1);
+      $("#main-3").css("top", containerHeight*1120/mainScaleY);
+      $("#main-3").css("left", containerWidth*481/mainScaleX);
+      $("#main-3 img").css("width", containerWidth*155/mainScaleX*1.1);
       $("#main-3").css("margin-top", "-"+imgHeight+"px");
-      $("#main-3").css("margin-left", "-"+containerWidth*155/scaleX*1.1*0.5+"px");
+      $("#main-3").css("margin-left", "-"+containerWidth*155/mainScaleX*1.1*0.5+"px");
 
       $("#main-5").css("position", "absolute");
-      $("#main-5").css("top", containerHeight*576/scaleY);
-      $("#main-5").css("left", containerWidth*22/scaleX);
-      $("#main-5").css("height", containerHeight*49/scaleY);
-      $("#main-5").css("width", containerWidth*109/scaleX);
+      $("#main-5").css("top", containerHeight*576/mainScaleY);
+      $("#main-5").css("left", containerWidth*22/mainScaleX);
+      $("#main-5").css("height", containerHeight*49/mainScaleY);
+      $("#main-5").css("width", containerWidth*109/mainScaleX);
 
 
-      var containerHeight_share = containerWidth*1206/scaleX;
+      var containerHeight_share = containerWidth*1206/mainScaleX;
       $("#container_share").css("width", containerWidth);
       $("#container_share").css("height", containerHeight_share);
       $("#share-1").css("position", "absolute");
       $("#share-1").css("top", containerHeight_share*1028/1200);
-      $("#share-1").css("left", containerWidth*331/scaleX);
-      $("#share-1").css("width", containerWidth*90/scaleX);
-      $("#share-1").css("height", containerWidth*90/scaleX);
+      $("#share-1").css("left", containerWidth*331/mainScaleX);
+      $("#share-1").css("width", containerWidth*90/mainScaleX);
+      $("#share-1").css("height", containerWidth*90/mainScaleX);
       $("#share-2").css("height", containerHeight_share*658/1206);
       //$("#share-2").css("height", "581px");
       //$("#share-1").css("border", "1px solid red");
       $("#share-1").css("position", "absolute");
 
-      var containerHeight_thankyou = containerWidth*1206/scaleX;
+      var containerHeight_thankyou = containerWidth*1206/mainScaleX;
       $("#container_thankyou").css("width", containerWidth);
       $("#container_thankyou").css("height", containerHeight_thankyou);
       $("#thankyou-1").css("position", "absolute");
-      $("#thankyou-1 img").css("width", containerWidth*413/scaleX);
+      $("#thankyou-1 img").css("width", containerWidth*413/mainScaleX);
 
       $("#thankyou-1").css("top", containerHeight_thankyou*382/1206);
       $("#thankyou-1").css("left", containerWidth*0.5);
-      $("#thankyou-1").css("margin-left", "-"+containerWidth*413/scaleX*0.5+"px");
+      $("#thankyou-1").css("margin-left", "-"+containerWidth*413/mainScaleX*0.5+"px");
 
-      var containerHeight_easywash = containerWidth*1206/scaleX;
+      var containerHeight_easywash = containerWidth*1206/mainScaleX;
       $("#container_easywash").css("width", containerWidth);
       $("#container_easywash").css("height", containerHeight_easywash);
       $("#easywash-1").css("position", "absolute");
       $("#easywash-1").css("top", containerHeight_easywash*408/1206);
-      $("#easywash-1").css("left", containerWidth*66/scaleX);
-      $("#easywash-1").css("width", containerWidth*618/scaleX);
+      $("#easywash-1").css("left", containerWidth*66/mainScaleX);
+      $("#easywash-1").css("width", containerWidth*618/mainScaleX);
       $("#easywash-1").css("height", containerHeight_easywash*357/1206);
       $("#easywash-1").css("border", "2px solid yellow");
       $("#event-rule").css("float", "right");
@@ -450,13 +455,13 @@
       $("#event-rule").css("margin-right", "2%");
       $("#event-rule").css("margin-top", "2%");
       */
-      //$("#event-rule img").css("width", containerWidth*126/scaleX);
+      //$("#event-rule img").css("width", containerWidth*126/mainScaleX);
 
       $("#easywash-2").css("margin-top", containerHeight_easywash*803/1206);
       $("#easywash-2").css("width", "100%");
       $("#easywash-3").css("margin-top", "5%");
-      $('img[name="address"]').css("width", containerWidth*340/scaleX);
-      $('img[name="call"]').css("width", containerWidth*340/scaleX);
+      $('img[name="address"]').css("width", containerWidth*340/mainScaleX);
+      $('img[name="call"]').css("width", containerWidth*340/mainScaleX);
 
       var containerWidth_e = containerWidth*0.75;
       var containerHeight_e = containerWidth_e*736/532;
@@ -479,13 +484,13 @@
 
 
 
-      var containerHeight_p1 = containerWidth*1206/scaleX;
+      var containerHeight_p1 = containerWidth*1206/mainScaleX;
       $("#container_p1").css("width", containerWidth);
       $("#container_p1").css("height", containerHeight_p1);
 
       $("#prize1-1").css("position", "absolute");
       $("#prize1-1").css("top", containerHeight_p1*240/1206);
-      $("#prize1-1").css("left", containerWidth*586/scaleX);
+      $("#prize1-1").css("left", containerWidth*586/mainScaleX);
       $("#prize1-1").css("color", "yellow");
       //$("#prize1-1").css("width", containerHeight_p1*40/1206);
       $("#prize1-1 font").css("font-size", containerHeight_p1*40/1206);
@@ -500,7 +505,7 @@
 
       $("#prize1-1").css("position", "absolute");
       $("#prize1-1").css("top", containerHeight_p1*200.5/1206);
-      $("#prize1-1").css("left", containerWidth*565.5/scaleX);
+      $("#prize1-1").css("left", containerWidth*565.5/mainScaleX);
 
 
       var prize11Width = $("#prize1-1").css("width");
@@ -512,13 +517,13 @@
       $("#prize1-2").css("width", "100%");
       $("#prize1-2").css("top", containerHeight_p1*970/1206);
 
-      var containerHeight_p2 = containerWidth*1206/scaleX;
+      var containerHeight_p2 = containerWidth*1206/mainScaleX;
       $("#container_p2").css("width", containerWidth);
       $("#container_p2").css("height", containerHeight_p2);
 
       $("#prize2-1").css("position", "absolute");
       $("#prize2-1").css("top", containerHeight_p2*240/1206);
-      $("#prize2-1").css("left", containerWidth*586/scaleX);
+      $("#prize2-1").css("left", containerWidth*586/mainScaleX);
       $("#prize2-1").css("color", "yellow");
       //$("#prize1-1").css("width", containerHeight_p1*40/1206);
       $("#prize2-1 font").css("font-size", containerHeight_p2*40/1206);
@@ -528,7 +533,7 @@
       /*
       $("#prize2-1").css("position", "absolute");
       $("#prize2-1").css("top", containerHeight_p1*200.5/1206);
-      $("#prize2-1").css("left", containerWidth*565.5/scaleX);
+      $("#prize2-1").css("left", containerWidth*565.5/mainScaleX);
 
 
       var prize11Width = $("#prize2-1").css("width");
@@ -540,9 +545,9 @@
       $("#prize2-2").css("width", "100%");
       $("#prize2-2").css("top", containerHeight_p2*970/1206);
 
-      $('img[name="redeem"]').css("width", containerWidth*189/scaleX);
-      $('img[name="go-wash"]').css("width", containerWidth*153/scaleX);
-      $('img[name="continue-bubble"]').css("width", containerWidth*153/scaleX);
+      $('img[name="redeem"]').css("width", containerWidth*189/mainScaleX);
+      $('img[name="go-wash"]').css("width", containerWidth*153/mainScaleX);
+      $('img[name="continue-bubble"]').css("width", containerWidth*153/mainScaleX);
       //alert("450");
       $(".fancybox").fancybox({
     		fitToView	: true,
