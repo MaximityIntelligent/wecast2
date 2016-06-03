@@ -397,7 +397,7 @@
       $("#main-2").css("top", containerHeight*main2Top/mainScaleY);
       $("#main-2").css("left", containerWidth*main2Center/mainScaleX);
       $("#main-2 img").css("width", containerWidth*main2Width/mainScaleX);
-      $("#main-2 img").css("height", containerWidth*main2Height/mainScaleY);
+      $("#main-2 img").css("height", containerHeight*main2Height/mainScaleY);
       //$("#main-2").css("margin-top", "-"+imgHeight+"px");
       $("#main-2").css("margin-left", "-"+containerWidth*main2Width/mainScaleX*0.5+"px");
 
@@ -409,7 +409,7 @@
       $("#main-3").css("top", containerHeight*main3Top/mainScaleY);
       $("#main-3").css("left", containerWidth*main3Center/mainScaleX);
       $("#main-3 img").css("width", containerWidth*main3Width/mainScaleX);
-      $("#main-3 img").css("height", containerWidth*main3Height/mainScaleY);
+      $("#main-3 img").css("height", containerHeight*main3Height/mainScaleY);
       //$("#main-3").css("margin-top", "-"+imgHeight+"px");
       $("#main-3").css("margin-left", "-"+containerWidth*main3Width/mainScaleX*0.5+"px");
 
@@ -519,9 +519,11 @@
       $("#prize1-1").css("margin-top", "-"+20*0.5+"px");*/
 
       var prize12Top = 872;
+      var prize12Height = 166;
       $("#prize1-2").css("position", "absolute");
       $("#prize1-2").css("width", "100%");
-      $("#prize1-2").css("top", containerHeight_p1*prize12Top/mainScaleY);
+      $("#prize1-2").css("height", prize12Height);
+      $("#prize1-2").css("top", containerHeight*prize12Top/mainScaleY);
 
       var containerHeight_p2 = containerWidth*1206/mainScaleX;
       $("#container_p2").css("width", containerWidth);
