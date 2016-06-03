@@ -47,7 +47,7 @@ User.userExists = function (userOpenId, cb){
 }
 
 User.shareAd_c = function (sharedBy, sharedTo, adId, cb){
-  var ad_c = ['easywash'];
+  var ad_c = ['adMood'];
   if(-1==ad_c.indexOf(adId)){
     console.log("121");
     cb(null);

@@ -32,6 +32,7 @@ if(typeof QueryString.code == 'undefined'){
 }*/
 var ad = QueryString.ad;
 var sharedBy = QueryString.sharedBy;
+var adString = 'adMood';
 
 app.controller('IndexCtrl', [
 '$scope','$http',
@@ -61,10 +62,10 @@ function($scope, $http){
       $scope.$apply(function(){
           if( typeof $scope.landscape != 'undefined'){
             if(typeof QueryString.pg == 'undefined'){
-              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_userinfo#wechat_redirect';
+              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope=snsapi_userinfo#wechat_redirect';
             }
             else {
-              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_userinfo#wechat_redirect';
+              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope=snsapi_userinfo#wechat_redirect';
             }
           }
 
@@ -93,7 +94,7 @@ function($scope, $http){
     //alert("init");
     var url = window.location.href;
     url = encodeURIComponent(url);
-    $http.get('/api/init_c?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad=easywash'
+    $http.get('/api/init_c?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad='+adString
       ).
       success(function(data, status, headers, config) {
           //alert("success");
@@ -123,7 +124,7 @@ function($scope, $http){
             wx.showOptionMenu();
             wx.onMenuShareTimeline({
                 title: 'Easywash送你小米手環及智能洗車', // 分享标题
-                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2Feasywash%3FsharedBy%3D'+$scope.userId+'%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_userinfo&state=123',
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2Feasywash%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope=snsapi_userinfo&state=123',
                 imgUrl: 'http://mood.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
                 success: function() {
                     $scope.log('share_timeline');
@@ -143,7 +144,7 @@ function($scope, $http){
 
               desc: 'Share比朋友幫手儲泡泡, 小米手環, 美光深層去污等你黎帶走!', // 分享描述
 
-              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2Feasywash%3FsharedBy%3D'+$scope.userId+'%26ad%3Deasywash%26pg%3D1&response_type=code&scope=snsapi_userinfo&state=123',
+              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2Feasywash%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope=snsapi_userinfo&state=123',
 
               imgUrl: 'http://mood.ibeacon-macau.com/images/easywash/wecast-share.jpg', // 分享图标
 
@@ -172,7 +173,7 @@ function($scope, $http){
       }).
       error(function(data, status, headers, config) {
         //alert("error");
-        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_userinfo#wechat_redirect';
+        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope=snsapi_userinfo#wechat_redirect';
         //$('body').addClass("loaded");
         //$('#loader-wrapper').css("display", "none");
       });
@@ -256,7 +257,7 @@ function($scope, $http){
       params:{
         'prize':prize,
         "user": $scope.userId,
-        "ad": "easywash",
+        "ad": adString,
         "verificationCode": verificationCode
       }
     }).success(function(data) {

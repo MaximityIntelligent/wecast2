@@ -9,6 +9,7 @@
  var sha1 = require('sha1');
  var User = require('../lib/User');
  var VERIFICATION_CODE="ew001";
+ var adString = "adMood";
 
 module.exports = {
 	init_c: function(req, res){
@@ -84,14 +85,14 @@ module.exports = {
     var verificationCode = req.param('verificationCode');
     var userOpenId = req.param("user");
     var prize = req.param("prize");
-    redeem_c.findOne({user: userOpenId, advertisement: 'easywash'}).exec(function(err, redeemOne){
+    redeem_c.findOne({user: userOpenId, advertisement: adString}).exec(function(err, redeemOne){
       user.findOne({openId: userOpenId}).exec(function(err, userOne){
         if(!userOne){
           res.status(500);
           res.end();
           return;
         }
-        User.sharedToUsers_c(userOne, "easywash", function(err, sharedToUsers){
+        User.sharedToUsers_c(userOne, adString, function(err, sharedToUsers){
           var credit = userOne.credit;
           if(verificationCode==VERIFICATION_CODE){
             if(prize=="prize1"){
