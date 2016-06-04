@@ -493,17 +493,17 @@
 
 
 
-      var p1ScaleY = 1206;
-      var containerHeight_p1 = containerWidth*p1ScaleY/mainScaleX;
+      var prize1ScaleY = 4611;
+      var containerHeight_p1 = containerWidth*prize1ScaleY/mainScaleX;
       $("#container_p1").css("width", containerWidth);
       $("#container_p1").css("height", containerHeight_p1);
 
       $("#prize1-1").css("position", "absolute");
-      $("#prize1-1").css("top", containerHeight_p1*240/p1ScaleY);
+      $("#prize1-1").css("top", containerHeight_p1*240/prize1ScaleY);
       $("#prize1-1").css("left", containerWidth*586/mainScaleX);
       $("#prize1-1").css("color", "yellow");
       //$("#prize1-1").css("width", containerHeight_p1*40/1206);
-      $("#prize1-1 font").css("font-size", containerHeight_p1*40/p1ScaleY);
+      $("#prize1-1 font").css("font-size", containerHeight_p1*40/prize1ScaleY);
 
       //$("#prize1-1").css("margin-left", "-"+containerHeight_p1*40/1206*0.7+"px");
       //$("#prize1-1").css("margin-top", "-"+containerHeight_p1*40/1206*0.5+"px");
@@ -518,7 +518,6 @@
       var prize11Height = $("#prize1-1").css("height");
       $("#prize1-1").css("margin-left", "-"+36*0.5+"px");
       $("#prize1-1").css("margin-top", "-"+20*0.5+"px");*/
-      var prize1ScaleY = 4611;
       var containerHeight_prize1 = containerWidth*prize1ScaleY/mainScaleX;
       var prize1BackTop = 4496;
       $("#prize1-back").css("margin-top", containerHeight_prize1*4496/prize1ScaleY);
@@ -530,7 +529,7 @@
       var prize12Height = 166;
       $("#prize1-2").css("position", "absolute");
       $("#prize1-2").css("width", "100%");
-      $("#prize1-2").css("height", prize12Height);
+      $("#prize1-2").css("height", containerHeight*prize12Height/mainScaleY);
       $("#prize1-2").css("top", containerHeight*prize12Top/mainScaleY);
 
       var containerHeight_p2 = containerWidth*1206/mainScaleX;
