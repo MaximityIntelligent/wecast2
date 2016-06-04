@@ -419,8 +419,8 @@
       $("#main-5").css("height", containerHeight*49/mainScaleY);
       $("#main-5").css("width", containerWidth*109/mainScaleX);
 
-
-      var containerHeight_share = containerWidth*1206/mainScaleX;
+      var shareScaleY = 1206;
+      var containerHeight_share = containerWidth*shareScaleY/mainScaleX;
       $("#container_share").css("width", containerWidth);
       $("#container_share").css("height", containerHeight_share);
       $("#share-1").css("position", "absolute");
@@ -428,18 +428,21 @@
       $("#share-1").css("left", containerWidth*331/mainScaleX);
       $("#share-1").css("width", containerWidth*90/mainScaleX);
       $("#share-1").css("height", containerWidth*90/mainScaleX);
-      $("#share-2").css("height", containerHeight_share*658/1206);
+
+      var share2Height = 453;
+      $("#share-2").css("height", containerHeight_share*share2Height/shareScaleY);
       //$("#share-2").css("height", "581px");
       //$("#share-1").css("border", "1px solid red");
       $("#share-1").css("position", "absolute");
 
-      var containerHeight_thankyou = containerWidth*1206/mainScaleX;
+      var thankyouScaleY = 1206;
+      var containerHeight_thankyou = containerWidth*thankyouScaleY/mainScaleX;
       $("#container_thankyou").css("width", containerWidth);
       $("#container_thankyou").css("height", containerHeight_thankyou);
       $("#thankyou-1").css("position", "absolute");
       $("#thankyou-1 img").css("width", containerWidth*413/mainScaleX);
 
-      $("#thankyou-1").css("top", containerHeight_thankyou*382/1206);
+      $("#thankyou-1").css("top", containerHeight_thankyou*382/thankyouScaleY);
       $("#thankyou-1").css("left", containerWidth*0.5);
       $("#thankyou-1").css("margin-left", "-"+containerWidth*413/mainScaleX*0.5+"px");
 
