@@ -1005,9 +1005,9 @@ i:nth-child(100) b {
 }
 
 .push-in {
-    -webkit-transform: translateX(50%);
-        -ms-transform: translateX(50%);
-            transform: translateX(50%);
+    -webkit-transform: translateX(80%);
+        -ms-transform: translateX(80%);
+            transform: translateX(80%);
 }
 /*
 @media (max-height: 480px) and (min-width: 480px) and (max-width: 600px) {
