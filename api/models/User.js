@@ -37,7 +37,7 @@ module.exports = {
     headimgurl: {
           type: 'string'
     },
-    unionid: {
+    language: {
           type: 'string'
     }
 

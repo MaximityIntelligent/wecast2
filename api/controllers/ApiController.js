@@ -47,8 +47,8 @@ module.exports = {
         if (userInfoResult.headimgurl) {
           userInfo.headimgurl = userInfoResult.headimgurl;
         }
-        if (userInfoResult.unionid) {
-          userInfo.unionid = userInfoResult.unionid;
+        if (userInfoResult.language) {
+          userInfo.language = userInfoResult.language;
         }
         userInfo.openId = openId;
         User.create(userInfo, function(err, userOne){
