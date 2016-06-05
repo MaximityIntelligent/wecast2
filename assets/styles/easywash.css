@@ -24,7 +24,7 @@
   background-image:url('/images/easywash/prize/prize1-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
-  animation-name: container_p1;
+  animation-name: push-up;
   animation-duration: 0.5s;
 }
 #container_p2 {
@@ -1012,8 +1012,8 @@ i:nth-child(100) b {
             transform: translateX(80%);
 }
 
-@keyframes container_p1 {
-   from {transform: translateX(80%)}
+@keyframes push-up {
+   from {transform: translateY(90%)}
    to {transform: translateX(0%);}
 }
 
