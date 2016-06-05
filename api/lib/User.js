@@ -9,22 +9,22 @@ module.exports = User;
 
 User.sharedToUsers_c = function (userContext, adId, cb){
 
-  console.log("26");
+  //console.log("26");
   share_c.findOne({sharedBy: userContext.openId, advertisement_c: adId}).exec(function(err, shareOne){
-    console.log("28");
+    //console.log("28");
     if(err){
       cb(err);
       return;
     }
-    console.log("33");
+    //console.log("33");
     if(!shareOne){
-      console.log("35");
+      //console.log("35");
       cb(null, []);
-      console.log("[]");
+      //console.log("[]");
       return;
     }else{
       cb(null, shareOne.sharedTo);
-      console.log("sharedTo[]");
+      //console.log("sharedTo[]");
       return;
     }
   })
@@ -49,12 +49,12 @@ User.userExists = function (userOpenId, cb){
 User.shareAd_c = function (sharedBy, sharedTo, adId, cb){
   var ad_c = ['adMood'];
   if(-1==ad_c.indexOf(adId)){
-    console.log("121");
+    //console.log("121");
     cb(null);
     return;
   }
   if(sharedBy==sharedTo||sharedBy=="wecast"){
-    console.log("127"+sharedBy);
+    //console.log("127"+sharedBy);
     cb(null);
     return;
   }
@@ -155,7 +155,7 @@ User.create = function(userInfo, cb){
     }else{
         cb(null, userOne);
     }
-    console.log("229");
+    //console.log("229");
   });
 }
 User.draw = function(userOpenId, cb){

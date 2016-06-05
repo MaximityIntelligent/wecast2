@@ -28,7 +28,6 @@ module.exports = {
         // Get UserInfo
         var userInfoResp = request('GET','https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en');
         var userInfoResult = JSON.parse(userInfoResp.getBody());
-        console.log(userInfoResult);
         if (userInfoResult.nickname) {
           userInfo.nickname = userInfoResult.nickname;
         }
@@ -50,6 +49,7 @@ module.exports = {
         if (userInfoResult.language) {
           userInfo.language = userInfoResult.language;
         }
+        // Get UserInfo
         userInfo.openId = openId;
         User.create(userInfo, function(err, userOne){
           if(err){
