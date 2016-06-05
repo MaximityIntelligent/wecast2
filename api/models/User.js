@@ -18,6 +18,27 @@ module.exports = {
       type: 'integer',
       defaultsTo: 0,
       required: true
+    },
+    nickname: {
+          type: 'string'
+    },
+    sex: {
+          type: 'string'
+    },
+    province: {
+          type: 'string'
+    },
+    city: {
+          type: 'string'
+    },
+    country: {
+          type: 'string'
+    },
+    headimgurl: {
+          type: 'string'
+    },
+    unionid: {
+          type: 'string'
     }
 
   }

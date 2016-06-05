@@ -25,6 +25,31 @@ module.exports = {
         var accessToken = result.access_token;
         var userInfo = {};
         var openId = result.openid;
+        // Get UserInfo
+        var userInfoResp = request('GET','https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en');
+        var userInfoResult = JSON.parse(userInfoResp.getBody());
+        console.log(userInfoResult);
+        if (userInfoResult.nickname) {
+          userInfo.nickname = userInfoResult.nickname;
+        }
+        if (userInfoResult.sex) {
+          userInfo.sex = userInfoResult.sex;
+        }
+        if (userInfoResult.province) {
+          userInfo.province = userInfoResult.province;
+        }
+        if (userInfoResult.city) {
+          userInfo.city = userInfoResult.city;
+        }
+        if (userInfoResult.country) {
+          userInfo.country = userInfoResult.country;
+        }
+        if (userInfoResult.headimgurl) {
+          userInfo.headimgurl = userInfoResult.headimgurl;
+        }
+        if (userInfoResult.unionid) {
+          userInfo.unionid = userInfoResult.unionid;
+        }
         userInfo.openId = openId;
         User.create(userInfo, function(err, userOne){
           if(err){

@@ -145,7 +145,7 @@ User.create = function(userInfo, cb){
       return;
     }
     if(!userOne){
-      user.create({openId: userInfo.openId, credit: 0}).exec(function(err, userCreated){
+      user.create(userInfo).exec(function(err, userCreated){
         if(err){
           cb(err);
           return;
