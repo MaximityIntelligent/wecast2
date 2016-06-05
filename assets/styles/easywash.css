@@ -1004,6 +1004,21 @@ i:nth-child(100) b {
     to {width:100%;top:3%;right:0%;}
 }
 
+.push-in {
+    -webkit-transform: translateX(0%);
+        -ms-transform: translateX(0%);
+            transform: translateX(0%);
+}
+
+.push-in.ng-hide-add, .push-in.ng-hide-remove {
+  transition: all linear 2s;
+}
+
+.push-in.ng-hide {
+    -webkit-transform: translateX(100%);
+        -ms-transform: translateX(100%);
+            transform: translateX(100%);
+}
 /*
 @media (max-height: 480px) and (min-width: 480px) and (max-width: 600px) {
     html{

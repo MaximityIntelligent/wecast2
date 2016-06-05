@@ -112,6 +112,7 @@ module.exports = {
     var verificationCode = req.param('verificationCode');
     var userOpenId = req.param("user");
     var prize = req.param("prize");
+    var prize1Credit = 188;
     redeem_c.findOne({user: userOpenId, advertisement: adString}).exec(function(err, redeemOne){
       user.findOne({openId: userOpenId}).exec(function(err, userOne){
         if(!userOne){
@@ -123,12 +124,12 @@ module.exports = {
           var credit = userOne.credit;
           if(verificationCode==VERIFICATION_CODE){
             if(prize=="prize1"){
-              if(credit<88){
+              if(credit<prize1Credit){
                 res.status(500);
                 res.end();
                 return;
               }else{
-                userOne.credit = userOne.credit - 88;
+                userOne.credit = userOne.credit - prize1Credit;
                 userOne.save(function(){
                   res.json({credit: userOne.credit, prize: prize});
                   return;

@@ -33,6 +33,7 @@ if(typeof QueryString.code == 'undefined'){
 var ad = QueryString.ad;
 var sharedBy = QueryString.sharedBy;
 var adString = 'adMood';
+var prize1Credit = 188;
 
 app.controller('IndexCtrl', [
 '$scope','$http',
@@ -191,7 +192,7 @@ function($scope, $http){
 
     if(prize=="prize1"){
       $scope.prizeRedeem = "prize1";
-      if($scope.credit<88){
+      if($scope.credit<prize1Credit){
         $("#veri-credit-errModal").modal('show');
         return;
       }else{
@@ -211,7 +212,7 @@ function($scope, $http){
   }
 
   $scope.showPrize1 = function(){
-    if($scope.credit>=88){
+    if($scope.credit>=prize1Credit){
       return true;
     }else{
       return false;
@@ -219,7 +220,7 @@ function($scope, $http){
 
   }
   $scope.showPrize1Dim = function(){
-    if($scope.credit<88){
+    if($scope.credit<prize1Credit){
       return true;
     }else {
       return false;
