@@ -24,6 +24,8 @@
   background-image:url('/images/easywash/prize/prize1-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
+  animation-name: rules;
+  animation-duration: 0.5s;
 }
 #container_p2 {
   background-image:url('/images/easywash/prize/prize2-background.png');
@@ -1009,6 +1011,13 @@ i:nth-child(100) b {
         -ms-transform: translateX(80%);
             transform: translateX(80%);
 }
+
+@keyframes container_p1 {
+   from {transform: translateX(80%)}
+   to {transform: translateX(0%);}
+}
+
+
 /*
 @media (max-height: 480px) and (min-width: 480px) and (max-width: 600px) {
     html{
