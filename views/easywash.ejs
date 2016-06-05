@@ -102,41 +102,7 @@
     <div ng-init="init()" data-ng-hide="1">
     </div>
 
-    <div class="container-fluid" id="main-container" data-ng-show="MAIN==atPage||PRIZE1==atPage" >
-      <div id="main-event-info">
-        <a href="#top"><img name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;initAboutEasywash();clickCount('about_easywash');log('about_easywash')"></a>
-
-      </div>
-      <div id="main-1" style="text-align: center;color: yellow">
-        <div>
-        <a href="#top"><img class="img-responsive" src="/images/easywash/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_button');log('share_button')"></a>
-        </div>
-        我的泡泡: {{credit}} (只作測試用途)
-      </div>
-      <div id="prize1-2" class="row">
-        <center>
-          <a href="#top">
-          <img name="redeem" class="redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" >
-          </a>
-        </center>
-      </div>
-      <div id="main-2">
-        <a href="#top">
-        <img class="img-responsive" src="/images/easywash/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1;clickCount('prize1_page');log('prize1_page')">
-        <img class="img-responsive" src="/images/easywash/main/prize1-dim.png" ng-show="showPrize1Dim();" ng-click="atPage=PRIZE1;clickCount('prize1_page');log('prize1_page')">
-        </a>
-      </div>
-      <div id="main-3">
-        <a href="#top">
-        <img class="img-responsive" src="/images/easywash/main/prize2.png" ng-show="showPrize2();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
-        <img class="img-responsive" src="/images/easywash/main/prize2-dim.png" ng-show="showPrize2Dim();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
-        </a>
-      </div>
-      <a href="#top">
-      <div id="main-5" ng-click="atPage=THANKYOU;">
-      </div>
-      </a>
-    </div>
+    
     <div class="container" id="container_e" >
       <div id="container_e-inner" >
       <center>
@@ -331,6 +297,42 @@
         <center><a href="tel:85363539002"><img name="call" src="/images/easywash/about-easywash/call.png"></a></center>
       </div>
 
+    </div>
+
+    <div class="container-fluid" id="main-container" data-ng-show="MAIN==atPage||PRIZE1==atPage" >
+      <div id="main-event-info">
+        <a href="#top"><img name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;initAboutEasywash();clickCount('about_easywash');log('about_easywash')"></a>
+
+      </div>
+      <div id="main-1" style="text-align: center;color: yellow">
+        <div>
+        <a href="#top"><img class="img-responsive" src="/images/easywash/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_button');log('share_button')"></a>
+        </div>
+        我的泡泡: {{credit}} (只作測試用途)
+      </div>
+      <div id="prize1-2" class="row">
+        <center>
+          <a href="#top">
+          <img name="redeem" class="redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" >
+          </a>
+        </center>
+      </div>
+      <div id="main-2">
+        <a href="#top">
+        <img class="img-responsive" src="/images/easywash/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1;clickCount('prize1_page');log('prize1_page')">
+        <img class="img-responsive" src="/images/easywash/main/prize1-dim.png" ng-show="showPrize1Dim();" ng-click="atPage=PRIZE1;clickCount('prize1_page');log('prize1_page')">
+        </a>
+      </div>
+      <div id="main-3">
+        <a href="#top">
+        <img class="img-responsive" src="/images/easywash/main/prize2.png" ng-show="showPrize2();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
+        <img class="img-responsive" src="/images/easywash/main/prize2-dim.png" ng-show="showPrize2Dim();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
+        </a>
+      </div>
+      <a href="#top">
+      <div id="main-5" ng-click="atPage=THANKYOU;">
+      </div>
+      </a>
     </div>
     <a id="prize-redeem" class="fancybox" href="/images/easywash/verification/prize-redeem.png"></a>
     <a id="share-success" class="fancybox" href="#share-success-div"></a>

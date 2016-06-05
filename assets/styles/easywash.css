@@ -5,7 +5,6 @@
   background-image:url('/images/easywash/main/main-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
-  z-index: -2;
 }
 #container_share {
   background-image:url('/images/easywash/share/share-background.png');
@@ -27,7 +26,6 @@
   background-size: 100% 100%;
   animation-name: push-up;
   animation-duration: 0.5s;
-  z-index: 2;
 }
 #container_p2 {
   background-image:url('/images/easywash/prize/prize2-background.png');
