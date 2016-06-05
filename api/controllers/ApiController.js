@@ -96,12 +96,12 @@ module.exports = {
           var credit = userOne.credit;
           if(verificationCode==VERIFICATION_CODE){
             if(prize=="prize1"){
-              if(credit<18){
+              if(credit<88){
                 res.status(500);
                 res.end();
                 return;
               }else{
-                userOne.credit = userOne.credit - 18;
+                userOne.credit = userOne.credit - 88;
                 userOne.save(function(){
                   res.json({credit: userOne.credit, prize: prize});
                   return;

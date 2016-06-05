@@ -191,7 +191,7 @@ function($scope, $http){
 
     if(prize=="prize1"){
       $scope.prizeRedeem = "prize1";
-      if($scope.credit<18){
+      if($scope.credit<88){
         $("#veri-credit-errModal").modal('show');
         return;
       }else{
@@ -211,7 +211,7 @@ function($scope, $http){
   }
 
   $scope.showPrize1 = function(){
-    if($scope.credit>=18){
+    if($scope.credit>=88){
       return true;
     }else{
       return false;
@@ -219,7 +219,7 @@ function($scope, $http){
 
   }
   $scope.showPrize1Dim = function(){
-    if($scope.credit<18){
+    if($scope.credit<88){
       return true;
     }else {
       return false;
