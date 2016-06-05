@@ -24,7 +24,6 @@
   background-image:url('/images/easywash/prize/prize1-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
-  transform: translateX(50%);
 }
 #container_p2 {
   background-image:url('/images/easywash/prize/prize2-background.png');
@@ -1006,19 +1005,9 @@ i:nth-child(100) b {
 }
 
 .push-in {
-    -webkit-transform: translateX(0%);
-        -ms-transform: translateX(0%);
-            transform: translateX(0%);
-}
-
-.push-in.ng-hide-add, .push-in.ng-hide-remove {
-  transition: all linear 2s;
-}
-
-.push-in.ng-hide {
-    -webkit-transform: translateX(100%);
-        -ms-transform: translateX(100%);
-            transform: translateX(100%);
+    -webkit-transform: translateX(50%);
+        -ms-transform: translateX(50%);
+            transform: translateX(50%);
 }
 /*
 @media (max-height: 480px) and (min-width: 480px) and (max-width: 600px) {
