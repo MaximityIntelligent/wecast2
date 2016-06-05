@@ -24,8 +24,6 @@
   background-image:url('/images/easywash/prize/prize1-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
-  animation-name: push-up;
-  animation-duration: 0.5s;
 }
 #container_p2 {
   background-image:url('/images/easywash/prize/prize2-background.png');
@@ -1006,10 +1004,16 @@ i:nth-child(100) b {
     to {width:100%;top:3%;right:0%;}
 }
 
-.push-in {
-    -webkit-transform: translateX(80%);
-        -ms-transform: translateX(80%);
-            transform: translateX(80%);
+.animate-show {
+  transform: translateX(0%);
+}
+
+.animate-show.ng-hide-add, .animate-show.ng-hide-remove {
+  transition: all linear 0.5s;
+}
+
+.animate-show.ng-hide {
+  transform: translateX(90%);
 }
 
 @keyframes push-up {
