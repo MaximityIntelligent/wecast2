@@ -20,11 +20,11 @@
   animation-name: share;
   animation-duration: 1s;
 }
-#container_p1 {
+/*#container_p1 {
   background-image:url('/images/easywash/prize/prize1-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
-}
+}*/
 #container_p2 {
   background-image:url('/images/easywash/prize/prize2-background.png');
   background-repeat: no-repeat;;
@@ -1005,6 +1005,9 @@ i:nth-child(100) b {
 }
 
 .push-in {
+    background-image:url('/images/easywash/prize/prize1-background.png');
+    background-repeat: no-repeat;;
+    background-size: 100% 100%;
     -webkit-transform: translateX(0%);
         -ms-transform: translateX(0%);
             transform: translateX(0%);
@@ -1015,6 +1018,9 @@ i:nth-child(100) b {
 }
 
 .push-in.ng-hide {
+    background-image:url('/images/easywash/prize/prize1-background.png');
+    background-repeat: no-repeat;;
+    background-size: 100% 100%;
     -webkit-transform: translateX(100%);
         -ms-transform: translateX(100%);
             transform: translateX(100%);
