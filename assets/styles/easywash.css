@@ -987,9 +987,9 @@ i:nth-child(100) b {
 }
 #rules {
     position: absolute;
-    right: -5%;
+    right: -2%;
     top: 3%;
-    width: 24.2%;
+    width: 30%;
     background-color: transparent;
 }
 #rules img {
@@ -1000,8 +1000,8 @@ i:nth-child(100) b {
 }
 
 @keyframes rules {
-    from {width:90%;top:3%;right:-5%}
-    to {width:100%;top:4%;right:-4%;}
+    from {width:90%;top:3%;right:-2%}
+    to {width:100%;top:4%;right:-1%;}
 }
 
 /*
