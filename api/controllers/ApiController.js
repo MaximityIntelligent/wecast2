@@ -23,8 +23,10 @@ module.exports = {
     resp = request('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&grant_type=authorization_code');
         result = JSON.parse(resp.getBody());
         var accessToken = result.access_token;
+        var userInfo = {};
         var openId = result.openid;
-        User.create(openId, function(err, userOne){
+        userInfo.openId = openId;
+        User.create(userInfo, function(err, userOne){
           if(err){
             res.status(500);
             res.end();

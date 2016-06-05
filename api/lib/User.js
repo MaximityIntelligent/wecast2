@@ -138,14 +138,14 @@ User.incrementCredit = function(userOpenId, increment, cb){
     })
   });
 }
-User.create = function(userOpenId, cb){
-  user.findOne({openId: userOpenId}).exec(function(err, userOne){
+User.create = function(userInfo, cb){
+  user.findOne({openId: userInfo.openId}).exec(function(err, userOne){
     if(err){
       cb(err);
       return;
     }
     if(!userOne){
-      user.create({openId: userOpenId, credit: 0}).exec(function(err, userCreated){
+      user.create({openId: userInfo.openId, credit: 0}).exec(function(err, userCreated){
         if(err){
           cb(err);
           return;
