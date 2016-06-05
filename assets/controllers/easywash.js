@@ -58,7 +58,7 @@ function($scope, $http){
   $(window)
   .bind('orientationchange', function(){
 
-    if (window.orientation % 180 == 0){
+    if (window.orientation % 180 == 0 || true){
       $scope.$apply(function(){
           if( typeof $scope.landscape != 'undefined'){
             if(typeof QueryString.pg == 'undefined'){
