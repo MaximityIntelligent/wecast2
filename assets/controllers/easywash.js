@@ -268,6 +268,7 @@ function($scope, $http){
       $scope.log('redeem_'+prize);
     }).error(function(data) {
       //$scope.redeemErrMsg = "兑换失败";
+      $scope.redeemErrMsg = data.errMsg;
       $("#veri-code-errModal").modal('show');
     });
 

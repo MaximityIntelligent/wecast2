@@ -113,6 +113,7 @@ module.exports = {
     var userOpenId = req.param("user");
     var prize = req.param("prize");
     var prize1Credit = 188;
+    var prize1Amount = 3;
     redeem_c.findOne({user: userOpenId, advertisement: adString}).exec(function(err, redeemOne){
       user.findOne({openId: userOpenId}).exec(function(err, userOne){
         if(!userOne){
@@ -124,17 +125,27 @@ module.exports = {
           var credit = userOne.credit;
           if(verificationCode==VERIFICATION_CODE){
             if(prize=="prize1"){
-              if(credit<prize1Credit){
-                res.status(500);
-                res.end();
-                return;
-              }else{
-                userOne.credit = userOne.credit - prize1Credit;
-                userOne.save(function(){
-                  res.json({credit: userOne.credit, prize: prize});
-                  return;
-                });
-              }
+              log.find({action:'redeem_prize1'}).exec(function (err, logs) {
+                 if (logs.length < prize1Amount) {
+                    if(credit<prize1Credit){
+                      res.status(500);
+                      res.json({errMsg: '印花不足,暂时无法兑换'});
+                      return;
+                    } else{
+                      userOne.credit = userOne.credit - prize1Credit;
+                      userOne.save(function(){
+                        res.json({credit: userOne.credit, prize: prize});
+                        return;
+                      });
+                    }
+                 } else {
+                    console.log('Out of amount');
+                    res.status(400);
+                    res.json({errMsg: '奬品已全部換領完畢。'});
+                    return;
+                 }
+              });
+              
             }else if(prize=="prize2"){
               if(credit<38){
                 res.status(500);
@@ -153,7 +164,7 @@ module.exports = {
             }
           }else{
             res.status(500);
-            res.end();
+            res.json({errMsg: 'SORRY  领奖码有误'});
             return;
           }
 
