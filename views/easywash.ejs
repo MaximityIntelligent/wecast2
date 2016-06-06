@@ -102,7 +102,7 @@
     <div ng-init="init()" data-ng-hide="1">
     </div>
 
-    <div class="container-fluid animate-show" id="main-container" data-ng-show="MAIN==atPage" >
+    <div class="container-fluid" id="main-container" data-ng-show="MAIN==atPage" >
       <div id="main-event-info">
         <a href="#top"><img name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;initAboutEasywash();clickCount('about_easywash');log('about_easywash')"></a>
 
@@ -182,7 +182,7 @@
       </div>
     </div>
 
-    <div class="container-fluid animate-show" id="container_p1" ng-show="PRIZE1==atPage" >
+    <div class="container-fluid" id="container_p1" ng-show="PRIZE1==atPage" >
       <div class="close-btn"  data-ng-show="false">
         <a href="#top">
           <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('prize1_return')">
