@@ -199,15 +199,15 @@
     </div>
 
     <div class="container-fluid" id="container_p2" data-ng-show="PRIZE2==atPage" >
-      <div class="close-btn">
+      <div class="close-btn" data-ng-show="false">
         <a href="#top">
           <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('prize2_return')">
         </a>
       </div>
-      <div id="prize2-1" style="color: white">
+      <div id="prize2-1" style="color: white" data-ng-show="false">
         <font>{{credit}}</font>
       </div>
-      <div id="prize2-2" class="row">
+      <div id="prize2-2" class="row" data-ng-show="false">
         <center>
           <a href="#top">
           <img name="continue-bubble" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('continue_collect');log('continue_collect')">
@@ -219,6 +219,9 @@
             <img name="go-wash" class="img-responsive" src="/images/easywash/prize/go-wash.png" ng-click="log('go_wash')">
           </a>
         </center>
+      </div>
+      <div id="prize2-back" ng-click="atPage=MAIN;log('prize2_return')">
+        <center><a href="#top"><img name="prize2Back" src="/images/easywash/about-easywash/address.png"></a></center>
       </div>
     </div>
 
@@ -494,16 +497,16 @@
 
 
       var prize1ScaleY = 4611;
-      var containerHeight_p1 = containerWidth*prize1ScaleY/mainScaleX;
+      var containerHeight_prize1 = containerWidth*prize1ScaleY/mainScaleX;
       $("#container_p1").css("width", containerWidth);
-      $("#container_p1").css("height", containerHeight_p1);
+      $("#container_p1").css("height", containerHeight_prize1);
 
       $("#prize1-1").css("position", "absolute");
-      $("#prize1-1").css("top", containerHeight_p1*240/prize1ScaleY);
+      $("#prize1-1").css("top", containerHeight_prize1*240/prize1ScaleY);
       $("#prize1-1").css("left", containerWidth*586/mainScaleX);
       $("#prize1-1").css("color", "yellow");
       //$("#prize1-1").css("width", containerHeight_p1*40/1206);
-      $("#prize1-1 font").css("font-size", containerHeight_p1*40/prize1ScaleY);
+      $("#prize1-1 font").css("font-size", containerHeight_prize1*40/prize1ScaleY);
 
       //$("#prize1-1").css("margin-left", "-"+containerHeight_p1*40/1206*0.7+"px");
       //$("#prize1-1").css("margin-top", "-"+containerHeight_p1*40/1206*0.5+"px");
@@ -518,12 +521,13 @@
       var prize11Height = $("#prize1-1").css("height");
       $("#prize1-1").css("margin-left", "-"+36*0.5+"px");
       $("#prize1-1").css("margin-top", "-"+20*0.5+"px");*/
-      var containerHeight_prize1 = containerWidth*prize1ScaleY/mainScaleX;
       var prize1BackTop = 4496;
-      $("#prize1-back").css("margin-top", containerHeight_prize1*4496/prize1ScaleY);
+      var prize1BackWidth = 210;
+      var prize1BackHeight = 76;
+      $("#prize1-back").css("margin-top", containerHeight_prize1*prize1BackTop/prize1ScaleY);
       $("#prize1-back").css("width", "100%");
-      $('img[name="prize1Back"]').css("width", containerWidth*210/mainScaleX);
-      $('img[name="prize1Back"]').css("heigh", containerHeight_prize1*76/prize1ScaleY);
+      $('img[name="prize1Back"]').css("width", containerWidth*prize1BackWidth/mainScaleX);
+      $('img[name="prize1Back"]').css("heigh", containerHeight_prize1*prize1BackHeight/prize1ScaleY);
 
       var prize12Top = 872;
       var prize12Height = 200;
@@ -532,16 +536,25 @@
       $("#prize1-2").css("height", containerHeight*prize12Height/mainScaleY);
       $("#prize1-2").css("top", containerHeight*prize12Top/mainScaleY);
 
-      var containerHeight_p2 = containerWidth*1206/mainScaleX;
+      var prize2ScaleY = 4721;
+      var containerHeight_prize2 = containerWidth*prize2ScaleY/mainScaleX;
       $("#container_p2").css("width", containerWidth);
-      $("#container_p2").css("height", containerHeight_p2);
+      $("#container_p2").css("height", containerHeight_prize2);
+
+      var prize2BackTop = 4651;
+      var prize2BackWidth = 210;
+      var prize2BackHeight = 76;
+      $("#prize2-back").css("margin-top", containerHeight_prize2*prize2BackTop/prize2ScaleY);
+      $("#prize2-back").css("width", "100%");
+      $('img[name="prize2Back"]').css("width", containerWidth*prize2BackWidth/mainScaleX);
+      $('img[name="prize2Back"]').css("heigh", containerHeight_prize2*prize2BackHeight/prize2ScaleY);
 
       $("#prize2-1").css("position", "absolute");
-      $("#prize2-1").css("top", containerHeight_p2*240/1206);
+      $("#prize2-1").css("top", containerHeight_prize2*240/1206);
       $("#prize2-1").css("left", containerWidth*586/mainScaleX);
       $("#prize2-1").css("color", "yellow");
       //$("#prize1-1").css("width", containerHeight_p1*40/1206);
-      $("#prize2-1 font").css("font-size", containerHeight_p2*40/1206);
+      $("#prize2-1 font").css("font-size", containerHeight_prize2*40/1206);
 
       //$("#prize2-1").css("margin-left", "-"+containerHeight_p2*40/1206*0.7+"px");
       //$("#prize2-1").css("margin-top", "-"+containerHeight_p2*40/1206*0.5+"px");
@@ -558,9 +571,10 @@
 
       $("#prize2-2").css("position", "absolute");
       $("#prize2-2").css("width", "100%");
-      $("#prize2-2").css("top", containerHeight_p2*970/1206);
+      $("#prize2-2").css("top", containerHeight_prize2*970/1206);
 
-      $('img[name="redeem"]').css("width", containerWidth*242/mainScaleX);
+      var redeemWidth = 242;
+      $('img[name="redeem"]').css("width", containerWidth*redeemWidth/mainScaleX);
       $('img[name="go-wash"]').css("width", containerWidth*153/mainScaleX);
       $('img[name="continue-bubble"]').css("width", containerWidth*153/mainScaleX);
       //alert("450");

@@ -7,7 +7,7 @@ module.exports = User;
 
 
 
-User.sharedToUsers_c = function (userContext, adId, cb){
+User.sharedToUsers_c = function (userContext, adId, cb){ //找出user 分享過的follower
 
   //console.log("26");
   share_c.findOne({sharedBy: userContext.openId, advertisement_c: adId}).exec(function(err, shareOne){
@@ -30,7 +30,7 @@ User.sharedToUsers_c = function (userContext, adId, cb){
   })
 }
 
-User.userExists = function (userOpenId, cb){
+User.userExists = function (userOpenId, cb){ //check user 是否存在DB
   user.findOne({openId: userOpenId}).exec(function(err, userOne){
     if(err){
       cb(err);
@@ -46,14 +46,14 @@ User.userExists = function (userOpenId, cb){
   });
 }
 
-User.shareAd_c = function (sharedBy, sharedTo, adId, cb){
+User.shareAd_c = function (sharedBy, sharedTo, adId, cb){ //按制share點擊獲得積分的function
   var ad_c = ['adMood'];
   if(-1==ad_c.indexOf(adId)){
     //console.log("121");
     cb(null);
     return;
   }
-  if(sharedBy==sharedTo||sharedBy=="wecast"){
+  if(sharedBy==sharedTo||sharedBy=="wecast"){ //如果係公众號進入或進入自己分享的post，就不用加分
     //console.log("127"+sharedBy);
     cb(null);
     return;
@@ -67,12 +67,12 @@ User.shareAd_c = function (sharedBy, sharedTo, adId, cb){
       cb({code: 400, msg: "User not found"});
       return;
     }
-    share_c.findOne({sharedBy: sharedBy, advertisement_c: adId}).exec(function(err, shareOne){
+    share_c.findOne({sharedBy: sharedBy, advertisement_c: adId}).exec(function(err, shareOne){ //找尋是否原先已經加過分的function
       if(err){
         cb(err);
         return;
       }
-      if(!shareOne){
+      if(!shareOne){ //如果沒有分享過的記錄
         var sharedToArr = [];
         sharedToArr.push(sharedTo)
         share_c.create({sharedBy: sharedBy, sharedTo: sharedToArr, advertisement_c: adId}).exec(function(err){
@@ -83,8 +83,8 @@ User.shareAd_c = function (sharedBy, sharedTo, adId, cb){
           User.incrementCredit(sharedBy, 1, cb);
           return;
         });
-      }else{
-        if(-1==shareOne.sharedTo.indexOf(sharedTo)){
+      }else{ 
+        if(-1==shareOne.sharedTo.indexOf(sharedTo)){ //如果有記錄，找尋有沒有對應的follower
           console.log("sharedTo not found");
           var sharedToArr = shareOne.sharedTo;
           sharedToArr.push(sharedTo);
@@ -108,7 +108,7 @@ User.shareAd_c = function (sharedBy, sharedTo, adId, cb){
 
 }
 
-User.incrementCredit = function(userOpenId, increment, cb){
+User.incrementCredit = function(userOpenId, increment, cb){ //User增加credit時調用
   user.findOne({openId: userOpenId}).exec(function(err, userOne){
     if(err){
       cb(err);
@@ -138,7 +138,7 @@ User.incrementCredit = function(userOpenId, increment, cb){
     })
   });
 }
-User.create = function(userInfo, cb){
+User.create = function(userInfo, cb){ //Create User, 如果原有就return現有資料
   user.findOne({openId: userInfo.openId}).exec(function(err, userOne){
     if(err){
       cb(err);
@@ -158,7 +158,7 @@ User.create = function(userInfo, cb){
     //console.log("229");
   });
 }
-User.draw = function(userOpenId, cb){
+User.draw = function(userOpenId, cb){ //未有用到
   user.findOne({openId: userOpenId}).exec(function(err, userOne){
     if(err||!userOne){
       cb(err);

@@ -1,7 +1,7 @@
 
 var app = angular.module('easywash', []);
 
-var QueryString = function () {
+var QueryString = function () {  //提取由公众號或分享LINK時的CODE參數
   // This function is anonymous, is executed immediately and
   // the return value is assigned to QueryString!
   var query_string = {};
@@ -53,13 +53,13 @@ function($scope, $http){
   $scope.redeemErrMsg = "";
   $scope.prevPage = "";
 
-  $(window).trigger('orientationchange');
+  $(window).trigger('orientationchange'); //check裝置方向
 
 
   $(window)
-  .bind('orientationchange', function(){
+  .bind('orientationchange', function(){ 
 
-    if (window.orientation % 180 == 0 || true){
+    if (window.orientation % 180 == 0 || true){ //如果是垂直
       $scope.$apply(function(){
           if( typeof $scope.landscape != 'undefined'){
             if(typeof QueryString.pg == 'undefined'){
@@ -74,7 +74,7 @@ function($scope, $http){
       $('body').addClass("portrait");
 
     }
-    else {
+    else { //如果是水平
       //alert('landscape');
       $scope.$apply(function(){
           $(".spinner").remove();
@@ -87,17 +87,17 @@ function($scope, $http){
       });
 
     }
-  }).trigger('orientationchange');
+  });//.trigger('orientationchange');
 
 
-  $scope.init = function()
+  $scope.init = function() // 初始化頁面
   {
     //alert("init");
     var url = window.location.href;
     url = encodeURIComponent(url);
     $http.get('/api/init_c?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad='+adString
       ).
-      success(function(data, status, headers, config) {
+      success(function(data, status, headers, config) { 
           //alert("success");
           //$scope.nickname = data.nickname;
           $scope.noncestr = data.noncestr;
@@ -172,18 +172,19 @@ function($scope, $http){
 
 
       }).
-      error(function(data, status, headers, config) {
+      error(function(data, status, headers, config) { //如果從外部連結返回時會遇到code error問題，就要重新定向
         //alert("error");
         window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope=snsapi_base#wechat_redirect';
         //$('body').addClass("loaded");
         //$('#loader-wrapper').css("display", "none");
       });
 
-      $(window).trigger('orientationchange');
+      // $(window).trigger('orientationchange');
 
   }
   $scope.shareSuccess = function(){
-    $scope.atPage=$scope.MAIN;$.fancybox.close();$.fn.fancybox.close();
+    $scope.atPage=$scope.MAIN;
+    $.fancybox.close();$.fn.fancybox.close();
   }
   $scope.showRedeem = function(prize){
 
@@ -193,6 +194,7 @@ function($scope, $http){
     if(prize=="prize1"){
       $scope.prizeRedeem = "prize1";
       if($scope.credit<prize1Credit){
+        $scope.redeemErrMsg = "印花不足,暂时无法兑换";
         $("#veri-credit-errModal").modal('show');
         return;
       }else{
@@ -304,10 +306,10 @@ function($scope, $http){
     });
   }
   $scope.resetVideo = function(){
-    document.getElementById("easywash-video").src = "http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0";
+    //document.getElementById("easywash-video").src = "http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0";
   }
   $scope.initAboutEasywash = function(){
-    document.getElementById("easywash-video").src = "http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0";
+    //document.getElementById("easywash-video").src = "http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0";
   }
 
   /*

@@ -12,7 +12,7 @@
  var adString = "adMood";
 
 module.exports = {
-	init_c: function(req, res){
+	init_c: function(req, res){ //首次進入會跑的流程
     var code = req.param("code");
     var sharedBy = req.param("sharedBy");
     var adId = req.param("ad");
@@ -21,7 +21,7 @@ module.exports = {
     var resp;
     var result;
     resp = request('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&grant_type=authorization_code');
-        result = JSON.parse(resp.getBody());
+        result = JSON.parse(resp.getBody());  //得到USER的AccessToken from weixin
         var accessToken = result.access_token;
         var userInfo = {};
         var openId = result.openid;
@@ -113,7 +113,7 @@ module.exports = {
     var userOpenId = req.param("user");
     var prize = req.param("prize");
     var prize1Credit = 188;
-    var prize1Amount = 3;
+    var prize1Amount = 1000000;
     redeem_c.findOne({user: userOpenId, advertisement: adString}).exec(function(err, redeemOne){
       user.findOne({openId: userOpenId}).exec(function(err, userOne){
         if(!userOne){
