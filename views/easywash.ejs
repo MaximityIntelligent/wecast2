@@ -221,7 +221,7 @@
         </center>
       </div>
       <div id="prize2-qr">
-        <img name="prize2Back" src="/images/easywash/prize/prize2-qr.png">
+        <img name="prize2Qr" src="/images/easywash/prize/prize2-qr.png">
       </div>
       <div id="prize2-back" ng-click="atPage=MAIN;log('prize2_return')">
         <center><a href="#top"><img name="prize2Back" src="/images/easywash/about-easywash/address.png"></a></center>
@@ -550,7 +550,7 @@
       $("#prize2-back").css("margin-top", containerHeight_prize2*prize2BackTop/prize2ScaleY);
       $("#prize2-back").css("width", "100%");
       $('img[name="prize2Back"]').css("width", containerWidth*prize2BackWidth/mainScaleX);
-      $('img[name="prize2Back"]').css("heigh", containerHeight_prize2*prize2BackHeight/prize2ScaleY);
+      $('img[name="prize2Back"]').css("height", containerHeight_prize2*prize2BackHeight/prize2ScaleY);
 
       var prize2QrTop = 4495;
       var prize2QrLeft = 594;
@@ -559,7 +559,9 @@
       $("#prize2-qr").css("position", "absolute");
       $("#prize2-qr").css("top", containerHeight_prize2*prize2QrTop/prize2ScaleY);
       $("#prize2-qr").css("left", containerWidth*prize2QrLeft/mainScaleX);
-      $("#prize2-qr").css("width", containerWidth*prize2QrWidth/mainScaleX);
+      $("#prize2-qr").css("width", "100%");
+      $('img[name="prize2Qr"]').css("width", containerWidth*prize2QrWidth/mainScaleX);
+      $('img[name="prize2Qr"]').css("height", containerHeight_prize2*prize2QrHeight/prize2ScaleY);
 
       $("#prize2-1").css("position", "absolute");
       $("#prize2-1").css("top", containerHeight_prize2*240/1206);
