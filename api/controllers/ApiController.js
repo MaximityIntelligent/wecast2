@@ -8,7 +8,7 @@
  var weixin = require('../../config/weixin');
  var sha1 = require('sha1');
  var User = require('../lib/User');
- var VERIFICATION_CODE="ew001";
+ var VERIFICATION_CODE="mood001";
  var adString = "adMood";
 
 module.exports = {
