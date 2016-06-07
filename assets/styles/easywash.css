@@ -1036,6 +1036,7 @@ i:nth-child(100) b {
 }
 
 #main-finger {
+    margin-left: 15px;
     position: absolute;
 }
 
@@ -1047,8 +1048,8 @@ i:nth-child(100) b {
 }
 
 @-webkit-keyframes movein {
-    from   {opacity: 0; margin-left: 70%;}
-    to     {opacity: 1; margin-left: 48%;}
+    from   {opacity: 1; margin-left: 70%;}
+    to     {opacity: 0.1; margin-left: 48%;}
 }
 /*
 @media (max-height: 480px) and (min-width: 480px) and (max-width: 600px) {
