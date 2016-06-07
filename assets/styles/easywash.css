@@ -1047,12 +1047,12 @@ i:nth-child(100) b {
 
 @keyframes movein {
     from   {transform: translateX(0%); -webkit-transform: translateX(0%); -ms-transform: translateX(0%)}
-    to     {transform: translateX(200%); -webkit-transform: translateX(200%); -ms-transform: translateX(200%)}
+    to     {transform: translateX(-200%); -webkit-transform: translateX(-200%); -ms-transform: translateX(-200%)}
 }
 
 @-webkit-keyframes movein {
-    from   {transform: translateX(0%); -webkit-transform: translateX(0%); -ms-transform: translateX(0%)}
-    to     {transform: translateX(200%); -webkit-transform: translateX(200%); -ms-transform: translateX(200%)}
+    from   {opacity: 0; transform: translateX(0%); -webkit-transform: translateX(0%); -ms-transform: translateX(0%)}
+    to     {opacity: 1; transform: translateX(-200%); -webkit-transform: translateX(-200%); -ms-transform: translateX(-200%)}
 }
 /*
 @media (max-height: 480px) and (min-width: 480px) and (max-width: 600px) {
