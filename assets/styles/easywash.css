@@ -1047,7 +1047,7 @@ i:nth-child(100) b {
 
 #main-finger img {
     animation-name: movein;
-    animation-duration: 0.8s;
+    animation-duration: 1.2s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
