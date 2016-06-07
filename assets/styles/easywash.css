@@ -1034,6 +1034,20 @@ i:nth-child(100) b {
   from {opacity: 1}
    to {opacity: 0}
 }
+
+.movein {
+    width: 54px;
+    height: 76px;
+    position: relative;
+    animation-name: movein;
+    animation-duration: 1.2s;
+    animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes movein {
+    0%   {opacity: 0; left: 80%; top: 45%;}
+    100% {opacity: 1; left: 52%; top: 45%;}
+)
 /*
 @media (max-height: 480px) and (min-width: 480px) and (max-width: 600px) {
     html{
