@@ -1051,9 +1051,9 @@ i:nth-child(100) b {
 
 #main-finger img {
     animation-name: movein;
-    animation-duration: 1.2s;
+    animation-duration: 1.75s;
     animation-iteration-count: infinite;
-    animation-timing-function: ease-out;
+    animation-timing-function: ease;
 }
 
 @-webkit-keyframes movein {
