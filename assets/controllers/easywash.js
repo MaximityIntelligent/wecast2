@@ -59,7 +59,7 @@ function($scope, $http){
   $(window)
   .bind('orientationchange', function(){ 
 
-    if (window.orientation % 180 == 0 || true){ //如果是垂直
+    if (window.orientation % 180 == 0){ //如果是垂直
       $scope.$apply(function(){
           if( typeof $scope.landscape != 'undefined'){
             if(typeof QueryString.pg == 'undefined'){
