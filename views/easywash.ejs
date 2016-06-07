@@ -106,12 +106,12 @@
 
     <div class="container-fluid" id="main-container" data-ng-show="MAIN==atPage" >
       <div id="main-event-info">
-        <a href="#top"><img style="visibility: hidden;" name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;initAboutEasywash();clickCount('about_easywash');log('about_easywash')"></a>
+        <a href="#top"><img style="opacity: 0;" name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;initAboutEasywash();clickCount('about_easywash');log('about_easywash')"></a>
 
       </div>
       <div id="main-1" style="text-align: center;color: yellow">
         <div>
-        <a href="#top"><img style="visibility: hidden;" class="img-responsive" src="/images/easywash/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_button');log('share_button')"></a>
+        <a href="#top"><img style="opacity: 0;" class="img-responsive" src="/images/easywash/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_button');log('share_button')"></a>
         </div>
         
       </div>
@@ -123,19 +123,19 @@
       <div id="prize1-2" class="row">
         <center>
           <a href="#top">
-          <img name="redeem" class="redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" >
+          <img name="redeem" style="opacity: 0;" class="redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" >
           </a>
         </center>
       </div>
       <div id="main-2">
         <a href="#top">
-        <img class="img-responsive" src="/images/easywash/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1;clickCount('prize1_page');log('prize1_page')">
+        <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1;clickCount('prize1_page');log('prize1_page')">
         <img class="img-responsive" src="/images/easywash/main/prize1-dim.png" ng-show="showPrize1Dim();" ng-click="atPage=PRIZE1;clickCount('prize1_page');log('prize1_page')">
         </a>
       </div>
       <div id="main-3">
         <a href="#top">
-        <img class="img-responsive" src="/images/easywash/main/prize2.png" ng-show="showPrize2();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
+        <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize2.png" ng-show="showPrize2();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
         <img class="img-responsive" src="/images/easywash/main/prize2-dim.png" ng-show="showPrize2Dim();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
         </a>
       </div>
@@ -183,7 +183,7 @@
     </div>
     <div class="container-fluid" id="container_thankyou" data-ng-show="THANKYOU==atPage" ng-click="log('thankyou_page');" >
       <div id="thankyou-1">
-        <a href="#top"><img name="iwant" src="/images/easywash/thankyou/iwant.gif" ng-click="atPage=MAIN;"></a>
+        <a href="#top"><img name="iwant" style="opacity: 0;" src="/images/easywash/thankyou/iwant.gif" ng-click="atPage=MAIN;"></a>
       </div>
       <div id="qrcode" style="position: absolute;right: 0;bottom: 0;left: 0;">
         <img src="/images/easywash/thankyou/qrcode.png" style="max-width:100%;max-height:20%;">
@@ -201,7 +201,7 @@
         <img name="prize1Qr" src="/images/easywash/prize/prize1-qr.png">
       </div>
       <div id="prize1-back" ng-click="atPage=MAIN;log('prize1_return')">
-        <center><a href="#top"><img name="prize1Back" src="/images/easywash/about-easywash/address.png"></a></center>
+        <center><a href="#top"><img style="opacity: 0;" name="prize1Back" src="/images/easywash/about-easywash/address.png"></a></center>
       </div>
     </div>
 
@@ -231,7 +231,7 @@
         <img name="prize2Qr" src="/images/easywash/prize/prize2-qr.png">
       </div>
       <div id="prize2-back" ng-click="atPage=MAIN;log('prize2_return')">
-        <center><a href="#top"><img name="prize2Back" src="/images/easywash/about-easywash/address.png"></a></center>
+        <center><a href="#top"><img style="opacity: 0;" name="prize2Back" src="/images/easywash/about-easywash/address.png"></a></center>
       </div>
     </div>
 
@@ -294,7 +294,7 @@
               </br>
               <div class="form-group">
                 <input type="password" id="verification1" class="form-control" placeholder="交由工作人员输入" 
-                style="background-color: #555; color:white;">
+                style="background-color: #444; color:white; border: 0px;">
               </div>
 
             </form>
@@ -343,7 +343,7 @@
         <img name="aboutQr" src="/images/easywash/about-easywash/about-qr.png">
       </div>
       <div id="easywash-2" ng-click="atPage=MAIN;log('about_easywash_return')">
-        <center><a href="#top"><img name="address" src="/images/easywash/about-easywash/address.png"></a></center>
+        <center><a href="#top"><img style="opacity: 0;" name="address" src="/images/easywash/about-easywash/address.png"></a></center>
       </div>
       <div id="easywash-3" ng-click="clickCount('tel');log('tel')" data-ng-show="false">
         <center><a href="tel:85363539002"><img name="call" src="/images/easywash/about-easywash/call.png"></a></center>
