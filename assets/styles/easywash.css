@@ -1036,22 +1036,21 @@ i:nth-child(100) b {
 }
 
 #main-finger {
-    
+    width: 7%;
+    left: 80%; 
+    top: 45%;
+    position: relative;
 }
 
 .movein {
-    width: 7%;
-    left: 80%; 
-    top: 46%;
-    position: relative;
     animation-name: movein;
     animation-duration: 1.2s;
     animation-iteration-count: infinite;
 }
 
 @-webkit-keyframes movein {
-    from   {opacity: 0; left: 80%; top: 46%;}
-    to     {opacity: 1; left: 52%; top: 46%;}
+    from   {opacity: 0; left: 80%; top: 45%;}
+    to     {opacity: 1; left: 52%; top: 45%;}
 )
 /*
 @media (max-height: 480px) and (min-width: 480px) and (max-width: 600px) {
