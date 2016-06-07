@@ -944,21 +944,21 @@ i:nth-child(100) b {
 }
 */
 .spinner-logo {
-  margin: 300px auto 0;
+  margin: 230px auto 0;
   width: 150px;
   text-align: center;
 }
 
 .spinner {
-  margin: 10px auto 0;
+  margin: 20px auto 0;
   width: 150px;
   text-align: center;
 }
 
 .spinner > div {
 
-  width: 15px;
-  height: 15px;
+  width: 10px;
+  height: 10px;
   background-color: #FFF121;
 
   border-radius: 100%;
