@@ -145,6 +145,9 @@
       <a href="#top">
       <div id="main-5" ng-click="atPage=THANKYOU;" data-ng-show="false" >
       </div>
+      <div id="main-qr" style="margin-left: -15px;">
+        <img name="mainQr" src="/images/easywash/main/main-qr.png">
+      </div>
       </a>
     </div>
     <div class="container" id="container_e" >
@@ -368,7 +371,7 @@
     $("document").ready(function(){
       $("body").css("background-color", "black");
       var mainScaleX = 750;
-      var mainScaleY = 1300;
+      var mainScaleY = 1412;
       var containerWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
       var containerHeight = containerWidth*mainScaleY/mainScaleX;
 
@@ -430,6 +433,16 @@
       $("#main-finger").css("top", containerHeight*0.45);
       $("#main-finger").css("width", containerWidth);
       $("#main-finger img").css("width", containerWidth*54/mainScaleX);
+
+      var mainQrTop = 1216;
+      var mainQrLeft = 0;
+      var mainQrWidth = 750;
+      var mainQrHeight = 196;
+      $("#main-qr").css("position", "absolute");
+      $("#main-qr").css("top", containerHeight*mainQrTop/mainScaleY);
+      $("#main-qr").css("left", containerWidth*mainQrLeft/mainScaleX);
+      $('img[name="mainQr"]').css("width", containerWidth*mainQrWidth/mainScaleX);
+      $('img[name="mainQr"]').css("height", containerHeight*mainQrHeight/mainScaleY);
 
       $("#main-5").css("position", "absolute");
       $("#main-5").css("top", containerHeight*576/mainScaleY);
