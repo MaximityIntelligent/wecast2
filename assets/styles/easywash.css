@@ -1042,7 +1042,7 @@ i:nth-child(100) b {
     position: relative;
 }
 
-.movein {
+#main-finger img {
     animation-name: movein;
     animation-duration: 1.2s;
     animation-iteration-count: infinite;
