@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
   <head>
-    <title>MOOD X MURFY 请你睇2016MODEL大赛</title>
+    <title>MOOD X MURFY 请你睇MODEL大赛</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
@@ -106,12 +106,12 @@
 
     <div class="container-fluid" id="main-container" data-ng-show="MAIN==atPage" >
       <div id="main-event-info">
-        <a href="#top"><img name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;initAboutEasywash();clickCount('about_easywash');log('about_easywash')"></a>
+        <a href="#top"><img style="visibility: hidden;" name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;initAboutEasywash();clickCount('about_easywash');log('about_easywash')"></a>
 
       </div>
       <div id="main-1" style="text-align: center;color: yellow">
         <div>
-        <a href="#top"><img class="img-responsive" src="/images/easywash/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_button');log('share_button')"></a>
+        <a href="#top"><img style="visibility: hidden;" class="img-responsive" src="/images/easywash/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_button');log('share_button')"></a>
         </div>
         
       </div>
@@ -293,7 +293,8 @@
               <h4>安排完成兑奖</h4>
               </br>
               <div class="form-group">
-                <input type="password" id="verification1" class="form-control">
+                <input type="password" id="verification1" class="form-control" placeholder="交由工作人员输入" 
+                style="background-color: #555; color:white;">
               </div>
 
             </form>
