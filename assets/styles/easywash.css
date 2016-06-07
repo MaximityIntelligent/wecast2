@@ -5,6 +5,8 @@
   background-image:url('/images/easywash/main/main-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
+  animation-name: fade-in;
+  animation-duration: 0.8s;
 }
 #container_share {
   background-image:url('/images/easywash/share/share-background.png');
@@ -45,6 +47,8 @@
   background-image:url('/images/easywash/about-easywash/about-easywash-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
+  animation-name: fade-in;
+  animation-duration: 0.8s;
 }
 #container_thankyou {
   background-image:url('/images/easywash/thankyou/thankyou-background.png');
