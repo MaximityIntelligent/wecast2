@@ -1038,8 +1038,8 @@ i:nth-child(100) b {
 #main-finger {
     width: 6%;
     left: 80%; 
-    top: 45%;
-    position: absolute;
+    top: 50%;
+    position: relative;
     background-color: transparent;
 }
 
@@ -1051,8 +1051,8 @@ i:nth-child(100) b {
 }
 
 @keyframes movein {
-    from   {opacity: 0; left: 80%; top: 45%;}
-    to {opacity: 1; left: 52%; top: 45%;}
+    from   {opacity: 0; left: 80%; top: 50%;}
+    to     {opacity: 1; left: 52%; top: 50%;}
 )
 /*
 @media (max-height: 480px) and (min-width: 480px) and (max-width: 600px) {
