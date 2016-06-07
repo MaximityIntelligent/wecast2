@@ -1043,6 +1043,7 @@ i:nth-child(100) b {
     animation-name: movein;
     animation-duration: 1.2s;
     animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 
 @-webkit-keyframes movein {
