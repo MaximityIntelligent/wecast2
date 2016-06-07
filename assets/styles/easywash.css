@@ -1043,7 +1043,7 @@ i:nth-child(100) b {
     animation-iteration-count: infinite;
 }
 
-@-webkit-keyframes movein {
+@keyframes movein {
     0%   {opacity: 0; left: 80%; top: 45%;}
     100% {opacity: 1; left: 52%; top: 45%;}
 )
