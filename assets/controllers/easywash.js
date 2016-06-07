@@ -33,7 +33,7 @@ if(typeof QueryString.code == 'undefined'){
 var ad = QueryString.ad;
 var sharedBy = QueryString.sharedBy;
 var adString = 'adMood';
-var prize1Credit = 188;
+var prize1Credit = 80;
 
 app.controller('IndexCtrl', [
 '$scope','$http',
