@@ -161,7 +161,7 @@ function($scope, $http){
               }
 
           });
-          $('body').addClass('loaded');
+          //$('body').addClass('loaded');
 
         });
         wx.error(function(res){

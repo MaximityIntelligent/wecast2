@@ -943,6 +943,11 @@ i:nth-child(100) b {
   }
 }
 */
+.spinner-logo {
+  margin: 300px auto 0;
+  width: 150px;
+  text-align: center;
+}
 
 .spinner {
   margin: 300px auto 0;
@@ -1042,14 +1047,14 @@ i:nth-child(100) b {
 
 #main-finger img {
     animation-name: movein;
-    animation-duration: 1.2s;
+    animation-duration: 0.8s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
 
 @-webkit-keyframes movein {
     from   {opacity: 1; margin-left: 70%;}
-    to     {opacity: 1; margin-left: 48%;}
+    to     {opacity: 1; margin-left: 52%;}
 }
 /*
 @media (max-height: 480px) and (min-width: 480px) and (max-width: 600px) {
