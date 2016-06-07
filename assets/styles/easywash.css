@@ -1035,14 +1035,19 @@ i:nth-child(100) b {
    to {opacity: 0}
 }
 
-.movein {
-    width: 10%;
+#main-finger {
+    width: 6%;
     left: 80%; 
     top: 45%;
     position: absolute;
+    background-color: transparent;
+}
+
+#main-finger img {
     animation-name: movein;
     animation-duration: 1.2s;
     animation-iteration-count: infinite;
+    animation-direction: alternate;
 }
 
 @keyframes movein {
