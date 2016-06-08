@@ -1050,7 +1050,7 @@ i:nth-child(100) b {
 }
 
 #main-finger img {
-    margin-left: 70%;
+    margin-left: 52%;
     animation-name: movein;
     animation-duration: 1.75s;
     animation-iteration-count: infinite;
