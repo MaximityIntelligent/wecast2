@@ -129,7 +129,7 @@ module.exports = {
                  if (logs.length < prize1Amount) {
                     if(credit<prize1Credit){
                       res.status(500);
-                      res.json({errMsg: '印花不足,暂时无法兑换'});
+                      res.json({errMsg: '印花不足,暫時無法兌換'});
                       return;
                     } else{
                       userOne.credit = userOne.credit - prize1Credit;
@@ -164,7 +164,7 @@ module.exports = {
             }
           }else{
             res.status(500);
-            res.json({errMsg: 'SORRY  领奖码有误'});
+            res.json({errMsg: 'SORRY  領獎碼有誤'});
             return;
           }
 

@@ -16,7 +16,7 @@ module.exports = {
     },
     credit: {
       type: 'integer',
-      defaultsTo: 0,
+      defaultsTo: 1,
       required: true
     },
     nickname: {
