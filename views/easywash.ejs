@@ -186,7 +186,7 @@
       </div>
     </div>
 
-    <div class="container-fluid" id="container_p1" ng-show="PRIZE1==atPage" >
+    <div class="container-fluid" id="container_p1" ng-show="PRIZE1==atPage" ng-click="atPage=MAIN;log('prize1_return')">
       <div class="close-btn"  data-ng-show="false">
         <a href="#top">
           <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('prize1_return')">
@@ -201,7 +201,7 @@
       </div>
     </div>
 
-    <div class="container-fluid" id="container_p2" data-ng-show="PRIZE2==atPage" >
+    <div class="container-fluid" id="container_p2" data-ng-show="PRIZE2==atPage" ng-click="atPage=MAIN;log('prize2_return')">
       <div class="close-btn" data-ng-show="false">
         <a href="#top">
           <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('prize2_return')">
