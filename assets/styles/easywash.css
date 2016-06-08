@@ -1056,7 +1056,22 @@ i:nth-child(100) b {
     animation-timing-function: ease;
 }
 
+@keyframes movein {
+    from   {opacity: 1; margin-left: 70%;}
+    to     {opacity: 1; margin-left: 52%;}
+}
+
+@-moz-keyframes movein {
+    from   {opacity: 1; margin-left: 70%;}
+    to     {opacity: 1; margin-left: 52%;}
+}
+
 @-webkit-keyframes movein {
+    from   {opacity: 1; margin-left: 70%;}
+    to     {opacity: 1; margin-left: 52%;}
+}
+
+@-o-keyframes movein {
     from   {opacity: 1; margin-left: 70%;}
     to     {opacity: 1; margin-left: 52%;}
 }
