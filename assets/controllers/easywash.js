@@ -124,7 +124,7 @@ function($scope, $http){
             });
             wx.showOptionMenu();
             wx.onMenuShareTimeline({
-                title: 'MOOD X MURFY 请你睇2016MODEL大赛', // 分享标题
+                title: 'MOOD X MURFY 请你睇MODEL大赛', // 分享标题
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope=snsapi_base&state=123',
                 imgUrl: 'http://mood.ibeacon-macau.com/images/easywash/wecast-share.png', // 分享图标
                 success: function() {
@@ -141,7 +141,7 @@ function($scope, $http){
             });
             wx.onMenuShareAppMessage({
 
-              title: 'MOOD X MURFY 请你睇2016MODEL大赛', // 分享标题
+              title: 'MOOD X MURFY 请你睇MODEL大赛', // 分享标题
 
               desc: 'Share给朋友收集印花,模特大赛入场券及礼服定制优惠等你来带走！', // 分享描述
 
