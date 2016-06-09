@@ -112,7 +112,7 @@ module.exports = {
     var verificationCode = req.param('verificationCode');
     var userOpenId = req.param("user");
     var prize = req.param("prize");
-    var prize1Credit = 80;
+    var prize1Credit = 38;
     var prize1Amount = 1000000;
     redeem_c.findOne({user: userOpenId, advertisement: adString}).exec(function(err, redeemOne){
       user.findOne({openId: userOpenId}).exec(function(err, userOne){

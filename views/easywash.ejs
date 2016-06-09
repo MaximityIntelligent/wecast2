@@ -92,14 +92,14 @@
 			</header>
     -->
 
-    <div id="map" style="display: none;width:100%;text-align: center;color:white;overflow-y: scroll">
+<!--     <div id="map" style="display: none;width:100%;text-align: center;color:white;overflow-y: scroll" data-ng-show="false">
       <p>
       <img src="/images/easywash/map.png" width="95%" style="margin: auto"><br>
       </p>
       <p>
         <h3><a href="https://www.google.com/maps/d/u/0/embed?mid=1f6-mO8B76h8qNMWl6EO7uH_Evdg" ng-click="log('google_map')">立即前往</a></h3>
       </p>
-    </div>
+    </div> -->
 
     <div ng-init="init()" data-ng-hide="1">
     </div>
@@ -155,7 +155,7 @@
 
       <div id="event-1">
         <div id="event-1-content">
-        <p class="text-justify">1. 將遊戲頁面<font class="yellow">Share</font>俾朋友，<font class="yellow">每位朋友Click入可得到一個印花</font>。滿80印花即可兌換獎品；
+        <p class="text-justify">1. 將遊戲頁面<font class="yellow">Share</font>俾朋友，<font class="yellow">每位朋友Click入可得到一個印花</font>。滿38印花即可兌換獎品；
         </p>
         <p class="text-justify">2. 活動於<font class="yellow">2016年7月20日</font>截止，獎券請於活動期間內使用；
         </p>
@@ -212,15 +212,15 @@
       </div>
       <div id="prize2-2" class="row" data-ng-show="false">
         <center>
-          <a href="#top">
+<!--           <a href="#top" data-ng-show="false">
           <img name="continue-bubble" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('continue_collect');log('continue_collect')">
-          </a>
+          </a> -->
           <a href="#top">
           <img name="redeem" class="img-responsive redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')"> <!--//ng-click="redeem('2')">-->
           </a>
-          <a class="fancybox" href="#map">
+<!--           <a class="fancybox" href="#map" data-ng-show="false">
             <img name="go-wash" class="img-responsive" src="/images/easywash/prize/go-wash.png" ng-click="log('go_wash')">
-          </a>
+          </a> -->
         </center>
       </div>
       <div id="prize2-qr">
@@ -331,10 +331,10 @@
           <img style="width:100%;height:100%;border:0" class="img-responsive" src="/images/easywash/about-easywash/rules.png">
         </a>
       </div>
-      <div id="easywash-1" ng-click="clickCount('video');log('video');" data-ng-show="false">
+<!--       <div id="easywash-1" ng-click="clickCount('video');log('video');" data-ng-show="false">
         <iframe id="easywash-video" class="video_iframe" style="z-index:1;" ng-src="http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0" allowfullscreen="" frameborder="0" height="100%" width="100%">
         </iframe>
-      </div>
+      </div> -->
       <div id="about-qr">
         <img name="aboutQr" src="/images/easywash/about-easywash/about-qr.png">
       </div>
@@ -566,14 +566,14 @@
       $('img[name="prize1Qr"]').css("width", containerWidth*prize1QrWidth/mainScaleX);
       $('img[name="prize1Qr"]').css("height", containerHeight_prize1*prize1QrHeight/prize1ScaleY);
 
-      var prize11Top = 516;
+      var prize11Top = 504;
       var prize11Left = 150;
       $("#prize1-1").css("position", "absolute");
       $("#prize1-1").css("top", containerHeight*prize11Top/mainScaleY);
       $("#prize1-1").css("left", containerWidth*prize11Left/mainScaleX);
-      $("#prize1-1").css("color", "white");
+      $("#prize1-1").css("color", "yellow");
       //$("#prize1-1").css("width", containerHeight_p1*40/1206);
-      $("#prize1-1 font").css("font-size", containerHeight*30/mainScaleY);
+      $("#prize1-1 font").css("font-size", containerHeight*50/mainScaleY);
 
       var prize12Top = 838;
       var prize12Height = 177;
