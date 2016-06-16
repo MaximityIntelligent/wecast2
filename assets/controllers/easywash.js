@@ -123,7 +123,6 @@ function($scope, $http){
             wx.showMenuItems({
               menuList: ['menuItem:share:timeline', 'menuItem:share:appMessage' ] // 要显示的菜单项，所有menu项见附录3
             });
-            $scope.loading = "68";
             wx.showOptionMenu();
             wx.onMenuShareTimeline({
                 title: 'MOOD X MURFY 请你睇MODEL大赛', // 分享标题
