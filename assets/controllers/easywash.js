@@ -91,12 +91,18 @@ function($scope, $http, $timeout){
   });//.trigger('orientationchange');
 
   $scope.updateLoading = function (percent) {
-      if (parseInt($scope.loading) < parseInt(percent)) {
-          $scope.loading = parseInt($scope.loading) + 1
-          $timeout(function () {
-            $scope.updateLoading(percent);
-          }, 10);
-      }    
+    $scope.loadingPlus(percent-$scope.loading); 
+  };
+
+  $scope.loadingPlus = function (target) {
+      if (target > 0) {
+        console.log("+1");
+            $scope.loading = parseInt($scope.loading) + 1;
+            $timeout(function () {
+                $scope.loadingPlus(target-1);
+              }, 10);
+      }
+      
   };
 
   $scope.init = function() // 初始化頁面
@@ -170,7 +176,7 @@ function($scope, $http, $timeout){
               }
 
             });
-          $scope.updateLoading(100);
+          $scope.loading = 100;
           $('body').addClass('loaded');
 
         });
