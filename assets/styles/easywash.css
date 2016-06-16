@@ -954,6 +954,7 @@ i:nth-child(100) b {
 }
 
 .spinner-precentage {
+  margin-left: 230px;
   width: 150px;
   text-align: center;
 }
