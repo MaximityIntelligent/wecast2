@@ -38,6 +38,7 @@ var prize1Credit = 38;
 app.controller('IndexCtrl', [
 '$scope','$http',
 function($scope, $http){
+  $scope.loading = "0";
   $scope.MAIN = "main";
   $scope.SHARE = "share";
   $scope.EVENT = "event";
@@ -93,7 +94,7 @@ function($scope, $http){
   $scope.init = function() // 初始化頁面
   {
     //alert("init");
-    $scope.loading = "0";
+    $scope.loading = "58";
     var url = window.location.href;
     url = encodeURIComponent(url);
     $http.get('/api/init_c?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad='+adString
@@ -109,7 +110,6 @@ function($scope, $http){
           $scope.userId = data.openId;
           $scope.shareCount = data.shareCount;
           $scope.credit = data.credit;
-          $scope.loading = "58";
           wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
           appId: 'wxab261de543656952', // 必填，公众号的唯一标识

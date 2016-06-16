@@ -953,6 +953,11 @@ i:nth-child(100) b {
   text-align: center;
 }
 
+.spinner-precentage {
+  width: 150px;
+  text-align: center;
+}
+
 .spinner {
   margin: 20px auto 0;
   width: 150px;
