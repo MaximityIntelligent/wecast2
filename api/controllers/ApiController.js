@@ -202,6 +202,11 @@ module.exports = {
 
 		});
 	},
+  getCredit: function (req, res) {
+    user.findOne({openId: req.param('openId')}, 'credit').exec(function (err, userOne) {
+        return res.json(userOne);
+    });
+  },
   initialization: function(req, res){
     log.destroy().exec(function(){});
     redeem_c.destroy().exec(function(){});

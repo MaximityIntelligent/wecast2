@@ -96,13 +96,12 @@ function($scope, $http, $timeout){
 
   $scope.loadingPlus = function (target) {
       if (target > 0) {
-        console.log("+1");
-            if ($scope.loading <= 99) {
-              $scope.loading = parseInt($scope.loading) + 1;
-              $timeout(function () {
-                  $scope.loadingPlus(target-1);
-                }, 20);
-            }
+          if ($scope.loading < 99) {
+            $scope.loading = parseInt($scope.loading) + 1;
+            $timeout(function () {
+                $scope.loadingPlus(target-1);
+              }, 20);
+          }
             
       }
       
