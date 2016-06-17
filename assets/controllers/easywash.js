@@ -36,8 +36,8 @@ var adString = 'adMood';
 var prize1Credit = 38;
 
 app.controller('IndexCtrl', [
-'$scope','$http', '$timeout',
-function($scope, $http, $timeout){
+'$scope','$http', '$timeout', '$interval',
+function($scope, $http, $timeout, $interval){
   $scope.loading = 0;
   $scope.MAIN = "main";
   $scope.SHARE = "share";
@@ -107,6 +107,14 @@ function($scope, $http, $timeout){
       
   };
 
+  $scope.updateCredit = function () {
+    if ($scope.userId) {
+      $http.get('/api/getCredit?openId='+$scope.userId).success(function (data) {
+        $scope.credit = data.credit;
+      });
+    }
+    
+  }
   $scope.init = function() // 初始化頁面
   {
     //alert("init");
@@ -126,7 +134,7 @@ function($scope, $http, $timeout){
           $scope.userId = data.openId;
           $scope.shareCount = data.shareCount;
           $scope.credit = data.credit;
-          
+          console.log($scope.userId);
           wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
           appId: 'wxab261de543656952', // 必填，公众号的唯一标识
@@ -181,7 +189,9 @@ function($scope, $http, $timeout){
             });
           $scope.loading = 100;
           $('body').addClass('loaded');
-
+          $interval(function () {
+            $scope.updateCredit();
+          }, 5000);
         });
         wx.error(function(res){
           alert('fail'+JSON.stringify(res));

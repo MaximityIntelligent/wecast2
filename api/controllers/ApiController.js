@@ -203,7 +203,7 @@ module.exports = {
 		});
 	},
   getCredit: function (req, res) {
-    user.findOne({openId: req.param('openId')}, 'credit').exec(function (err, userOne) {
+    user.findOne({openId: req.param('openId')}).select('credit').exec(function (err, userOne) {
         return res.json(userOne);
     });
   },
