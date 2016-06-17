@@ -101,7 +101,7 @@ function($scope, $http, $timeout){
               $scope.loading = parseInt($scope.loading) + 1;
               $timeout(function () {
                   $scope.loadingPlus(target-1);
-                }, 10);
+                }, 20);
             }
             
       }
