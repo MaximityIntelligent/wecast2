@@ -226,7 +226,7 @@ module.exports = {
                     total += probability[i];
                   }
 
-                  for (var i = 99; i >= 0; i--) {
+                  for (var j = 99; j >= 0; j--) {
                     var prize = 0;
                     var rand = Math.floor((Math.random() * total));
                     for (var i = 0; i <= probability.length - 1; i++) {
