@@ -218,6 +218,7 @@ module.exports = {
           
            if (logs.length < 1) {
               //log.create({action: 'luckyDraw', openId: userOne.openId, date: new Date()}).exec(function(err, results){
+                  var results = [0, 0, 0, 0];
                   var prizeArray = ["0", "1", "2", "5"];
                   var probability = [10, 50, 30, 10];
                   var total = 0;
@@ -225,21 +226,24 @@ module.exports = {
                     total += probability[i];
                   }
 
-                  var prize = 0;
-                  var rand = Math.floor((Math.random() * total));
-                  var rands = rand;
-                  for (var i = 0; i <= probability.length - 1; i++) {
-                    if (rand < probability[i]) {
-                        console.log("prize:" + i);
-                        prize = i;
-                        break;
-                    } else {
-                        console.log("skip prize:" + i);
-                        rand -= probability[i];
+                  for (var i = 99; i >= 0; i--) {
+                    var prize = 0;
+                    var rand = Math.floor((Math.random() * total));
+                    for (var i = 0; i <= probability.length - 1; i++) {
+                      if (rand < probability[i]) {
+                          console.log("prize:" + i);
+                          prize = i;
+                          results[prize]++;
+                          break;
+                      } else {
+                          console.log("skip prize:" + i);
+                          rand -= probability[i];
+                      }
                     }
                   }
+                  
 
-                  return res.json({prize: prize, rands: rands});
+                  return res.json({results: results});
               //});  
            } else {
               return res.status(400).end();
