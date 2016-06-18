@@ -216,7 +216,7 @@ module.exports = {
         startOfDay.setHours(0,0,0,0);
         log.find({action: 'luckyDraw', openId: userOne.openId, date: {$gte: startOfDay}}).exec(function (err, logs) {
           
-           if (logs < 1) {
+           if (logs.length < 1) {
               //log.create({action: 'luckyDraw', openId: userOne.openId, date: new Date()}).exec(function(err, results){
                   var prizeArray = ["0", "1", "2", "5"];
                   var probability = [10, 50, 30, 10];
@@ -225,13 +225,15 @@ module.exports = {
                     total += probability[i];
                   }
 
-                  var prize;
+                  var prize = 0;
                   var rand = Math.floor((Math.random() * total));
                   var rands = rand;
                   for (var i = 0; i <= probability.length - 1; i++) {
                     if (rand < probability[i]) {
+                        console.log("prize:" + i);
                         prize = i;
                     } else {
+                        console.log("skip prize:" + i);
                         rand -= probability[i];
                     }
                   }
