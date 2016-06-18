@@ -314,7 +314,7 @@ function($scope, $http, $timeout, $interval){
       return;
     }
 
-  }
+  },
   $scope.clickCount = function(clickCountName){
     $http({
       url:'api/clickCount?clickCountName='+clickCountName,
@@ -324,7 +324,7 @@ function($scope, $http, $timeout, $interval){
       }).error(function(data,header,config,status){
 
       });
-  }
+  },
   $scope.log = function(actionName){
     $http({
       url:'log/log?action='+actionName+'&openId='+$scope.userId,
@@ -333,12 +333,17 @@ function($scope, $http, $timeout, $interval){
 
       }).error(function(data,header,config,status){
     });
-  }
+  },
   $scope.resetVideo = function(){
     //document.getElementById("easywash-video").src = "http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0";
-  }
+  },
   $scope.initAboutEasywash = function(){
     //document.getElementById("easywash-video").src = "http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0";
+  },
+  $scope.luckyDraw = function () {
+    $http.post('/api/luckyDraw', {openId: $scope.userId}).success(function (data) {
+      
+    });
   }
 
   /*

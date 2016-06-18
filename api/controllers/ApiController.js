@@ -207,6 +207,45 @@ module.exports = {
         return res.json(userOne);
     });
   },
+  luckyDraw: function (req, res) {
+    user.findOne({openId: req.param('openId')}).exec(function (err, userOne) {
+        if (!userOne) {
+            return res.status(401).end();
+        }
+        var startOfDay = new Date();
+        startOfDay.setHours(0,0,0,0);
+        log.find({action: 'luckyDraw', openId: userOne.openId}, date: {$gte: startOfDay}).exec(function (err, logs) {
+          
+           if (logs < 1) {
+              //log.create({action: 'luckyDraw', openId: userOne.openId, date: new Date()}).exec(function(err, results){
+                  var prizeArray = ["0", "1", "2", "5"];
+                  var probability = [10, 50, 30, 10];
+                  var total = 0;
+                  for (var i = probability.length - 1; i >= 0; i--) {
+                    total += probability[i];
+                  }
+
+                  var prize;
+                  var rand = Math.floor((Math.random() * total));
+                  var rands = rand;
+                  for (var i = 0; i <= probability.length - 1; i++) {
+                    if (rand < probability[i]) {
+                        prize = i;
+                    } else {
+                        rand -= probability[i];
+                    }
+                  }
+
+                  return res.json({prize: prize, rands: rands});
+              //});  
+           } else {
+              return res.status(400).end();
+           }
+        })
+        
+    });
+    
+  },
   initialization: function(req, res){
     log.destroy().exec(function(){});
     redeem_c.destroy().exec(function(){});
