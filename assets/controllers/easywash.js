@@ -342,7 +342,8 @@ function($scope, $http, $timeout, $interval){
   },
   $scope.luckyDraw = function () {
     $http.post('/api/luckyDraw', {openId: $scope.userId}).success(function (data) {
-      
+        console.log(data);
+        $scope.credit = data.currentCredit;
     });
   }
 
