@@ -214,7 +214,7 @@ module.exports = {
         }
         var startOfDay = new Date();
         startOfDay.setHours(0,0,0,0);
-        log.find({action: 'luckyDraw', openId: userOne.openId}, date: {$gte: startOfDay}).exec(function (err, logs) {
+        log.find({action: 'luckyDraw', openId: userOne.openId, date: {$gte: startOfDay}}).exec(function (err, logs) {
           
            if (logs < 1) {
               //log.create({action: 'luckyDraw', openId: userOne.openId, date: new Date()}).exec(function(err, results){
