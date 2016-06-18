@@ -232,6 +232,7 @@ module.exports = {
                     if (rand < probability[i]) {
                         console.log("prize:" + i);
                         prize = i;
+                        break;
                     } else {
                         console.log("skip prize:" + i);
                         rand -= probability[i];
