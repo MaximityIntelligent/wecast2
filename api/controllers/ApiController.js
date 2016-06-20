@@ -260,6 +260,9 @@ module.exports = {
       return;
     });
 
+  },
+  checkAlive: function (req, res) {
+     return res.json({errMsg: "ok"});
   }
 
 };
