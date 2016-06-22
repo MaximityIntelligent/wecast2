@@ -118,7 +118,7 @@ function($scope, $http, $timeout, $interval){
 
   $scope.updatePrizeRemain = function () {
      $http.get('/api/getPrizeRemain').success(function (data) {
-        $scope.prize1Remain = data.redeem_prize1;
+        $scope.prize1Remain = data.prizeRemain.redeem_prize1;
         console.log($scope.prize1Remain);
      });
   };
