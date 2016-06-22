@@ -134,6 +134,7 @@ function($scope, $http, $timeout, $interval){
       success(function(data, status, headers, config) { 
           //alert("success");
           //$scope.nickname = data.nickname;
+
           $scope.noncestr = data.noncestr;
           $scope.signature = data.signature;
           $scope.ticket = data.ticket;
@@ -142,6 +143,9 @@ function($scope, $http, $timeout, $interval){
           $scope.userId = data.openId;
           $scope.shareCount = data.shareCount;
           $scope.credit = data.credit;
+          $scope.prize1Remain = 30;
+          
+          $scope.updatePrizeRemain();
           console.log($scope.userId);
           wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -196,11 +200,12 @@ function($scope, $http, $timeout, $interval){
 
             });
           $scope.loading = 100;
-          $('body').addClass('loaded');
           $interval(function () {
             $scope.updateCredit();
             $scope.updatePrizeRemain();
           }, 5000);
+          $('body').addClass('loaded');
+          
         });
         wx.error(function(res){
           alert('fail'+JSON.stringify(res));
