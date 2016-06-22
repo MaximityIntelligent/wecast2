@@ -222,7 +222,7 @@ module.exports = {
           })
 
           prizeList.forEach(function (item, index, array) {
-            prizeRemain[item] = prizeAmount[item] - groupLogs[item].length;
+            prizeRemain[item] = prizeAmount[item];
           });
 
           return res.json({logs: groupLogs, prizeRemain: prizeRemain});
