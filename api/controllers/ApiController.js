@@ -115,13 +115,13 @@ module.exports = {
 
                 prizeList.forEach(function (item, index, array) {
                   if (groupPrizes[item] != undefined) {
-                    userPrize[item] = groupLogs[item].length;
+                    userPrize[item] = groupPrizes[item].length;
                   } else {
                     userPrize[item] = 0;
                   }
                   
                 });
-                retResult.userPrize = userPrize;
+                retResult.userPrize = prizes;
                 res.json(retResult);
                 return;
               })
