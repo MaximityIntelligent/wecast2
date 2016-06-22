@@ -104,7 +104,6 @@ module.exports = {
               var userPrize = {};
               var prizeList = ['redeem_prize1', 'redeem_prize2'];
               log.find({openId:openId, action: {$in:prizeList}}).exec(function (err, prizes) {
-                console.log(prizes);
                 var groupPrizes = {};
                 prizes.forEach(function (item, index, array) {
                   if (groupPrizes[item.action] == undefined) {
@@ -122,7 +121,7 @@ module.exports = {
                   }
                   
                 });
-                retResult.userPrize = prizes;
+                retResult.userPrize = userPrize;
                 res.json(retResult);
                 return;
               });

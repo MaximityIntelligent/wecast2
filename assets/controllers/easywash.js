@@ -144,6 +144,7 @@ function($scope, $http, $timeout, $interval){
           $scope.shareCount = data.shareCount;
           $scope.credit = data.credit;
           $scope.prize1Remain = 30;
+          $scope.userPrize = data.userPrize;
 
           $scope.updatePrizeRemain();
           console.log($scope.userPrize);
