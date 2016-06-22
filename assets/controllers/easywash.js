@@ -114,7 +114,15 @@ function($scope, $http, $timeout, $interval){
       });
     }
     
-  }
+  };
+
+  $scope.updatePrizeRemain = function () {
+     $http.get('/api/getPrizeRemain').success(function (data) {
+        $scope.prize1Remain = data.redeem_prize1;
+        console.log($scope.prize1Remain);
+     });
+  };
+
   $scope.init = function() // 初始化頁面
   {
     //alert("init");
@@ -191,6 +199,7 @@ function($scope, $http, $timeout, $interval){
           $('body').addClass('loaded');
           $interval(function () {
             $scope.updateCredit();
+            $scope.updatePrizeRemain();
           }, 5000);
         });
         wx.error(function(res){
