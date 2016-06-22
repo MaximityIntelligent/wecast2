@@ -209,10 +209,23 @@ module.exports = {
   },
   getPrizeRemain: function (req, res) {
       var prizeList = ['redeem_prize1', 'redeem_prize2', 'share_friend'];
-      var prizeAmount = [30, 10];
-
+      var prizeAmount = {'redeem_prize1':30, 'redeem_prize2':10, 'share_friend':1000};
+      var prizeRemain = {};
       log.find({action: {$in: prizeList}}).exec(function (err, logs) {
-          return res.json(logs);
+          var groupLogs = {};
+          logs.forEach(function (item, index, array) {
+            if (groupLogs[item.action] == undefined) {
+              groupLogs[item.action] = [item];
+            } else {
+              groupLogs[item.action].push(item);
+            }
+          })
+
+          prizeList.forEach(function (item, index, array) {
+            prizeRemain[item] = prizeAmount[item] - groupLogs[item];
+          });
+
+          return res.json({logs: groupLogs, prizeRemain: prizeRemain});
       });
 
   },
