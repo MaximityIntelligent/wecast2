@@ -100,8 +100,32 @@ module.exports = {
               retResult.noncestr = noncestr;
               retResult.ticket = jsapiTicket;
               retResult.credit = userOne.credit;
-              res.json(retResult);
-              return;
+
+              var userPrize = {};
+              var prizeList = ['redeem_prize1', 'redeem_prize2'];
+              log.find({openId:openId, action: {$in:prizeList}}).exec(function (err, prizes) {
+                var groupPrizes = {};
+                prizes.forEach(function (item, index, array) {
+                  if (groupPrizes[item.action] == undefined) {
+                    groupPrizes[item.action] = [item];
+                  } else {
+                    groupPrizes[item.action].push(item);
+                  }
+                });
+
+                prizeList.forEach(function (item, index, array) {
+                  if (groupPrizes[item] != undefined) {
+                    userPrize[item] = groupLogs[item].length;
+                  } else {
+                    userPrize[item] = 0;
+                  }
+                  
+                });
+                retResult.userPrize = userPrize;
+                res.json(retResult);
+                return;
+              })
+              
           });
 
 
@@ -219,7 +243,7 @@ module.exports = {
             } else {
               groupLogs[item.action].push(item);
             }
-          })
+          });
 
           prizeList.forEach(function (item, index, array) {
             if (groupLogs[item] != undefined) {
