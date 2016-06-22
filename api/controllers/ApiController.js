@@ -207,6 +207,16 @@ module.exports = {
         return res.json(userOne);
     });
   },
+  getPrizeRemain: function (req, res) {
+      var prizeList = ['redeem_prize1', 'redeem_prize2', 'share_friend'];
+      var prizeAmount = [30, 10];
+
+      log.find({action: {$in: prizeList}}).exec(function (err, logs) {
+          return res.json(logs);
+      });
+
+  },
+
   luckyDraw: function (req, res) {
     user.findOne({openId: req.param('openId')}).exec(function (err, userOne) {
         if (!userOne) {
