@@ -208,8 +208,8 @@ module.exports = {
     });
   },
   getPrizeRemain: function (req, res) {
-      var prizeList = ['redeem_prize1', 'redeem_prize2', 'share_friend'];
-      var prizeAmount = {'redeem_prize1':30, 'redeem_prize2':10, 'share_friend':1000};
+      var prizeList = ['redeem_prize1', 'redeem_prize2'];
+      var prizeAmount = {'redeem_prize1':30, 'redeem_prize2':10};
       var prizeRemain = {};
       log.find({action: {$in: prizeList}}).exec(function (err, logs) {
           var groupLogs = {};
@@ -230,7 +230,7 @@ module.exports = {
             
           });
 
-          return res.json({logs: groupLogs, prizeRemain: prizeRemain});
+          return res.json({prizeRemain: prizeRemain});
       });
 
   },
