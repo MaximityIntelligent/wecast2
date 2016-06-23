@@ -59,6 +59,7 @@ function($scope, $http, $timeout, $interval){
      'width': 60,
      'height': 60
   };
+  console.log(window.innerWidth*0.16)
   $(window).trigger('orientationchange'); //check裝置方向
 
 
