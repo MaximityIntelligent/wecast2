@@ -216,9 +216,9 @@
 
 .thumbnail {
   position: relative;
-  margin-bottom: 10px;
-  width: 60px;
-  height: 60px;
+  margin-bottom: 5px;
+  width: 48px;
+  height: 48px;
   overflow: hidden;
   border: 0px;
   border-radius: 0px;
