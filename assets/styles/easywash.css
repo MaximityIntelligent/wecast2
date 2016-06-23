@@ -216,10 +216,12 @@
 
 .thumbnail {
   position: relative;
-  margin-bottom: 10px;
-  width: 36px;
-  height: 36px;
+  margin-bottom: 5px;
+  width: 30px;
+  height: 30px;
   overflow: hidden;
+  border: 0px;
+  border-radius: 0px;
 }
 .thumbnail img {
   position: absolute;
