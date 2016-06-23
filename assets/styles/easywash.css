@@ -216,8 +216,8 @@
 
 .thumbnail {
   position: relative;
-  width: 72px;
-  height: 72px;
+  width: 36px;
+  height: 36px;
   overflow: hidden;
 }
 .thumbnail img {
