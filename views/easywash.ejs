@@ -10,7 +10,7 @@
     <!--<script type="text/javascript" src="http://fgnass.github.io/spin.js/spin.min.js"></script>-->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   </head>
-  <body data-ng-app="easywash" data-ng-controller="IndexCtrl" orient="portrait" >
+  <body data-ng-app="easywash" data-ng-controller="IndexCtrl" orient="portrait" ng-init="loading=0">
     <div id="landscape-container" data-ng-show="LANDSCAPE==atPage" >
       <br>
       <div class="" id="landscapeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -49,7 +49,7 @@
 			<div id="loader">
 
       </div>-->
-      <div class="spinner-precentage" ng-show="loading != null">
+      <div class="spinner-precentage">
         <center><h4 style="color: yellow;">{{loading}}%</h4></center>
       </div>
     </div>
