@@ -160,7 +160,35 @@ User.create = function(userInfo, cb){ //Create User, 如果原有就return現有
         cb(null, userCreated);
       });
     }else{
-        cb(null, userOne);
+        if (userInfo.nickname) {
+          userOne.nickname = userInfo.nickname;
+        }
+        if (userInfo.sex) {
+          userOne.sex = userInfo.sex;
+        }
+        if (userInfo.province) {
+          userOne.province = userInfo.province;
+        }
+        if (userInfo.city) {
+          userOne.city = userInfo.city;
+        }
+        if (userInfo.country) {
+          userOne.country = userInfo.country;
+        }
+        if (userInfo.headimgurl) {
+          userOne.headimgurl = userInfo.headimgurl;
+        }
+        if (userInfo.language) {
+          userOne.language = userInfo.language;
+        }
+        userOne.save(function (err, savedUser) {
+          if(err){
+            cb(err);
+            return;
+          }
+          cb(null, savedUser);
+        });
+        
     }
     //console.log("229");
   });
