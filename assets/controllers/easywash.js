@@ -147,6 +147,7 @@ function($scope, $http, $timeout, $interval){
           $scope.credit = data.credit;
           $scope.prize1Remain = 30;
           $scope.userPrize = data.userPrize;
+          $scope.sharedToUsers data.sharedToUsers;
 
           $scope.updatePrizeRemain();
           console.log($scope.userPrize);
@@ -367,6 +368,13 @@ function($scope, $http, $timeout, $interval){
     }).error(function (err) {
         $("#luckyDraw-errModal").modal('show');
     });
+  },
+  $scope.getImgUrl = function (user) {
+    if (user.headimgurl) {
+      return user.headimgurl;
+    } else {
+      return 'http://placehold.it/320x320';
+    }
   }
 
   /*

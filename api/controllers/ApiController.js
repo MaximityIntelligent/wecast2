@@ -101,7 +101,6 @@ module.exports = {
               retResult.ticket = jsapiTicket;
               retResult.credit = userOne.credit;
               retResult.sharedToUsers = sharedToUsers;
-              console.log(sharedToUsers);
               var userPrize = {};
               var prizeList = ['redeem_prize1', 'redeem_prize2'];
               log.find({openId:openId, action: {$in:prizeList}}).exec(function (err, prizes) {

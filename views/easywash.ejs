@@ -391,8 +391,11 @@
 
       <div id="event-1">
         <div id="event-1-content">
-        <p class="text-justify">1. 將遊戲頁面<font class="yellow">Share</font>俾朋友，<font class="yellow">每位朋友Click入可得到一個印花</font>。滿38印花即可兌換獎品；
-        </p>
+          <div class="col-lg-3 col-md-4 col-xs-6" ng-repeat="user in sharedToUsers">
+              <a class="thumbnail" href="#">
+                <img class="img-responsive" src="getImgUrl(user)" alt="">
+              </a>
+          </div>
         </div>
       </div>
       </center>
