@@ -314,6 +314,7 @@ function($scope, $http, $timeout, $interval){
       var prize = data.prize;
       $("#prize-redeem").trigger('click');
       $scope.log('redeem_'+prize);
+      $scope.userPrize['redeem_'+prize] += 1;
     }).error(function(data) {
       //$scope.redeemErrMsg = "兑换失败";
       $scope.redeemErrMsg = data.errMsg;
