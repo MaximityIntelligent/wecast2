@@ -49,7 +49,7 @@
 			<div id="loader">
 
       </div>-->
-      <div class="spinner-precentage" ng-hide="loading == null">
+      <div class="spinner-precentage" ng-show="loading != null">
         <center><h4 style="color: yellow;">{{loading}}%</h4></center>
       </div>
     </div>
@@ -393,7 +393,7 @@
         <div id="event-1-content">
           <div class="col-lg-3 col-md-4 col-xs-6" ng-repeat="user in sharedToUsers">
               <a class="thumbnail" href="#">
-                <img class="img-responsive" src="getImgUrl(user)" alt="">
+                <img class="img-responsive" ng-src="{{getImgUrl(user)}}" alt="">
               </a>
           </div>
         </div>
