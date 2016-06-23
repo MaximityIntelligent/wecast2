@@ -10,7 +10,7 @@ module.exports = User;
 User.sharedToUsers_c = function (userContext, adId, cb){ //找出user 分享過的follower
 
   //console.log("26");
-  share_c.findOne({sharedBy: userContext.openId, advertisement_c: adId}).exec(function(err, shareOne){
+  share_c.findOne({sharedBy: userContext.openId, advertisement_c: adId}).populate('sharedTo', {model: 'user'}).exec(function(err, shareOne){
     //console.log("28");
     if(err){
       cb(err);

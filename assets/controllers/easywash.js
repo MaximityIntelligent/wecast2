@@ -204,7 +204,7 @@ function($scope, $http, $timeout, $interval){
           $interval(function () {
             $scope.updateCredit();
             $scope.updatePrizeRemain();
-          }, 5000);
+          }, 60000);
           $('body').addClass('loaded');
           
         });
