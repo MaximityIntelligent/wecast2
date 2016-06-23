@@ -33,6 +33,8 @@ if(typeof QueryString.code == 'undefined'){
 var ad = QueryString.ad;
 var sharedBy = QueryString.sharedBy;
 var adString = 'adMood';
+// var snsapi = 'snsapi_base';
+var snsapi = 'snsapi_userinfo';
 var prize1Credit = 38;
 
 app.controller('IndexCtrl', [
@@ -64,10 +66,10 @@ function($scope, $http, $timeout, $interval){
       $scope.$apply(function(){
           if( typeof $scope.landscape != 'undefined'){
             if(typeof QueryString.pg == 'undefined'){
-              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope=snsapi_base#wechat_redirect';
+              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'#wechat_redirect';
             }
             else {
-              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope=snsapi_base#wechat_redirect';
+              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'#wechat_redirect';
             }
           }
 
@@ -164,7 +166,7 @@ function($scope, $http, $timeout, $interval){
             wx.showOptionMenu();
             wx.onMenuShareTimeline({
                 title: 'MOOD X MURFY 请你睇MODEL大赛', // 分享标题
-                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope=snsapi_base&state=123',
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
                 imgUrl: 'http://mood.ibeacon-macau.com/images/easywash/wecast-share.png', // 分享图标
                 success: function() {
                     $scope.log('share_timeline');
@@ -184,7 +186,7 @@ function($scope, $http, $timeout, $interval){
 
               desc: 'Share给朋友收集印花,模特大赛入场券及礼服定制优惠等你来带走！', // 分享描述
 
-              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope=snsapi_base&state=123',
+              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
 
               imgUrl: 'http://mood.ibeacon-macau.com/images/easywash/wecast-share.png', // 分享图标
 
@@ -218,7 +220,7 @@ function($scope, $http, $timeout, $interval){
       }).
       error(function(data, status, headers, config) { //如果從外部連結返回時會遇到code error問題，就要重新定向
         //alert("error");
-        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope=snsapi_base#wechat_redirect';
+        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'#wechat_redirect';
         //$('body').addClass("loaded");
         //$('#loader-wrapper').css("display", "none");
       });
