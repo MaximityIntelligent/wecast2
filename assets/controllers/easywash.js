@@ -56,10 +56,10 @@ function($scope, $http, $timeout, $interval){
   $scope.redeemErrMsg = "";
   $scope.prevPage = "";
   $scope.thumbStyle = {
-     'width': window.innerWidth*0.14,
-     'height': window.innerWidth*0.14
+     'width': Math.floor(window.innerWidth*0.145),
+     'height': Math.floor(window.innerWidth*0.145)
   };
-  console.log(window.innerWidth*0.14);
+  console.log(window.innerWidth*0.145);
   $(window).trigger('orientationchange'); //check裝置方向
 
 
