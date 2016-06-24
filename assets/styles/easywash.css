@@ -1062,8 +1062,8 @@ i:nth-child(100) b {
 }
 
 @keyframes main2img {
-    from {width:90%;}
-    to {width:100%;}
+    from {width:60%;height: 60%;margin-left: 0%;}
+    to {width:74%;;height: 74%;margin-left: -5%;}
 }
 
 .animate-show {
