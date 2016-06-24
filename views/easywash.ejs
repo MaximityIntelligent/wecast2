@@ -129,6 +129,10 @@
           {{credit}}
         </font>
       </div>
+      <div id="easywash-1" ng-click="clickCount('video');log('video');">
+        <iframe id="easywash-video" class="video_iframe" style="z-index:1;" ng-src="http://v.qq.com/iframe/player.html?vid=q0308w7unq8&amp;&amp;auto=0" allowfullscreen="" frameborder="0" height="100%" width="100%">
+        </iframe>
+      </div>
       <div id="prize1-2" class="row">
         <center>
           <a href="#top">
@@ -530,12 +534,16 @@
       var containerHeight_easywash = containerWidth*aboutScaleY/mainScaleX;
       $("#container_easywash").css("width", containerWidth);
       $("#container_easywash").css("height", containerHeight_easywash);
+      var easywash1Top = 389;
+      var easywash1Left = 57;
+      var easywash1Width = 636;
+      var easywash1Height = 350;
       $("#easywash-1").css("position", "absolute");
-      $("#easywash-1").css("top", containerHeight_easywash*408/1206);
-      $("#easywash-1").css("left", containerWidth*66/mainScaleX);
-      $("#easywash-1").css("width", containerWidth*618/mainScaleX);
-      $("#easywash-1").css("height", containerHeight_easywash*357/1206);
-      $("#easywash-1").css("border", "2px solid yellow");
+      $("#easywash-1").css("top", containerHeight*easywash1Top/mainScaleY);
+      $("#easywash-1").css("left", containerWidth*easywash1Left/mainScaleX);
+      $("#easywash-1").css("width", containerWidth*easywash1Width/mainScaleX);
+      $("#easywash-1").css("height", containerHeight*easywash1Height/mainScaleY);
+      $("#easywash-1").css("border", "1px solid white");
       $("#event-rule").css("float", "right");
       /*
       $("#event-rule").css("top", "18%");
@@ -604,7 +612,7 @@
       var prize11Height = $("#prize1-1").css("height");
       $("#prize1-1").css("margin-left", "-"+36*0.5+"px");
       $("#prize1-1").css("margin-top", "-"+20*0.5+"px");*/
-      var prize1BackTop = 4519;
+      var prize1BackTop = 4324;
       var prize1BackWidth = 700;
       var prize1BackHeight = 90;
       $("#prize1-back").css("margin-top", containerHeight_prize1*prize1BackTop/prize1ScaleY);
@@ -636,7 +644,7 @@
       $("#prize1-2").css("width", "100%");
       $("#prize1-2").css("height", containerHeight*prize12Height/mainScaleY);
       $("#prize1-2").css("top", containerHeight*prize12Top/mainScaleY);
-      $("#prize1-2").css("margin-left", containerWidth*141/mainScaleX);
+      $("#prize1-2").css("margin-left", containerWidth*160/mainScaleX);
 
       var prize2ScaleY = 4742;
       var containerHeight_prize2 = containerWidth*prize2ScaleY/mainScaleX;
@@ -684,7 +692,7 @@
       $("#prize2-2").css("width", "100%");
       $("#prize2-2").css("top", containerHeight_prize2*970/1206);
 
-      var redeemWidth = 242;
+      var redeemWidth = 120;
       $('img[name="redeem"]').css("width", containerWidth*redeemWidth/mainScaleX);
       $('img[name="go-wash"]').css("width", containerWidth*153/mainScaleX);
       $('img[name="continue-bubble"]').css("width", containerWidth*153/mainScaleX);
