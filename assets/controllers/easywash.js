@@ -377,7 +377,7 @@ function($scope, $http, $timeout, $interval){
     if (user.headimgurl) {
       return user.headimgurl;
     } else {
-      return 'http://placehold.it/320x320';
+      return 'http://placehold.it/50x50';
     }
   }
 

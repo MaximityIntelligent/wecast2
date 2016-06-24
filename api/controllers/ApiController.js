@@ -103,12 +103,15 @@ module.exports = {
               retResult.sharedToUsers = sharedToUsers;
               var userPrize = {};
               var prizeList = ['redeem_prize1', 'redeem_prize2'];
-              log.find({openId:openId, action: {$in:prizeList}}).exec(function (err, prizes) {
+              var pickPrizeList = prizeList.map(function (item) {
+                 return 'pick_'+item;
+              })
+              log.find({openId:openId, action: {$in:prizeList.concat(pickPrizeList)}}).exec(function (err, prizes) {
                 var groupPrizes = {};
                 prizes.forEach(function (item, index, array) {
                   if (groupPrizes[item.action] == undefined) {
                     groupPrizes[item.action] = [item];
-                  } else {
+                  } else { 
                     groupPrizes[item.action].push(item);
                   }
                 });
@@ -116,11 +119,14 @@ module.exports = {
                 prizeList.forEach(function (item, index, array) {
                   if (groupPrizes[item] != undefined) {
                     userPrize[item] = groupPrizes[item].length;
+                    if (groupPrizes['pick_'+item] != undefined) {
+                      userPrize[item] -= groupPrizes['pick_'+item].length;
+                    }
                   } else {
                     userPrize[item] = 0;
                   }
-                  
                 });
+
                 retResult.userPrize = userPrize;
                 res.json(retResult);
                 return;
