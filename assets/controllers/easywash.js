@@ -358,7 +358,7 @@ function($scope, $http, $timeout, $interval){
     });
   },
   $scope.resetVideo = function(){
-    document.getElementById("easywash-video").src = "http://v.qq.com/iframe/player.html?vid=q0308w7unq8&amp;&amp;auto=0";
+    document.getElementById("easywash-video").src = "http://v.qq.com/iframe/player.html?vid=q0308w7unq8&amp;&amp;auto=1";
   },
   $scope.initAboutEasywash = function(){
     document.getElementById("easywash-video").src = "http://v.qq.com/iframe/player.html?vid=q0308w7unq8&amp;&amp;auto=0";
