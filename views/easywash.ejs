@@ -115,7 +115,7 @@
 
     <div class="container-fluid" id="main-container" data-ng-show="MAIN==atPage" >
       <div id="main-event-info">
-        <a href="#top"><img style="opacity: 1;" name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;initAboutEasywash();clickCount('about_easywash');log('about_easywash')"></a>
+        <a href="#top"><img style="opacity: 1;" name="event-info" src="/images/easywash/main/event-info.png" ng-click="atPage=ABOUT_EASYWASH;clickCount('about_easywash');log('about_easywash')"></a>
 
       </div>
       <div id="main-1" style="text-align: center;color: yellow">
@@ -138,8 +138,8 @@
       </div>
       <div id="main-2">
         <a href="#top">
-        <img class="img-responsive" style="opacity: 1;" src="/images/easywash/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1;clickCount('prize1_page');log('prize1_page')">
-        <img class="img-responsive" style="opacity: 1;" src="/images/easywash/main/prize1-dim.png" ng-show="showPrize1Dim();" ng-click="atPage=PRIZE1;clickCount('prize1_page');log('prize1_page')">
+        <img class="img-responsive" style="opacity: 1;" src="/images/easywash/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1;resetVideo();clickCount('prize1_page');log('prize1_page')">
+        <img class="img-responsive" style="opacity: 1;" src="/images/easywash/main/prize1-dim.png" ng-show="showPrize1Dim();" ng-click="atPage=PRIZE1;resetVideo();clickCount('prize1_page');log('prize1_page')">
         </a>
       </div>
       <div id="main-3" data-ng-show="false">
@@ -197,7 +197,7 @@
       </div>
     </div>
 
-    <div class="container-fluid" id="container_p1" ng-show="PRIZE1==atPage" ng-click="atPage=MAIN;resetVideo();log('prize1_return')">
+    <div class="container-fluid" id="container_p1" ng-show="PRIZE1==atPage" ng-click="atPage=MAIN;log('prize1_return')">
       <div id="easywash-1" ng-click="clickCount('video');log('video');">
         <iframe id="easywash-video" class="video_iframe" style="z-index:1;" ng-src="http://v.qq.com/iframe/player.html?vid=q0308w7unq8&amp;&amp;auto=0" allowfullscreen="" frameborder="0" height="100%" width="100%">
         </iframe>
@@ -211,7 +211,7 @@
       <div id="prize1-qr">
         <img name="prize1Qr" src="/images/easywash/prize/prize1-qr.png">
       </div>
-      <div id="prize1-back" ng-click="atPage=MAIN;log('prize1_return')">
+      <div id="prize1-back" ng-click="atPage=MAIN;initAboutEasywash();log('prize1_return')">
         <center><a href="#top"><img style="opacity: 1;" name="prize1Back" src="/images/easywash/about-easywash/address.png"></a></center>
       </div>
     </div>
