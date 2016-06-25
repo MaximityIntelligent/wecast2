@@ -133,7 +133,7 @@
         <iframe id="easywash-video" class="video_iframe" style="z-index:1;" ng-src="http://v.qq.com/iframe/player.html?vid=q0308w7unq8&amp;&amp;auto=0" allowfullscreen="" frameborder="0" height="100%" width="100%">
         </iframe>
       </div>
-      <div id="prize1-2" class="row">
+      <div id="prize1-2">
         <center>
           <a href="#top">
           <img name="redeem" style="opacity: 1;" class="redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" >
@@ -152,7 +152,7 @@
         <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize2-dim.png" ng-show="showPrize2Dim();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
         </a>
       </div>
-      <div id="main-finger" data-ng-show="false">
+      <div id="main-finger" data-ng-show="true">
         <img class="img-responsive" src="/images/easywash/main/main-finger.png">
       </div>
       
@@ -483,7 +483,7 @@
       //$("#main-3").css("margin-top", "-"+imgHeight+"px");
       $("#main-3").css("margin-left", "-"+containerWidth*main3Width/mainScaleX*0.5+"px");
       
-      $("#main-finger").css("top", containerHeight*0.43);
+      $("#main-finger").css("top", containerHeight*1040/1337);
       $("#main-finger").css("width", containerWidth);
       $("#main-finger img").css("width", containerWidth*54/mainScaleX);
 
@@ -639,12 +639,14 @@
       $("#prize1-1 font").css("font-size", containerHeight*50/mainScaleY);
 
       var prize12Top = 964;
-      var prize12Height = 90;
+      var prize12Left = 500;
+      var prize12Width = 140;
+      var prize12Height = 110;
       $("#prize1-2").css("position", "absolute");
-      $("#prize1-2").css("width", "100%");
+      $("#prize1-2").css("width", containerWidth*prize12Width/mainScaleX);
       $("#prize1-2").css("height", containerHeight*prize12Height/mainScaleY);
       $("#prize1-2").css("top", containerHeight*prize12Top/mainScaleY);
-      $("#prize1-2").css("margin-left", containerWidth*168/mainScaleX);
+      $("#prize1-2").css("left", containerWidth*prize12Left/mainScaleX);
 
       var prize2ScaleY = 4742;
       var containerHeight_prize2 = containerWidth*prize2ScaleY/mainScaleX;
