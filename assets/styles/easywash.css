@@ -1099,7 +1099,7 @@ i:nth-child(100) b {
 }
 
 #main-finger img {
-    margin-left: 52%;
+    margin-left: 50%;
     animation-name: movein;
     animation-duration: 1.75s;
     animation-iteration-count: infinite;
@@ -1107,8 +1107,8 @@ i:nth-child(100) b {
 }
 
 @keyframes movein {
-    from   {opacity: 1; margin-left: 70%;}
-    to     {opacity: 1; margin-left: 52%;}
+    from   {opacity: 1; margin-left: 65%;}
+    to     {opacity: 1; margin-left: 50%;}
 }
 
 @-webkit-keyframes movein {
