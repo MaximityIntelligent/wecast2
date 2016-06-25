@@ -1053,19 +1053,6 @@ i:nth-child(100) b {
     to {width:100%;top:-1%;right:1%;}
 }
 
-
-#main-2 img {
-  animation-name: main2img;
-  animation-duration: 0.5s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-@keyframes main2img {
-    from {width:60%;height: 60%;margin-left: 0%;}
-    to {width:74%;;height: 74%;margin-left: -5%;}
-}
-
 .animate-show {
   transform: translateX(0%);
 }
