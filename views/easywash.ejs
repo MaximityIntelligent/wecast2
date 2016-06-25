@@ -443,9 +443,9 @@
       var mainEventInfoTop = 109;
       var mainEventInfoWidth = 62;
       $("#main-event-info").css("position", "absolute");
-      $("#main-event-info").css("width", "100%");
+      $("#main-event-info").css("width", containerWidth*mainEventInfoWidth/mainScaleX);
       $("#main-event-info").css("top", containerHeight*mainEventInfoTop/mainScaleY);
-      $("#main-event-info").css("left", containerWidth*586/mainScaleX);
+      $("#main-event-info").css("left", containerWidth*556/mainScaleX);
       $('img[name="event-info"]').css("width", containerWidth*mainEventInfoWidth/mainScaleX);
 
       var main1Top = 926;
