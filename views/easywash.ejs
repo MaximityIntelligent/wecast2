@@ -197,9 +197,9 @@
       </div>
     </div>
 
-    <div class="container-fluid" id="container_p1" ng-show="PRIZE1==atPage" ng-click="atPage=MAIN;log('prize1_return')">
+    <div class="container-fluid" id="container_p1" ng-show="PRIZE1==atPage" ng-click="atPage=MAIN;resetVideo();log('prize1_return')">
       <div id="easywash-1" ng-click="clickCount('video');log('video');">
-        <iframe id="easywash-video" class="video_iframe" style="z-index:1;" ng-src="http://v.qq.com/iframe/player.html?vid=q0308w7unq8&amp;&amp;auto=1" allowfullscreen="" frameborder="0" height="100%" width="100%">
+        <iframe id="easywash-video" class="video_iframe" style="z-index:1;" ng-src="http://v.qq.com/iframe/player.html?vid=q0308w7unq8&amp;&amp;auto=0" allowfullscreen="" frameborder="0" height="100%" width="100%">
         </iframe>
       </div>
       <div class="close-btn"  data-ng-show="false">
@@ -369,7 +369,7 @@
     <div class="container-fluid" id="container_easywash" data-ng-show="ABOUT_EASYWASH==atPage">
       <div class="close-btn" data-ng-show="false">
         <a href="#top">
-          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;resetVideo();log('about_easywash_return')"/>
+          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('about_easywash_return')"/>
         </a>
       </div>
       <div id="rules" ng-click="clickCount('rules');log('rules');">
@@ -693,7 +693,7 @@
       $("#prize2-2").css("width", "100%");
       $("#prize2-2").css("top", containerHeight_prize2*970/1206);
 
-      var redeemWidth = 120;
+      var redeemWidth = 160;
       $('img[name="redeem"]').css("width", containerWidth*redeemWidth/mainScaleX);
       $('img[name="go-wash"]').css("width", containerWidth*153/mainScaleX);
       $('img[name="continue-bubble"]').css("width", containerWidth*153/mainScaleX);
