@@ -46,7 +46,7 @@
       <div class="spinner-logo">
         <center><img style="width: 150px;" src="/images/easywash/loading-logo.png"></center>
       </div>
-      <div class="spinner">
+      <div class="spinner" ng-show="false">
         <div class="bounce1"></div>
         <div class="bounce2"></div>
         <div class="bounce3"></div>
@@ -187,17 +187,22 @@
       <!--<div id="share-1" ng-click="atPage=MAIN"></div>-->
       <div id="share-2" class="row" style="position: absolute;top:0;width:100%;index-z:1000;">
       </div>
+      <div id="share-friend">
+        <a class="fancybox" href="#friends-list" style="index-z:1001;">
+        <img class="img-responsive" style="opacity: 1;" src="/images/easywash/main/prize1.png" ng-show="showPrize1();">
+        </a>
+      </div>
     </div>
     <div class="container-fluid" id="container_thankyou" data-ng-show="THANKYOU==atPage" ng-click="log('thankyou_page');" >
       <div id="thankyou-1">
         <a href="#top"><img name="iwant" style="opacity: 0;" src="/images/easywash/thankyou/iwant.gif" ng-click="atPage=MAIN;"></a>
       </div>
-      <div id="qrcode" style="position: absolute;right: 0;bottom: 0;left: 0;">
+      <div id="qrcode" ng-show="false" style="position: absolute;right: 0;bottom: 0;left: 0;">
         <img src="/images/easywash/thankyou/qrcode.png" style="max-width:100%;max-height:20%;">
       </div>
     </div>
 
-    <div class="container-fluid" id="container_p1" ng-show="PRIZE1==atPage" ng-click="atPage=MAIN;log('prize1_return')">
+    <div class="container-fluid" id="container_p1" ng-show="PRIZE1==atPage" ng-click="atPage=MAIN;initAboutEasywash();log('prize1_return')">
       <div id="easywash-1" ng-click="clickCount('video');log('video');">
         <iframe id="easywash-video" class="video_iframe" style="z-index:1;" ng-src="http://v.qq.com/iframe/player.html?vid=q0308w7unq8&amp;&amp;auto=0" allowfullscreen="" frameborder="0" height="100%" width="100%">
         </iframe>
@@ -251,7 +256,7 @@
         <div class="modal-content">
           <div class="modal-body" style="text-align: center;">
             <div style="position: relative;top: 10%">
-            <h4>印花不足,暫時無法兌換</h4>
+            <h4>暫時無法兌換，請集齊38個印花</h4>
             </div>
           </div>
           <div class="modal-footer-2" style="text-align: center">
@@ -282,7 +287,7 @@
 
           <div class="modal-body" style="text-align: center">
             <div style="position: relative;top: 10%">
-            <h4>每位用戶每天有一次抽人台機會</h4>
+            <h4>每位用戶每天有一次抽印花機會</h4>
             <br>
             </div>
           </div>
@@ -330,9 +335,8 @@
 
           <div class="modal-body" style="text-align: center;;">
             <form class="form-inline" style="position: relative;top: 10%">
-              <h4>恭喜你</h4>
-              <h4>請聯絡客服ID:Mood_tailor</h4>
-              <h4>登記兌奬</h4>
+              <h4>恭喜你獲得西裝定製現金劵</h4>
+              <h4>客服id:Mood_tailor</h4>
               </br>
               <div class="form-group">
                 <input type="password" id="verification1" class="form-control" placeholder="請交由工作人員輸入驗證碼" 
@@ -518,6 +522,15 @@
       //$("#share-1").css("border", "1px solid red");
       $("#share-1").css("position", "absolute");
 
+      var shareFriendTop = 340;
+      var shareFriendLeft = 480;
+      var shareFriendWidth = 94;
+      var shareFriendHeight = 40;
+      $("#share-friend").css("top", containerHeight_share*340/shareScaleY);
+      $("#share-friend").css("left", containerWidth*shareFriendLeft/mainScaleX);
+      $("#share-friend").css("width", containerWidth*shareFriendWidth/mainScaleX);
+      $("#share-friend").css("height", containerHeight_share*shareFriendHeight/shareScaleY);
+
       var thankyouScaleY = 1206;
       var containerHeight_thankyou = containerWidth*thankyouScaleY/mainScaleX;
       $("#container_thankyou").css("width", containerWidth);
@@ -628,7 +641,7 @@
       $('img[name="prize1Qr"]').css("width", containerWidth*prize1QrWidth/mainScaleX);
       $('img[name="prize1Qr"]').css("height", containerHeight_prize1*prize1QrHeight/prize1ScaleY);
 
-      var prize11Top = 992;
+      var prize11Top = 980;
       var prize11Left = 90;
       $("#prize1-1").css("position", "absolute");
       $("#prize1-1").css("top", containerHeight*prize11Top/mainScaleY);

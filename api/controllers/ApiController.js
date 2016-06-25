@@ -159,7 +159,7 @@ module.exports = {
                  if (logs.length < prize1Amount) {
                     if(credit<prize1Credit){
                       res.status(500);
-                      res.json({errMsg: '印花不足,暫時無法兌換'});
+                      res.json({errMsg: '暫時無法兌換，請集齊38個印花'});
                       return;
                     } else{
                       userOne.credit = userOne.credit - prize1Credit;
