@@ -185,13 +185,14 @@
     </div>
     <div class="container-fluid" id="container_share" data-ng-show="SHARE==atPage" ng-click="atPage=MAIN;">
       <!--<div id="share-1" ng-click="atPage=MAIN"></div>-->
-      <div id="share-2" class="row" style="position: absolute;top:0;width:100%;index-z:1;">
-      </div>
       <div id="share-friend" style="index-z:1001;">
         <a class="fancybox" href="#friends-list">
         <img class="img-responsive" style="opacity: 1;" src="/images/easywash/main/prize1.png" ng-show="showPrize1();">
         </a>
       </div>
+      <div id="share-2" class="row" style="position: absolute;top:0;width:100%;index-z:1;">
+      </div>
+      
     </div>
     <div class="container-fluid" id="container_thankyou" data-ng-show="THANKYOU==atPage" ng-click="log('thankyou_page');" >
       <div id="thankyou-1">
@@ -522,7 +523,7 @@
       //$("#share-1").css("border", "1px solid red");
       $("#share-1").css("position", "absolute");
 
-      var shareFriendTop = 340;
+      var shareFriendTop = 600;
       var shareFriendLeft = 480;
       var shareFriendWidth = 94;
       var shareFriendHeight = 40;
