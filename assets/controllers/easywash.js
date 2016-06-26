@@ -386,7 +386,6 @@ function($scope, $http, $timeout, $interval){
     } else if (item == 'main') {
       $scope.atPage = $scope.MAIN;
     }
-    ev.stopPropagation();  
   }
 
   /*
