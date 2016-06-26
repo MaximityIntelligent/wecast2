@@ -403,8 +403,8 @@
       <div id="container_e-inner" >
       <center>
 
-      <div id="event-1">
-        <div id="event-1-content">
+      <div id="event-2">
+        <div id="event-2-content">
           <div class="col-lg-3 col-md-3 col-xs-3" style="padding-left: 5px; padding-right: 5px;" ng-repeat="user in sharedToUsers">
               <a class="thumbnail" href="#" ng-style="thumbStyle">
                 <img class="img-responsive" ng-src="{{getImgUrl(user)}}" alt="">
@@ -595,6 +595,17 @@
       $("#friends-list").css("height", containerHeight_e);
       $("#friends-list").css("display", "none");
 
+      $("#event-2").css("position", "absolute");
+      $("#event-2").css("top", containerHeight_e*100/736);
+      $("#event-2").css("width", "85%");
+      $("#event-2").css("margin", "auto");
+      $("#event-2").css("color", "white");
+      //$("#event-1 p").css("margin-left", "5%");
+
+      $("#event-2-content").css("height", containerHeight_e*0.8);
+      //$("#event-1-content").css("overflow-x", "hidden");
+      $("#event-2-content").css("overflow-y", "scroll");
+      
       var prize1ScaleY = 4868;
       var containerHeight_prize1 = containerWidth*prize1ScaleY/mainScaleX;
       $("#container_p1").css("width", containerWidth);
