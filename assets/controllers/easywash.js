@@ -380,9 +380,9 @@ function($scope, $http, $timeout, $interval){
       return 'http://placehold.it/50x50';
     }
   },
-  $scope.friendClick = function ($event) {
-    $scope.atPage=SHARE;
-    $event.stopPropagation();  
+  $scope.friendClick = function (item, ev) {
+    console.log(item);
+    ev.stopPropagation();  
   }
 
   /*
