@@ -382,6 +382,11 @@ function($scope, $http, $timeout, $interval){
   },
   $scope.friendClick = function (item, ev) {
     console.log(item);
+    if (item == 'button') {
+      $scope.atPage = 'SHARE';
+    } else if (item == 'main') {
+      $scope.atPage = 'MAIN';
+    }
     ev.stopPropagation();  
   }
 
