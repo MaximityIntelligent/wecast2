@@ -384,7 +384,6 @@ function($scope, $http, $timeout, $interval){
     console.log(item);
     if (item == 'button') {
       $scope.atPage = $scope.SHARE;
-      $("#show-friend").trigger('click');
     } else if (item == 'main') {
       $scope.atPage = $scope.MAIN;
     }
