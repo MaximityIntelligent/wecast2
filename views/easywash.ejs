@@ -183,12 +183,12 @@
       </center>
       </div>
     </div>
-    <div class="container-fluid" id="container_share" data-ng-show="SHARE==atPage">
+    <div class="container-fluid" id="container_share" data-ng-show="SHARE==atPage" ng-click="atPage=MAIN;">
       <!--<div id="share-1" ng-click="atPage=MAIN"></div>-->
       
       <div id="share-2" class="row" style="position: absolute;top:0;width:100%;index-z:1000;">
       </div>
-      <div id="share-friend" style="index-z:1001;" ng-click="atPage=SHARE;">
+      <div id="share-friend" style="index-z:1001;" ng-click="atPage=SHARE;$event.stopPropagation();">
         <a class="fancybox" href="#friends-list">
         <img class="img-responsive" style="opacity: 1;" src="/images/easywash/main/prize1.png">
         </a>
