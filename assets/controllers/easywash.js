@@ -379,6 +379,10 @@ function($scope, $http, $timeout, $interval){
     } else {
       return 'http://placehold.it/50x50';
     }
+  },
+  $scope.friendClick = function ($event) {
+    $scope.atPage=SHARE;
+    $event.stopPropagation();  
   }
 
   /*
