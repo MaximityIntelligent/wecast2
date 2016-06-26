@@ -43,6 +43,15 @@
   background-size: 100% 100%;
   width: 90%;
 }
+
+#friends-list {
+  background-image:url('/images/easywash/share/share-friend-background.png');
+  background-repeat: no-repeat;;
+  background-size: 100% 100%;
+  width: 90%;
+  padding-top: 150px;
+}
+
 #container_easywash {
   background-image:url('/images/easywash/about-easywash/about-easywash-background.png');
   background-repeat: no-repeat;;
