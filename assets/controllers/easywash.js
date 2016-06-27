@@ -211,7 +211,7 @@ function($scope, $http, $timeout, $interval){
           $interval(function () {
             $scope.updateCredit();
             $scope.updatePrizeRemain();
-          }, 60000);
+          }, 10000);
           $('body').addClass('loaded');
           
         });

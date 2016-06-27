@@ -158,6 +158,11 @@
           <img name="mainQr" src="/images/easywash/main/main-qr.png">
         
       </div>
+      <div id="share-friend">
+        <a id="show-friend" class="fancybox" href="#friends-list" ng-click="friendClick('button',$event);log('friends_page')">
+        <img class="img-responsive" style="opacity: 1;" src="/images/easywash/main/prize1.png">
+        </a>
+      </div>
     </div>
     <div class="container" id="container_e" >
       <div id="container_e-inner" >
@@ -185,11 +190,7 @@
       
       <div id="share-2" class="row" style="position: absolute;top:0;width:100%;index-z:1000;">
       </div>
-      <div id="share-friend" style="index-z:1001;">
-        <a id="show-friend" class="fancybox" href="#friends-list" ng-click="friendClick('button',$event)">
-        <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize1.png">
-        </a>
-      </div>
+      
       
     </div>
     <div class="container-fluid" id="container_thankyou" data-ng-show="THANKYOU==atPage" ng-click="log('thankyou_page');" >
@@ -525,15 +526,15 @@
       //$("#share-1").css("border", "1px solid red");
       $("#share-1").css("position", "absolute");
 
-      var shareFriendTop = 340;
-      var shareFriendLeft = 480;
-      var shareFriendWidth = 94;
-      var shareFriendHeight = 40;
+      var shareFriendTop = 930;
+      var shareFriendLeft = 60;
+      var shareFriendWidth = 150;
+      var shareFriendHeight = 150;
       $("#share-friend").css("position", "absolute");
-      $("#share-friend").css("top", containerHeight_share*shareFriendTop/shareScaleY);
+      $("#share-friend").css("top", containerHeight*shareFriendTop/shareScaleY);
       $("#share-friend").css("left", containerWidth*shareFriendLeft/mainScaleX);
       $("#share-friend").css("width", containerWidth*shareFriendWidth/mainScaleX);
-      $("#share-friend").css("height", containerHeight_share*shareFriendHeight/shareScaleY);
+      $("#share-friend").css("height", containerHeight*shareFriendHeight/shareScaleY);
 
       var thankyouScaleY = 1206;
       var containerHeight_thankyou = containerWidth*thankyouScaleY/mainScaleX;
