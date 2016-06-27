@@ -531,10 +531,10 @@
       var shareFriendWidth = 150;
       var shareFriendHeight = 150;
       $("#share-friend").css("position", "absolute");
-      $("#share-friend").css("top", containerHeight*shareFriendTop/shareScaleY);
+      $("#share-friend").css("top", containerHeight*shareFriendTop/mainScaleY);
       $("#share-friend").css("left", containerWidth*shareFriendLeft/mainScaleX);
       $("#share-friend").css("width", containerWidth*shareFriendWidth/mainScaleX);
-      $("#share-friend").css("height", containerHeight*shareFriendHeight/shareScaleY);
+      $("#share-friend").css("height", containerHeight*shareFriendHeight/mainScaleY);
 
       var thankyouScaleY = 1206;
       var containerHeight_thankyou = containerWidth*thankyouScaleY/mainScaleX;
