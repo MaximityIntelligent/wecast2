@@ -170,7 +170,7 @@ function($scope, $http, $timeout, $interval){
             });
             wx.showOptionMenu();
             wx.onMenuShareTimeline({
-                title: '绅士造型攻略-MODEL大赛花絮', // 分享标题
+                title: 'MODEL大赛花絮-绅士造型攻略', // 分享标题
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fmood.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
                 imgUrl: 'http://mood.ibeacon-macau.com/images/easywash/wecast-share.png', // 分享图标
                 success: function() {
@@ -187,7 +187,7 @@ function($scope, $http, $timeout, $interval){
             });
             wx.onMenuShareAppMessage({
 
-              title: '绅士造型攻略-MODEL大赛花絮', // 分享标题
+              title: 'MODEL大赛花絮-绅士造型攻略', // 分享标题
 
               desc: 'SHARE 给朋友收集印花,享MODEL级造型礼遇优惠', // 分享描述
 
