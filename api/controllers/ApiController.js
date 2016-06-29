@@ -9,7 +9,7 @@
  var sha1 = require('sha1');
  var User = require('../lib/User');
  var VERIFICATION_CODE="mood001";
- var adString = "adMood";
+ var adString = "adUEFA";
 
 module.exports = {
 	init_c: function(req, res){ //首次進入會跑的流程
@@ -272,10 +272,10 @@ module.exports = {
         }
         var startOfDay = new Date();
         startOfDay.setHours(0,0,0,0);
-        log.find({action: 'luckyDraw', openId: userOne.openId, date: {$gte: startOfDay}}).exec(function (err, logs) {
+        log.find({action: 'luckyDraw', openId: userOne.openId, date: {$gte: startOfDay}, ad: adString}).exec(function (err, logs) {
           
            if (logs.length < 1) {
-              log.create({action: 'luckyDraw', openId: userOne.openId, date: new Date()}).exec(function(err, results){
+              log.create({action: 'luckyDraw', openId: userOne.openId, date: new Date(), ad: adString}).exec(function(err, results){
 
                   var prizeArray = [0, 1, 2, 5];
                   var probability = [10, 50, 30, 10];

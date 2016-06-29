@@ -5,7 +5,7 @@ function User (){
 
 module.exports = User;
 
-
+var adString = "adUEFA";
 
 User.sharedToUsers_c = function (userContext, adId, cb){ //找出user 分享過的follower
 
@@ -54,7 +54,7 @@ User.userExists = function (userOpenId, cb){ //check user 是否存在DB
 }
 
 User.shareAd_c = function (sharedBy, sharedTo, adId, cb){ //按制share點擊獲得積分的function
-  var ad_c = ['adMood'];
+  var ad_c = [adString];
   if(-1==ad_c.indexOf(adId)){
     //console.log("121");
     cb(null);

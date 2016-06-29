@@ -33,7 +33,7 @@ module.exports.connections = {
       adapter: 'sails-mongo',
       host: 'localhost',
       port: 27017,
-      database: 'mood'
+      database: 'uefa'
   },
 
   mongo_dev: {
