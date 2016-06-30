@@ -37,8 +37,8 @@ User.sharedToUsers_c = function (userContext, adId, cb){ //找出user 分享過�
   })
 }
 
-User.userExists = function (userOpenId, cb){ //check user 是否存在DB
-  user.findOne({openId: userOpenId}).exec(function(err, userOne){
+User.userExists = function (userOpenId, adId, cb){ //check user 是否存在DB
+  user.findOne({openId: userOpenId, ad: adId}).exec(function(err, userOne){
     if(err){
       cb(err);
       return;
@@ -87,7 +87,7 @@ User.shareAd_c = function (sharedBy, sharedTo, adId, cb){ //按制share點擊獲
             cb(err);
             return;
           }
-          User.incrementCredit(sharedBy, 1, cb);
+          User.incrementCredit(sharedBy, 1, adId, cb);
           return;
         });
       }else{ 
@@ -102,7 +102,7 @@ User.shareAd_c = function (sharedBy, sharedTo, adId, cb){ //按制share點擊獲
               cb(err);
               return;
             }
-            User.incrementCredit(sharedBy, 1, cb);
+            User.incrementCredit(sharedBy, 1, adId, cb);
             return;
           })
         }
@@ -115,8 +115,8 @@ User.shareAd_c = function (sharedBy, sharedTo, adId, cb){ //按制share點擊獲
 
 }
 
-User.incrementCredit = function(userOpenId, increment, cb){ //User增加credit時調用
-  user.findOne({openId: userOpenId}).exec(function(err, userOne){
+User.incrementCredit = function(userOpenId, increment, adId, cb){ //User增加credit時調用
+  user.findOne({openId: userOpenId, ad: adId}).exec(function(err, userOne){
     if(err){
       cb(err);
       return;
@@ -137,7 +137,7 @@ User.incrementCredit = function(userOpenId, increment, cb){ //User增加credit�
         return;
       }
       var date = new Date();
-  		log.create({action: "total_share_friends", openId: userOpenId, date: new Date()}).exec(function(err, results){
+  		log.create({action: "total_share_friends", openId: userOpenId, date: new Date(), ad: adId}).exec(function(err, results){
   			//res.json(results);
         cb(null);
   		});

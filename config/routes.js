@@ -43,7 +43,7 @@ module.exports.routes = {
   },
   '/adUEFA': {
     controller: 'ApiController',
-    action: 'easywash'
+    action: 'uefaMain'
   },
   '/api/clickCount': {
     controller: 'ApiController',

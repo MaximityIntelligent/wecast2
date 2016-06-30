@@ -19,6 +19,10 @@ module.exports = {
       defaultsTo: 1,
       required: true
     },
+    ad: {
+      type: 'string',
+      required: true
+    },
     nickname: {
           type: 'string'
     },

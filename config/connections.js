@@ -31,9 +31,15 @@ module.exports.connections = {
 
   mongo_local: {
       adapter: 'sails-mongo',
-      host: 'localhost',
-      port: 27017,
-      database: 'uefa'
+      host: 'ds021689.mlab.com',
+      port: 21689,
+      user: 'wecast',
+      password: 'wecastdev',
+      database: 'wecast'
+      // adapter: 'sails-mongo',
+      // host: 'localhost',
+      // port: 27017,
+      // database: 'uefa'
   },
 
   mongo_dev: {

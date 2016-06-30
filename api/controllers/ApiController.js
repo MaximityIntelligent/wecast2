@@ -10,7 +10,8 @@
  var User = require('../lib/User');
  var VERIFICATION_CODE="mood001";
  var adString = "adUEFA";
-
+var appid = 'wxab261de543656952';
+var secret = '389f230302fe9c047ec56c39889b8843';
 module.exports = {
 	init_c: function(req, res){ //首次進入會跑的流程
     var code = req.param("code");
@@ -20,37 +21,39 @@ module.exports = {
     var retResult = {};
     var resp;
     var result;
-    resp = request('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&grant_type=authorization_code');
+    resp = request('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code');
         result = JSON.parse(resp.getBody());  //得到USER的AccessToken from weixin
+        console.log(result);
         var accessToken = result.access_token;
         var userInfo = {};
         var openId = result.openid;
         // Get UserInfo
-        var userInfoResp = request('GET','https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en');
-        var userInfoResult = JSON.parse(userInfoResp.getBody());
-        if (userInfoResult.nickname) {
-          userInfo.nickname = userInfoResult.nickname;
-        }
-        if (userInfoResult.sex) {
-          userInfo.sex = userInfoResult.sex;
-        }
-        if (userInfoResult.province) {
-          userInfo.province = userInfoResult.province;
-        }
-        if (userInfoResult.city) {
-          userInfo.city = userInfoResult.city;
-        }
-        if (userInfoResult.country) {
-          userInfo.country = userInfoResult.country;
-        }
-        if (userInfoResult.headimgurl) {
-          userInfo.headimgurl = userInfoResult.headimgurl;
-        }
-        if (userInfoResult.language) {
-          userInfo.language = userInfoResult.language;
-        }
+        // var userInfoResp = request('GET','https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en');
+        // var userInfoResult = JSON.parse(userInfoResp.getBody());
+        // if (userInfoResult.nickname) {
+        //   userInfo.nickname = userInfoResult.nickname;
+        // }
+        // if (userInfoResult.sex) {
+        //   userInfo.sex = userInfoResult.sex;
+        // }
+        // if (userInfoResult.province) {
+        //   userInfo.province = userInfoResult.province;
+        // }
+        // if (userInfoResult.city) {
+        //   userInfo.city = userInfoResult.city;
+        // }
+        // if (userInfoResult.country) {
+        //   userInfo.country = userInfoResult.country;
+        // }
+        // if (userInfoResult.headimgurl) {
+        //   userInfo.headimgurl = userInfoResult.headimgurl;
+        // }
+        // if (userInfoResult.language) {
+        //   userInfo.language = userInfoResult.language;
+        // }
         // Get UserInfo
         userInfo.openId = openId;
+        userInfo.ad = adId;
         User.create(userInfo, function(err, userOne){
           if(err){
             res.status(500);
@@ -74,7 +77,7 @@ module.exports = {
             var appAccessToken;
             var wait = true;
             if(true){
-              var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843');
+              var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appid+'&secret='+secret);
               result = JSON.parse(resp.getBody());
               appAccessToken = result.access_token;
             }else{
@@ -142,20 +145,32 @@ module.exports = {
     var verificationCode = req.param('verificationCode');
     var userOpenId = req.param("user");
     var prize = req.param("prize");
-    var prize1Credit = 38;
-    var prize1Amount = 1000000;
-    redeem_c.findOne({user: userOpenId, advertisement: adString}).exec(function(err, redeemOne){
-      user.findOne({openId: userOpenId}).exec(function(err, userOne){
+    var ad = req.param("ad");
+    var prizeCreditAll = {
+      'adUEFA' : {
+        prize1: 38
+      }
+    };
+    var prizeAmountAll = {
+      'adUEFA' : {
+        prize1: 1000000
+      }
+    };
+    
+    redeem_c.findOne({user: userOpenId, advertisement: ad}).exec(function(err, redeemOne){
+      user.findOne({openId: userOpenId, ad: ad}).exec(function(err, userOne){
         if(!userOne){
           res.status(500);
           res.end();
           return;
         }
-        User.sharedToUsers_c(userOne, adString, function(err, sharedToUsers){
+        User.sharedToUsers_c(userOne, ad, function(err, sharedToUsers){
           var credit = userOne.credit;
           if(verificationCode==VERIFICATION_CODE){
             if(prize=="prize1"){
-              log.find({action:'redeem_prize1'}).exec(function (err, logs) {
+              var prize1Credit = prizeCreditAll[ad][prize];
+              var prize1Amount = prizeAmountAll[ad][prize];
+              log.find({action:'redeem_'+prize, ad: ad}).exec(function (err, logs) {
                  if (logs.length < prize1Amount) {
                     if(credit<prize1Credit){
                       res.status(500);
@@ -205,12 +220,12 @@ module.exports = {
   });
 
   },
-  updateCredit: function(req, res){
-    user.update({}, {credit: 100}).exec(function(err){
-      res.end();
-    });
-  },
-  easywash: function(req, res){
+  // updateCredit: function(req, res){
+  //   user.update({}, {credit: 100}).exec(function(err){
+  //     res.end();
+  //   });
+  // },
+  uefaMain: function(req, res){
     res.view('easywash');
   },
   clickCount: function(req, res){
@@ -233,15 +248,27 @@ module.exports = {
 		});
 	},
   getCredit: function (req, res) {
-    user.findOne({openId: req.param('openId')}).exec(function (err, userOne) {
+    var openId = req.param('openId');
+    var ad = req.param('ad');
+    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
         return res.json(userOne);
     });
   },
   getPrizeRemain: function (req, res) {
-      var prizeList = ['redeem_prize1', 'redeem_prize2'];
-      var prizeAmount = {'redeem_prize1':30, 'redeem_prize2':10};
+      var ad = req.param('ad');
+      var prizeListAll = {
+        'adUEFA': ['redeem_prize1', 'redeem_prize2']
+      };
+      var prizeAmountAll = {
+        'adUEFA' : {
+          'redeem_prize1':30, 
+          'redeem_prize2':10
+        }
+      };
+      var prizeList = prizeListAll[ad];
+      var prizeAmount = prizeAmountAll[ad];
       var prizeRemain = {};
-      log.find({action: {$in: prizeList}}).exec(function (err, logs) {
+      log.find({action: {$in: prizeList}, ad:ad}).exec(function (err, logs) {
           var groupLogs = {};
           logs.forEach(function (item, index, array) {
             if (groupLogs[item.action] == undefined) {
@@ -266,16 +293,18 @@ module.exports = {
   },
 
   luckyDraw: function (req, res) {
-    user.findOne({openId: req.param('openId')}).exec(function (err, userOne) {
+    var openId = req.param('openId');
+    var ad = req.param('ad');
+    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
         if (!userOne) {
             return res.status(401).end();
         }
         var startOfDay = new Date();
         startOfDay.setHours(0,0,0,0);
-        log.find({action: 'luckyDraw', openId: userOne.openId, date: {$gte: startOfDay}, ad: adString}).exec(function (err, logs) {
+        log.find({action: 'luckyDraw', openId: userOne.openId, date: {$gte: startOfDay}, ad: ad}).exec(function (err, logs) {
           
            if (logs.length < 1) {
-              log.create({action: 'luckyDraw', openId: userOne.openId, date: new Date(), ad: adString}).exec(function(err, results){
+              log.create({action: 'luckyDraw', openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
 
                   var prizeArray = [0, 1, 2, 5];
                   var probability = [10, 50, 30, 10];

@@ -27,7 +27,7 @@ var QueryString = function () {  //提取由公众號或分享LINK時的CODE參�
 var code = QueryString.code;
 /*
 if(typeof QueryString.code == 'undefined'){
-  window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_base#wechat_redirect';
+  window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2Fwecast.ibeacon-macau.com%2Feasywash%3FsharedBy%3Dwecast%26ad%3Deasywash&response_type=code&scope=snsapi_base#wechat_redirect';
   return;
 }*/
 var ad = QueryString.ad;
@@ -36,6 +36,9 @@ var adString = 'adUEFA';
 // var snsapi = 'snsapi_base';
 var snsapi = 'snsapi_userinfo';
 var prize1Credit = 38;
+var host = 'localhost';
+var appid = 'wxab261de543656952';
+var debug = true;
 
 app.controller('IndexCtrl', [
 '$scope','$http', '$timeout', '$interval',
@@ -68,12 +71,12 @@ function($scope, $http, $timeout, $interval){
 
     if (window.orientation % 180 == 0){ //如果是垂直
       $scope.$apply(function(){
-          if( typeof $scope.landscape != 'undefined'){
+          if( typeof $scope.landscape != 'undefined' || !debug){
             if(typeof QueryString.pg == 'undefined'){
-              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Flb.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'#wechat_redirect';
+              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'#wechat_redirect';
             }
             else {
-              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Flb.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'#wechat_redirect';
+              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'#wechat_redirect';
             }
           }
 
@@ -115,7 +118,7 @@ function($scope, $http, $timeout, $interval){
 
   $scope.updateCredit = function () {
     if ($scope.userId) {
-      $http.get('/api/getCredit?openId='+$scope.userId).success(function (data) {
+      $http.get('/api/getCredit?openId='+$scope.userId+'&ad='+adString).success(function (data) {
         $scope.credit = data.credit;
       });
     }
@@ -123,7 +126,7 @@ function($scope, $http, $timeout, $interval){
   };
 
   $scope.updatePrizeRemain = function () {
-     $http.get('/api/getPrizeRemain').success(function (data) {
+     $http.get('/api/getPrizeRemain?ad='+adString).success(function (data) {
         $scope.prize1Remain = data.prizeRemain.redeem_prize1;
         console.log($scope.prize1Remain);
      });
@@ -157,7 +160,7 @@ function($scope, $http, $timeout, $interval){
           console.log($scope.userPrize);
           wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: 'wxab261de543656952', // 必填，公众号的唯一标识
+          appId: ''+appid+'', // 必填，公众号的唯一标识
           timestamp: $scope.timestamp, // 必填，生成签名的时间戳
           nonceStr: $scope.noncestr, // 必填，生成签名的随机串
           signature: $scope.signature,// 必填，签名，见附录1
@@ -171,8 +174,8 @@ function($scope, $http, $timeout, $interval){
             wx.showOptionMenu();
             wx.onMenuShareTimeline({
                 title: '绅士造型攻略-MODEL大赛花絮', // 分享标题
-                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Flb.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
-                imgUrl: 'http://lb.ibeacon-macau.com/images/easywash/wecast-share.png', // 分享图标
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
+                imgUrl: 'http://'+host+'/images/easywash/wecast-share.png', // 分享图标
                 success: function() {
                     $scope.log('share_timeline');
                     $("#share-success").trigger('click');
@@ -191,9 +194,9 @@ function($scope, $http, $timeout, $interval){
 
               desc: 'SHARE 给朋友收集印花,享MODEL级造型礼遇优惠', // 分享描述
 
-              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Flb.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
+              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
 
-              imgUrl: 'http://lb.ibeacon-macau.com/images/easywash/wecast-share.png', // 分享图标
+              imgUrl: 'http://'+host+'/images/easywash/wecast-share.png', // 分享图标
 
               success: function () {
                 $scope.log('share_friend');
@@ -225,7 +228,21 @@ function($scope, $http, $timeout, $interval){
       }).
       error(function(data, status, headers, config) { //如果從外部連結返回時會遇到code error問題，就要重新定向
         //alert("error");
-        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab261de543656952&redirect_uri=http%3A%2F%2Flb.ibeacon-macau.com%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'#wechat_redirect';
+        if (!debug) {
+          window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'#wechat_redirect';
+        } else {
+          $('body').addClass('loaded');
+          $scope.sharedBy = sharedBy;
+          $scope.userId = 'ob2Kews8erGU8hYvuYzfnn0Cc0QQ';
+          $scope.shareCount = 0;
+          $scope.credit = 38;
+          $scope.prize1Remain = 30;
+          $scope.userPrize = {};
+          $scope.sharedToUsers = [];
+
+          $scope.updatePrizeRemain();
+        }
+        
         //$('body').addClass("loaded");
         //$('#loader-wrapper').css("display", "none");
       });
@@ -350,7 +367,7 @@ function($scope, $http, $timeout, $interval){
   },
   $scope.log = function(actionName){
     $http({
-      url:'log/log?action='+actionName+'&openId='+$scope.userId,
+      url:'log/log?action='+actionName+'&openId='+$scope.userId+'&ad='+adString,
       method:'GET'
       }).success(function(data,header,config,status){
 
@@ -364,7 +381,7 @@ function($scope, $http, $timeout, $interval){
     document.getElementById("easywash-video").src = "http://v.qq.com/iframe/player.html?vid=q0308w7unq8&amp;&amp;auto=0";
   },
   $scope.luckyDraw = function () {
-    $http.post('/api/luckyDraw', {openId: $scope.userId}).success(function (data) {
+    $http.post('/api/luckyDraw', {openId: $scope.userId, ad: adString}).success(function (data) {
         console.log(data);
         $scope.credit = data.currentCredit;
         $scope.prize = data.prize;
