@@ -36,8 +36,8 @@ var adString = 'adUEFA';
 // var snsapi = 'snsapi_base';
 var snsapi = 'snsapi_userinfo';
 var prize1Credit = 38;
-var host = 'localhost';
-var appid = 'wxab261de543656952';
+var host = 'lb.ibeacon-macau.com';
+var appid = 'wx5b57ddac4e2e1e88';
 var debug = true;
 
 app.controller('IndexCtrl', [

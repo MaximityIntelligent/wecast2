@@ -10,8 +10,8 @@
  var User = require('../lib/User');
  var VERIFICATION_CODE="mood001";
  var adString = "adUEFA";
-var appid = 'wxab261de543656952';
-var secret = '389f230302fe9c047ec56c39889b8843';
+var appid = 'wx5b57ddac4e2e1e88';
+var secret = 'e73e71f132807e7827849ca0ebf739e6';
 module.exports = {
 	init_c: function(req, res){ //首次進入會跑的流程
     var code = req.param("code");
