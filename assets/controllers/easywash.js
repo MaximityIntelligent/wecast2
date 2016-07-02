@@ -35,10 +35,10 @@ var sharedBy = QueryString.sharedBy;
 var adString = 'adUEFA';
 // var snsapi = 'snsapi_base';
 var snsapi = 'snsapi_userinfo';
-var prize1Credit = 38;
+var prizeCredit = {'prize1':15, 'prize2':30};
 var host = 'lb.ibeacon-macau.com';
 var appid = 'wx5b57ddac4e2e1e88';
-var debug = true;
+var debug = false;
 
 app.controller('IndexCtrl', [
 '$scope','$http', '$timeout', '$interval',
@@ -131,7 +131,12 @@ function($scope, $http, $timeout, $interval){
         console.log($scope.prize1Remain);
      });
   };
-
+  $scope.updateGameResult = function () {
+    $http.get('/api/getGameResult?ad='+adString+'&openId='+$scope.userId).success(function (data) {
+        $scope.gameResult = data.gameResult;
+        console.log($scope.gameResult);
+     });
+  }
   $scope.init = function() // 初始化頁面
   {
     //alert("init");
@@ -152,11 +157,17 @@ function($scope, $http, $timeout, $interval){
           $scope.userId = data.openId;
           $scope.shareCount = data.shareCount;
           $scope.credit = data.credit;
-          $scope.prize1Remain = 30;
+          $scope.userVote = data.userVote;
           $scope.userPrize = data.userPrize;
+          $scope.isRedeemVote = data.isRedeemVote;
           $scope.sharedToUsers = data.sharedToUsers;
 
+          $scope.prize1Remain = 30;
           $scope.updatePrizeRemain();
+          $scope.updateGameResult();
+          $scope.voteRate1 = 0;
+          $scope.voteRate2 = 0;
+          $scope.updateVotes();
           console.log($scope.userPrize);
           wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -235,12 +246,17 @@ function($scope, $http, $timeout, $interval){
           $scope.sharedBy = sharedBy;
           $scope.userId = 'ob2Kews8erGU8hYvuYzfnn0Cc0QQ';
           $scope.shareCount = 0;
-          $scope.credit = 38;
+          $scope.credit = 16;
           $scope.prize1Remain = 30;
           $scope.userPrize = {};
           $scope.sharedToUsers = [];
-
+          // $scope.userVote = 'vote2';
+          $scope.updateGameResult();
           $scope.updatePrizeRemain();
+          $scope.voteRate1 = 0;
+          $scope.voteRate2 = 0;
+          $scope.updateVotes();
+          $scope.isRedeemVote = false;
         }
         
         //$('body').addClass("loaded");
@@ -261,7 +277,7 @@ function($scope, $http, $timeout, $interval){
 
     if(prize=="prize1"){
       $scope.prizeRedeem = "prize1";
-      if($scope.credit<prize1Credit){
+      if($scope.credit<prizeCredit[prize]){
         $scope.redeemErrMsg = "印花不足,暂时无法兑换";
         $("#veri-credit-errModal").modal('show');
         return;
@@ -271,7 +287,7 @@ function($scope, $http, $timeout, $interval){
       }
     }else if(prize=="prize2"){
       $scope.prizeRedeem = "prize2";
-      if($scope.credit<38){
+      if($scope.credit<prizeCredit[prize]){
         $("#veri-credit-errModal").modal('show');
         return;
       }else{
@@ -279,6 +295,23 @@ function($scope, $http, $timeout, $interval){
         return;
       }
     }
+  }
+  $scope.showVote = function (vote) {
+    
+    var now = new Date();
+    var exp = new Date('2016-07-02 18:30:00');
+    console.log(now);
+    console.log(exp);
+    if (now.getTime() > exp.getTime()) {
+        $("#voteErrModal").modal('show');
+    } else {
+      if (vote=='vote1') {
+        $("#vote1Modal").modal('show');
+      } else {
+        $("#vote2Modal").modal('show');
+      }
+    }
+    
   }
 
   $scope.showPrize1 = function(){
@@ -402,6 +435,74 @@ function($scope, $http, $timeout, $interval){
     if (item == 'button') {
     } else if (item == 'main') {
       $scope.atPage = $scope.MAIN;
+    }
+  },
+  $scope.vote = function (vote) {
+    var temp = $scope.userVote;
+    $scope.userVote = vote;
+    if (vote=='' || vote==null) {
+      return;
+    }
+    $http({
+      method:'POST',
+      url:'/api/vote',
+      params:{
+        'userVote':vote,
+        "openId": $scope.userId,
+        "ad": adString,
+      }
+    }).success(function(data) {
+      $scope.userVote = data.userVote;
+    }).error(function(data) {
+      $scope.userVote = temp;
+    });
+  },
+  $scope.showRedeemVote = function (vote) {
+    if ($scope.gameResult == vote && $scope.isRedeemVote != true) {
+      $("#redeemVoteModal").modal('show');
+    }
+  },
+
+  $scope.redeemVote = function () {
+    if ($scope.userVote == $scope.gameResult) {
+        $http({
+          method:'POST',
+          url:'/api/redeemVote',
+          params:{
+            "openId": $scope.userId,
+            "ad": adString,
+          }
+        }).success(function(data) {
+          $scope.credit = data.credit
+          $scope.isRedeemVote = data.isRedeemVote;
+        }).error(function(data) {
+
+        });
+        
+    }
+  },
+  $scope.updateVotes = function (req, res) {
+    $http({
+      method:'POST',
+      url:'/api/getVotes',
+      params:{
+        "openId": $scope.userId,
+        "ad": adString,
+      }
+    }).success(function(data) {
+      $scope.votes = data;
+      $scope.updateVoteChart();
+    }).error(function(data) {
+
+    });
+  },
+  $scope.updateVoteChart = function () {
+    $scope.voteRate1 = Math.floor($scope.votes.vote1/($scope.votes.vote1+$scope.votes.vote2)*100);
+    $scope.voteRate2 = Math.floor($scope.votes.vote2/($scope.votes.vote1+$scope.votes.vote2)*100);
+    var mainScaleX = 750;
+    var containerWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    if ($scope.votes.vote1 + $scope.votes.vote2 > 0) {
+        $scope.voteBar1Style = {'width':containerWidth*($scope.voteRate1/100*350)/mainScaleX};
     }
   }
 

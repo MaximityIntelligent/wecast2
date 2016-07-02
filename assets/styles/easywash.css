@@ -90,8 +90,6 @@
 }
 */
 .redeem {
-  margin-left: 7px;
-  margin-right: 7px;
 }
 #loader-wrapper {
     position: fixed;
@@ -1059,6 +1057,18 @@ i:nth-child(100) b {
 @keyframes rules {
     from {width:90%;top:0%;right:0%}
     to {width:100%;top:-1%;right:1%;}
+}
+
+#main-event-info img {
+  animation-name: info;
+  animation-duration: 2.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes info {
+    from {transform:rotate(0deg)}
+    to {transform:rotate(360deg)}
 }
 
 .animate-show {

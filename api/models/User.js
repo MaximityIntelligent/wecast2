@@ -23,6 +23,13 @@ module.exports = {
       type: 'string',
       required: true
     },
+    vote: {
+      type: 'string'
+    },
+    isRedeemVote: {
+      type: 'boolean',
+      defaultsTo: false
+    },
     nickname: {
           type: 'string'
     },

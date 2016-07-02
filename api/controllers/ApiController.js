@@ -103,6 +103,8 @@ module.exports = {
               retResult.noncestr = noncestr;
               retResult.ticket = jsapiTicket;
               retResult.credit = userOne.credit;
+              retResult.userVote = userOne.vote;
+              retResult.isRedeemVote = userOne.isRedeemVote;
               retResult.sharedToUsers = sharedToUsers;
               var userPrize = {};
               var prizeList = ['redeem_prize1', 'redeem_prize2'];
@@ -337,6 +339,81 @@ module.exports = {
         
     });
     
+  },
+  vote: function (req, res) {
+    var openId = req.param('openId');
+    var ad = req.param('ad');
+    var userVote = req.param('userVote');
+    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+        if (!userOne) {
+            return res.status(401).end();
+        }
+        if (userVote) {
+          userOne.vote = userVote;
+          userOne.save(function (err, savedUser) {
+            return res.json({userVote: savedUser.vote});
+          });
+        } else {
+           return res.status(400).end();
+        }
+    });
+  },
+  redeemVote: function (req, res) {
+    var openId = req.param('openId');
+    var ad = req.param('ad');
+    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+        if (!userOne) {
+            return res.status(401).end();
+        }
+        if (userOne.isRedeemVote) { return res.status(400).end();}
+        log.findOne({action: {$in:['gameResult_vote1', 'gameResult_vote2']}, ad: ad}).exec(function (err, logOne) {
+          if (!logOne) {
+            return res.status(400).end();
+          }
+          if (logOne.action == 'gameResult_'+userOne.vote) {
+              userOne.credit = userOne.credit * 2;
+              userOne.isRedeemVote = true;
+              userOne.save(function (err, savedUser) {
+                return res.json({credit: savedUser.credit, isRedeemVote: userOne.isRedeemVote});
+              });
+
+          } else {
+             return res.status(400).end();
+          }
+        });
+    });
+  },
+  getGameResult: function (req, res) {
+    var openId = req.param('openId');
+    var ad = req.param('ad');
+    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+        if (!userOne) {
+            return res.status(401).end();
+        }
+        log.findOne({action: {$in:['gameResult_vote1', 'gameResult_vote2']}, ad: ad}).exec(function (err, logOne) {
+          if (!logOne) {
+            return res.status(400).end();
+          }
+          var temp = logOne.action.split('_');
+          if (temp.length != 2) { return res.status(400).end();}
+          return res.json({gameResult: temp[temp.length-1]});
+          
+        });
+    });
+  },  
+  getVotes: function (req, res) {
+    var openId = req.param('openId');
+    var ad = req.param('ad');
+    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+        if (!userOne) {
+            return res.status(401).end();
+        }
+        user.count({ad: ad, vote:'vote1'}).exec(function (err, count1) {
+          user.count({ad:ad, vote: 'vote2'}).exec(function (err, count2) {
+            return res.json({vote1:count1, vote2:count2});
+          });
+        });
+    });
   },
   initialization: function(req, res){
     log.destroy().exec(function(){});
