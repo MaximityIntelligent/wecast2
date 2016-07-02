@@ -41,8 +41,8 @@ var appid = 'wx5b57ddac4e2e1e88';
 var debug = false;
 
 app.controller('IndexCtrl', [
-'$scope','$http', '$timeout', '$interval',
-function($scope, $http, $timeout, $interval){
+'$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll',
+function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.loading = 0;
   $scope.MAIN = "main";
   $scope.SHARE = "share";
@@ -71,7 +71,7 @@ function($scope, $http, $timeout, $interval){
 
     if (window.orientation % 180 == 0){ //如果是垂直
       $scope.$apply(function(){
-          if( typeof $scope.landscape != 'undefined' || !debug){
+          if( typeof $scope.landscape != 'undefined' && !debug){
             if(typeof QueryString.pg == 'undefined'){
               window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'#wechat_redirect';
             }
@@ -136,6 +136,31 @@ function($scope, $http, $timeout, $interval){
         $scope.gameResult = data.gameResult;
         console.log($scope.gameResult);
      });
+  };
+  $scope.updateVotes = function (req, res) {
+    $http({
+      method:'POST',
+      url:'/api/getVotes',
+      params:{
+        "openId": $scope.userId,
+        "ad": adString,
+      }
+    }).success(function(data) {
+      $scope.votes = data;
+      $scope.updateVoteChart();
+    }).error(function(data) {
+
+    });
+  };
+  $scope.updateMain = function () {
+    if ($scope.userId) {
+      $http.get('/api/getMainUpdate?openId='+$scope.userId+'&ad='+adString).success(function (data) {
+        $scope.credit = data.credit;
+        $scope.gameResult = data.gameResult;
+        $scope.votes = data.votes;
+        $scope.updateVoteChart();
+      });
+    }
   }
   $scope.init = function() // 初始化頁面
   {
@@ -163,11 +188,9 @@ function($scope, $http, $timeout, $interval){
           $scope.sharedToUsers = data.sharedToUsers;
 
           $scope.prize1Remain = 30;
-          $scope.updatePrizeRemain();
-          $scope.updateGameResult();
           $scope.voteRate1 = 0;
           $scope.voteRate2 = 0;
-          $scope.updateVotes();
+          $scope.updateMain();
           console.log($scope.userPrize);
           wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -223,8 +246,7 @@ function($scope, $http, $timeout, $interval){
             });
           $scope.loading = 100;
           $interval(function () {
-            $scope.updateCredit();
-            $scope.updatePrizeRemain();
+            $scope.updateMain();
           }, 10000);
           $('body').addClass('loaded');
           
@@ -244,7 +266,7 @@ function($scope, $http, $timeout, $interval){
         } else {
           $('body').addClass('loaded');
           $scope.sharedBy = sharedBy;
-          $scope.userId = 'ob2Kews8erGU8hYvuYzfnn0Cc0QQ';
+          $scope.userId = 'ocLOPwlFiCCTPeSXLYTg7ZLLLAww';
           $scope.shareCount = 0;
           $scope.credit = 16;
           $scope.prize1Remain = 30;
@@ -435,6 +457,7 @@ function($scope, $http, $timeout, $interval){
     if (item == 'button') {
     } else if (item == 'main') {
       $scope.atPage = $scope.MAIN;
+      $scope.gotoShare();
     }
   },
   $scope.vote = function (vote) {
@@ -453,6 +476,8 @@ function($scope, $http, $timeout, $interval){
       }
     }).success(function(data) {
       $scope.userVote = data.userVote;
+      $scope.votes[$scope.userVote]++;
+      $scope.updateVoteChart();
     }).error(function(data) {
       $scope.userVote = temp;
     });
@@ -481,21 +506,7 @@ function($scope, $http, $timeout, $interval){
         
     }
   },
-  $scope.updateVotes = function (req, res) {
-    $http({
-      method:'POST',
-      url:'/api/getVotes',
-      params:{
-        "openId": $scope.userId,
-        "ad": adString,
-      }
-    }).success(function(data) {
-      $scope.votes = data;
-      $scope.updateVoteChart();
-    }).error(function(data) {
-
-    });
-  },
+  
   $scope.updateVoteChart = function () {
     $scope.voteRate1 = Math.floor($scope.votes.vote1/($scope.votes.vote1+$scope.votes.vote2)*100);
     $scope.voteRate2 = Math.floor($scope.votes.vote2/($scope.votes.vote1+$scope.votes.vote2)*100);
@@ -503,7 +514,14 @@ function($scope, $http, $timeout, $interval){
     var containerWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
     if ($scope.votes.vote1 + $scope.votes.vote2 > 0) {
         $scope.voteBar1Style = {'width':containerWidth*($scope.voteRate1/100*350)/mainScaleX};
+    } else {
+      $scope.voteRate1 = 0;
+      $scope.voteRate2 = 0;
     }
+  },
+  $scope.gotoShare = function () {
+    $location.hash('main-1');
+    $anchorScroll();  
   }
 
   /*

@@ -415,6 +415,31 @@ module.exports = {
         });
     });
   },
+  getMainUpdate: function (req, res) {
+    var openId = req.param('openId');
+    var ad = req.param('ad');
+    //getVotes
+    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+        if (!userOne) {
+            return res.status(401).end();
+        }
+        user.count({ad: ad, vote:'vote1'}).exec(function (err, count1) {
+          user.count({ad:ad, vote: 'vote2'}).exec(function (err, count2) {
+            //getGameResult
+            log.findOne({action: {$in:['gameResult_vote1', 'gameResult_vote2']}, ad: ad}).exec(function (err, logOne) {
+              var gameResult;
+              if (logOne) {
+                var temp = logOne.action.split('_');
+                if (temp.length == 2) { gameResult = temp[temp.length-1]}
+                
+              }
+              return res.json({votes:{vote1:count1, vote2:count2}, gameResult: gameResult, credit: userOne.credit});
+              
+            });
+          });
+        });
+    });
+  },
   initialization: function(req, res){
     log.destroy().exec(function(){});
     redeem_c.destroy().exec(function(){});
