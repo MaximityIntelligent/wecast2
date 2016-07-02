@@ -8,7 +8,7 @@
  var weixin = require('../../config/weixin');
  var sha1 = require('sha1');
  var User = require('../lib/User');
- var VERIFICATION_CODE="mood001";
+ var VERIFICATION_CODE="uefa001";
  var adString = "adUEFA";
 var appid = 'wx5b57ddac4e2e1e88';
 var secret = 'e73e71f132807e7827849ca0ebf739e6';
@@ -150,7 +150,7 @@ module.exports = {
     var ad = req.param("ad");
     var prizeCreditAll = {
       'adUEFA' : {
-        prize1: 38
+        prize1: 15
       }
     };
     var prizeAmountAll = {
@@ -169,17 +169,17 @@ module.exports = {
         User.sharedToUsers_c(userOne, ad, function(err, sharedToUsers){
           var credit = userOne.credit;
           if(verificationCode==VERIFICATION_CODE){
-            if(prize=="prize1"){
-              var prize1Credit = prizeCreditAll[ad][prize];
-              var prize1Amount = prizeAmountAll[ad][prize];
+            
+              var prizeCredit = prizeCreditAll[ad][prize];
+              var prizeAmount = prizeAmountAll[ad][prize];
               log.find({action:'redeem_'+prize, ad: ad}).exec(function (err, logs) {
-                 if (logs.length < prize1Amount) {
-                    if(credit<prize1Credit){
+                 if (logs.length < prizeAmount) {
+                    if(credit<prizeCredit){
                       res.status(500);
-                      res.json({errMsg: '暫時無法兌換，請集齊38個印花'});
+                      res.json({errMsg: '暫時無法兌換，請集齊'+prizeCredit+'個印花'});
                       return;
                     } else{
-                      userOne.credit = userOne.credit - prize1Credit;
+                      userOne.credit = userOne.credit - prizeCredit;
                       userOne.save(function(){
                         res.json({credit: userOne.credit, prize: prize});
                         return;
@@ -192,23 +192,7 @@ module.exports = {
                     return;
                  }
               });
-              
-            }else if(prize=="prize2"){
-              if(credit<38){
-                res.status(500);
-                res.end();
-                return;
-              }else{
-                userOne.credit = userOne.credit - 38;
-                userOne.save(function(){
-                res.json({credit: userOne.credit, prize: prize});
-                return;
-                });
-              }
-            }else{
-              res.end();
-              return;
-            }
+            
           }else{
             res.status(500);
             res.json({errMsg: 'SORRY  領獎碼有誤'});
@@ -351,7 +335,16 @@ module.exports = {
         if (userVote) {
           userOne.vote = userVote;
           userOne.save(function (err, savedUser) {
-            return res.json({userVote: savedUser.vote});
+            user.count({ad: ad, vote:'vote1'}).exec(function (err, count1) {
+              user.count({ad:ad, vote: 'vote2'}).exec(function (err, count2) {
+                  log.create({action: 'vote', openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
+
+                  });
+                  return res.json({userVote: savedUser.vote, votes:{vote1:count1, vote2:count2}});
+                
+              });
+            });
+            
           });
         } else {
            return res.status(400).end();

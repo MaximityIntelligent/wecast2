@@ -34,7 +34,7 @@ var ad = QueryString.ad;
 var sharedBy = QueryString.sharedBy;
 var adString = 'adUEFA';
 // var snsapi = 'snsapi_base';
-var snsapi = 'snsapi_userinfo';
+var snsapi = 'snsapi_base';
 var prizeCredit = {'prize1':15, 'prize2':30};
 var host = 'lb.ibeacon-macau.com';
 var appid = 'wx5b57ddac4e2e1e88';
@@ -476,7 +476,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       }
     }).success(function(data) {
       $scope.userVote = data.userVote;
-      $scope.votes[$scope.userVote]++;
+      console.log($scope.userVote);
+      $scope.votes = data.votes;
       $scope.updateVoteChart();
     }).error(function(data) {
       $scope.userVote = temp;
