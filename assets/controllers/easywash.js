@@ -52,6 +52,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.ABOUT_EASYWASH = "about_easywash";
   $scope.THANKYOU = "thankyou";
   $scope.LANDSCAPE = "landscape";
+  $scope.QUESTIONNAIRE = 'questionnaire';
   $scope.atPage = (typeof QueryString.pg == 'undefined') ? $scope.MAIN: $scope.THANKYOU;
   $scope.credit = 0;
   $scope.map = false;

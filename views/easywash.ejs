@@ -124,7 +124,7 @@
         </div>
         
       </div>
-      <div id="prize1-1" style="color: white">
+      <div id="prize1-1" style="color: white" ng-click="atPage=QUESTIONNAIRE">
         <font>
           {{credit}}
         </font>
@@ -377,8 +377,7 @@
 
           <div class="modal-body" style="text-align: center;;">
             <form class="form-inline" style="position: relative;top: 10%">
-              <h4>恭喜你獲得西裝定製現金劵</h4>
-              <h4>客服id:Mood_tailor</h4>
+              <h4>恭喜你獲得足夠印花</h4>
               </br>
               <div class="form-group">
                 <input type="password" id="verification1" class="form-control" placeholder="請交由工作人員輸入驗證碼" 
@@ -398,10 +397,11 @@
         <div class="modal-content">
           <div class="modal-body" style="text-align: center;">
             <form class="form-inline" style="position: relative;top: 10%">
-              <h4>请交由工作人员输入领奖码</h4>
+              <h4>恭喜你獲得足夠印花</h4>
               </br>
               <div class="form-group">
-                <input type="password" id="verification2" class="form-control">
+                <input type="password" id="verification2" class="form-control" placeholder="請交由工作人員輸入驗證碼" 
+                style="background-color: #444; color:white; border: 0px;">>
               </div>
 
             </form>
@@ -486,6 +486,25 @@
       </div>
       <div id="easywash-3" ng-click="clickCount('tel');log('tel')" data-ng-show="false">
         <center><a href="tel:85363539002"><img name="call" src="/images/easywash/about-easywash/call.png"></a></center>
+      </div>
+
+    </div>
+    <div class="container-fluid" id="container_questionnaire" data-ng-show="QUESTIONNAIRE==atPage">
+      <div class="close-btn" data-ng-show="false">
+          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('questionnaire_return')"/>
+      </div>
+      <div>
+        <center>
+          <form class="form-inline" style="position: relative;top: 10%">
+              <h4>恭喜你獲得足夠印花</h4>
+              </br>
+              <div class="form-group">
+                <input type="password" id="verification1" class="form-control" placeholder="請交由工作人員輸入驗證碼" 
+                style="background-color: #444; color:white; border: 0px;">
+              </div>
+
+            </form>
+        </center>
       </div>
 
     </div>

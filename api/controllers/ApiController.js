@@ -150,12 +150,14 @@ module.exports = {
     var ad = req.param("ad");
     var prizeCreditAll = {
       'adUEFA' : {
-        prize1: 15
+        prize1: 15,
+        prize2: 30
       }
     };
     var prizeAmountAll = {
       'adUEFA' : {
-        prize1: 1000000
+        prize1: 1000000,
+        prize2: 1000000
       }
     };
     
@@ -375,6 +377,49 @@ module.exports = {
           }
         });
     });
+  },
+  redeemVoteAll: function (req, res) {
+    var openId = req.param('openId');
+    var ad = req.param('ad');
+    var secret = req.param('secret');
+    if (secret == 'kitkit!@#$') {
+      user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+        if (!userOne) {
+            return res.status(401).end();
+        }
+        log.findOne({action: {$in:['gameResult_vote1', 'gameResult_vote2']}, ad: ad}).exec(function (err, logOne) {
+          if (!logOne) {
+            return res.status(400).end();
+          }
+
+          var gameResult = logOne.action.split("_")[1];
+
+          user.find({ad:ad, vote: gameResult, isRedeemVote: false}).exec(function (err, users) {
+            if (users.length > 0) {
+              var count = users.length;
+              users.forEach(function (item, index) {
+                if (item.isRedeemVote == false) {
+                  item.credit = item.credit * 2;
+                  item.isRedeemVote = true;
+                  item.save(function (err, savedUser) {
+                    count = count - 1;
+                    if (count == 0) {
+                      return res.status(200).end();
+                    }
+                  });
+                }
+                
+              });
+            } else {
+              return res.status(204).end();
+            }
+            
+          });
+        });
+    });
+    } else {
+      return res.status(400).end();
+    }
   },
   getGameResult: function (req, res) {
     var openId = req.param('openId');
