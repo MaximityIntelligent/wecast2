@@ -124,7 +124,7 @@
         </div>
         
       </div>
-      <div id="prize1-1" style="color: white" ng-click="atPage=QUESTIONNAIRE">
+      <div id="prize1-1" style="color: white">
         <font>
           {{credit}}
         </font>
@@ -146,7 +146,7 @@
         <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1;resetVideo();clickCount('prize1_page');log('prize1_page')">
         <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize1-dim.png" ng-show="showPrize1Dim();" ng-click="atPage=PRIZE1;resetVideo();clickCount('prize1_page');log('prize1_page')">
         </a> -->
-        <img class="img-responsive" src="/images/easywash/main/choose.png" ng-hide="userVote">
+        <img class="img-responsive" src="/images/easywash/main/choose.png" ng-hide="userVote" ng-click="showQuestionnaire()">
       </div>
       <div id="main-3" data-ng-show="false">
         <a href="#top">
@@ -412,6 +412,41 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="questionnaireModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body" style="text-align: center;;">
+            <form class="form" style="position: relative;top: 10%">
+              <h4>填寫問卷可獲得3積分</h4>
+              </br>
+              <div class="form-group">
+                <input type="text" id="username" ng-model="questionnaire.username" class="form-control" placeholder="請輸入您的匿稱" 
+                style="background-color: #444; color:white; border: 0px;">
+              </div>
+              <div class="form-group">
+                <input type="text" id="phone" ng-model="questionnaire.phone" class="form-control" placeholder="請輸入您的手機號碼" 
+                style="background-color: #444; color:white; border: 0px;">
+              </div>
+              <div class="form-group">
+                <input type="text" id="email" ng-model="questionnaire.email" class="form-control" placeholder="請輸入您的Email" 
+                style="background-color: #444; color:white; border: 0px;">
+              </div>
+              <div class="form-group">
+                <input type="number" id="age" ng-model="questionnaire.age" min="1" max="100" class="form-control" placeholder="請輸入您的年齡" 
+                style="background-color: #444; color:white; border: 0px;">
+              </div>
+              <div style="color: red;" ng-show="questionnaireErr">
+                {{questionnaireErr}}
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer-2" style="text-align: center">
+            <button type="button" class="btn" ng-click="submitQuestionnaire();log('questionnaire_submit')"><h4>提&nbsp;交</h4></button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="modal fade" id="vote1Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -490,16 +525,22 @@
 
     </div>
     <div class="container-fluid" id="container_questionnaire" data-ng-show="QUESTIONNAIRE==atPage">
-      <div class="close-btn" data-ng-show="false">
+      <div class="close-btn">
           <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('questionnaire_return')"/>
       </div>
-      <div>
+      <div class="col-xs-10 col-xs-offset-1">
         <center>
           <form class="form-inline" style="position: relative;top: 10%">
               <h4>恭喜你獲得足夠印花</h4>
               </br>
               <div class="form-group">
-                <input type="password" id="verification1" class="form-control" placeholder="請交由工作人員輸入驗證碼" 
+                <input type="text" id="username" class="form-control" placeholder="請輸入您的匿稱" 
+                style="background-color: #444; color:white; border: 0px;">
+                <input type="text" id="phone" class="form-control" placeholder="請輸入您的手機號碼" 
+                style="background-color: #444; color:white; border: 0px;">
+                <input type="email" id="email" class="form-control" placeholder="請輸入您的Email" 
+                style="background-color: #444; color:white; border: 0px;">
+                <input type="date" id="date" class="form-control" placeholder="請輸入您的生日" 
                 style="background-color: #444; color:white; border: 0px;">
               </div>
 

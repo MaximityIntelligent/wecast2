@@ -38,7 +38,7 @@ var snsapi = 'snsapi_base';
 var prizeCredit = {'prize1':15, 'prize2':30};
 var host = 'lb.ibeacon-macau.com';
 var appid = 'wx5b57ddac4e2e1e88';
-var debug = false;
+var debug = true;
 
 app.controller('IndexCtrl', [
 '$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll',
@@ -336,6 +336,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     }
     
   }
+  $scope.showQuestionnaire = function () {
+    $("#questionnaireModal").modal('show');
+  }
 
   $scope.showPrize1 = function(){
     if($scope.credit>=prize1Credit){
@@ -524,6 +527,53 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.gotoShare = function () {
     $location.hash('main-1');
     $anchorScroll();  
+  },
+  $scope.submitQuestionnaire = function () {
+    $scope.questionnaireErr = null;
+    console.log($scope.questionnaire);
+    var questionnaire = $scope.questionnaire;
+    if (questionnaire == null || questionnaire.username == null
+      || questionnaire.phone == null
+      || questionnaire.email == null
+      || questionnaire.age == null) {
+      $scope.questionnaireErr = '還有空格未填喎';
+      return;
+    }
+
+    if (questionnaire.username.trim().length < 2) {
+      $scope.questionnaireErr = '匿稱太短喇，最少兩個字';
+      return;
+    }
+
+    if (isNaN(questionnaire.phone.trim()) || questionnaire.phone.trim().length != 8 || questionnaire.phone.trim().charAt(0) != '6') {
+      $scope.questionnaireErr = '電話號碼要澳門的';
+      return;
+    }
+
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!questionnaire.email.match(mailformat)) {
+      $scope.questionnaireErr = '不是正常的電郵';
+      return;
+    }
+    $http({
+      method:'POST',
+      url:'/api/questionnaire',
+      params:{
+        "openId": $scope.userId,
+        "ad": adString,
+        "username": questionnaire.username,
+        "phone": questionnaire.phone,
+        "email": questionnaire.email,
+        "age": questionnaire.age
+      }
+    }).success(function(data) {
+      $scope.questionnaire = null;
+      $scope.credit = data.credit;
+      $("#questionnaireModal").modal('toggle');
+    }).error(function(data) {
+
+    });
+    
   }
 
   /*

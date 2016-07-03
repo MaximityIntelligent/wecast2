@@ -478,6 +478,30 @@ module.exports = {
         });
     });
   },
+  questionnaire: function (req, res) {
+    var openId = req.param('openId');
+    var ad = req.param('ad');
+    var username = req.param('username');
+    var phone = req.param('phone');
+    var email = req.param('email');
+    var age = req.param('age');
+    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+        if (!userOne) {
+            return res.status(401).end();
+        }
+        userOne.username = username;
+        userOne.phone = phone;
+        userOne.email = email;
+        userOne.age = age;
+        if (!userOne.isQuestionnaire) {
+          userOne.credit = userOne.credit + 3;
+        }
+        userOne.isQuestionnaire = true;
+        userOne.save(function (err, savedUser) {
+          return res.json({credit: savedUser.credit});
+        });
+    });
+  },
   initialization: function(req, res){
     log.destroy().exec(function(){});
     redeem_c.destroy().exec(function(){});

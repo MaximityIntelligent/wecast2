@@ -30,6 +30,22 @@ module.exports = {
       type: 'boolean',
       defaultsTo: false
     },
+    isQuestionnaire: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+    username: {
+      type: 'string'
+    },
+    phone: {
+      type: 'string'
+    },
+    email: {
+      type: 'string'
+    },
+    age:{
+      type: 'integer'
+    },
     nickname: {
           type: 'string'
     },
