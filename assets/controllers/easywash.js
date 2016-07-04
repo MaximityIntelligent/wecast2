@@ -326,7 +326,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.showVote = function (vote) {
     
     var now = new Date();
-    var exp = new Date('2016-07-05T00:00:00');
+    var exp = new Date('2016-07-06T00:00:00');
     console.log(now);
     console.log(exp);
     
