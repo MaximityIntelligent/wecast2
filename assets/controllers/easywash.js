@@ -325,6 +325,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     var exp = new Date('2016-07-02 18:30:00');
     console.log(now);
     console.log(exp);
+    alert(now);
+    alert(exp);
+    
     if (now.getTime() > exp.getTime()) {
         $("#voteErrModal").modal('show');
     } else {
