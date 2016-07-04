@@ -209,7 +209,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
             });
             wx.showOptionMenu();
             wx.onMenuShareTimeline({
-                title: '绅士造型攻略-MODEL大赛花絮', // 分享标题
+                title: '2016歐國杯 | Cheer Pub免費送你特色雞尾酒xPizza', // 分享标题
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
                 imgUrl: 'http://'+host+'/images/easywash/wecast-share.png', // 分享图标
                 success: function() {
@@ -226,9 +226,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
             });
             wx.onMenuShareAppMessage({
 
-              title: '绅士造型攻略-MODEL大赛花絮', // 分享标题
+              title: '2016歐國杯 | Cheer Pub免費送你特色雞尾酒xPizza', // 分享标题
 
-              desc: 'SHARE 给朋友收集印花,享MODEL级造型礼遇优惠', // 分享描述
+              desc: '估波仔! 三五知己! 玩盡歐國! Beer x Cocktail x Pizze任你揀!!', // 分享描述
 
               link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
 
