@@ -304,7 +304,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       $("#normal-errModal").modal('show');
       return;
     }
-    
+
     $scope.prizeRedeem = prize;
     if($scope.credit<prizeCredit[prize]){
       $scope.normalErrCode = 1;

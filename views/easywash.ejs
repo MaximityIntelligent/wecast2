@@ -179,14 +179,21 @@
         <img class="img-responsive" src="/images/easywash/main/vote1-bar.png" ng-style="voteBar1Style">
       </div>
       
-      <div id="main-finger" data-ng-show="true">
+      <div id="main-finger">
         <img class="img-responsive" src="/images/easywash/main/main-finger.png">
       </div>
       <div id="main-5" ng-click="atPage=THANKYOU;" data-ng-show="false" >
       </div>
       <div id="main-qr" ng-click="log('maximity_qr')">
           <img name="mainQr" src="/images/easywash/main/main-qr.png">
-        
+      </div>
+      <div id="main-map">
+        <a href="https://www.google.com.hk/maps/place/%E6%BE%B3%E9%96%80%E8%8F%9C%E5%9C%92%E6%B6%8C%E9%82%8A%E8%A1%9773%E8%99%9F/@22.2134332,113.5472991,20.75z/data=!4m5!3m4!1s0x34017b1868d49c8d:0x9f927850be557837!8m2!3d22.2134877!4d113.5473354" ng-click="log('google_map')">
+          <img class="img-responsive" src="/images/easywash/main/map.png">
+        </a>
+      </div>
+      <div id="main-phone" ng-click="log('tel')">
+        <a href="tel:85328235399"><img name="call" src="/images/easywash/main/map.png"></a>
       </div>
 <!--       <div id="share-friend">
         <a id="show-friend" class="fancybox" href="#friends-list" ng-click="friendClick('button',$event);log('friends_page')">
@@ -209,7 +216,7 @@
         <p class="text-justify">7. 活動參加者不得以任何非法手段破壞活動規則及影響活動數據，否則其參加及得獎資格將作廢；</p>
         <p class="text-justify">8. Cheer Pub有權隨時修改此活動條款及細則，無須事前通知；</p>
         <p class="text-justify">9. Cheer Pub保留最終活動解釋權；</p>
-        <p class="text-justify">10. 如有任何查詢請致電Cheer Pub，電話<font class="yellow">2823 5399</font>查詢；</p>
+        <p class="text-justify">10. 如有任何查詢請致電Cheer Pub，電話<font class="yellow">28235399</font>查詢；</p>
         </div>
       </div>
       </center>
@@ -268,9 +275,7 @@
           <a href="#top">
           <img name="redeem" class="img-responsive redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')"> <!--//ng-click="redeem('2')">-->
           </a>
-<!--           <a class="fancybox" href="#map" data-ng-show="false">
-            <img name="go-wash" class="img-responsive" src="/images/easywash/prize/go-wash.png" ng-click="log('go_wash')">
-          </a> -->
+
         </center>
       </div>
       <div id="prize2-qr">
@@ -486,7 +491,7 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid" id="container_easywash" data-ng-show="ABOUT_EASYWASH==atPage">
+<!--     <div class="container-fluid" id="container_easywash" data-ng-show="ABOUT_EASYWASH==atPage">
       <div class="close-btn" data-ng-show="false">
         <a href="#top">
           <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('about_easywash_return')"/>
@@ -497,10 +502,10 @@
           <img style="width:100%;height:100%;border:0" class="img-responsive" src="/images/easywash/about-easywash/rules.png">
         </a>
       </div>
-<!--       <div id="easywash-1" ng-click="clickCount('video');log('video');" data-ng-show="false">
+      <div id="easywash-1" ng-click="clickCount('video');log('video');" data-ng-show="false">
         <iframe id="easywash-video" class="video_iframe" style="z-index:1;" ng-src="http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0" allowfullscreen="" frameborder="0" height="100%" width="100%">
         </iframe>
-      </div> -->
+      </div>
       <div id="about-qr" ng-click="luckyDraw()">
         <img name="aboutQr" src="/images/easywash/about-easywash/about-qr.png">
       </div>
@@ -511,7 +516,7 @@
         <center><a href="tel:85363539002"><img name="call" src="/images/easywash/about-easywash/call.png"></a></center>
       </div>
 
-    </div>
+    </div> -->
     <div class="container-fluid" id="container_questionnaire" data-ng-show="QUESTIONNAIRE==atPage">
       <div class="close-btn">
           <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('questionnaire_return')"/>
@@ -701,6 +706,16 @@
       $("#main-qr").css("left", containerWidth*mainQrLeft/mainScaleX);
       $('img[name="mainQr"]').css("width", containerWidth*mainQrWidth/mainScaleX);
       $('img[name="mainQr"]').css("height", containerHeight*mainQrHeight/mainScaleY);
+
+      var mainMapTop = 2413;
+      var mainMapLeft = 134;
+      var mainMapWidth = 263;
+      var mainMapHeight = 100;
+      $("#main-map").css("position", "absolute");
+      $("#main-map").css("top", containerHeight*mainMapTop/mainScaleY);
+      $("#main-map").css("left", containerWidth*mainMapLeft/mainScaleX);
+      $("#main-map").css("height", containerHeight*mainMapHeight/mainScaleY);
+      $("#main-map").css("width", containerWidth*mainMapWidth/mainScaleX);
 
       $("#main-5").css("position", "absolute");
       $("#main-5").css("top", containerHeight*576/mainScaleY);
