@@ -38,7 +38,7 @@ var snsapi = 'snsapi_base';
 var prizeCredit = {'prize1':15, 'prize2':30};
 var host = 'lb.ibeacon-macau.com';
 var appid = 'wx5b57ddac4e2e1e88';
-var debug = true;
+var debug = false;
 
 app.controller('IndexCtrl', [
 '$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll',
@@ -322,7 +322,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.showVote = function (vote) {
     
     var now = new Date();
-    var exp = new Date('2016-07-02 18:30:00');
+    var exp = new Date('2016-07-02T18:30:00');
     console.log(now);
     console.log(exp);
     alert(now);
