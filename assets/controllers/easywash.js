@@ -298,6 +298,13 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
     //$("#redeem2Modal").modal('show');
     ///return;
+    if ($scope.userPrize['redeem_'+prize] > 0) {
+      $scope.normalErrCode = 0;
+      $scope.normalErrMsg = '您已經換過此奬品！';
+      $("#normal-errModal").modal('show');
+      return;
+    }
+    
     $scope.prizeRedeem = prize;
     if($scope.credit<prizeCredit[prize]){
       $scope.normalErrCode = 1;
@@ -363,12 +370,6 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     }
   }
   $scope.redeem_c = function(prize){
-    if ($scope.userPrize['redeem_'+prize] > 0) {
-      $scope.normalErrCode = 0;
-      $scope.normalErrMsg = '您已經換過此奬品！';
-      $("#normal-errModal").modal('show');
-      return;
-    }
     verificationCode = $("#verification").val();
 
     $("#verification").val("");
