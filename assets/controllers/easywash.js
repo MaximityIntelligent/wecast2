@@ -57,7 +57,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.credit = 0;
   $scope.map = false;
   $scope.prizeRedeem = "";
-  $scope.redeemErrMsg = "";
+  $scope.normalErrCode = 0;
+  $scope.normalErrMsg = "";
   $scope.prevPage = "";
   $scope.thumbStyle = {
      'width': Math.floor(window.innerWidth*0.145),
@@ -301,8 +302,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     if(prize=="prize1"){
       $scope.prizeRedeem = "prize1";
       if($scope.credit<prizeCredit[prize]){
-        $scope.redeemErrMsg = "印花不足,暂时无法兑换";
-        $("#veri-credit-errModal").modal('show');
+        $scope.normalErrCode = 1;
+        $scope.normalErrMsg = "暫時無法兌換，請集齊足夠印花";
+        $("#normal-errModal").modal('show');
         return;
       }else{
         $("#redeem1Modal").modal('show');
@@ -311,7 +313,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     }else if(prize=="prize2"){
       $scope.prizeRedeem = "prize2";
       if($scope.credit<prizeCredit[prize]){
-        $("#veri-credit-errModal").modal('show');
+        $scope.normalErrCode = 1;
+        $scope.normalErrMsg = "暫時無法兌換，請集齊足夠印花";
+        $("#normal-errModal").modal('show');
         return;
       }else{
         $("#redeem2Modal").modal('show');
@@ -329,7 +333,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     alert(exp);
     
     if (now.getTime() > exp.getTime()) {
-        $("#voteErrModal").modal('show');
+        $scope.normalErrCode = 0;
+        $scope.normalErrMsg = '投票時限已過了。';
+        $("#normal-errModal").modal('show');
     } else {
       if (vote=='vote1') {
         $("#vote1Modal").modal('show');
@@ -400,9 +406,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       $scope.log('redeem_'+prize);
       $scope.userPrize['redeem_'+prize] += 1;
     }).error(function(data) {
-      //$scope.redeemErrMsg = "兑换失败";
-      $scope.redeemErrMsg = data.errMsg;
-      $("#veri-code-errModal").modal('show');
+      $scope.normalErrCode = data.errCode;
+      $scope.normalErrMsg = data.errMsg;
+      $("#normal-errModal").modal('show');
     });
 
   },
@@ -446,10 +452,12 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     $http.post('/api/luckyDraw', {openId: $scope.userId, ad: adString}).success(function (data) {
         console.log(data);
         $scope.credit = data.currentCredit;
-        $scope.prize = data.prize;
+        $scope.luckDrawPrize = data.prize;
         $("#luckyDraw-prizeModal").modal('show');
     }).error(function (err) {
-        $("#luckyDraw-errModal").modal('show');
+        $scope.normalErrCode = 0;
+        $scope.normalErrMsg = '每位用戶每天有一次抽印花機會';
+        $("#normal-errModal").modal('show');
     });
   },
   $scope.getImgUrl = function (user) {
@@ -488,6 +496,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       $scope.updateVoteChart();
     }).error(function(data) {
       $scope.userVote = temp;
+      $scope.normalErrCode = 0;
+      $scope.normalErrMsg = data.errMsg;
+      $("#normal-errModal").modal('show');
     });
   },
   $scope.showRedeemVote = function (vote) {

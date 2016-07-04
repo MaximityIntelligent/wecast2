@@ -178,7 +178,7 @@ module.exports = {
                  if (logs.length < prizeAmount) {
                     if(credit<prizeCredit){
                       res.status(500);
-                      res.json({errMsg: '暫時無法兌換，請集齊'+prizeCredit+'個印花'});
+                      res.json({errCode: 1, errMsg: '暫時無法兌換，請集齊'+prizeCredit+'個印花'});
                       return;
                     } else{
                       userOne.credit = userOne.credit - prizeCredit;
@@ -190,14 +190,14 @@ module.exports = {
                  } else {
                     console.log('Out of amount');
                     res.status(400);
-                    res.json({errMsg: '奬品已全部換領完畢。'});
+                    res.json({errCode: 0, errMsg: '奬品已全部換領完畢。'});
                     return;
                  }
               });
             
           }else{
             res.status(500);
-            res.json({errMsg: 'SORRY  領獎碼有誤'});
+            res.json({errCode: 0, errMsg: 'SORRY  領獎碼有誤'});
             return;
           }
 
@@ -330,6 +330,11 @@ module.exports = {
     var openId = req.param('openId');
     var ad = req.param('ad');
     var userVote = req.param('userVote');
+    var now = new Date();
+    var exp = new Date('2016-07-02T18:30:00');
+    if (now.getTime() > exp.getTime()) {
+      return res.status(400).json({errCode: 0, errMsg:'投票時限已過了。'});
+    }
     user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
         if (!userOne) {
             return res.status(401).end();
