@@ -209,7 +209,7 @@
   border: 1px solid transparent;
   border-radius: 4px;
 }
-#redeem1Modal form-control {
+#redeemModal form-control {
   width: 50%;
 }
 @keyframes share {

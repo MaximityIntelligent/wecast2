@@ -298,38 +298,24 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
     //$("#redeem2Modal").modal('show');
     ///return;
-
-    if(prize=="prize1"){
-      $scope.prizeRedeem = "prize1";
-      if($scope.credit<prizeCredit[prize]){
-        $scope.normalErrCode = 1;
-        $scope.normalErrMsg = "暫時無法兌換，請集齊足夠印花";
-        $("#normal-errModal").modal('show');
-        return;
-      }else{
-        $("#redeem1Modal").modal('show');
-        return;
-      }
-    }else if(prize=="prize2"){
-      $scope.prizeRedeem = "prize2";
-      if($scope.credit<prizeCredit[prize]){
-        $scope.normalErrCode = 1;
-        $scope.normalErrMsg = "暫時無法兌換，請集齊足夠印花";
-        $("#normal-errModal").modal('show');
-        return;
-      }else{
-        $("#redeem2Modal").modal('show');
-        return;
-      }
+    $scope.prizeRedeem = prize;
+    if($scope.credit<prizeCredit[prize]){
+      $scope.normalErrCode = 1;
+      $scope.normalErrMsg = "暫時無法兌換，請集齊足夠印花";
+      $("#normal-errModal").modal('show');
+      return;
+    }else{
+      $("#redeemModal").modal('show');
+      return;
     }
+    
   }
   $scope.showVote = function (vote) {
     
     var now = new Date();
-    var exp = new Date('2016-07-11T03:00:00+0800');
+    var exp = new Date('2016-07-10T19:00:00');
     console.log(now);
     console.log(exp);
-    alert(exp);
     
     if (now.getTime() > exp.getTime()) {
         $scope.normalErrCode = 0;
@@ -379,14 +365,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     }
   }
   $scope.redeem_c = function(prize){
-    if(prize=="prize1"){
-      verificationCode = $("#verification1").val();
-    }
-    else if(prize=="prize2"){
-      verificationCode = $("#verification2").val();
-    }
-    $("#verification1").val("");
-    $("#verification2").val("");
+    verificationCode = $("#verification").val();
+
+    $("#verification").val("");
     ///alert(verificationCode);
 
     $http({
