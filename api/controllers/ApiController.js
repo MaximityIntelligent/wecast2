@@ -331,7 +331,7 @@ module.exports = {
     var ad = req.param('ad');
     var userVote = req.param('userVote');
     var now = new Date();
-    var exp = new Date('2016-07-10T19:00:00Z');
+    var exp = new Date('2016-07-10T19:00:00');
     console.log(exp);
     if (now.getTime() > exp.getTime()) {
       return res.status(400).json({errCode: 0, errMsg:'投票時限已過了。'});
