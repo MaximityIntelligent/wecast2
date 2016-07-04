@@ -193,7 +193,7 @@
         </a>
       </div>
       <div id="main-phone" ng-click="log('tel')">
-        <a href="tel:85328235399"><img name="call" src="/images/easywash/main/map.png"></a>
+        <a href="tel:85328235399"><img class="img-responsive" src="/images/easywash/main/map.png"></a>
       </div>
 <!--       <div id="share-friend">
         <a id="show-friend" class="fancybox" href="#friends-list" ng-click="friendClick('button',$event);log('friends_page')">
@@ -714,8 +714,15 @@
       $("#main-map").css("position", "absolute");
       $("#main-map").css("top", containerHeight*mainMapTop/mainScaleY);
       $("#main-map").css("left", containerWidth*mainMapLeft/mainScaleX);
-      $("#main-map").css("height", containerHeight*mainMapHeight/mainScaleY);
-      $("#main-map").css("width", containerWidth*mainMapWidth/mainScaleX);
+      $("#main-map img").css("height", containerHeight*mainMapHeight/mainScaleY);
+      $("#main-map img").css("width", containerWidth*mainMapWidth/mainScaleX);
+
+      var mainPhoneLeft = 397;
+      $("#main-phone").css("position", "absolute");
+      $("#main-phone").css("top", containerHeight*mainMapTop/mainScaleY);
+      $("#main-phone").css("left", containerWidth*mainPhoneLeft/mainScaleX);
+      $("#main-phone img").css("height", containerHeight*mainMapHeight/mainScaleY);
+      $("#main-phone img").css("width", containerWidth*mainMapWidth/mainScaleX);
 
       $("#main-5").css("position", "absolute");
       $("#main-5").css("top", containerHeight*576/mainScaleY);
