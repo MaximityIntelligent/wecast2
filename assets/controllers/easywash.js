@@ -322,11 +322,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         $scope.normalErrMsg = '投票時限已過了。';
         $("#normal-errModal").modal('show');
     } else {
-      if (vote=='vote1') {
-        $("#vote1Modal").modal('show');
-      } else {
-        $("#vote2Modal").modal('show');
-      }
+      $scope.currentVote = vote;
+      $("#voteModal").modal('show');
+      
     }
     
   }
@@ -365,6 +363,12 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     }
   }
   $scope.redeem_c = function(prize){
+    if ($scope.userPrize['redeem_'+prize] > 0) {
+      $scope.normalErrCode = 0;
+      $scope.normalErrMsg = '您已經換過此奬品！';
+      $("#normal-errModal").modal('show');
+      return;
+    }
     verificationCode = $("#verification").val();
 
     $("#verification").val("");

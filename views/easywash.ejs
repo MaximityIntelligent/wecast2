@@ -199,19 +199,28 @@
       <center>
 
       <div id="event-1">
-        <div id="event-1-content">
-        <p class="text-justify">1. 將遊戲頁面<font class="yellow">Share</font>俾朋友，<font class="yellow">每位朋友Click入可得到一個印花</font>。滿38印花即可兌換獎品；
-        </p>
-        <p class="text-justify">2. 活動於<font class="yellow">2016年7月20日</font>截止，獎券請於活動期間內使用；
-        </p>
-        <p class="text-justify">3. 任何非正常途徑擾亂活動數據，其參加及得獎資格作廢；
-        </p>
-        <p class="text-justify">4. MOOD保留最終活動解釋權，有權更新此活動條款及細則公告，敬請留意；
-        </p>
-        <p class="text-justify">5. 歡迎諮詢MOOD微信客服: <font class="yellow">Mood_tailor</font>，服務時間為<font class="yellow">10:00-22:00</font>
-        </p>
-        </div>
-      </div>
+        <div id="event-1-content">
+        <p class="text-justify">1. 玩家將遊戲頁面<font class="yellow">Share</font>比朋友，<font class="yellow">每位朋友點擊可贈送一個"❤"比你</font>。玩家可憑相應數量的"❤"兌換獎品，每位玩家每項獎品只可兌換一次；
+        </p >
+        <p class="text-justify">2. 如玩家所投選的國家隊伍勝出2016年歐洲國家杯冠軍，玩家所擁有的"❤"可享有一次雙倍獎勵，投票截止時間為澳門時間2016/07/11凌晨02:45 (即2016歐國杯決賽開賽前15分鐘)；
+        </p >
+        <p class="text-justify">3. 收集足夠"❤"後，得獎者須於2016年7月31日前，前往澳門台山<font class="yellow">Cheer Pub</font>，出示相應的領獎頁給予在場的工作人員兌換獎品；若得獎者無法按照活動規定時間內領獎，Cheer Pub有權取消其得獎資格；
+        </p >
+        <p class="text-justify">4. 獎品換領地址：澳門台山菜園涌邊街73號Cheer Pub
+        <p class="text-justify">5. 獎品換領時間：<font class="yellow">18:00-03:00</font>
+        </p >
+        <p class="text-justify">6. 得獎者所提供之個人資料，僅用作此活動聯絡領獎事宜；
+        </p >
+        <p class="text-justify">7. 活動參加者不得以任何非法手段破壞活動規則及影響活動數據，否則其參加及得獎資格將作廢；
+        </p >
+        <p class="text-justify">8. Cheer Pub有權隨時修改此活動條款及細則，無須事前通知；
+        </p >
+        <p class="text-justify">9. Cheer Pub保留最終活動解釋權；
+        </p >
+        <p class="text-justify">10. 如有任何查詢請致電Cheer Pub，電話<font class="yellow">2823 5399</font>查詢；
+        </p >
+        </div>
+      </div>
       </center>
       </div>
     </div>
@@ -435,24 +444,24 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="vote1Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" id="voteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
 
           <div class="modal-body" style="text-align: center;;">
             <form class="form-inline" style="position: relative;top: 10%">
-              <h4>是否確定支持A隊？</h4>
+              <h4>是否確定支持這隊？</h4>
               <h4>(比賽開始後投票不能改變)</h4>
             </form>
           </div>
           <div class="modal-footer-2" style="text-align: center">
-            <button style="width: 40%;" type="button" class="btn" data-dismiss="modal" ng-click="vote('vote1')"><h4>確&nbsp;認</h4></button>
+            <button style="width: 40%;" type="button" class="btn" data-dismiss="modal" ng-click="vote(currentVote)"><h4>確&nbsp;認</h4></button>
             <button style="width: 40%;" type="button" class="btn" data-dismiss="modal"><h4>取&nbsp;消</h4></button>
           </div>
         </div>
       </div>
     </div>
-    <div class="modal fade" id="vote2Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!--     <div class="modal fade" id="vote2Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
 
@@ -468,7 +477,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="modal fade" id="redeemVoteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -875,7 +884,7 @@
       $("#prize1-2").css("left", containerWidth*prize12Left/mainScaleX);
 
       var prize22Top = 1610;
-      var prize22Left = 65;
+      var prize22Left = 70;
       $("#prize2-2").css("position", "absolute");
       $("#prize2-2").css("width", containerWidth*prize12Width/mainScaleX);
       $("#prize2-2").css("height", containerHeight*prize12Height/mainScaleY);
