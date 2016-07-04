@@ -326,9 +326,10 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.showVote = function (vote) {
     
     var now = new Date();
-    var exp = new Date('2016-07-06T00:00:00');
+    var exp = new Date('2016-07-11T03:00:00+08');
     console.log(now);
     console.log(exp);
+    alert(exp);
     
     if (now.getTime() > exp.getTime()) {
         $scope.normalErrCode = 0;
