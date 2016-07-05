@@ -188,7 +188,7 @@
           <img name="mainQr" src="/images/easywash/main/main-qr.png">
       </div>
       <div id="main-map">
-        <a href="https://www.google.com.hk/maps/place/%E6%BE%B3%E9%96%80%E8%8F%9C%E5%9C%92%E6%B6%8C%E9%82%8A%E8%A1%9773%E8%99%9F/@22.213521,113.547334,20.75z/data=!4m5!3m4!1s0x34017b1868d49c8d:0x9f927850be557837!8m2!3d22.213521!4d113.547334" ng-click="log('google_map')">
+        <a href="https://www.google.com.hk/maps/place/22%C2%B012'48.4%22N+113%C2%B032'50.3%22E/@22.2131635,113.5472761,23z" ng-click="log('google_map')">
           <img class="img-responsive" src="/images/easywash/main/map.png">
         </a>
       </div>
@@ -578,7 +578,7 @@
     $("document").ready(function(){
       $("body").css("background-color", "black");
       var mainScaleX = 750;
-      var mainScaleY = 2717;
+      var mainScaleY = 2692;
       var containerWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
       var containerHeight = containerWidth*mainScaleY/mainScaleX;
 
@@ -594,15 +594,16 @@
       $("#main-container").css("width", containerWidth);
       $("#main-container").css("height", containerHeight);
 
-      var mainEventInfoTop = 117;
-      var mainEventInfoWidth = 76;
+      var mainEventInfoTop = 36;
+      var mainEventInfoLeft = 663;
+      var mainEventInfoWidth = 57;
       $("#main-event-info").css("position", "absolute");
       $("#main-event-info").css("width", containerWidth*mainEventInfoWidth/mainScaleX);
       $("#main-event-info").css("top", containerHeight*mainEventInfoTop/mainScaleY);
-      $("#main-event-info").css("left", containerWidth*627/mainScaleX);
+      $("#main-event-info").css("left", containerWidth*mainEventInfoLeft/mainScaleX);
       $('img[name="event-info"]').css("width", containerWidth*mainEventInfoWidth/mainScaleX);
 
-      var main1Top = 1705;
+      var main1Top = 1680;
       var main1Width = 230;
       $("#main-1").css("position", "absolute");
       $("#main-1").css("top", containerHeight*main1Top/mainScaleY);
@@ -636,7 +637,7 @@
       //$("#main-3").css("margin-top", "-"+imgHeight+"px");
       $("#main-3").css("margin-left", "-"+containerWidth*main3Width/mainScaleX*0.5+"px");
       
-      var vote1Top = 800;
+      var vote1Top = 760;
       var vote1Left = 125;
       var vote1Width = 260;
       var vote1Height = 260;
@@ -646,8 +647,8 @@
       $("#vote-1 img").css("width", containerWidth*vote1Width/mainScaleX);
       $("#vote-1 img").css("height", containerHeight*vote1Height/mainScaleY);
 
-      var vote2Top = 800;
-      var vote2Left = 395;
+      var vote2Top = 760;
+      var vote2Left = 380;
       var vote2Width = 260;
       var vote2Height = 260;
       $("#vote-2").css("position", "absolute");
@@ -656,15 +657,15 @@
       $("#vote-2 img").css("width", containerWidth*vote2Width/mainScaleX);
       $("#vote-2 img").css("height", containerHeight*vote2Height/mainScaleY);
 
-      var voteRate1Top = 1120;
-      var voteRate1Left = 90;
+      var voteRate1Top = 1098;
+      var voteRate1Left = 120;
       $("#voteRate-1").css("position", "absolute");
       $("#voteRate-1").css("top", containerHeight*voteRate1Top/mainScaleY);
       $("#voteRate-1").css("left", containerWidth*voteRate1Left/mainScaleX);
       $("#voteRate-1").css("color", "white");
       $("#voteRate-1 font").css("font-size", containerHeight*40/mainScaleY);
 
-      var voteRate2Top = 1120;
+      var voteRate2Top = 1098;
       var voteRate2Left = 570;
       $("#voteRate-2").css("position", "absolute");
       $("#voteRate-2").css("top", containerHeight*voteRate2Top/mainScaleY);
@@ -672,7 +673,7 @@
       $("#voteRate-2").css("color", "white");
       $("#voteRate-2 font").css("font-size", containerHeight*40/mainScaleY);
 
-      var voteBar1Top = 1136;
+      var voteBar1Top = 1110;
       var voteBar1Left = 200;
       var voteBar1Width = 175;
       var voteBar1Height = 18;
@@ -682,7 +683,7 @@
       $("#voteBar-1 img").css("width", containerWidth*voteBar1Width/mainScaleX);
       $("#voteBar-1 img").css("height", containerHeight*voteBar1Height/mainScaleY);
 
-      var voteBar2Top = 1136;
+      var voteBar2Top = 1110;
       var voteBar2Left = 200;
       var voteBar2Width = 350;
       var voteBar2Height = 18;
@@ -692,7 +693,7 @@
       $("#voteBar-2 img").css("width", containerWidth*voteBar2Width/mainScaleX);
       $("#voteBar-2 img").css("height", containerHeight*voteBar2Height/mainScaleY);
 
-      $("#main-finger").css("top", containerHeight*1860/mainScaleY);
+      $("#main-finger").css("top", containerHeight*1844/mainScaleY);
       $("#main-finger").css("width", containerWidth);
       $("#main-finger img").css("width", containerWidth*60/mainScaleX);
 
@@ -707,7 +708,7 @@
       $('img[name="mainQr"]').css("width", containerWidth*mainQrWidth/mainScaleX);
       $('img[name="mainQr"]').css("height", containerHeight*mainQrHeight/mainScaleY);
 
-      var mainMapTop = 2413;
+      var mainMapTop = 2388;
       var mainMapLeft = 134;
       var mainMapWidth = 263;
       var mainMapHeight = 100;
@@ -763,7 +764,7 @@
       $("#thankyou-1").css("position", "absolute");
       $("#thankyou-1 img").css("width", containerWidth*413/mainScaleX);
 
-      $("#thankyou-1").css("top", containerHeight_thankyou*382/thankyouScaleY);
+      $("#thankyou-1").css("top", containerHeight_thankyou*800/thankyouScaleY);
       $("#thankyou-1").css("left", containerWidth*0.5);
       $("#thankyou-1").css("margin-left", "-"+containerWidth*413/mainScaleX*0.5+"px");
 
@@ -886,7 +887,7 @@
       //$("#prize1-1").css("width", containerHeight_p1*40/1206);
       $("#prize1-1 font").css("font-size", containerHeight*50/mainScaleY);
 
-      var prize12Top = 1490;
+      var prize12Top = 1464;
       var prize12Left = 282;
       var prize12Width = 170;
       var prize12Height = 170;
@@ -896,8 +897,8 @@
       $("#prize1-2").css("top", containerHeight*prize12Top/mainScaleY);
       $("#prize1-2").css("left", containerWidth*prize12Left/mainScaleX);
 
-      var prize22Top = 1610;
-      var prize22Left = 75;
+      var prize22Top = 1800;
+      var prize22Left = 516;
       $("#prize2-2").css("position", "absolute");
       $("#prize2-2").css("width", containerWidth*prize12Width/mainScaleX);
       $("#prize2-2").css("height", containerHeight*prize12Height/mainScaleY);
