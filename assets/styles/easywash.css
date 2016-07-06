@@ -986,19 +986,19 @@ i:nth-child(100) b {
 }
 */
 .spinner-logo {
-  margin: 230px auto 0;
+  margin: 215px auto 0;
   width: 150px;
   text-align: center;
 }
 
 .spinner-precentage {
-  margin: 20px auto 0;
+  margin: 0px auto 0;
   width: 150px;
   text-align: center;
 }
 
 .spinner {
-  margin: 20px auto 0;
+  margin: 0px auto 0;
   width: 150px;
   text-align: center;
 }
@@ -1007,7 +1007,7 @@ i:nth-child(100) b {
 
   width: 10px;
   height: 10px;
-  background-color: #FFF121;
+  background-color: #ff212f;
 
   border-radius: 100%;
   display: inline-block;
@@ -1059,6 +1059,18 @@ i:nth-child(100) b {
 @keyframes rules {
     from {width:90%;top:0%;right:0%}
     to {width:100%;top:-1%;right:1%;}
+}
+
+#main-2 img {
+  animation-name: choose;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes choose {
+    from {opacity: 0;}
+    to {opacity: 0.9;}
 }
 
 #main-event-info img {
@@ -1115,12 +1127,12 @@ i:nth-child(100) b {
 
 @keyframes movein {
     from   {opacity: 1; margin-left: 65%;}
-    to     {opacity: 1; margin-left: 50%;}
+    to     {opacity: 1; margin-left: 53%;}
 }
 
 @-webkit-keyframes movein {
     from   {opacity: 1; margin-left: 70%;}
-    to     {opacity: 1; margin-left: 52%;}
+    to     {opacity: 1; margin-left: 53%;}
 }
 
 /*

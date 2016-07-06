@@ -209,7 +209,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
             });
             wx.showOptionMenu();
             wx.onMenuShareTimeline({
-                title: '2016歐國杯 | Cheer Pub免費送你特色雞尾酒xPizza', // 分享标题
+                title: '2016歐國杯 | Cheers Pub免費送你特色雞尾酒xPizza', // 分享标题
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
                 imgUrl: 'http://'+host+'/images/easywash/wecast-share.png', // 分享图标
                 success: function() {
@@ -226,7 +226,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
             });
             wx.onMenuShareAppMessage({
 
-              title: '2016歐國杯 | Cheer Pub免費送你特色雞尾酒xPizza', // 分享标题
+              title: '2016歐國杯 | Cheers Pub免費送你特色雞尾酒xPizza', // 分享标题
 
               desc: '估波仔! 三五知己! 玩盡歐國! Beer x Cocktail x Pizze任你揀!!', // 分享描述
 
@@ -298,7 +298,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
     //$("#redeem2Modal").modal('show');
     ///return;
-    if ($scope.userPrize['redeem_'+prize] > 0) {
+    if ($scope.userPrize['redeem_'+prize] > 1000) {
       $scope.normalErrCode = 0;
       $scope.normalErrMsg = '您已經換過此奬品！';
       $("#normal-errModal").modal('show');
@@ -457,7 +457,6 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     if (item == 'button') {
     } else if (item == 'main') {
       $scope.atPage = $scope.MAIN;
-      $scope.gotoShare();
     }
   },
   $scope.vote = function (vote) {
@@ -479,6 +478,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       console.log($scope.userVote);
       $scope.votes = data.votes;
       $scope.updateVoteChart();
+      $scope.atPage = $scope.SHARE;
     }).error(function(data) {
       $scope.userVote = temp;
       $scope.normalErrCode = 0;
@@ -487,8 +487,20 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     });
   },
   $scope.showRedeemVote = function (vote) {
-    if ($scope.gameResult == vote && $scope.isRedeemVote != true) {
-      $("#redeemVoteModal").modal('show');
+    if ($scope.gameResult == $scope.userVote && $scope.isRedeemVote != true) {
+      var now = new Date();
+      var exp = new Date('2016-07-20T16:00:00');
+      console.log(now);
+      console.log(exp);
+      
+      if (now.getTime() > exp.getTime()) {
+        $scope.normalErrCode = 0;
+        $scope.normalErrMsg = '領奬時限已過';
+        $("#normal-errModal").modal('show');
+      } else {
+        $("#redeemVoteModal").modal('show');
+      }
+      
     }
   },
 
@@ -523,10 +535,10 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       $scope.voteRate2 = 0;
     }
   },
-  $scope.gotoShare = function () {
-    $location.hash('main-1');
-    $anchorScroll();  
-  },
+  // $scope.gotoShare = function () {
+  //   $location.hash('main-1');
+  //   $anchorScroll();  
+  // },
   $scope.submitQuestionnaire = function () {
     $scope.questionnaireErr = null;
     console.log($scope.questionnaire);
