@@ -217,11 +217,11 @@ module.exports = {
   });
 
   },
-  // updateCredit: function(req, res){
-  //   user.update({}, {credit: 100}).exec(function(err){
-  //     res.end();
-  //   });
-  // },
+  updateCredit: function(req, res){
+    user.update({}, {credit: 100}).exec(function(err){
+      res.end();
+    });
+  },
   uefaMain: function(req, res){
     res.view('easywash');
   },
