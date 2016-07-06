@@ -133,6 +133,7 @@ module.exports = {
                 });
 
                 retResult.userPrize = userPrize;
+                console.log(retResult);
                 res.json(retResult);
                 return;
               });
