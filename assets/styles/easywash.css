@@ -998,7 +998,7 @@ i:nth-child(100) b {
 }
 
 .spinner {
-  margin: 0px auto 0;
+  margin: 10px auto 0;
   width: 150px;
   text-align: center;
 }
@@ -1063,13 +1063,13 @@ i:nth-child(100) b {
 
 #main-2 img {
   animation-name: choose;
-  animation-duration: 1.5s;
+  animation-duration: 1.8s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
 }
 
 @keyframes choose {
-    from {opacity: 0;}
+    from {opacity: 0.1;}
     to {opacity: 0.9;}
 }
 
@@ -1133,6 +1133,18 @@ i:nth-child(100) b {
 @-webkit-keyframes movein {
     from   {opacity: 1; margin-left: 70%;}
     to     {opacity: 1; margin-left: 53%;}
+}
+
+#main-arrow img {
+    animation-name: choose;
+    animation-duration: 1.8s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes arrow {
+    from {opacity: 0.1;}
+    to {opacity: 0.9;}
 }
 
 /*
