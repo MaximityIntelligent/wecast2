@@ -491,9 +491,19 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.showRedeemVoteBtn = function () {
     var now = new Date();
     var exp = new Date('2016-07-20T16:00:00');
-    if ($scope.gameResult == $scope.userVote && $scope.isRedeemVote != true && now.getTime() <= exp.getTime()) {
+    if ($scope.isRedeemVote == true) {
+      alert($scope.isRedeemVote);
+      return false;
+    }
+    if (now.getTime() > exp.getTime()) {
+      alert(exp.getTime());
+      return false;
+    }
+    if ($scope.gameResult == $scope.userVote ) {
+      alert($scope.gameResult + $scope.userVote);
       return true;
     } else {
+      alert($scope.gameResult + $scope.userVote);
       return false;
     }
   },
