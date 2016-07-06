@@ -38,7 +38,7 @@ var snsapi = 'snsapi_base';
 var prizeCredit = {'prize1':15, 'prize2':30};
 var host = 'lb.ibeacon-macau.com';
 var appid = 'wx5b57ddac4e2e1e88';
-var debug = true;
+var debug = false;
 
 app.controller('IndexCtrl', [
 '$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll',
@@ -266,7 +266,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         if (!debug) {
           window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'#wechat_redirect';
         } else {
-          $('body').addClass('loaded');
+          //$('body').addClass('loaded');
           $scope.sharedBy = sharedBy;
           $scope.userId = 'ocLOPwlFiCCTPeSXLYTg7ZLLLAww';
           $scope.shareCount = 0;
