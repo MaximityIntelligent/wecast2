@@ -65,7 +65,7 @@ User.shareAd_c = function (sharedBy, sharedTo, adId, cb){ //按制share點擊獲
     cb(null);
     return;
   }
-  this.userExists(sharedBy, function(err, userExists){
+  this.userExists(sharedBy, adId, function(err, userExists){
     if(err){
       cb(err);
       return;
