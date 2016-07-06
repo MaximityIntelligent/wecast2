@@ -38,7 +38,7 @@ var snsapi = 'snsapi_base';
 var prizeCredit = {'prize1':15, 'prize2':30};
 var host = 'lb.ibeacon-macau.com';
 var appid = 'wx5b57ddac4e2e1e88';
-var debug = false;
+var debug = true;
 
 app.controller('IndexCtrl', [
 '$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll',
@@ -274,7 +274,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           $scope.prize1Remain = 30;
           $scope.userPrize = {};
           $scope.sharedToUsers = [];
-          // $scope.userVote = 'vote2';
+          $scope.userVote = 'vote2';
           $scope.updateGameResult();
           $scope.updatePrizeRemain();
           $scope.voteRate1 = 0;

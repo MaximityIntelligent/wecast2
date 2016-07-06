@@ -1147,6 +1147,10 @@ i:nth-child(100) b {
     to {opacity: 0.9;}
 }
 
+#redeem-rule p {
+  margin-bottom: 3px;
+}
+
 /*
 @media (max-height: 480px) and (min-width: 480px) and (max-width: 600px) {
     html{
