@@ -491,7 +491,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.showRedeemVoteBtn = function () {
     var now = new Date();
     var exp = new Date('2016-07-20T16:00:00');
-    if ($scope.gameResult == $scope.userVote && $scope.isRedeemVote != true && now.getTime() <= exp.getTime()) {
+    if ($scope.gameResult != null && $scope.userVote != null && $scope.gameResult == $scope.userVote && $scope.isRedeemVote != true && now.getTime() <= exp.getTime()) {
       return true;
     } else {
       return false;

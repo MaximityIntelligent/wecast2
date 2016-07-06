@@ -23,7 +23,7 @@ User.sharedToUsers_c = function (userContext, adId, cb){ //找出user 分享過�
       //console.log("[]");
       return;
     }else{
-      user.find({ where: {openId: {$in: shareOne.sharedTo}}, select:['openId', 'credit', 'headimgurl']}).exec(function (err, sharedTo) {
+      user.find({ where: {openId: {$in: shareOne.sharedTo}}, select:['openId']}).exec(function (err, sharedTo) {
         if(err){
           cb(err);
           return;
