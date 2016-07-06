@@ -491,13 +491,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.showRedeemVoteBtn = function () {
     var now = new Date();
     var exp = new Date('2016-07-20T16:00:00');
-    if ($scope.isRedeemVote == true) {
-      return false;
-    }
-    if (now.getTime() > exp.getTime()) {
-      return false;
-    }
-    if ($scope.gameResult == $scope.userVote ) {
+    if ($scope.gameResult == $scope.userVote && $scope.isRedeemVote != true && now.getTime() <= exp.getTime()) {
       return true;
     } else {
       return false;
@@ -509,10 +503,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       var exp = new Date('2016-07-20T16:00:00');
       console.log(now);
       console.log(exp);
-      alert($scope.isRedeemVote);
-      alert($scope.gameResult + $scope.userVote);
+      
       if (now.getTime() > exp.getTime()) {
-        alert(exp.getTime());
         $scope.normalErrCode = 0;
         $scope.normalErrMsg = '領奬時限已過';
         $("#normal-errModal").modal('show');
@@ -536,7 +528,11 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           $scope.credit = data.credit
           $scope.isRedeemVote = data.isRedeemVote;
         }).error(function(data) {
-
+          if (data.errCode == 0) {
+            $scope.normalErrCode = data.errCode;
+            $scope.normalErrMsg = data.errMsg;
+            $("#normal-errModal").modal('show');
+          }
         });
         
     }

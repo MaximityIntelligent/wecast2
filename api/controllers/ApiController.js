@@ -371,6 +371,11 @@ module.exports = {
   redeemVote: function (req, res) {
     var openId = req.param('openId');
     var ad = req.param('ad');
+    var now = new Date();
+    var exp = new Date('2016-07-20T16:00:00');
+    if (now.getTime() > exp.getTime()) {
+      return res.status(400).json({errCode:0, errMsg: '領奬時限已過'});
+    }
     user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
         if (!userOne) {
             return res.status(401).end();
@@ -378,18 +383,21 @@ module.exports = {
         if (userOne.isRedeemVote) { return res.status(400).end();}
         log.findOne({action: {$in:['gameResult_vote1', 'gameResult_vote2']}, ad: ad}).exec(function (err, logOne) {
           if (!logOne) {
-            return res.status(400).end();
-          }
-          if (logOne.action == 'gameResult_'+userOne.vote) {
+            return res.status(400).json({errCode:0, errMsg: '比賽結果還沒出來。'});
+          } else {
+            if (logOne.action == 'gameResult_'+userOne.vote) {
               userOne.credit = userOne.credit * 2;
               userOne.isRedeemVote = true;
               userOne.save(function (err, savedUser) {
                 return res.json({credit: savedUser.credit, isRedeemVote: userOne.isRedeemVote});
               });
 
-          } else {
-             return res.status(400).end();
+            } else {
+               return res.status(400).json({errCode:0, errMsg: '抱歉，您猜不中呢。'});
+            }
           }
+
+          
         });
     });
   },
