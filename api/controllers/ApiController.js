@@ -12,6 +12,14 @@
  var adString = "adUEFA";
 var appid = 'wx5b57ddac4e2e1e88';
 var secret = 'e73e71f132807e7827849ca0ebf739e6';
+var randomString = function(length) {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for(var i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+};
 module.exports = {
 	init_c: function(req, res){ //首次進入會跑的流程
     var code = req.param("code");
@@ -91,7 +99,7 @@ module.exports = {
               req.session.appAccessToken = appAccessToken;
               var jsapiTicket = result.ticket;
               var timestamp = Math.floor(Date.now() / 1000);
-              var noncestr = "Wm3WZYTPz0wzccnW";
+              var noncestr = randomString(16);
               var string1 = "jsapi_ticket="+jsapiTicket+"&noncestr="+noncestr+"&timestamp="+timestamp+"&url="+url;
               var signature = sha1(string1);
               retResult.accessToken = accessToken;
