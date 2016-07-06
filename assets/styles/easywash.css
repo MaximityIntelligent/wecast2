@@ -1139,7 +1139,7 @@ i:nth-child(100) b {
 
 #main-arrow img {
     animation-name: choose;
-    animation-duration: 1s;
+    animation-duration: 0.5s;
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
