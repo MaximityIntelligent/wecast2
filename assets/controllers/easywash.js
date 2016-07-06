@@ -38,7 +38,7 @@ var snsapi = 'snsapi_base';
 var prizeCredit = {'prize1':15, 'prize2':30};
 var host = 'lb.ibeacon-macau.com';
 var appid = 'wx5b57ddac4e2e1e88';
-var debug = false;
+var debug = true;
 
 app.controller('IndexCtrl', [
 '$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll',
@@ -211,7 +211,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
             wx.onMenuShareTimeline({
                 title: '2016歐國盃 | Cheers Pub免費送你特色雞尾酒 & Pizza', // 分享标题
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
-                imgUrl: 'http://'+host+'/images/easywash/wecast-share.png', // 分享图标
+                imgUrl: 'http://'+host+'/images/easywash/share/wecast-share.png', // 分享图标
                 success: function() {
                     $scope.log('share_timeline');
                     $("#share-success").trigger('click');
@@ -232,7 +232,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
               link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
 
-              imgUrl: 'http://'+host+'/images/easywash/wecast-share.png', // 分享图标
+              imgUrl: 'http://'+host+'/images/easywash/share/wecast-share.png', // 分享图标
 
               success: function () {
                 $scope.log('share_friend');
@@ -308,7 +308,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     $scope.prizeRedeem = prize;
     if($scope.credit<prizeCredit[prize]){
       $scope.normalErrCode = 1;
-      $scope.normalErrMsg = "暫時無法兌換，請集齊足夠印花";
+      $scope.normalErrMsg = "積分不足\n暫時無法兌換";
       $("#normal-errModal").modal('show');
       return;
     }else{
@@ -478,7 +478,6 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       console.log($scope.userVote);
       $scope.votes = data.votes;
       $scope.updateVoteChart();
-      $scope.atPage = $scope.SHARE;
     }).error(function(data) {
       $scope.userVote = temp;
       $scope.normalErrCode = 0;

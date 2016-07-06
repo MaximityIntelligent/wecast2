@@ -338,7 +338,7 @@
 
           <div class="modal-body" style="text-align: center">
             <div style="position: relative;top: 10%">
-            <h4>{{normalErrMsg}}</h4>
+            <h5>{{normalErrMsg}}</h5>
             <br>
             </div>
           </div>
@@ -373,20 +373,17 @@
             <form class="form-inline" style="position: relative;top: 10%">
               <h4>恭喜您</h4>
               <h5>您已有足夠積分換領奬品!!</h5>
-              </br>
-              <div class="form-group">
+              <div class="form-group" style="margin-top: 5px;">
                 <input type="password" id="verification" class="form-control" placeholder="此處由工作人員操作"
                 style="background-color: #444; color:white; border: 0px;">
               </div>
-              <div style="text-align: center;">
-                <p>換領條款</p>
-              </div>
-              <div id="redeem-rule" style="text-align: left;">
-                <p>・請前往Cheers Pub換領奬品</p>
-                <p>・地址: 澳門台山菜園涌邊街73號新城市花園第九座地下CJ鋪</p>
-                <p>・領獎截止日期: 2016/07/31</p>
-                <p>・領獎時間: 6pm-3am</p>
-                <p>・Cheers Pub享有活動及獎品最終解釋權</p>
+              <hr style="margin-top: 10px; margin-bottom: 10px;">
+              <div id="redeem-rule">
+                <p>・請前往Cheers Pub換領奬品</p >
+                <p>・地址: 澳門台山菜園涌邊街73號新城市花園第九座地下CJ鋪</p >
+                <p>・領獎截止日期: 2016/07/31</p >
+                <p>・領獎時間: 6pm-3am</p >
+                <p>・Cheers Pub享有活動及獎品最終解釋權</p >
               </div>
             </form>
           </div>
@@ -458,7 +455,7 @@
           <div class="modal-body" style="text-align: center;;">
             <form class="form-inline" style="position: relative;top: 10%">
               <h4>是否支持這隊？</h4>
-              <h4>(決賽開始前15分截止投票)</h4>
+              <h5>(決賽開始前15分截止投票)</h5>
             </form>
           </div>
           <div class="modal-footer-2" style="text-align: center">
@@ -495,7 +492,6 @@
               <h5>你支持的隊伍獲得總冠軍</h5>
               <h5>你享有當前積分雙倍獎勵一次</h5>
               <h5>是否確認領獎？</h5>
-              <h5>（提示：盡量在擁有較多積分時使用雙倍獎勵）</h5>
               <h5>（提示：盡量在擁有較多積分時使用雙倍獎勵）</h5>
             </form>
           </div>
@@ -559,7 +555,7 @@
     </div> -->
     <a id="prize-redeem" class="fancybox" href="/images/easywash/verification/prize-redeem.png"></a>
     <a id="share-success" class="fancybox" href="#share-success-div"></a>
-    <div id="share-success-div" style="display: none;text-align: center;color:white;background-color:black;" ng-click="shareSuccess();"><img src="/images/easywash/share-success.png" width="100%"></div>
+    <div id="share-success-div" style="display: none;text-align: center;color:white;background-color:black;" ng-click="shareSuccess();"><img src="/images/easywash/share/share-success.png" width="100%"></div>
     <div class="container" id="friends-list" >
       <div id="container_e-inner" >
       <center>
@@ -593,7 +589,7 @@
     $("document").ready(function(){
       $("body").css("background-color", "black");
       var mainScaleX = 750;
-      var mainScaleY = 3968;
+      var mainScaleY = 4142;
       var containerWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
       var containerHeight = containerWidth*mainScaleY/mainScaleX;
 
@@ -609,17 +605,17 @@
       $("#main-container").css("width", containerWidth);
       $("#main-container").css("height", containerHeight);
 
-      var mainEventInfoTop = 24;
-      var mainEventInfoLeft = 649;
-      var mainEventInfoWidth = 64;
+      var mainEventInfoTop = 26;
+      var mainEventInfoLeft = 651;
+      var mainEventInfoWidth = 60;
       $("#main-event-info").css("position", "absolute");
       $("#main-event-info").css("width", containerWidth*mainEventInfoWidth/mainScaleX);
       $("#main-event-info").css("top", containerHeight*mainEventInfoTop/mainScaleY);
       $("#main-event-info").css("left", containerWidth*mainEventInfoLeft/mainScaleX);
       $('img[name="event-info"]').css("width", containerWidth*mainEventInfoWidth/mainScaleX);
 
-      var main1Top = 1410;
-      var main1Width = 184;
+      var main1Top = 1428;
+      var main1Width = 220;
       $("#main-1").css("position", "absolute");
       $("#main-1").css("top", containerHeight*main1Top/mainScaleY);
       $("#main-1").css("left", containerWidth*(mainScaleX/2)/mainScaleX);
@@ -680,10 +676,10 @@
       $("#vote-2 img").css("width", containerWidth*vote2Width/mainScaleX);
       $("#vote-2 img").css("height", containerHeight*vote2Height/mainScaleY);
 
-      var redeemVoteTop = 1206;
+      var redeemVoteTop = 1208;
       var redeemVoteLeft = 562;
-      var redeemVoteWidth = 160;
-      var redeemVoteHeight = 160;
+      var redeemVoteWidth = 176;
+      var redeemVoteHeight = 176;
       $("#redeem-vote").css("position", "absolute");
       $("#redeem-vote").css("top", containerHeight*redeemVoteTop/mainScaleY);
       $("#redeem-vote").css("left", containerWidth*redeemVoteLeft/mainScaleX);
@@ -726,7 +722,7 @@
       $("#voteBar-2 img").css("width", containerWidth*voteBar2Width/mainScaleX);
       $("#voteBar-2 img").css("height", containerHeight*voteBar2Height/mainScaleY);
 
-      $("#main-finger").css("top", containerHeight*1520/mainScaleY);
+      $("#main-finger").css("top", containerHeight*1564/mainScaleY);
       $("#main-finger").css("width", containerWidth);
       $("#main-finger img").css("width", containerWidth*60/mainScaleX);
 
@@ -741,7 +737,7 @@
       $('img[name="mainQr"]').css("width", containerWidth*mainQrWidth/mainScaleX);
       $('img[name="mainQr"]').css("height", containerHeight*mainQrHeight/mainScaleY);
 
-      var mainMapTop = 3518;
+      var mainMapTop = 3576;
       var mainMapLeft = 250;
       var mainMapWidth = 105;
       var mainMapHeight = 105;
@@ -758,10 +754,10 @@
       $("#main-phone img").css("height", containerHeight*mainMapHeight/mainScaleY);
       $("#main-phone img").css("width", containerWidth*mainMapWidth/mainScaleX);
 
-      var customerQrLeft = 467;
-      var customerQrWidth = 282;
-      var customerQrHeight = 282;
-      var customerQrTop = 3116;
+      var customerQrLeft = 242;
+      var customerQrWidth = 266;
+      var customerQrHeight = 266;
+      var customerQrTop = 3711;
       $("#customer-qr").css("position", "absolute");
       $("#customer-qr").css("top", containerHeight*customerQrTop/mainScaleY);
       $("#customer-qr").css("left", containerWidth*customerQrLeft/mainScaleX);
@@ -921,16 +917,16 @@
       $('img[name="prize1Qr"]').css("width", containerWidth*prize1QrWidth/mainScaleX);
       $('img[name="prize1Qr"]').css("height", containerHeight_prize1*prize1QrHeight/prize1ScaleY);
 
-      var prize11Top = 1424;
-      var prize11Left = 676;
+      var prize11Top = 1704;
+      var prize11Left = 386;
       $("#prize1-1").css("position", "absolute");
       $("#prize1-1").css("top", containerHeight*prize11Top/mainScaleY);
       $("#prize1-1").css("left", containerWidth*prize11Left/mainScaleX);
       $("#prize1-1").css("color", "yellow");
       //$("#prize1-1").css("width", containerHeight_p1*40/1206);
-      $("#prize1-1 font").css("font-size", containerHeight*38/mainScaleY);
+      $("#prize1-1 font").css("font-size", containerHeight*40/mainScaleY);
 
-      var prize12Top = 1986;
+      var prize12Top = 2060;
       var prize12Left = 48;
       var prize12Width = 327;
       var prize12Height = 283;
@@ -940,7 +936,7 @@
       $("#prize1-2").css("top", containerHeight*prize12Top/mainScaleY);
       $("#prize1-2").css("left", containerWidth*prize12Left/mainScaleX);
 
-      var prize22Top = 1986;
+      var prize22Top = 2060;
       var prize22Left = 375;
       $("#prize2-2").css("position", "absolute");
       $("#prize2-2 img").css("width", containerWidth*prize12Width/mainScaleX);
@@ -1007,7 +1003,14 @@
     		closeEffect	: 'elastic',
         overlayColor: '#000',
         overlayShow: true,
-        overlayOpacity: 1
+        overlayOpacity: 1,
+        helpers : {
+            overlay : {
+                css : {
+                    'background' : 'rgba(255, 255, 255, 0.05)'
+                }
+            }
+        }
     	});
 
 

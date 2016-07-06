@@ -8,7 +8,7 @@
  var weixin = require('../../config/weixin');
  var sha1 = require('sha1');
  var User = require('../lib/User');
- var VERIFICATION_CODE="uefa001";
+ var VERIFICATION_CODE="cheers001";
  var adString = "adUEFA";
 var appid = 'wx5b57ddac4e2e1e88';
 var secret = 'e73e71f132807e7827849ca0ebf739e6';
