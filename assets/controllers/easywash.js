@@ -168,8 +168,10 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   {
     //alert("init");
     $scope.updateLoading(99);
+    alert(location.href.split('#')[0];
     var url = window.location.href;
     url = encodeURIComponent(url);
+    alert(url);
     $http.get('/api/init_c?code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad='+adString
       ).
       success(function(data, status, headers, config) { 
@@ -194,7 +196,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           $scope.voteRate2 = 0;
           $scope.updateMain();
           console.log($scope.userPrize);
-
+          
           //alert("timestamp: " + $scope.timestamp + "\nnonceStr: " + $scope.noncestr + "\nsignature: " + $scope.signature);
           wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -321,7 +323,12 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     
   }
   $scope.showVote = function (vote) {
-    
+    if ($scope.userVote == 'vote1' || $scope.userVote == 'vote2') {
+      $scope.normalErrCode = 0;
+      $scope.normalErrMsg = '您已經投票了！';
+      $("#normal-errModal").modal('show');
+      return;
+    }
     var now = new Date();
     var exp = new Date('2016-07-10T19:00:00');
     console.log(now);
@@ -463,12 +470,6 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     }
   },
   $scope.vote = function (vote) {
-    if ($scope.userVote == 'vote1' || $scope.userVote == 'vote2') {
-      $scope.normalErrCode = 0;
-      $scope.normalErrMsg = '您已經完成投票了！';
-      $("#normal-errModal").modal('show');
-      return;
-    }
     var temp = $scope.userVote;
     $scope.userVote = vote;
     if (vote=='' || vote==null) {
@@ -507,7 +508,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.showRedeemVote = function () {
     if ($scope.gameResult == null) {
       $scope.normalErrCode = 0;
-      $scope.normalErrMsg = '比賽結果還沒出來。';
+      $scope.normalErrMsg = '決賽結果尚未出爐，暫時未能領取。';
       $("#normal-errModal").modal('show');
     } else if ($scope.gameResult != $scope.userVote) {
       $scope.normalErrCode = 0;
