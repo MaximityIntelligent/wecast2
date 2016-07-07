@@ -467,7 +467,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       $scope.normalErrCode = 0;
       $scope.normalErrMsg = '您已經完成投票了！';
       $("#normal-errModal").modal('show');
-      return；
+      return;
     }
     var temp = $scope.userVote;
     $scope.userVote = vote;
