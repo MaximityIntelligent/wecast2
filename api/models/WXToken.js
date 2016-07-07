@@ -3,7 +3,7 @@ module.exports = {
   attributes: {
     access_token: {type: 'string'},
     expires_in: {type: 'integer'},
-    jsapi_ticket: {type: 'string'}
-
+    jsapi_ticket: {type: 'string'},
+    expireAt: {type: 'date'}
   }
 };

@@ -148,6 +148,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         "ad": adString,
       }
     }).success(function(data) {
+      console.log(data);
       $scope.votes = data;
       $scope.updateVoteChart();
     }).error(function(data) {

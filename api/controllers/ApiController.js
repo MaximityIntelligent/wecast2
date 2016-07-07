@@ -92,6 +92,7 @@ module.exports = {
             console.log(oneHourAgo);
             wxToken.findOne({createdAt: {'>': oneHourAgo}}).sort({ createdAt: 'desc' }).exec(function (err, wxTokenOne) {
               if (!wxTokenOne) {
+                  console('-----no token-----');
                   var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appid+'&secret='+secret);
                   result = JSON.parse(resp.getBody());
                   //console.log(result);
@@ -101,7 +102,9 @@ module.exports = {
                   resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+appAccessToken+'&type=jsapi');
                     result = JSON.parse(resp.getBody());
                     if (result.errmsg == 'ok') {
-                      wxToken.create({access_token: appAccessToken, expires_in: result.expires_in, jsapi_ticket: result.ticket}).exec(function (err, createdToken) {
+                      var expireAt = new Date();
+                      expireAt = new Date(expireAt.getTime() + (result.expires_in - 200) * 1000);
+                      wxToken.create({access_token: appAccessToken, expires_in: result.expires_in, jsapi_ticket: result.ticket, expireAt: expireAt}).exec(function (err, createdToken) {
                         // body...
                         console.log('------new token----');
                         console.log(createdToken);
