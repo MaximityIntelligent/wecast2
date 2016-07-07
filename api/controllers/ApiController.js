@@ -87,6 +87,7 @@ module.exports = {
             if(true){
               var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appid+'&secret='+secret);
               result = JSON.parse(resp.getBody());
+              console.log(result);
               appAccessToken = result.access_token;
             }else{
               appAccessToken = req.session.appAccessToken;
@@ -95,6 +96,12 @@ module.exports = {
             req.session.appAccessToken = appAccessToken;
             resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+appAccessToken+'&type=jsapi');
               result = JSON.parse(resp.getBody());
+              if (result.errmsg == 'ok') {
+                wxToken.create({access_token: appAccessToken, expires_in: result.expires_in, jsapi_ticket: result.ticket}).exec(function (err, createdToken) {
+                  // body...
+                  console.log(createdToken);
+                });
+              }
               appAccessToken = result.access_token;
               req.session.appAccessToken = appAccessToken;
               var jsapiTicket = result.ticket;

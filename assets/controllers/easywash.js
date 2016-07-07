@@ -168,10 +168,10 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   {
     //alert("init");
     $scope.updateLoading(99);
-    alert(location.href.split('#')[0]);
-    var url = window.location.href;
+    var url = location.href.split('#')[0];
+    //var url = window.location.href;
     url = encodeURIComponent(url);
-    alert(url);
+    
     $http.get('/api/init_c?code='+code+'&url='+url+'&sharedBy='+sharedBy+'&ad='+adString
       ).
       success(function(data, status, headers, config) { 
