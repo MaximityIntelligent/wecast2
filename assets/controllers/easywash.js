@@ -501,6 +501,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       console.log($scope.userVote);
       $scope.votes = data.votes;
       $scope.updateVoteChart();
+      $scope.normalErrCode = 0;
+      $scope.normalErrMsg = '您已經成功投票給'+$scope.voteName[$scope.userVote]+'隊';
+      $("#normal-errModal").modal('show');
     }).error(function(data) {
       $scope.userVote = temp;
       $scope.normalErrCode = 0;
