@@ -60,6 +60,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.normalErrCode = 0;
   $scope.normalErrMsg = "";
   $scope.prevPage = "";
+  $scope.voteName = {'vote1': '葡萄牙', 'vote2': '德國'};
   $scope.thumbStyle = {
      'width': Math.floor(window.innerWidth*0.145),
      'height': Math.floor(window.innerWidth*0.145)
@@ -330,8 +331,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   }
   $scope.showVote = function (vote) {
     if ($scope.userVote == 'vote1' || $scope.userVote == 'vote2') {
+      
       $scope.normalErrCode = 0;
-      $scope.normalErrMsg = '您已經投票了！';
+      $scope.normalErrMsg = '您已經投票給'+$scope.voteName[vote]+'了！';
       $("#normal-errModal").modal('show');
       return;
     }
@@ -350,6 +352,11 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       
     }
     
+  }
+  $scope.showVotedModal = function (vote) {
+    $scope.normalErrCode = 0;
+    $scope.normalErrMsg = '您已經投票給'+$scope.voteName[vote]+'了！';
+    $("#normal-errModal").modal('show');
   }
   $scope.showQuestionnaire = function () {
     $("#questionnaireModal").modal('show');

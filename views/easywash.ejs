@@ -131,11 +131,11 @@
         </font>
       </div>
       <div id="prize1-2">
-          <img name="redeem" style="opacity: 1;" class="img-responsive" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" ng-hide="showPrize1()">
+          <img name="redeem" style="opacity: 0;" class="img-responsive" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" ng-hide="showPrize1()">
           <img name="redeem" style="opacity: 1;" class="img-responsive" src="/images/easywash/main/prize1.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" ng-show="showPrize1()">
       </div>
       <div id="prize2-2">
-          <img name="redeem" style="opacity: 1;" class="img-responsive" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')" ng-hide="showPrize2()">
+          <img name="redeem" style="opacity: 0;" class="img-responsive" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')" ng-hide="showPrize2()">
           <img name="redeem" style="opacity: 1;" class="img-responsive" src="/images/easywash/main/prize2.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')" ng-show="showPrize2()">
       </div>
       <div id="main-2">
@@ -153,11 +153,11 @@
       </div>
       <div id="vote-1">
         <img class="img-responsive" src="/images/easywash/main/vote1.png" ng-click="showVote('vote1')" ng-hide="userVote=='vote1'">
-        <img class="img-responsive" src="/images/easywash/main/vote1-pick.png" ng-show="userVote=='vote1'">
+        <img class="img-responsive" src="/images/easywash/main/vote1-pick.png" ng-show="userVote=='vote1'" ng-click="showVotedModal('vote1')">
       </div>
       <div id="vote-2">
         <img class="img-responsive" src="/images/easywash/main/vote2.png" ng-click="showVote('vote2')" ng-hide="userVote=='vote2'">
-        <img class="img-responsive" src="/images/easywash/main/vote2-pick.png" ng-show="userVote=='vote2'">
+        <img class="img-responsive" src="/images/easywash/main/vote2-pick.png" ng-show="userVote=='vote2'" ng-click="showVotedModal('vote2')">
       </div>
       <div id="redeem-vote">
         <img class="img-responsive" src="/images/easywash/main/redeem-vote.png" ng-click="showRedeemVote()" ng-show="showRedeemVoteBtn()">
@@ -189,11 +189,11 @@
       </div>
       <div id="main-map">
         <a href="https://www.google.com.hk/maps/place/%E6%BE%B3%E9%96%80%E6%96%B0%E5%9F%8E%E5%B8%82%E8%8A%B1%E5%9C%92(%E7%AC%AC%E4%B9%9D%E5%BA%A7%E8%90%AC%E5%8B%9D%E9%96%A3)/@22.2132536,113.5470802,19.5z/data=!4m5!3m4!1s0x34017b185d296d9b:0xd99eb70c2e755386!8m2!3d22.2132787!4d113.5473906" ng-click="log('google_map')">
-          <img class="img-responsive" src="/images/easywash/main/map.png">
+          <img style="opacity: 0;" class="img-responsive" src="/images/easywash/main/map.png">
         </a>
       </div>
       <div id="main-phone" ng-click="log('tel')">
-        <a href="tel:85328235399"><img class="img-responsive" src="/images/easywash/main/map.png"></a>
+        <a href="tel:85328235399"><img style="opacity: 0;" class="img-responsive" src="/images/easywash/main/map.png"></a>
       </div>
       <div id="customer-qr">
           <img name="customerQr" src="/images/easywash/main/cheers-qr.png">
@@ -456,7 +456,8 @@
 
           <div class="modal-body" style="text-align: center;;">
             <form class="form-inline" style="position: relative;top: 10%">
-              <h4>是否支持這隊？</h4>
+              <h4>是否支持{{voteName[currentVote]}}隊？</h4>
+              <h5>確認後不能更改投票</h5>
               <h5>(決賽開始前15分截止投票)</h5>
             </form>
           </div>
