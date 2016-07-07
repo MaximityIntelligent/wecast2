@@ -92,7 +92,7 @@ module.exports = {
             console.log(oneHourAgo);
             wxToken.findOne({createdAt: {'>': oneHourAgo}}).sort({ createdAt: 'desc' }).exec(function (err, wxTokenOne) {
               if (!wxTokenOne) {
-                  console('-----no token-----');
+                  console.log('-----no token-----');
                   var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appid+'&secret='+secret);
                   result = JSON.parse(resp.getBody());
                   //console.log(result);
