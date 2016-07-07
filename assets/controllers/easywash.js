@@ -206,12 +206,13 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           timestamp: $scope.timestamp, // 必填，生成签名的时间戳
           nonceStr: $scope.noncestr, // 必填，生成签名的随机串
           signature: $scope.signature,// 必填，签名，见附录1
-          jsApiList: ['onMenuShareTimeline',"onMenuShareAppMessage", 'showMenuItems' ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          jsApiList: ['onMenuShareTimeline',"onMenuShareAppMessage", 'showMenuItems', 'hideAllNonBaseMenuItem' ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
           });
           wx.ready(function(res){
             //alert("wx.ready");
+            wx.hideAllNonBaseMenuItem();
             wx.showMenuItems({
-              menuList: ['menuItem:share:timeline', 'menuItem:share:appMessage' ] // 要显示的菜单项，所有menu项见附录3
+              menuList: ['menuItem:share:timeline', 'menuItem:share:appMessage', "menuItem:favorite" ] // 要显示的菜单项，所有menu项见附录3
             });
             wx.showOptionMenu();
             wx.onMenuShareTimeline({
