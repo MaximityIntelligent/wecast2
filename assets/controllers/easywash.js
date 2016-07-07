@@ -333,7 +333,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     if ($scope.userVote == 'vote1' || $scope.userVote == 'vote2') {
       
       $scope.normalErrCode = 0;
-      $scope.normalErrMsg = '您已經投票給'+$scope.voteName[vote]+'了！';
+      $scope.normalErrMsg = '您已經投票給'+$scope.voteName[$scope.userVote]+'了！';
       $("#normal-errModal").modal('show');
       return;
     }
@@ -355,7 +355,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   }
   $scope.showVotedModal = function (vote) {
     $scope.normalErrCode = 0;
-    $scope.normalErrMsg = '您已經投票給'+$scope.voteName[vote]+'了！';
+    $scope.normalErrMsg = '您已經投票給'+$scope.voteName[$scope.userVote]+'了！';
     $("#normal-errModal").modal('show');
   }
   $scope.showQuestionnaire = function () {
