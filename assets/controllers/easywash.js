@@ -168,7 +168,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   {
     //alert("init");
     $scope.updateLoading(99);
-    alert(location.href.split('#')[0];
+    alert(location.href.split('#')[0]);
     var url = window.location.href;
     url = encodeURIComponent(url);
     alert(url);
