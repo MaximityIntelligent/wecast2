@@ -84,10 +84,17 @@ module.exports = {
             var shareCount = sharedToUsers.length;
             var appAccessToken;
             var wait = true;
+            var now = new Date()
+            var ONE_HOUR = 60 * 60 * 1000;
+            var oneHourAgo = new Date(now.getTime() - ONE_HOUR);
+            wxToken.findOne({createAt: {'>': oneHourAgo}}).exec(function (err, wxTokenOne) {
+              console.log(wxTokenOne);
+              console.log('------old token----');
+            });
             if(true){
               var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appid+'&secret='+secret);
               result = JSON.parse(resp.getBody());
-              console.log(result);
+              //console.log(result);
               appAccessToken = result.access_token;
             }else{
               appAccessToken = req.session.appAccessToken;
@@ -148,7 +155,7 @@ module.exports = {
                 });
 
                 retResult.userPrize = userPrize;
-                //console.log(retResult);
+                console.log(retResult);
                 res.json(retResult);
                 return;
               });
