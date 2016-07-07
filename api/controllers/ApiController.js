@@ -31,7 +31,7 @@ module.exports = {
     var result;
     resp = request('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code');
         result = JSON.parse(resp.getBody());  //得到USER的AccessToken from weixin
-        console.log(result);
+        //console.log(result);
         var accessToken = result.access_token;
         var userInfo = {};
         var openId = result.openid;
@@ -141,7 +141,7 @@ module.exports = {
                 });
 
                 retResult.userPrize = userPrize;
-                console.log(retResult);
+                //console.log(retResult);
                 res.json(retResult);
                 return;
               });

@@ -230,7 +230,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
               title: '2016歐國盃 | Cheers Pub免費送你特色雞尾酒 & Pizza', // 分享标题
 
-              desc: '估波仔! 三五知己! 玩盡歐國! Beer x Cocktail x Pizze任你揀!!', // 分享描述
+              desc: '估波仔! 三五知己! 玩盡歐國! Beer x Cocktail x Pizza任你揀!!', // 分享描述
 
               link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
 
@@ -463,6 +463,12 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     }
   },
   $scope.vote = function (vote) {
+    if ($scope.userVote == 'vote1' || $scope.userVote == 'vote2') {
+      $scope.normalErrCode = 0;
+      $scope.normalErrMsg = '您已經完成投票了！';
+      $("#normal-errModal").modal('show');
+      return；
+    }
     var temp = $scope.userVote;
     $scope.userVote = vote;
     if (vote=='' || vote==null) {
@@ -491,6 +497,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.showRedeemVoteBtn = function () {
     var now = new Date();
     var exp = new Date('2016-07-20T16:00:00');
+    return true;
     if ($scope.gameResult != null && $scope.userVote != null && $scope.gameResult == $scope.userVote && $scope.isRedeemVote != true && now.getTime() <= exp.getTime()) {
       return true;
     } else {
