@@ -148,7 +148,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         "ad": adString,
       }
     }).success(function(data) {
-      console.log(data);
+
       $scope.votes = data;
       $scope.updateVoteChart();
     }).error(function(data) {
@@ -158,6 +158,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.updateMain = function () {
     if ($scope.userId) {
       $http.get('/api/getMainUpdate?openId='+$scope.userId+'&ad='+adString).success(function (data) {
+        console.log(data);
         $scope.credit = data.credit;
         $scope.gameResult = data.gameResult;
         $scope.votes = data.votes;
