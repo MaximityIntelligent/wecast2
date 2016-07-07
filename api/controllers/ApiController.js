@@ -84,36 +84,43 @@ module.exports = {
           User.sharedToUsers_c(userOne, adId, function(err, sharedToUsers){
             var shareCount = sharedToUsers.length;
             var appAccessToken;
+            var jsapiTicket;
             var wait = true;
             var now = new Date();
             var ONE_HOUR = 60 * 60 * 1000;
             var oneHourAgo = new Date(now.getTime() - ONE_HOUR);
             console.log(oneHourAgo);
             wxToken.findOne({createdAt: {'>': oneHourAgo}}).sort({ createdAt: 'desc' }).exec(function (err, wxTokenOne) {
-              console.log(wxTokenOne);
-              console.log('------old token----');
-            });
-            if(true){
-              var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appid+'&secret='+secret);
-              result = JSON.parse(resp.getBody());
-              //console.log(result);
-              appAccessToken = result.access_token;
-            }else{
-              appAccessToken = req.session.appAccessToken;
-            }
+              if (!wxTokenOne) {
+                  var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appid+'&secret='+secret);
+                  result = JSON.parse(resp.getBody());
+                  //console.log(result);
+                  appAccessToken = result.access_token;
 
-            req.session.appAccessToken = appAccessToken;
-            resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+appAccessToken+'&type=jsapi');
-              result = JSON.parse(resp.getBody());
-              if (result.errmsg == 'ok') {
-                wxToken.create({access_token: appAccessToken, expires_in: result.expires_in, jsapi_ticket: result.ticket}).exec(function (err, createdToken) {
-                  // body...
-                  console.log(createdToken);
-                });
+                  req.session.appAccessToken = appAccessToken;
+                  resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+appAccessToken+'&type=jsapi');
+                    result = JSON.parse(resp.getBody());
+                    if (result.errmsg == 'ok') {
+                      wxToken.create({access_token: appAccessToken, expires_in: result.expires_in, jsapi_ticket: result.ticket}).exec(function (err, createdToken) {
+                        // body...
+                        console.log('------new token----');
+                        console.log(createdToken);
+                        
+                      });
+                    }
+                    jsapiTicket = result.ticket;
+              } else {
+                appAccessToken = wxTokenOne.access_token;
+                jsapiTicket = wxTokenOne.jsapi_ticket;
+                console.log('------old token----');
+                console.log(wxTokenOne);
+                
               }
-              appAccessToken = result.access_token;
-              req.session.appAccessToken = appAccessToken;
-              var jsapiTicket = result.ticket;
+
+
+              // appAccessToken = result.access_token;
+              // req.session.appAccessToken = appAccessToken;
+              
               var timestamp = Math.floor(Date.now() / 1000);
               var noncestr = randomString(16);
               var string1 = "jsapi_ticket="+jsapiTicket+"&noncestr="+noncestr+"&timestamp="+timestamp+"&url="+url;
@@ -161,6 +168,10 @@ module.exports = {
                 res.json(retResult);
                 return;
               });
+              
+            });
+            
+              
               
           });
 
