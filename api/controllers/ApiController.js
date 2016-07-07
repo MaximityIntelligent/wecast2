@@ -26,6 +26,7 @@ module.exports = {
     var sharedBy = req.param("sharedBy");
     var adId = req.param("ad");
     var url = req.param("url");
+    console.log(url);
     var retResult = {};
     var resp;
     var result;
@@ -84,10 +85,11 @@ module.exports = {
             var shareCount = sharedToUsers.length;
             var appAccessToken;
             var wait = true;
-            var now = new Date()
+            var now = new Date();
             var ONE_HOUR = 60 * 60 * 1000;
             var oneHourAgo = new Date(now.getTime() - ONE_HOUR);
-            wxToken.findOne({createAt: {'>': oneHourAgo}}).exec(function (err, wxTokenOne) {
+            console.log(oneHourAgo);
+            wxToken.findOne({createdAt: {'>': oneHourAgo}}).exec(function (err, wxTokenOne) {
               console.log(wxTokenOne);
               console.log('------old token----');
             });
