@@ -76,10 +76,10 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       $scope.$apply(function(){
           if( typeof $scope.landscape != 'undefined' && !debug){
             if(typeof QueryString.pg == 'undefined'){
-              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'#wechat_redirect';
+              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'&state=123#wechat_redirect';
             }
             else {
-              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'#wechat_redirect';
+              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect';
             }
           }
 
@@ -221,7 +221,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
             });
             wx.onMenuShareTimeline({
                 title: '2016歐國盃 | Cheers Pub免費送你特色雞尾酒 & Pizza', // 分享标题
-                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect',
                 imgUrl: 'http://'+host+'/images/easywash/share/wecast-share.png', // 分享图标
                 success: function() {
                     $scope.log('share_timeline');
@@ -241,7 +241,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
               desc: '估波仔! 三五知己! 玩盡歐國! Beer x Cocktail x Pizza任你揀!!', // 分享描述
 
-              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123',
+              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect',
 
               imgUrl: 'http://'+host+'/images/easywash/share/wecast-share.png', // 分享图标
 
