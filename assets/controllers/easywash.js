@@ -505,7 +505,20 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     }
   },
   $scope.showRedeemVote = function () {
-    if ($scope.gameResult == $scope.userVote && $scope.isRedeemVote != true) {
+    if ($scope.gameResult == null) {
+      $scope.normalErrCode = 0;
+      $scope.normalErrMsg = '比賽結果還沒出來。';
+      $("#normal-errModal").modal('show');
+    } else if ($scope.gameResult != $scope.userVote) {
+      $scope.normalErrCode = 0;
+      $scope.normalErrMsg = '抱歉，您猜不中呢。';
+      $("#normal-errModal").modal('show');
+    } else if ($scope.isRedeemVote == true) {
+      $scope.normalErrCode = 0;
+      $scope.normalErrMsg = '您已經成功領奬。';
+      $("#normal-errModal").modal('show');
+    }
+    else if ($scope.gameResult == $scope.userVote && $scope.isRedeemVote != true) {
       var now = new Date();
       var exp = new Date('2016-07-20T16:00:00');
       console.log(now);
@@ -534,6 +547,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         }).success(function(data) {
           $scope.credit = data.credit
           $scope.isRedeemVote = data.isRedeemVote;
+          $scope.normalErrCode = 0;
+          $scope.normalErrMsg = '成功領奬，現在積分為'+$scope.credit;
+          $("#normal-errModal").modal('show');
         }).error(function(data) {
           if (data.errCode == 0) {
             $scope.normalErrCode = data.errCode;

@@ -380,7 +380,7 @@ module.exports = {
         if (!userOne) {
             return res.status(401).end();
         }
-        if (userOne.isRedeemVote) { return res.status(400).end();}
+        if (userOne.isRedeemVote) { return res.status(400).json({errCode:0, errMsg: '您已經成功領奬。'});}
         log.findOne({action: {$in:['gameResult_vote1', 'gameResult_vote2']}, ad: ad}).exec(function (err, logOne) {
           if (!logOne) {
             return res.status(400).json({errCode:0, errMsg: '比賽結果還沒出來。'});
