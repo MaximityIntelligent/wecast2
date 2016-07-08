@@ -580,7 +580,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   
   $scope.updateVoteChart = function () {
     $scope.voteRate1 = Math.floor($scope.votes.vote1/($scope.votes.vote1+$scope.votes.vote2)*100);
-    $scope.voteRate2 = Math.floor($scope.votes.vote2/($scope.votes.vote1+$scope.votes.vote2)*100);
+    $scope.voteRate2 = Math.ceil($scope.votes.vote2/($scope.votes.vote1+$scope.votes.vote2)*100);
     var mainScaleX = 750;
     var containerWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
     if ($scope.votes.vote1 + $scope.votes.vote2 > 0) {
