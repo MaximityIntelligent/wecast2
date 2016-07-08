@@ -60,7 +60,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.normalErrCode = 0;
   $scope.normalErrMsg = "";
   $scope.prevPage = "";
-  $scope.voteName = {'vote1': '葡萄牙', 'vote2': '德國'};
+  $scope.voteName = {'vote1': '葡萄牙', 'vote2': '法國'};
   $scope.thumbStyle = {
      'width': Math.floor(window.innerWidth*0.145),
      'height': Math.floor(window.innerWidth*0.145)

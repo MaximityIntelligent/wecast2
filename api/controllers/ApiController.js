@@ -559,6 +559,8 @@ module.exports = {
     log.destroy().exec(function(){});
     redeem_c.destroy().exec(function(){});
     share_c.destroy().exec(function(){});
+    ClickCount.destroy().exec(function () {});
+    wxToken.destroy().exec(function () {});
     user.destroy().exec(function(){
       res.end();
       return;
