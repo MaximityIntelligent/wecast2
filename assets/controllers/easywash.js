@@ -262,7 +262,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
             $scope.updateMain();
           }, 10000);
           $('body').addClass('loaded');
-          
+          $scope.mapLink = "https://www.google.com.hk/maps/place/%E6%BE%B3%E9%96%80%E6%96%B0%E5%9F%8E%E5%B8%82%E8%8A%B1%E5%9C%92(%E7%AC%AC%E4%B9%9D%E5%BA%A7%E8%90%AC%E5%8B%9D%E9%96%A3)/@22.2132536,113.5470802,19.5z/data=!4m5!3m4!1s0x34017b185d296d9b:0xd99eb70c2e755386!8m2!3d22.2132787!4d113.5473906";
         });
         wx.error(function(res){
           //alert('fail'+JSON.stringify(res));
