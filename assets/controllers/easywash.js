@@ -586,8 +586,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     if ($scope.votes.vote1 + $scope.votes.vote2 > 0) {
         $scope.voteBar1Style = {'width':containerWidth*($scope.voteRate1/100*350)/mainScaleX};
     } else {
-      $scope.voteRate1 = 0;
-      $scope.voteRate2 = 0;
+      $scope.voteRate1 = 50;
+      $scope.voteRate2 = 50;
     }
   },
   // $scope.gotoShare = function () {
