@@ -207,18 +207,18 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           timestamp: $scope.timestamp, // 必填，生成签名的时间戳
           nonceStr: $scope.noncestr, // 必填，生成签名的随机串
           signature: $scope.signature,// 必填，签名，见附录1
-          jsApiList: ['onMenuShareTimeline',"onMenuShareAppMessage", 'showMenuItems', 'hideAllNonBaseMenuItem', 'hideMenuItems' ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          jsApiList: ['onMenuShareTimeline',"onMenuShareAppMessage", 'showMenuItems'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
           });
           wx.ready(function(res){
             //alert("wx.ready");
             wx.showOptionMenu();
-            wx.hideAllNonBaseMenuItem();
+            // wx.hideAllNonBaseMenuItem();
             wx.showMenuItems({
               menuList: ['menuItem:share:timeline', 'menuItem:share:appMessage', "menuItem:favorite" ] // 要显示的菜单项，所有menu项见附录3
             });
-            wx.hideMenuItems({
-              menuList: ["menuItem:openWithSafari", "menuItem:share:email", "menuItem:share:qq", "menuItem:share:QZone", "menuItem:share:brand", "menuItem:share:weiboApp", "menuItem:share:facebook", "menuItem:copyUrl", "menuItem:originPage", "menuItem:readMode", "menuItem:openWithQQBrowser", "menuItem:delete", "menuItem:editTag"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
-            });
+            // wx.hideMenuItems({
+            //   menuList: ["menuItem:openWithSafari", "menuItem:share:email", "menuItem:share:qq", "menuItem:share:QZone", "menuItem:share:brand", "menuItem:share:weiboApp", "menuItem:share:facebook", "menuItem:copyUrl", "menuItem:originPage", "menuItem:readMode", "menuItem:openWithQQBrowser", "menuItem:delete", "menuItem:editTag"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+            // });
             wx.onMenuShareTimeline({
                 title: '2016歐國盃 | Cheers Pub免費送你特色雞尾酒 & Pizza', // 分享标题
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect',
@@ -265,7 +265,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           
         });
         wx.error(function(res){
-          //alert('fail'+JSON.stringify(res));
+          alert(JSON.stringify(res));
 
         });
 
