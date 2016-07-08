@@ -89,10 +89,10 @@ module.exports = {
             var now = new Date();
             var ONE_HOUR = 60 * 60 * 1000;
             var oneHourAgo = new Date(now.getTime() - ONE_HOUR);
-            console.log(oneHourAgo);
+            //console.log(oneHourAgo);
             wxToken.findOne({createdAt: {'>': oneHourAgo}}).sort({ createdAt: 'desc' }).exec(function (err, wxTokenOne) {
               if (!wxTokenOne) {
-                  console.log('-----no token-----');
+                  //console.log('-----no token-----');
                   var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appid+'&secret='+secret);
                   result = JSON.parse(resp.getBody());
                   //console.log(result);
@@ -106,7 +106,7 @@ module.exports = {
                       expireAt = new Date(expireAt.getTime() + (result.expires_in - 200) * 1000);
                       wxToken.create({access_token: appAccessToken, expires_in: result.expires_in, jsapi_ticket: result.ticket, expireAt: expireAt}).exec(function (err, createdToken) {
                         // body...
-                        console.log('------new token----');
+                        console.log('------new token----: '+oneHourAgo);
                         console.log(createdToken);
                         
                       });
@@ -115,8 +115,8 @@ module.exports = {
               } else {
                 appAccessToken = wxTokenOne.access_token;
                 jsapiTicket = wxTokenOne.jsapi_ticket;
-                console.log('------old token----');
-                console.log(wxTokenOne);
+                //console.log('------old token----');
+                //console.log(wxTokenOne);
                 
               }
 
@@ -227,7 +227,7 @@ module.exports = {
                       });
                     }
                  } else {
-                    console.log('Out of amount');
+                    //console.log('Out of amount');
                     res.status(400);
                     res.json({errCode: 0, errMsg: '奬品已全部換領完畢。'});
                     return;
@@ -371,7 +371,7 @@ module.exports = {
     var userVote = req.param('userVote');
     var now = new Date();
     var exp = new Date('2016-07-10T19:00:00');
-    console.log(exp);
+    //console.log(exp);
     if (now.getTime() > exp.getTime()) {
       return res.status(400).json({errCode: 0, errMsg:'投票時限已過了。'});
     }

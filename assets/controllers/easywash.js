@@ -262,7 +262,6 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
             $scope.updateMain();
           }, 10000);
           $('body').addClass('loaded');
-          
         });
         wx.error(function(res){
           alert(JSON.stringify(res));
@@ -310,7 +309,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
     //$("#redeem2Modal").modal('show');
     ///return;
-    if ($scope.userPrize['redeem_'+prize] > 1000) {
+    if ($scope.userPrize['redeem_'+prize] > 100000) {
       $scope.normalErrCode = 0;
       $scope.normalErrMsg = '您已經換過此奬品！';
       $("#normal-errModal").modal('show');
