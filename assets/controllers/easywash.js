@@ -230,9 +230,6 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
                 },
                 cancel: function() {
                     // 用户取消分享后执行的回调函数
-                },
-                fail: function(){
-                  //alert(JSON.stringify(res));
                 }
             });
             wx.onMenuShareAppMessage({
@@ -264,8 +261,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           $('body').addClass('loaded');
         });
         wx.error(function(res){
-          alert(JSON.stringify(res));
-
+          $scope.log('wxError', JSON.stringify(res));
         });
 
 
@@ -277,7 +273,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           //alert("reload");
           window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'#wechat_redirect';
         } else {
-          //$('body').addClass('loaded');
+          $('body').addClass('loaded');
           $scope.sharedBy = sharedBy;
           $scope.userId = 'ocLOPwlFiCCTPeSXLYTg7ZLLLAww';
           $scope.shareCount = 0;
@@ -440,9 +436,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
       });
   },
-  $scope.log = function(actionName){
+  $scope.log = function(actionName, detail){
     $http({
-      url:'log/log?action='+actionName+'&openId='+$scope.userId+'&ad='+adString,
+      url:'log/log?action='+actionName+'&openId='+$scope.userId+'&ad='+adString+'&detail='+detail,
       method:'GET'
       }).success(function(data,header,config,status){
 

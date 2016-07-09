@@ -11,6 +11,7 @@ module.exports = {
     openId: {type: 'string'},
     action: {type: 'string'},
     date: {type: 'date'},
-    ad: {type: 'string'}
+    ad: {type: 'string'},
+    detail: {type: 'string'}
   }
 };

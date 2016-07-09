@@ -11,8 +11,9 @@ module.exports = {
 		var action = req.param('action');
 		var openId = req.param('openId');
 		var ad = req.param('ad');
+		var detail = req.param('detail');
 		var date = new Date();
-		log.create({action: action, openId: openId, date: new Date(), ad: ad}).exec(function(err, results){
+		log.create({action: action, openId: openId, date: new Date(), ad: ad, detail: detail}).exec(function(err, results){
 			//res.json(results);
 			res.end();
 			return;
