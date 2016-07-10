@@ -236,7 +236,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
               title: '今晚總決賽！投票截止倒計時', // 分享标题
 
-              desc: '估波仔! 送你特色 Cocktail x Pizza', // 分享描述
+              desc: '估波仔! CheersPub 送你特色 Cocktail x Pizza', // 分享描述
 
               link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect',
 
