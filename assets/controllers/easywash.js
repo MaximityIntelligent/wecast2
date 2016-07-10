@@ -220,7 +220,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
             //   menuList: ["menuItem:openWithSafari", "menuItem:share:email", "menuItem:share:qq", "menuItem:share:QZone", "menuItem:share:brand", "menuItem:share:weiboApp", "menuItem:share:facebook", "menuItem:copyUrl", "menuItem:originPage", "menuItem:readMode", "menuItem:openWithQQBrowser", "menuItem:delete", "menuItem:editTag"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
             // });
             wx.onMenuShareTimeline({
-                title: '2016歐國盃 | Cheers Pub免費送你特色雞尾酒 & Pizza', // 分享标题
+                title: '今晚總決賽！投票截止倒計時', // 分享标题
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect',
                 imgUrl: 'http://'+host+'/images/easywash/share/wecast-share.png', // 分享图标
                 success: function() {
@@ -234,9 +234,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
             });
             wx.onMenuShareAppMessage({
 
-              title: '2016歐國盃 | Cheers Pub免費送你特色雞尾酒 & Pizza', // 分享标题
+              title: '今晚總決賽！投票截止倒計時', // 分享标题
 
-              desc: '估波仔! 三五知己! 玩盡歐國! Beer x Cocktail x Pizza任你揀!!', // 分享描述
+              desc: '估波仔! 送你特色 Cocktail x Pizza', // 分享描述
 
               link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect',
 
