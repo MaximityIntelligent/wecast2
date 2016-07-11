@@ -406,7 +406,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       $scope.credit = data.credit;
       var prize = data.prize;
       $("#prize-redeem").trigger('click');
-      $scope.log('redeem_'+prize);
+      //$scope.log('redeem_'+prize);
       $scope.userPrize['redeem_'+prize] += 1;
     }).error(function(data) {
       $scope.normalErrCode = data.errCode;

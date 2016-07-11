@@ -222,6 +222,9 @@ module.exports = {
                     } else{
                       userOne.credit = userOne.credit - prizeCredit;
                       userOne.save(function(){
+                        log.create({action: 'redeem_'+prize, openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
+
+                        });
                         res.json({credit: userOne.credit, prize: prize});
                         return;
                       });
@@ -419,6 +422,9 @@ module.exports = {
               userOne.credit = userOne.credit * 2;
               userOne.isRedeemVote = true;
               userOne.save(function (err, savedUser) {
+                log.create({action: 'redeem_vote', openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
+
+                  });
                 return res.json({credit: savedUser.credit, isRedeemVote: userOne.isRedeemVote});
               });
 
