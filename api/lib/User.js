@@ -186,6 +186,9 @@ User.create = function(userInfo, cb){ //Create User, 如果原有就return現有
             cb(err);
             return;
           }
+          log.create({action: "regist", openId: savedUser.openId, date: new Date(), ad: savedUser.ad}).exec(function(err, results){
+            
+          });
           cb(null, savedUser);
         });
         

@@ -281,7 +281,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           $scope.prize1Remain = 30;
           $scope.userPrize = {};
           $scope.sharedToUsers = [];
-          $scope.userVote = 'vote2';
+          //$scope.userVote = 'vote2';
           $scope.updateGameResult();
           $scope.updatePrizeRemain();
           $scope.voteRate1 = 0;
