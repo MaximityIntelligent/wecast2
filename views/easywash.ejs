@@ -172,8 +172,10 @@
         <img class="img-responsive" src="/images/easywash/main/vote3.png" ng-click="showVote('vote2')" ng-hide="userVote=='vote2'">
         <img class="img-responsive" src="/images/easywash/main/vote3-pick.png" ng-show="userVote=='vote2'" ng-click="showVotedModal('vote2')">
       </div>
-      <div id="redeem-vote">
-        <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize1-dim.png" ng-click="showRedeemVote()" ng-show="showRedeemVoteBtn()">
+      <div id="redeem-vote" ng-click="showRedeemVote()" ng-show="showRedeemVoteBtn()">
+        <center>
+          <img class="img-responsive" style="opacity: 1;" src="/images/easywash/main/main-finger.png">
+        </center>
       </div>
       <div id="voteRate-1" ng-show="false">
         
@@ -712,8 +714,11 @@
       $("#redeem-vote").css("position", "absolute");
       $("#redeem-vote").css("top", containerHeight*redeemVoteTop/mainScaleY);
       $("#redeem-vote").css("left", containerWidth*redeemVoteLeft/mainScaleX);
-      $("#redeem-vote img").css("width", containerWidth*redeemVoteWidth/mainScaleX);
-      $("#redeem-vote img").css("height", containerHeight*redeemVoteHeight/mainScaleY);
+      $("#redeem-vote").css("width", containerWidth*redeemVoteWidth/mainScaleX);
+      $("#redeem-vote").css("height", containerHeight*redeemVoteHeight/mainScaleY);
+      $("#redeem-vote").css("padding-top", containerHeight*140/mainScaleY);
+      $("#redeem-vote img").css("width", containerWidth*58/mainScaleX);
+      $("#redeem-vote img").css("height", containerHeight*81/mainScaleY);
 
       var voteRate1Top = 1046;
       var voteRate1Left = 120;

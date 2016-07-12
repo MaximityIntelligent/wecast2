@@ -1144,6 +1144,13 @@ i:nth-child(100) b {
     animation-direction: alternate;
 }
 
+#redeem-vote img {
+    animation-name: choose;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
 @keyframes arrow {
     from {opacity: 0.1;}
     to {opacity: 0.9;}
