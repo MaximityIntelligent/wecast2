@@ -1068,12 +1068,12 @@ i:nth-child(100) b {
   animation-duration: 1.8s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
-}
+}*/
 
 @keyframes choose {
     from {opacity: 0.1;}
     to {opacity: 0.9;}
-}*/
+}
 
 #main-event-info img {
   animation-name: info;
