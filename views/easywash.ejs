@@ -148,7 +148,10 @@
         <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1;resetVideo();clickCount('prize1_page');log('prize1_page')">
         <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize1-dim.png" ng-show="showPrize1Dim();" ng-click="atPage=PRIZE1;resetVideo();clickCount('prize1_page');log('prize1_page')">
         </a> -->
-        <img class="img-responsive" src="/images/easywash/main/choose.png" ng-hide="userVote" ng-click="showQuestionnaire()">
+        <!-- <img class="img-responsive" src="/images/easywash/main/choose.png" ng-hide="userVote" ng-click="showQuestionnaire()"> -->
+        <img class="img-responsive" src="/images/easywash/main/game-result1.png" ng-show="userVote=='vote1'">
+        <img class="img-responsive" src="/images/easywash/main/game-result2.png" ng-show="userVote=='vote2'">
+        <img class="img-responsive" src="/images/easywash/main/game-result.png" ng-hide="userVote">
       </div>
       <div id="main-3" data-ng-show="false">
         <a href="#top">
@@ -156,29 +159,34 @@
         <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize2-dim.png" ng-show="showPrize2Dim();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
         </a>
       </div>
-      <div id="vote-1">
+      <div id="main-4">
+        <img class="img-responsive" src="/images/easywash/main/redeem-btn-win.png" ng-show="userVote==gameResult">
+        <img class="img-responsive" src="/images/easywash/main/redeem-btn-lose.png" ng-show="userVote&&userVote!=gameResult">
+        <img class="img-responsive" src="/images/easywash/main/redeem-btn.png" ng-hide="userVote">
+      </div>
+      <div id="vote-1" ng-show="false">
         <img class="img-responsive" src="/images/easywash/main/vote1.png" ng-click="showVote('vote1')" ng-hide="userVote=='vote1'">
         <img class="img-responsive" src="/images/easywash/main/vote1-pick.png" ng-show="userVote=='vote1'" ng-click="showVotedModal('vote1')">
       </div>
-      <div id="vote-2">
+      <div id="vote-2" ng-show="false">
         <img class="img-responsive" src="/images/easywash/main/vote3.png" ng-click="showVote('vote2')" ng-hide="userVote=='vote2'">
         <img class="img-responsive" src="/images/easywash/main/vote3-pick.png" ng-show="userVote=='vote2'" ng-click="showVotedModal('vote2')">
       </div>
       <div id="redeem-vote">
-        <img class="img-responsive" src="/images/easywash/main/redeem-vote.png" ng-click="showRedeemVote()" ng-show="showRedeemVoteBtn()">
+        <img class="img-responsive" src="/images/easywash/main/prize1-dim.png" ng-click="showRedeemVote()" ng-show="showRedeemVoteBtn()">
       </div>
-      <div id="voteRate-1">
+      <div id="voteRate-1" ng-show="false">
         
           <p><font>{{voteRate1}}</font>%</p>
         
       </div>
-      <div id="voteRate-2">
+      <div id="voteRate-2" ng-show="false">
         <p><font>{{voteRate2}}</font>%</p>
       </div>
-      <div id="voteBar-2">
+      <div id="voteBar-2" ng-show="false">
         <img class="img-responsive" src="/images/easywash/main/vote2-bar.png">
       </div>
-      <div id="voteBar-1">
+      <div id="voteBar-1" ng-show="false">
         <img class="img-responsive" src="/images/easywash/main/vote1-bar.png" ng-style="voteBar1Style">
       </div>
       
@@ -638,10 +646,10 @@
       $("#main-arrow img").css("width", containerWidth*mainArrowWidth/mainScaleX);
       $("#main-arrow").css("margin-left", "-"+containerWidth*mainArrowWidth/mainScaleX*0.5+"px");
 
-      var main2Top = 572;
+      var main2Top = 520;
       var main2Center = 375;
-      var main2Height = 148;
-      var main2Width = 221;
+      var main2Height = 157;
+      var main2Width = 480;
       var imgHeight = containerHeight*main2Height/mainScaleX;//$("#main-2").css("height");
       //imgHeight = imgHeight.replace("px", "");
       $("#main-2").css("position", "absolute");
@@ -664,6 +672,19 @@
       //$("#main-3").css("margin-top", "-"+imgHeight+"px");
       $("#main-3").css("margin-left", "-"+containerWidth*main3Width/mainScaleX*0.5+"px");
       
+      var main4Top = 1006;
+      var main4Center = 375;
+      var main4Height = 48;
+      var main4Width = 616;
+      //imgHeight = imgHeight.replace("px", "");
+      $("#main-4").css("position", "absolute");
+      $("#main-4").css("top", containerHeight*main4Top/mainScaleY);
+      $("#main-4").css("left", containerWidth*main4Center/mainScaleX);
+      $("#main-4 img").css("width", containerWidth*main4Width/mainScaleX);
+      $("#main-4 img").css("height", containerHeight*main4Height/mainScaleY);
+      //$("#main-2").css("margin-top", "-"+imgHeight+"px");
+      $("#main-4").css("margin-left", "-"+containerWidth*main4Width/mainScaleX*0.5+"px");
+
       var vote1Top = 635;
       var vote1Left = 60;
       var vote1Width = 285;
@@ -684,10 +705,10 @@
       $("#vote-2 img").css("width", containerWidth*vote2Width/mainScaleX);
       $("#vote-2 img").css("height", containerHeight*vote2Height/mainScaleY);
 
-      var redeemVoteTop = 1260;
-      var redeemVoteLeft = 632;
-      var redeemVoteWidth = 92;
-      var redeemVoteHeight = 91;
+      var redeemVoteTop = 724;
+      var redeemVoteLeft = 66;
+      var redeemVoteWidth = 616;
+      var redeemVoteHeight = 326;
       $("#redeem-vote").css("position", "absolute");
       $("#redeem-vote").css("top", containerHeight*redeemVoteTop/mainScaleY);
       $("#redeem-vote").css("left", containerWidth*redeemVoteLeft/mainScaleX);
@@ -944,8 +965,8 @@
       $("#prize1-2").css("top", containerHeight*prize12Top/mainScaleY);
       $("#prize1-2").css("left", containerWidth*prize12Left/mainScaleX);
 
-      var prize21Top = 612;
-      var prize21Left = 106;
+      var prize21Top = 704;
+      var prize21Left = 98;
       $("#prize2-1").css("position", "absolute");
       $("#prize2-1").css("top", containerHeight*prize21Top/mainScaleY);
       $("#prize2-1").css("left", containerWidth*prize21Left/mainScaleX);

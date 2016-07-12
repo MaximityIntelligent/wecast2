@@ -281,8 +281,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           $scope.prize1Remain = 30;
           $scope.userPrize = {};
           $scope.sharedToUsers = [];
-          //$scope.userVote = 'vote2';
-          $scope.updateGameResult();
+          $scope.userVote = 'vote2';
+          //$scope.updateGameResult();
+          $scope.gameResult = 'vote1';
           $scope.updatePrizeRemain();
           $scope.voteRate1 = 0;
           $scope.voteRate2 = 0;
@@ -509,7 +510,6 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.showRedeemVoteBtn = function () {
     var now = new Date();
     var exp = new Date('2016-07-20T16:00:00');
-    return true;
     if ($scope.gameResult != null && $scope.userVote != null && $scope.gameResult == $scope.userVote && $scope.isRedeemVote != true && now.getTime() <= exp.getTime()) {
       return true;
     } else {

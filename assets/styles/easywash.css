@@ -1063,7 +1063,7 @@ i:nth-child(100) b {
     to {width:100%;top:-1%;right:1%;}
 }
 
-#main-2 img {
+/*#main-2 img {
   animation-name: choose;
   animation-duration: 1.8s;
   animation-iteration-count: infinite;
@@ -1073,7 +1073,7 @@ i:nth-child(100) b {
 @keyframes choose {
     from {opacity: 0.1;}
     to {opacity: 0.9;}
-}
+}*/
 
 #main-event-info img {
   animation-name: info;
