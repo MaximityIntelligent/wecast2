@@ -155,8 +155,9 @@
       <div id="main-5" ng-click="atPage=THANKYOU;" data-ng-show="false" >
       </div>
       <div id="main-qr" ng-click="log('maximity_qr')">
-          <img name="mainQr" src="/images/easywash/main/main-qr.png">
-        
+          <a id="maximity-qr" class="fancybox" href="/images/easywash/main/maximity-qr.png">
+            <img name="mainQr" src="/images/easywash/main/main-qr.png">
+          </a>
       </div>
       <div id="share-friend">
         <a id="show-friend" class="fancybox" href="#friends-list" ng-click="friendClick('button',$event);log('friends_page')">
@@ -397,6 +398,7 @@
 
     </div>
     <a id="prize-redeem" class="fancybox" href="/images/easywash/verification/prize-redeem.png"></a>
+
     <a id="share-success" class="fancybox" href="#share-success-div"></a>
     <div id="share-success-div" style="display: none;text-align: center;color:white;background-color:black;" ng-click="shareSuccess();"><img src="/images/easywash/share-success.png" width="100%"></div>
     <div class="container" id="friends-list" >

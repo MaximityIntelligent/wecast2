@@ -22,12 +22,14 @@ module.exports = {
     var result;
     resp = request('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843&code='+code+'&grant_type=authorization_code');
         result = JSON.parse(resp.getBody());  //得到USER的AccessToken from weixin
+        console.log(result);
         var accessToken = result.access_token;
         var userInfo = {};
         var openId = result.openid;
         // Get UserInfo
         var userInfoResp = request('GET','https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en');
         var userInfoResult = JSON.parse(userInfoResp.getBody());
+        console.log(userInfoResult);
         if (userInfoResult.nickname) {
           userInfo.nickname = userInfoResult.nickname;
         }
@@ -68,7 +70,7 @@ module.exports = {
               res.end();
               return;
             }
-          })
+          
           User.sharedToUsers_c(userOne, adId, function(err, sharedToUsers){
             var shareCount = sharedToUsers.length;
             var appAccessToken;
@@ -77,6 +79,19 @@ module.exports = {
               var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxab261de543656952&secret=389f230302fe9c047ec56c39889b8843');
               result = JSON.parse(resp.getBody());
               appAccessToken = result.access_token;
+
+              if (!userOne.subscribe) {
+                var subscribeResp = request('GET', 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='+appAccessToken+'&openid='+userOne.openId);
+                var subscribeResult = JSON.parse(subscribeResp.getBody());
+                if (subscribeResult.subscribe == 1) {
+                  userOne.credit += 5;
+                  userOne.subscribe = true;
+                  userOne.save(function (err, savedUser) {
+                    // body...
+                    console.log("subscribe bounce");
+                  });
+                }
+              }
             }else{
               appAccessToken = req.session.appAccessToken;
             }
@@ -134,7 +149,7 @@ module.exports = {
               
           });
 
-
+          });
         });
 
 	},

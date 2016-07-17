@@ -19,6 +19,10 @@ module.exports = {
       defaultsTo: 1,
       required: true
     },
+    subscribe: {
+      type: 'boolean',
+      defaultsTo: false
+    },
     nickname: {
           type: 'string'
     },
