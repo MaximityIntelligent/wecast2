@@ -59,7 +59,7 @@ module.exports.routes = {
     action: 'log'
   },
   '/Space_Shooter':{
-    view: 'Space_Shooter';
+    view: 'Space_Shooter'
   }
   /*,
   'api/initialization': {
