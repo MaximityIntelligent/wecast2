@@ -31,7 +31,7 @@ module.exports.connections = {
 
   mongo_local: {
       adapter: 'sails-mongo',
-      host: 'localhost',
+      host: 'mood.ibeacon-macau.com',
       port: 27017,
       database: 'mood'
   },
