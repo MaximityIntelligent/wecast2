@@ -57,6 +57,9 @@ module.exports.routes = {
   '/log/log': {
     controller: 'LogController',
     action: 'log'
+  },
+  '/Space_Shooter':{
+    view: 'Space_Shooter';
   }
   /*,
   'api/initialization': {

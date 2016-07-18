@@ -70,7 +70,7 @@ module.exports = {
               res.end();
               return;
             }
-          
+          });
           User.sharedToUsers_c(userOne, adId, function(err, sharedToUsers){
             var shareCount = sharedToUsers.length;
             var appAccessToken;
@@ -149,7 +149,7 @@ module.exports = {
               
           });
 
-          });
+          
         });
 
 	},
