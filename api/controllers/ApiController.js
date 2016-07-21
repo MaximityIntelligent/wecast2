@@ -4,12 +4,29 @@
  * @description :: Server-side logic for managing apis
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
- var request = require('sync-request');
- var weixin = require('../../config/weixin');
- var sha1 = require('sha1');
- var User = require('../lib/User');
- var VERIFICATION_CODE="cheers001";
- var adString = "adUEFA";
+var request = require('sync-request');
+var weixin = require('../../config/weixin');
+var sha1 = require('sha1');
+var User = require('../lib/User');
+var VERIFICATION_CODE = {
+      'adUEFA' : "cheers001"
+    };
+var subscribeBounce = {
+      'adUEFA' : 0,
+      'adDPower' : 5
+    };
+var prizeAmount = {
+     'adDPower' : {
+        'prize1' : 100,
+        'prize2' : 50
+     }
+};
+var prizeWeeklyAmount = {
+      'adDPower' : {
+        'prize1' : 10,
+        'prize2' : 5
+      }
+};
 var appid = 'wx5b57ddac4e2e1e88';
 var secret = 'e73e71f132807e7827849ca0ebf739e6';
 var randomString = function(length) {
@@ -26,16 +43,19 @@ module.exports = {
     var sharedBy = req.param("sharedBy");
     var adId = req.param("ad");
     var url = req.param("url");
-    //console.log(url);
+    console.log(url);
     var retResult = {};
     var resp;
     var result;
     resp = request('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code');
         result = JSON.parse(resp.getBody());  //得到USER的AccessToken from weixin
-        //console.log(result);
+        console.log(result);
         var accessToken = result.access_token;
         var userInfo = {};
         var openId = result.openid;
+        // if (result.errcode == 40029) {
+        //   openId = 'ocLOPwlFiCCTPeSXLYTg7ZLLLAww';
+        // }
         // Get UserInfo
         // var userInfoResp = request('GET','https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en');
         // var userInfoResult = JSON.parse(userInfoResp.getBody());
@@ -65,22 +85,19 @@ module.exports = {
         userInfo.ad = adId;
         User.create(userInfo, function(err, userOne){
           if(err){
-            res.status(500);
-            res.end();
+            res.status(500).json({errMsg: 'User create'});
             return;
           }
           credit = userOne.credit;
           if(!credit){
             credit = 0;
           }
-
+          console.log(sharedBy+openId+adId);
           User.shareAd_c(sharedBy, openId, adId, function(err){
-            if(err){
-              res.status(500);
-              res.end();
-              return;
+            if(err) {
+              console.log({shareAd_c_errMsg: err});
             }
-          })
+          });
           User.sharedToUsers_c(userOne, adId, function(err, sharedToUsers){
             var shareCount = sharedToUsers.length;
             var appAccessToken;
@@ -90,7 +107,7 @@ module.exports = {
             var ONE_HOUR = 60 * 60 * 1000;
             var oneHourAgo = new Date(now.getTime() - ONE_HOUR);
             //console.log(oneHourAgo);
-            wxToken.findOne({createdAt: {'>': oneHourAgo}}).sort({ createdAt: 'desc' }).exec(function (err, wxTokenOne) {
+            wxToken.findOne({expireAt: {'<': now}}).sort({ createdAt: 'desc' }).exec(function (err, wxTokenOne) {
               if (!wxTokenOne) {
                   //console.log('-----no token-----');
                   var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appid+'&secret='+secret);
@@ -103,7 +120,7 @@ module.exports = {
                     result = JSON.parse(resp.getBody());
                     if (result.errmsg == 'ok') {
                       var expireAt = new Date();
-                      expireAt = new Date(expireAt.getTime() + (result.expires_in - 200) * 1000);
+                      expireAt = new Date(expireAt.getTime() + (result.expires_in - 60 * 60) * 1000);
                       wxToken.create({access_token: appAccessToken, expires_in: result.expires_in, jsapi_ticket: result.ticket, expireAt: expireAt}).exec(function (err, createdToken) {
                         // body...
                         console.log('------new token----: '+oneHourAgo);
@@ -118,6 +135,19 @@ module.exports = {
                 //console.log('------old token----');
                 //console.log(wxTokenOne);
                 
+              }
+
+              if (!userOne.subscribe) {
+                var subscribeResp = request('GET', 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='+appAccessToken+'&openid='+userOne.openId);
+                var subscribeResult = JSON.parse(subscribeResp.getBody());
+                if (subscribeResult.subscribe == 1) {
+                  userOne.credit += subscribeBounce[adId];
+                  userOne.subscribe = true;
+                  userOne.save(function (err, savedUser) {
+                    // body...
+                    console.log("subscribe bounce");
+                  });
+                }
               }
 
 
@@ -177,7 +207,7 @@ module.exports = {
               
               
           });
-
+        
 
         });
 
@@ -209,7 +239,7 @@ module.exports = {
         }
         User.sharedToUsers_c(userOne, ad, function(err, sharedToUsers){
           var credit = userOne.credit;
-          if(verificationCode==VERIFICATION_CODE){
+          if(verificationCode==VERIFICATION_CODE[ad]){
             
               var prizeCredit = prizeCreditAll[ad][prize];
               var prizeAmount = prizeAmountAll[ad][prize];
@@ -257,6 +287,9 @@ module.exports = {
   },
   uefaMain: function(req, res){
     res.view('easywash');
+  },
+  dpowerMain: function (req, res) {
+    res.view('dpower');
   },
   clickCount: function(req, res){
 		var name = req.param('clickCountName');

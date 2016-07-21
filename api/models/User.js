@@ -10,9 +10,9 @@ module.exports = {
   attributes: {
     openId: {
           type: 'string',
-          required: true,
-          primaryKey: true,
-          unique: true
+          required: true
+          //primaryKey: true,
+          //unique: true
     },
     credit: {
       type: 'integer',
@@ -31,6 +31,10 @@ module.exports = {
       defaultsTo: false
     },
     isQuestionnaire: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+    subscribe: {
       type: 'boolean',
       defaultsTo: false
     },

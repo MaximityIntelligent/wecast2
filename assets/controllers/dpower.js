@@ -1,5 +1,7 @@
 
-var app = angular.module('easywash', []);
+var app = angular.module('dpower', []).config(['$httpProvider', function($httpProvider) {
+    $httpProvider.defaults.timeout = 5000;
+}]);
 
 var QueryString = function () {  //提取由公众號或分享LINK時的CODE參數
   // This function is anonymous, is executed immediately and
@@ -32,7 +34,7 @@ if(typeof QueryString.code == 'undefined'){
 }*/
 var ad = QueryString.ad;
 var sharedBy = QueryString.sharedBy;
-var adString = 'adUEFA';
+var adString = 'adDPower';
 // var snsapi = 'snsapi_base';
 var snsapi = 'snsapi_base';
 var prizeCredit = {'prize1':15, 'prize2':30};
@@ -72,7 +74,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $(window)
   .bind('orientationchange', function(){ 
 
-    if (window.orientation % 180 == 0){ //如果是垂直
+    if (window.orientation % 180 == 0 && !debug){ //如果是垂直
       $scope.$apply(function(){
           if( typeof $scope.landscape != 'undefined' && !debug){
             if(typeof QueryString.pg == 'undefined'){
@@ -169,7 +171,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   }
   $scope.init = function() // 初始化頁面
   {
-    //alert("init");
+    // alert("init");
     $scope.updateLoading(99);
     var url = location.href.split('#')[0];
     //var url = window.location.href;
@@ -222,7 +224,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
             wx.onMenuShareTimeline({
                 title: '今晚總決賽！投票截止倒計時', // 分享标题
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect',
-                imgUrl: 'http://'+host+'/images/easywash/share/wecast-share.png', // 分享图标
+                imgUrl: 'http://'+host+'/images/dpower/share/wecast-share.png', // 分享图标
                 success: function() {
                     $scope.log('share_timeline');
                     $("#share-success").trigger('click');
@@ -240,7 +242,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
               link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect',
 
-              imgUrl: 'http://'+host+'/images/easywash/share/wecast-share.png', // 分享图标
+              imgUrl: 'http://'+host+'/images/dpower/share/wecast-share.png', // 分享图标
 
               success: function () {
                 $scope.log('share_friend');
@@ -268,7 +270,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
       }).
       error(function(data, status, headers, config) { //如果從外部連結返回時會遇到code error問題，就要重新定向
-        //alert("error");
+        // alert("error");
         if (!debug) {
           //alert("reload");
           window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'#wechat_redirect';
@@ -278,16 +280,13 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           $scope.userId = 'ocLOPwlFiCCTPeSXLYTg7ZLLLAww';
           $scope.shareCount = 0;
           $scope.credit = 16;
-          $scope.prize1Remain = 30;
           $scope.userPrize = {};
           $scope.sharedToUsers = [];
           $scope.userVote = 'vote1';
           //$scope.updateGameResult();
           $scope.gameResult = 'vote1';
-          $scope.updatePrizeRemain();
           $scope.voteRate1 = 0;
           $scope.voteRate2 = 0;
-          $scope.updateVotes();
           $scope.isRedeemVote = false;
         }
         
@@ -637,6 +636,14 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     
   }
 
+  $scope.gotoTop = function() {
+      // set the location.hash to the id of
+      // the element you wish to scroll to.
+      $location.hash('top');
+
+      // call $anchorScroll()
+      $anchorScroll();
+    };
   /*
   $scope.draw = function() {
     $http.get('/api/draw?userid='+$scope.userId+'&ad=56f0bf95b955d4f916852073'

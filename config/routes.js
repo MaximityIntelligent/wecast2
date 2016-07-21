@@ -45,6 +45,10 @@ module.exports.routes = {
     controller: 'ApiController',
     action: 'uefaMain'
   },
+  '/adDPower': {
+    controller: 'ApiController',
+    action: 'dpowerMain'
+  },
   '/api/clickCount': {
     controller: 'ApiController',
     action: 'clickCount'

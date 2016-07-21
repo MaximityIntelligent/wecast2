@@ -1,0 +1,1088 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>數碼動力</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/fancybox2.1.5/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/styles/dpower.css">
+    <!--<script type="text/javascript" src="http://fgnass.github.io/spin.js/spin.min.js"></script>-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/fancybox2.1.5/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script src="/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="/js/angular.min.js"></script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="/controllers/dpower.js"></script>
+  </head>
+  <body data-ng-app="dpower" data-ng-controller="IndexCtrl" orient="portrait" ng-init="loading=0">
+    <div id="landscape-container" data-ng-show="LANDSCAPE==atPage" >
+      <br>
+      <div class="" id="landscapeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+
+            <div class="modal-body" style="text-align: center;">
+              <div style="position: relative;top: 5%">
+                <h4 class="modal-title">溫馨提示</h4>
+                <br>
+                <h4 class="modal-title" id="myModalLabel">本遊戲需要手機螢幕於直向模式時操作</h4>
+                <br>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="loader-wrapper">
+      <!--<div class="cssload-thecube">
+        <div class="cssload-cube cssload-c1"></div>
+        <div class="cssload-cube cssload-c2"></div>
+        <div class="cssload-cube cssload-c4"></div>
+        <div class="cssload-cube cssload-c3"></div>
+      </div>-->
+      <div class="spinner-logo">
+        <center><img style="width: 150px;opacity: 0;" src="/images/dpower/loading-logo.png"></center>
+      </div>
+      <div class="spinner" ng-show="false">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+      </div>
+      <!--
+			<div id="loader">
+
+      </div>-->
+      <div class="spinner-precentage" ng-cloak>
+        <center><h4 style="color: red;">{{loading}}%</h4></center>
+      </div>
+    </div>
+    <!--
+        <script>
+
+        var opts = {
+          lines: 13
+        , length: 28
+        , width: 14
+        , radius: 42
+        , scale: 1
+        , corners: 1
+        , color: '#000'
+        , opacity: 0.25
+        , rotate: 0
+        , direction: 1
+        , speed: 1
+        , trail: 60
+        , fps: 20
+        , zIndex: 2e9
+        , className: 'spinner'
+        , top: '50%'
+        , left: '50%'
+        , shadow: false
+        , hwaccel: false
+        , position: 'absolute'
+        }
+        var target = document.getElementById('loader');
+        var spinner = new Spinner(opts).spin(target);
+      </script>
+
+
+
+    <header class="ip-header">
+
+				<div class="ip-loader">
+					<svg class="ip-inner" width="60px" height="60px" viewBox="0 0 80 80">
+						<path class="ip-loader-circlebg" d="M40,10C57.351,10,71,23.649,71,40.5S57.351,71,40.5,71 S10,57.351,10,40.5S23.649,10,40.5,10z"/>
+						<path id="ip-loader-circle" class="ip-loader-circle" d="M40,10C57.351,10,71,23.649,71,40.5S57.351,71,40.5,71 S10,57.351,10,40.5S23.649,10,40.5,10z"/>
+					</svg>
+				</div>
+			</header>
+    -->
+
+<!--     <div id="map" style="display: none;width:100%;text-align: center;color:white;overflow-y: scroll">
+      <p>
+      <iframe style="z-index:1;" ng-src="https://www.google.com.hk/maps/place/%E6%BE%B3%E9%96%80%E6%96%B0%E5%9F%8E%E5%B8%82%E8%8A%B1%E5%9C%92(%E7%AC%AC%E4%B9%9D%E5%BA%A7%E8%90%AC%E5%8B%9D%E9%96%A3)/@22.2132536,113.5470802,19.5z/data=!4m5!3m4!1s0x34017b185d296d9b:0xd99eb70c2e755386!8m2!3d22.2132787!4d113.5473906" allowfullscreen="" frameborder="0" height="500px" width="100%">
+      </iframe>
+      </p> -->
+<!--       <p>
+        <h5><a href="https://www.google.com.hk/maps/place/%E6%BE%B3%E9%96%80%E6%96%B0%E5%9F%8E%E5%B8%82%E8%8A%B1%E5%9C%92(%E7%AC%AC%E4%B9%9D%E5%BA%A7%E8%90%AC%E5%8B%9D%E9%96%A3)/@22.2132536,113.5470802,19.5z/data=!4m5!3m4!1s0x34017b185d296d9b:0xd99eb70c2e755386!8m2!3d22.2132787!4d113.5473906" ng-click="log('google_map')">立即前往</a></h5>
+      </p> -->
+<!--     </div> -->
+
+    <div ng-init="init()" id="top">
+    </div>
+
+    <div class="container-fluid" id="main-container" data-ng-show="MAIN==MAIN" >
+      <div id="main-event-info">
+        <a class="fancybox" href="#container_e"><img name="event-info" src="/images/dpower/main/event-info.png" ng-click="clickCount('rules');log('rules');"></a>
+
+      </div>
+      <div id="main-1" style="text-align: center;color: yellow">
+        <img style="opacity: 0;" class="img-responsive" src="/images/dpower/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_button');log('share_button');gotoTop();">
+      </div>
+      <div id="main-arrow" style="text-align: center;">
+        <img class="img-responsive" src="/images/dpower/main/arrow.png">
+      </div>
+      <div id="prize1-1" style="color: white">
+        <font>
+          {{credit}}
+        </font>
+      </div>
+      <div id="prize1-2">
+          <img name="redeem" style="opacity: 0;" class="img-responsive" src="/images/dpower/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" ng-hide="showPrize1()">
+          <img name="redeem" style="opacity: 1;" class="img-responsive" src="/images/dpower/main/prize1.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" ng-show="showPrize1()">
+      </div>
+      <div id="prize2-1" style="color: white">
+        <font>
+          {{credit}}
+        </font>
+      </div>
+      <div id="prize2-2">
+          <img name="redeem" style="opacity: 0;" class="img-responsive" src="/images/dpower/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')" ng-hide="showPrize2()">
+          <img name="redeem" style="opacity: 1;" class="img-responsive" src="/images/dpower/main/prize2.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')" ng-show="showPrize2()">
+      </div>
+      <div id="main-2">
+<!--         <a href="#top">
+        <img class="img-responsive" style="opacity: 0;" src="/images/dpower/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1;resetVideo();clickCount('prize1_page');log('prize1_page')">
+        <img class="img-responsive" style="opacity: 0;" src="/images/dpower/main/prize1-dim.png" ng-show="showPrize1Dim();" ng-click="atPage=PRIZE1;resetVideo();clickCount('prize1_page');log('prize1_page')">
+        </a> -->
+        <!-- <img class="img-responsive" src="/images/dpower/main/choose.png" ng-hide="userVote" ng-click="showQuestionnaire()"> -->
+        <img class="img-responsive" src="/images/dpower/main/game-result1.png" ng-show="userVote=='vote1'">
+        <img class="img-responsive" src="/images/dpower/main/game-result2.png" ng-show="userVote=='vote2'">
+        <img class="img-responsive" src="/images/dpower/main/game-result.png" ng-hide="userVote">
+      </div>
+      <div id="main-3" data-ng-show="false">
+        <a href="#top">
+        <img class="img-responsive" style="opacity: 0;" src="/images/dpower/main/prize2.png" ng-show="showPrize2();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
+        <img class="img-responsive" style="opacity: 0;" src="/images/dpower/main/prize2-dim.png" ng-show="showPrize2Dim();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
+        </a>
+      </div>
+      <div id="main-4">
+        <img class="img-responsive" src="/images/dpower/main/redeem-btn-win.png" ng-show="userVote&&userVote==gameResult">
+        <img class="img-responsive" src="/images/dpower/main/redeem-btn-lose.png" ng-show="userVote&&userVote!=gameResult">
+        <img class="img-responsive" src="/images/dpower/main/redeem-btn.png" ng-hide="userVote">
+      </div>
+      <div id="vote-1" ng-show="false">
+        <img class="img-responsive" src="/images/dpower/main/vote1.png" ng-click="showVote('vote1')" ng-hide="userVote=='vote1'">
+        <img class="img-responsive" src="/images/dpower/main/vote1-pick.png" ng-show="userVote=='vote1'" ng-click="showVotedModal('vote1')">
+      </div>
+      <div id="vote-2" ng-show="false">
+        <img class="img-responsive" src="/images/dpower/main/vote3.png" ng-click="showVote('vote2')" ng-hide="userVote=='vote2'">
+        <img class="img-responsive" src="/images/dpower/main/vote3-pick.png" ng-show="userVote=='vote2'" ng-click="showVotedModal('vote2')">
+      </div>
+      <div id="redeem-vote" ng-click="showRedeemVote()" ng-show="showRedeemVoteBtn()">
+        <center>
+          <img class="img-responsive" style="opacity: 1;" src="/images/dpower/main/green-finger.png">
+        </center>
+      </div>
+      <div id="voteRate-1" ng-show="false">
+        
+          <p><font>{{voteRate1}}</font>%</p>
+        
+      </div>
+      <div id="voteRate-2" ng-show="false">
+        <p><font>{{voteRate2}}</font>%</p>
+      </div>
+      <div id="voteBar-2" ng-show="false">
+        <img class="img-responsive" src="/images/dpower/main/vote2-bar.png">
+      </div>
+      <div id="voteBar-1" ng-show="false">
+        <img class="img-responsive" src="/images/dpower/main/vote1-bar.png" ng-style="voteBar1Style">
+      </div>
+      
+      <div id="main-finger">
+        <img class="img-responsive" src="/images/dpower/main/main-finger.png">
+      </div>
+      <div id="main-5" ng-click="atPage=THANKYOU;" data-ng-show="false" >
+      </div>
+      <div id="main-qr">
+        <a class="fancybox" href="/images/dpower/main/maximity-qr.png">
+          <img style="opacity: 0;" name="mainQr" src="/images/dpower/main/main-qr.png">
+        </a>
+      </div>
+      <div id="main-map">
+        <a href="https://www.google.com.hk/maps/place/%E6%BE%B3%E9%96%80%E6%96%B0%E5%9F%8E%E5%B8%82%E8%8A%B1%E5%9C%92(%E7%AC%AC%E4%B9%9D%E5%BA%A7%E8%90%AC%E5%8B%9D%E9%96%A3)/@22.2132536,113.5470802,19.5z/data=!4m5!3m4!1s0x34017b185d296d9b:0xd99eb70c2e755386!8m2!3d22.2132787!4d113.5473906" ng-click="log('google_map')">
+          <img style="opacity: 0;" class="img-responsive" src="/images/dpower/main/map.png">
+        </a>
+      </div>
+      <div id="main-phone" ng-click="log('tel')">
+        <a href="tel:85328235399"><img style="opacity: 0;" class="img-responsive" src="/images/dpower/main/map.png"></a>
+      </div>
+      <div id="customer-qr">
+          <img name="customerQr" src="/images/dpower/main/cheers-qr.png">
+      </div>
+<!--       <div id="share-friend">
+        <a id="show-friend" class="fancybox" href="#friends-list" ng-click="friendClick('button',$event);log('friends_page')">
+        <img class="img-responsive" style="opacity: 0;" src="/images/dpower/main/prize1.png">
+        </a>
+      </div> -->
+    </div>
+    <div class="container" id="container_e" >
+      <div id="container_e-inner" >
+      <center>
+
+      <div id="event-1">
+        <div id="event-1-content">
+        <p class="text-justify">1. 玩家將遊戲頁面<font class="yellow">Share</font>比朋友，<font class="yellow">每位朋友點擊可贈送一個"❤"比你</font>。玩家可憑相應數量的"❤"兌換獎品，每位玩家每項獎品每天只可兌換一次；</p>
+        <p class="text-justify">2. 如玩家所投選的國家隊伍勝出2016年歐洲國家杯冠軍，玩家所擁有的"❤"可享有一次雙倍獎勵，投票截止時間為澳門時間2016/07/11凌晨02:45 (即2016歐國杯決賽開賽前15分鐘)；雙倍獎勵兌換的截止日期為2016/07/20；</p>
+        <p class="text-justify">3. 收集足夠"❤"後，得獎者須於2016年7月31日前，前往澳門台山<font class="yellow">數碼動力</font>，出示相應的領獎頁給予在場的工作人員兌換獎品；若得獎者無法按照活動規定時間內領獎，數碼動力有權取消其得獎資格；</p>
+        <p class="text-justify">4. 獎品換領地址：澳門台山菜園涌邊街73號數碼動力</p>
+        <p class="text-justify">5. 獎品換領時間：<font class="yellow">18:00-03:00</font></p>
+        <p class="text-justify">6. 得獎者所提供之個人資料，僅用作此活動聯絡領獎事宜；</p>
+        <p class="text-justify">7. 活動參加者不得以任何非法手段破壞活動規則及影響活動數據，否則其參加及得獎資格將作廢；</p>
+        <p class="text-justify">8. 數碼動力有權隨時修改此活動條款及細則，無須事前通知；</p>
+        <p class="text-justify">9. 數碼動力保留最終活動解釋權；</p>
+        <p class="text-justify">10. 如有任何查詢請致電數碼動力，電話<font class="yellow"></font>或微信公眾號：<font class="yellow"></font>查詢</p>
+        </div>
+      </div>
+      </center>
+      </div>
+    </div>
+    <div class="container-fluid" id="container_share" data-ng-show="SHARE==atPage" ng-click="friendClick('main',$event);">
+      <!--<div id="share-1" ng-click="atPage=MAIN"></div>-->
+      <div id="share-2" class="row" style="position: absolute;top:0;width:100%;index-z:1000;">
+    </div>
+      
+      
+    </div>
+    <div class="container-fluid" id="container_thankyou" data-ng-show="THANKYOU==atPage" ng-click="log('thankyou_page');" >
+      <div id="thankyou-1">
+        <a href="#top"><img name="iwant" style="opacity: 0;" src="/images/dpower/thankyou/iwant.gif" ng-click="atPage=MAIN;"></a>
+      </div>
+      <div id="qrcode" ng-show="false" style="position: absolute;right: 0;bottom: 0;left: 0;">
+        <img src="/images/dpower/thankyou/qrcode.png" style="max-width:100%;max-height:20%;">
+      </div>
+    </div>
+
+    <!-- <div class="container-fluid" id="container_p1" ng-show="PRIZE1==atPage" ng-click="atPage=MAIN;initAboutEasywash();log('prize1_return')">
+      <div id="easywash-1" ng-click="clickCount('video');log('video');">
+        <iframe id="easywash-video" class="video_iframe" style="z-index:1;" ng-src="http://v.qq.com/iframe/player.html?vid=q0308w7unq8&amp;&amp;auto=0" allowfullscreen="" frameborder="0" height="100%" width="100%">
+        </iframe>
+      </div>
+      <div class="close-btn"  data-ng-show="false">
+        <a href="#top">
+          <img class="img-responsive" src="/images/dpower/close.png" ng-click="atPage=MAIN;log('prize1_return')">
+        </a>
+      </div>
+      
+      <div id="prize1-qr" ng-click="log('mood_qr')">
+        <img name="prize1Qr" src="/images/dpower/prize/prize1-qr.png">
+      </div>
+      <div id="prize1-back" ng-click="atPage=MAIN;initAboutEasywash();log('prize1_return')">
+        <center><a href="#top"><img style="opacity: 0;" name="prize1Back" src="/images/dpower/about-easywash/address.png"></a></center>
+      </div>
+    </div> -->
+
+<!--     <div class="container-fluid" id="container_p2" data-ng-show="PRIZE2==atPage" ng-click="atPage=MAIN;log('prize2_return')">
+      <div class="close-btn" data-ng-show="false">
+        <a href="#top">
+          <img class="img-responsive" src="/images/dpower/close.png" ng-click="atPage=MAIN;log('prize2_return')">
+        </a>
+      </div>
+      <div id="prize2-1" style="color: white" data-ng-show="false">
+        <font>{{credit}}</font>
+      </div>
+      <div id="prize2-2" class="row" data-ng-show="false">
+        <center>
+          <a href="#top" data-ng-show="false">
+          <img name="continue-bubble" src="/images/dpower/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('continue_collect');log('continue_collect')">
+          </a>
+          <a href="#top">
+          <img name="redeem" class="img-responsive redeem" src="/images/dpower/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')"> //ng-click="redeem('2')">
+          </a>
+
+        </center>
+      </div>
+      <div id="prize2-qr">
+        <img name="prize2Qr" src="/images/dpower/prize/prize2-qr.png">
+      </div>
+      <div id="prize2-back" ng-click="atPage=MAIN;log('prize2_return')">
+        <center><a href="#top"><img style="opacity: 0;" name="prize2Back" src="/images/dpower/about-easywash/address.png"></a></center>
+      </div>
+    </div> -->
+
+<!--     <div class="modal fade"  id="veri-credit-errModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body" style="text-align: center;">
+            <div style="position: relative;top: 10%">
+            <h4>暫時無法兌換，請集齊足夠印花</h4>
+            </div>
+          </div>
+          <div class="modal-footer-2" style="text-align: center">
+            <button type="button" class="btn" data-dismiss="modal" ng-click="atPage=SHARE"><h4>繼續集印花</h4></button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+<!--     <div class="modal fade" id="luckyDraw-prizeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body" style="text-align: center">
+            <div style="position: relative;top: 10%">
+            <h4>恭喜你獲得{{luckDrawPrize}}個印花，明天再來</h4>
+            <br>
+            </div>
+          </div>
+          <div class="modal-footer-2" style="text-align: center">
+            <button type="button" class="btn" data-dismiss="modal"><h4>繼續</h4></button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+<!--     <div class="modal fade" id="luckyDraw-errModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body" style="text-align: center">
+            <div style="position: relative;top: 10%">
+            <h4>每位用戶每天有一次抽印花機會</h4>
+            <br>
+            </div>
+          </div>
+          <div class="modal-footer-2" style="text-align: center">
+            <button type="button" class="btn" data-dismiss="modal"><h4>繼續</h4></button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="modal fade" id="normal-errModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body" style="text-align: center">
+            <div style="position: relative;top: 10%">
+            <h5>{{normalErrMsg}}</h5>
+            <br>
+            </div>
+          </div>
+          <div class="modal-footer-2" style="text-align: center">
+            <button type="button" class="btn" data-dismiss="modal" ng-show="normalErrCode==0"><h4>繼續</h4></button>
+            <button type="button" class="btn" data-dismiss="modal" ng-click="atPage=SHARE" ng-show="normalErrCode==1"><h4>繼續集印花</h4></button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--     <div class="modal fade" id="errModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body" style="text-align: center;">
+            <div style="position: relative;top: 10%">
+            <h4 class="modal-title" id="myModalLabel">{{normalErrMsg}}</h4>
+            </div>
+          </div>
+          <div class="modal-footer-2" style="text-align: center">
+            <button type="button" class="btn" data-dismiss="modal">確&nbsp;認</button>
+            <button type="button" class="btn" data-dismiss="modal" ng-click="atPage=SHARE">繼續集印花</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="modal fade" id="redeemModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body" style="text-align: center;">
+            <form class="form-inline" style="position: relative;top: 10%">
+              <h4>恭喜您</h4>
+              <h5>您已有足夠積分換領奬品!!</h5>
+              <div class="form-group" style="margin-top: 5px;">
+                <input type="password" id="verification" class="form-control" placeholder="此處由工作人員操作"
+                style="background-color: #444; color:white; border: 0px;">
+              </div>
+              <hr style="margin-top: 10px; margin-bottom: 10px;">
+              <div id="redeem-rule">
+                <p>・請前往數碼動力換領奬品</p >
+                <p>・地址: 澳門台山菜園涌邊街73號新城市花園第九座地下CJ鋪</p >
+                <p>・領獎截止日期: 2016/07/31</p >
+                <p>・領獎時間: 6pm-3am</p >
+                <p>・數碼動力享有活動及獎品最終解釋權</p >
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer-2" style="text-align: center">
+            <button type="button" class="btn" data-dismiss="modal" ng-click="redeem_c(prizeRedeem);clickCount('redeem');log('redeem')"><h4>確&nbsp;認</h4></button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--     <div class="modal fade" id="redeem2Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body" style="text-align: center;">
+            <form class="form-inline" style="position: relative;top: 10%">
+              <h4>恭喜你獲得足夠印花</h4>
+              </br>
+              <div class="form-group">
+                <input type="password" id="verification2" class="form-control" placeholder="請交由工作人員輸入驗證碼" 
+                style="background-color: #444; color:white; border: 0px;">
+              </div>
+
+            </form>
+          </div>
+          <div class="modal-footer-2" style="text-align: center;">
+            <button type="button" class="btn" data-dismiss="modal" ng-click="redeem_c('prize2');clickCount('redeem');log('redeem')"><h4>確&nbsp;認</h4></button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+<!--     <div class="modal fade" id="questionnaireModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body" style="text-align: center;;">
+            <form class="form" style="position: relative;top: 10%">
+              <h4>填寫問卷可獲得3積分</h4>
+              </br>
+              <div class="form-group">
+                <input type="text" id="username" ng-model="questionnaire.username" class="form-control" placeholder="請輸入您的匿稱" 
+                style="background-color: #444; color:white; border: 0px;">
+              </div>
+              <div class="form-group">
+                <input type="text" id="phone" ng-model="questionnaire.phone" class="form-control" placeholder="請輸入您的手機號碼" 
+                style="background-color: #444; color:white; border: 0px;">
+              </div>
+              <div class="form-group">
+                <input type="text" id="email" ng-model="questionnaire.email" class="form-control" placeholder="請輸入您的Email" 
+                style="background-color: #444; color:white; border: 0px;">
+              </div>
+              <div class="form-group">
+                <input type="number" id="age" ng-model="questionnaire.age" min="1" max="100" class="form-control" placeholder="請輸入您的年齡" 
+                style="background-color: #444; color:white; border: 0px;">
+              </div>
+              <div style="color: red;" ng-show="questionnaireErr">
+                {{questionnaireErr}}
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer-2" style="text-align: center">
+            <button type="button" class="btn" ng-click="submitQuestionnaire();log('questionnaire_submit')"><h4>提&nbsp;交</h4></button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="modal fade" id="voteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body" style="text-align: center;;">
+            <form class="form-inline" style="position: relative;top: 10%">
+              <h4>是否支持{{voteName[currentVote]}}隊？</h4>
+              <h5>確認後不能更改投票</h5>
+              <h5>(決賽開始前15分截止投票)</h5>
+            </form>
+          </div>
+          <div class="modal-footer-2" style="text-align: center">
+            <button style="width: 40%;" type="button" class="btn" data-dismiss="modal" ng-click="vote(currentVote)"><h4>確&nbsp;認</h4></button>
+            <button style="width: 40%;" type="button" class="btn" data-dismiss="modal"><h4>取&nbsp;消</h4></button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--     <div class="modal fade" id="vote2Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body" style="text-align: center;;">
+            <form class="form-inline" style="position: relative;top: 10%">
+              <h4>是否確定支持B隊？</h4>
+              <h4>(比賽開始後投票不能改變)</h4>
+            </form>
+          </div>
+          <div class="modal-footer-2" style="text-align: center">
+            <button style="width: 40%;" type="button" class="btn" data-dismiss="modal" ng-click="vote('vote2')"><h4>確&nbsp;認</h4></button>
+            <button style="width: 40%;" type="button" class="btn" data-dismiss="modal"><h4>取&nbsp;消</h4></button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="modal fade" id="redeemVoteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body" style="text-align: center;">
+            <form class="form-inline" style="position: relative;top: 10%">
+              <h3>恭喜你!</h3>
+              <h5>你支持的隊伍獲得總冠軍</h5>
+              <h5>你享有當前積分雙倍獎勵一次</h5>
+              <h5>是否確認領獎？</h5>
+              <h5>（提示：盡量在擁有較多積分時使用雙倍獎勵，兌換截止日期為2016/07/20）</h5>
+            </form>
+          </div>
+          <div class="modal-footer-2" style="text-align: center">
+            <button style="width: 40%;" type="button" class="btn" data-dismiss="modal" ng-click="redeemVote()"><h4>確&nbsp;認</h4></button>
+            <button style="width: 40%;" type="button" class="btn" data-dismiss="modal"><h4>取&nbsp;消</h4></button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--     <div class="container-fluid" id="container_easywash" data-ng-show="ABOUT_EASYWASH==atPage">
+      <div class="close-btn" data-ng-show="false">
+        <a href="#top">
+          <img class="img-responsive" src="/images/dpower/close.png" ng-click="atPage=MAIN;log('about_easywash_return')"/>
+        </a>
+      </div>
+      <div id="rules" ng-click="clickCount('rules');log('rules');">
+        <a class="fancybox" href="#container_e">
+          <img style="width:100%;height:100%;border:0" class="img-responsive" src="/images/dpower/about-easywash/rules.png">
+        </a>
+      </div>
+      <div id="easywash-1" ng-click="clickCount('video');log('video');" data-ng-show="false">
+        <iframe id="easywash-video" class="video_iframe" style="z-index:1;" ng-src="http://v.qq.com/iframe/player.html?vid=q0194rb14mb&amp;&amp;auto=0" allowfullscreen="" frameborder="0" height="100%" width="100%">
+        </iframe>
+      </div>
+      <div id="about-qr" ng-click="luckyDraw()">
+        <img name="aboutQr" src="/images/dpower/about-easywash/about-qr.png">
+      </div>
+      <div id="easywash-2" ng-click="atPage=MAIN;log('about_easywash_return')">
+        <center><a href="#top"><img style="opacity: 0;" name="address" src="/images/dpower/about-easywash/address.png"></a></center>
+      </div>
+      <div id="easywash-3" ng-click="clickCount('tel');log('tel')" data-ng-show="false">
+        <center><a href="tel:85363539002"><img name="call" src="/images/dpower/about-easywash/call.png"></a></center>
+      </div>
+
+    </div> -->
+<!--     <div class="container-fluid" id="container_questionnaire" data-ng-show="QUESTIONNAIRE==atPage">
+      <div class="close-btn">
+          <img class="img-responsive" src="/images/dpower/close.png" ng-click="atPage=MAIN;log('questionnaire_return')"/>
+      </div>
+      <div class="col-xs-10 col-xs-offset-1">
+        <center>
+          <form class="form-inline" style="position: relative;top: 10%">
+              <h4>恭喜你獲得足夠印花</h4>
+              </br>
+              <div class="form-group">
+                <input type="text" id="username" class="form-control" placeholder="請輸入您的匿稱" 
+                style="background-color: #444; color:white; border: 0px;">
+                <input type="text" id="phone" class="form-control" placeholder="請輸入您的手機號碼" 
+                style="background-color: #444; color:white; border: 0px;">
+                <input type="email" id="email" class="form-control" placeholder="請輸入您的Email" 
+                style="background-color: #444; color:white; border: 0px;">
+                <input type="date" id="date" class="form-control" placeholder="請輸入您的生日" 
+                style="background-color: #444; color:white; border: 0px;">
+              </div>
+
+            </form>
+        </center>
+      </div>
+
+    </div> -->
+    <a id="prize-redeem" class="fancybox" href="/images/dpower/verification/prize-redeem.png"></a>
+    <a id="share-success" class="fancybox" href="#share-success-div"></a>
+    <div id="share-success-div" style="display: none;text-align: center;color:white;background-color:black;" ng-click="shareSuccess();"><img src="/images/dpower/share/share-success.png" width="100%"></div>
+    <div class="container" id="friends-list" >
+      <div id="container_e-inner" >
+      <center>
+
+      <div id="event-2">
+        <center>
+          <div id="event-2-content">
+            <div class="col-lg-3 col-md-3 col-xs-3" style="padding-left: 5px; padding-right: 5px;" ng-repeat="user in sharedToUsers">
+                <a class="thumbnail" href="#" ng-style="thumbStyle">
+                  <img class="img-responsive" ng-src="{{getImgUrl(user)}}" alt="">
+                </a>
+            </div>
+          </div>
+
+        </center>
+        
+      </div>
+      </center>
+      </div>
+    </div>
+<!--href="/images/dpower/map.png"
+
+    <!--
+    <script src="js/classie.js"></script>
+		<script src="js/pathLoader.js"></script>
+		<script src="js/main.js"></script>
+    -->
+
+    <script>
+
+    $("document").ready(function(){
+      $("body").css("background-color", "black");
+      var mainScaleX = 750;
+      var mainScaleY = 4140;
+      var containerWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+      var containerHeight = containerWidth*mainScaleY/mainScaleX;
+
+      //$(".back").css("float", "left");
+      //$(".back").css("margin-right", "2%");
+      //$(".back").css("margin-top", "2%");
+      //$(".back img").css("width", containerWidth*63/mainScaleX);
+      $(".close-btn").css("float", "right");
+      $(".close-btn").css("margin-right", "2%");
+      $(".close-btn").css("margin-top", "2%");
+      $(".close-btn img").css("width", containerWidth*115/mainScaleX);
+
+      $("#main-container").css("position", "absolute");
+      $("#main-container").css("width", containerWidth);
+      $("#main-container").css("height", containerHeight);
+
+      var mainEventInfoTop = 26;
+      var mainEventInfoLeft = 651;
+      var mainEventInfoWidth = 60;
+      $("#main-event-info").css("position", "absolute");
+      $("#main-event-info").css("width", containerWidth*mainEventInfoWidth/mainScaleX);
+      $("#main-event-info").css("top", containerHeight*mainEventInfoTop/mainScaleY);
+      $("#main-event-info").css("left", containerWidth*mainEventInfoLeft/mainScaleX);
+      $('img[name="event-info"]').css("width", containerWidth*mainEventInfoWidth/mainScaleX);
+
+      var main1Top = 1428;
+      var main1Width = 220;
+      $("#main-1").css("position", "absolute");
+      $("#main-1").css("top", containerHeight*main1Top/mainScaleY);
+      $("#main-1").css("left", containerWidth*(mainScaleX/2)/mainScaleX);
+      $("#main-1 img").css("width", containerWidth*main1Width/mainScaleX);
+      $("#main-1").css("margin-left", "-"+containerWidth*main1Width/mainScaleX*0.5+"px");
+
+      var mainArrowTop = 1110;
+      var mainArrowWidth = 142;
+      $("#main-arrow").css("position", "absolute");
+      $("#main-arrow").css("top", containerHeight*mainArrowTop/mainScaleY);
+      $("#main-arrow").css("left", containerWidth*(mainScaleX/2)/mainScaleX);
+      $("#main-arrow img").css("width", containerWidth*mainArrowWidth/mainScaleX);
+      $("#main-arrow").css("margin-left", "-"+containerWidth*mainArrowWidth/mainScaleX*0.5+"px");
+
+      var main2Top = 520;
+      var main2Center = 375;
+      var main2Height = 157;
+      var main2Width = 480;
+      var imgHeight = containerHeight*main2Height/mainScaleX;//$("#main-2").css("height");
+      //imgHeight = imgHeight.replace("px", "");
+      $("#main-2").css("position", "absolute");
+      $("#main-2").css("top", containerHeight*main2Top/mainScaleY);
+      $("#main-2").css("left", containerWidth*main2Center/mainScaleX);
+      $("#main-2 img").css("width", containerWidth*main2Width/mainScaleX);
+      $("#main-2 img").css("height", containerHeight*main2Height/mainScaleY);
+      //$("#main-2").css("margin-top", "-"+imgHeight+"px");
+      $("#main-2").css("margin-left", "-"+containerWidth*main2Width/mainScaleX*0.5+"px");
+
+      var main3Top = 1048;
+      var main3Center = 556;
+      var main3Height = 122;
+      var main3Width = 342;
+      $("#main-3").css("position", "absolute");
+      $("#main-3").css("top", containerHeight*main3Top/mainScaleY);
+      $("#main-3").css("left", containerWidth*main3Center/mainScaleX);
+      $("#main-3 img").css("width", containerWidth*main3Width/mainScaleX);
+      $("#main-3 img").css("height", containerHeight*main3Height/mainScaleY);
+      //$("#main-3").css("margin-top", "-"+imgHeight+"px");
+      $("#main-3").css("margin-left", "-"+containerWidth*main3Width/mainScaleX*0.5+"px");
+      
+      var main4Top = 1006;
+      var main4Center = 375;
+      var main4Height = 48;
+      var main4Width = 616;
+      //imgHeight = imgHeight.replace("px", "");
+      $("#main-4").css("position", "absolute");
+      $("#main-4").css("top", containerHeight*main4Top/mainScaleY);
+      $("#main-4").css("left", containerWidth*main4Center/mainScaleX);
+      $("#main-4 img").css("width", containerWidth*main4Width/mainScaleX);
+      $("#main-4 img").css("height", containerHeight*main4Height/mainScaleY);
+      //$("#main-2").css("margin-top", "-"+imgHeight+"px");
+      $("#main-4").css("margin-left", "-"+containerWidth*main4Width/mainScaleX*0.5+"px");
+
+      var vote1Top = 635;
+      var vote1Left = 60;
+      var vote1Width = 285;
+      var vote1Height = 348;
+      $("#vote-1").css("position", "absolute");
+      $("#vote-1").css("top", containerHeight*vote1Top/mainScaleY);
+      $("#vote-1").css("left", containerWidth*vote1Left/mainScaleX);
+      $("#vote-1 img").css("width", containerWidth*vote1Width/mainScaleX);
+      $("#vote-1 img").css("height", containerHeight*vote1Height/mainScaleY);
+
+      var vote2Top = 635;
+      var vote2Left = 394;
+      var vote2Width = 285;
+      var vote2Height = 348;
+      $("#vote-2").css("position", "absolute");
+      $("#vote-2").css("top", containerHeight*vote2Top/mainScaleY);
+      $("#vote-2").css("left", containerWidth*vote2Left/mainScaleX);
+      $("#vote-2 img").css("width", containerWidth*vote2Width/mainScaleX);
+      $("#vote-2 img").css("height", containerHeight*vote2Height/mainScaleY);
+
+      var redeemVoteTop = 724;
+      var redeemVoteLeft = 66;
+      var redeemVoteWidth = 616;
+      var redeemVoteHeight = 326;
+      $("#redeem-vote").css("position", "absolute");
+      $("#redeem-vote").css("top", containerHeight*redeemVoteTop/mainScaleY);
+      $("#redeem-vote").css("left", containerWidth*redeemVoteLeft/mainScaleX);
+      $("#redeem-vote").css("width", containerWidth*redeemVoteWidth/mainScaleX);
+      $("#redeem-vote").css("height", containerHeight*redeemVoteHeight/mainScaleY);
+      $("#redeem-vote").css("padding-top", containerHeight*286/mainScaleY);
+      $("#redeem-vote").css("padding-left", containerWidth*440/mainScaleX);
+      $("#redeem-vote img").css("width", containerWidth*62/mainScaleX);
+      $("#redeem-vote img").css("height", containerHeight*86/mainScaleY);
+
+      var voteRate1Top = 1046;
+      var voteRate1Left = 120;
+      $("#voteRate-1").css("position", "absolute");
+      $("#voteRate-1").css("top", containerHeight*voteRate1Top/mainScaleY);
+      $("#voteRate-1").css("left", containerWidth*voteRate1Left/mainScaleX);
+      $("#voteRate-1").css("color", "white");
+      $("#voteRate-1 font").css("font-size", containerHeight*40/mainScaleY);
+
+      var voteRate2Top = 1046;
+      var voteRate2Left = 560;
+      $("#voteRate-2").css("position", "absolute");
+      $("#voteRate-2").css("top", containerHeight*voteRate2Top/mainScaleY);
+      $("#voteRate-2").css("left", containerWidth*voteRate2Left/mainScaleX);
+      $("#voteRate-2").css("color", "white");
+      $("#voteRate-2 font").css("font-size", containerHeight*40/mainScaleY);
+
+      var voteBar1Top = 1065;
+      var voteBar1Left = 200;
+      var voteBar1Width = 175;
+      var voteBar1Height = 17;
+      $("#voteBar-1").css("position", "absolute");
+      $("#voteBar-1").css("top", containerHeight*voteBar1Top/mainScaleY);
+      $("#voteBar-1").css("left", containerWidth*voteBar1Left/mainScaleX);
+      $("#voteBar-1 img").css("width", containerWidth*voteBar1Width/mainScaleX);
+      $("#voteBar-1 img").css("height", containerHeight*voteBar1Height/mainScaleY);
+
+      var voteBar2Top = 1065;
+      var voteBar2Left = 200;
+      var voteBar2Width = 350;
+      var voteBar2Height = 17;
+      $("#voteBar-2").css("position", "absolute");
+      $("#voteBar-2").css("top", containerHeight*voteBar2Top/mainScaleY);
+      $("#voteBar-2").css("left", containerWidth*voteBar2Left/mainScaleX);
+      $("#voteBar-2 img").css("width", containerWidth*voteBar2Width/mainScaleX);
+      $("#voteBar-2 img").css("height", containerHeight*voteBar2Height/mainScaleY);
+
+      $("#main-finger").css("top", containerHeight*1564/mainScaleY);
+      $("#main-finger").css("width", containerWidth);
+      $("#main-finger img").css("width", containerWidth*60/mainScaleX);
+
+      
+      var mainQrLeft = 0;
+      var mainQrWidth = 750;
+      var mainQrHeight = 132;
+      var mainQrTop = mainScaleY-mainQrHeight;
+      $("#main-qr").css("position", "absolute");
+      $("#main-qr").css("top", containerHeight*mainQrTop/mainScaleY);
+      $("#main-qr").css("left", containerWidth*mainQrLeft/mainScaleX);
+      $('img[name="mainQr"]').css("width", containerWidth*mainQrWidth/mainScaleX);
+      $('img[name="mainQr"]').css("height", containerHeight*mainQrHeight/mainScaleY);
+
+      var mainMapTop = 3576;
+      var mainMapLeft = 250;
+      var mainMapWidth = 105;
+      var mainMapHeight = 105;
+      $("#main-map").css("position", "absolute");
+      $("#main-map").css("top", containerHeight*mainMapTop/mainScaleY);
+      $("#main-map").css("left", containerWidth*mainMapLeft/mainScaleX);
+      $("#main-map img").css("height", containerHeight*mainMapHeight/mainScaleY);
+      $("#main-map img").css("width", containerWidth*mainMapWidth/mainScaleX);
+
+      var mainPhoneLeft = 393;
+      $("#main-phone").css("position", "absolute");
+      $("#main-phone").css("top", containerHeight*mainMapTop/mainScaleY);
+      $("#main-phone").css("left", containerWidth*mainPhoneLeft/mainScaleX);
+      $("#main-phone img").css("height", containerHeight*mainMapHeight/mainScaleY);
+      $("#main-phone img").css("width", containerWidth*mainMapWidth/mainScaleX);
+
+      var customerQrLeft = 242;
+      var customerQrWidth = 266;
+      var customerQrHeight = 266;
+      var customerQrTop = 3711;
+      $("#customer-qr").css("position", "absolute");
+      $("#customer-qr").css("top", containerHeight*customerQrTop/mainScaleY);
+      $("#customer-qr").css("left", containerWidth*customerQrLeft/mainScaleX);
+      $('img[name="customerQr"]').css("width", containerWidth*customerQrWidth/mainScaleX);
+      $('img[name="customerQr"]').css("height", containerHeight*customerQrHeight/mainScaleY);
+
+      $("#main-5").css("position", "absolute");
+      $("#main-5").css("top", containerHeight*576/mainScaleY);
+      $("#main-5").css("left", containerWidth*22/mainScaleX);
+      $("#main-5").css("height", containerHeight*49/mainScaleY);
+      $("#main-5").css("width", containerWidth*109/mainScaleX);
+
+      var shareScaleY = 1206;
+      var containerHeight_share = containerWidth*shareScaleY/mainScaleX;
+      $("#container_share").css("position", "absolute");
+      $("#container_share").css("width", containerWidth);
+      $("#container_share").css("height", containerHeight_share);
+      $("#share-1").css("position", "absolute");
+      $("#share-1").css("top", containerHeight_share*1028/1200);
+      $("#share-1").css("left", containerWidth*331/mainScaleX);
+      $("#share-1").css("width", containerWidth*90/mainScaleX);
+      $("#share-1").css("height", containerWidth*90/mainScaleX);
+
+      var share2Height = 555;
+      $("#share-2").css("height", containerHeight_share*share2Height/shareScaleY);
+      //$("#share-2").css("height", "581px");
+      //$("#share-1").css("border", "1px solid red");
+      $("#share-1").css("position", "absolute");
+
+      var shareFriendTop = 930;
+      var shareFriendLeft = 60;
+      var shareFriendWidth = 150;
+      var shareFriendHeight = 150;
+      $("#share-friend").css("position", "absolute");
+      $("#share-friend").css("top", containerHeight*shareFriendTop/mainScaleY);
+      $("#share-friend").css("left", containerWidth*shareFriendLeft/mainScaleX);
+      $("#share-friend").css("width", containerWidth*shareFriendWidth/mainScaleX);
+      $("#share-friend").css("height", containerHeight*shareFriendHeight/mainScaleY);
+
+      var thankyouScaleY = 1206;
+      var containerHeight_thankyou = containerWidth*thankyouScaleY/mainScaleX;
+      $("#container_thankyou").css("width", containerWidth);
+      $("#container_thankyou").css("height", containerHeight_thankyou);
+      $("#thankyou-1").css("position", "absolute");
+      $("#thankyou-1 img").css("width", containerWidth*413/mainScaleX);
+
+      $("#thankyou-1").css("top", containerHeight_thankyou*800/thankyouScaleY);
+      $("#thankyou-1").css("left", containerWidth*0.5);
+      $("#thankyou-1").css("margin-left", "-"+containerWidth*413/mainScaleX*0.5+"px");
+
+      var aboutScaleY = 1206;
+      var containerHeight_easywash = containerWidth*aboutScaleY/mainScaleX;
+      $("#container_easywash").css("width", containerWidth);
+      $("#container_easywash").css("height", containerHeight_easywash);
+      
+      /*
+      $("#event-rule").css("top", "18%");
+      $("#event-rule").css("right", "2%");
+      $("#event-rule").css("float", "right");
+      $("#event-rule").css("margin-right", "2%");
+      $("#event-rule").css("margin-top", "2%");
+      */
+      //$("#event-rule img").css("width", containerWidth*126/mainScaleX);
+      var aboutQrTop = 113;
+      var aboutQrLeft = 50;
+      var aboutQrWidth = 134;
+      var aboutQrHeight = 134;
+      $("#about-qr").css("position", "absolute");
+      $("#about-qr").css("top", containerHeight_easywash*aboutQrTop/aboutScaleY);
+      $("#about-qr").css("left", containerWidth*aboutQrLeft/mainScaleX);
+      $('img[name="aboutQr"]').css("width", containerWidth*aboutQrWidth/mainScaleX);
+      $('img[name="aboutQr"]').css("height", containerHeight_easywash*aboutQrHeight/aboutScaleY);
+
+      var closeTop = 1103;
+      $("#easywash-2").css("margin-top", containerHeight_easywash*closeTop/aboutScaleY);
+      $("#easywash-3").css("margin-top", "5%");
+      $('img[name="address"]').css("width", containerWidth*210/mainScaleX);
+      $('img[name="address"]').css("height", containerHeight_easywash*76/aboutScaleY);
+      $('img[name="call"]').css("width", containerWidth*340/mainScaleX);
+
+      var containerWidth_e = containerWidth*0.75;
+      var containerHeight_e = containerWidth_e*736/532;
+      $("#container_e").css("width", containerWidth_e);
+      $("#container_e").css("height", containerHeight_e);
+      $("#container_e").css("display", "none");
+      //$("#container_e").css("margin-right", "10%");
+      $("#event-1").css("position", "absolute");
+      $("#event-1").css("top", containerHeight_e*100/736);
+      $("#event-1").css("width", "85%");
+      $("#event-1").css("margin", "auto");
+      $("#event-1").css("color", "white");
+      //$("#event-1 p").css("margin-left", "5%");
+
+      $("#event-1-content").css("height", containerHeight_e*0.8);
+      //$("#event-1-content").css("overflow-x", "hidden");
+      $("#event-1-content").css("overflow-y", "scroll");
+      //$("#event-1").css("overflow", "hidden");
+
+      $("#friends-list").css("width", containerWidth_e);
+      $("#friends-list").css("height", containerHeight_e);
+      $("#friends-list").css("display", "none");
+
+      $("#event-2").css("position", "absolute");
+      $("#event-2").css("top", containerHeight_e*200/736);
+      $("#event-2").css("width", "88%");
+      $("#event-2").css("margin", "auto");
+      $("#event-2").css("color", "white");
+      //$("#event-1 p").css("margin-left", "5%");
+
+      $("#event-2-content").css("height", containerHeight_e*0.7);
+      //$("#event-1-content").css("overflow-x", "hidden");
+      $("#event-2-content").css("overflow-y", "scroll");
+
+      var prize1ScaleY = 4868;
+      var containerHeight_prize1 = containerWidth*prize1ScaleY/mainScaleX;
+      $("#container_p1").css("width", containerWidth);
+      $("#container_p1").css("height", containerHeight_prize1);
+
+      var easywash1Top = 0;
+      var easywash1Left = 0;
+      var easywash1Width = 750;
+      var easywash1Height = 411;
+      $("#easywash-1").css("position", "absolute");
+      $("#easywash-1").css("top", containerHeight_prize1*easywash1Top/prize1ScaleY);
+      $("#easywash-1").css("left", containerWidth*easywash1Left/mainScaleX);
+      $("#easywash-1").css("width", containerWidth*easywash1Width/mainScaleX);
+      $("#easywash-1").css("height", containerHeight_prize1*easywash1Height/prize1ScaleY);
+      //$("#easywash-1").css("border", "1px solid white");
+      $("#event-rule").css("float", "right");
+
+      //$("#prize1-1").css("margin-left", "-"+containerHeight_p1*40/1206*0.7+"px");
+      //$("#prize1-1").css("margin-top", "-"+containerHeight_p1*40/1206*0.5+"px");
+/*
+
+      $("#prize1-1").css("position", "absolute");
+      $("#prize1-1").css("top", containerHeight_p1*200.5/1206);
+      $("#prize1-1").css("left", containerWidth*565.5/mainScaleX);
+
+
+      var prize11Width = $("#prize1-1").css("width");
+      var prize11Height = $("#prize1-1").css("height");
+      $("#prize1-1").css("margin-left", "-"+36*0.5+"px");
+      $("#prize1-1").css("margin-top", "-"+20*0.5+"px");*/
+      var prize1BackTop = 4778;
+      var prize1BackWidth = 700;
+      var prize1BackHeight = 90;
+      $("#prize1-back").css("margin-top", containerHeight_prize1*prize1BackTop/prize1ScaleY);
+      $('img[name="prize1Back"]').css("width", containerWidth*prize1BackWidth/mainScaleX);
+      $('img[name="prize1Back"]').css("height", containerHeight_prize1*prize1BackHeight/prize1ScaleY);
+
+      var prize1QrTop = 4473;
+      var prize1QrLeft = 94;
+      var prize1QrWidth = 199;
+      var prize1QrHeight = 199;
+      $("#prize1-qr").css("position", "absolute");
+      $("#prize1-qr").css("top", containerHeight_prize1*prize1QrTop/prize1ScaleY);
+      $("#prize1-qr").css("left", containerWidth*prize1QrLeft/mainScaleX);
+      $('img[name="prize1Qr"]').css("width", containerWidth*prize1QrWidth/mainScaleX);
+      $('img[name="prize1Qr"]').css("height", containerHeight_prize1*prize1QrHeight/prize1ScaleY);
+
+      var prize11Top = 1704;
+      var prize11Left = 386;
+      $("#prize1-1").css("position", "absolute");
+      $("#prize1-1").css("top", containerHeight*prize11Top/mainScaleY);
+      $("#prize1-1").css("left", containerWidth*prize11Left/mainScaleX);
+      $("#prize1-1").css("color", "yellow");
+      //$("#prize1-1").css("width", containerHeight_p1*40/1206);
+      $("#prize1-1 font").css("font-size", containerHeight*40/mainScaleY);
+
+      var prize12Top = 2062;
+      var prize12Left = 48;
+      var prize12Width = 327;
+      var prize12Height = 283;
+      $("#prize1-2").css("position", "absolute");
+      $("#prize1-2 img").css("width", containerWidth*prize12Width/mainScaleX);
+      $("#prize1-2 img").css("height", containerHeight*prize12Height/mainScaleY);
+      $("#prize1-2").css("top", containerHeight*prize12Top/mainScaleY);
+      $("#prize1-2").css("left", containerWidth*prize12Left/mainScaleX);
+
+      var prize21Top = 704;
+      var prize21Left = 98;
+      $("#prize2-1").css("position", "absolute");
+      $("#prize2-1").css("top", containerHeight*prize21Top/mainScaleY);
+      $("#prize2-1").css("left", containerWidth*prize21Left/mainScaleX);
+      $("#prize2-1").css("color", "yellow");
+      //$("#prize1-1").css("width", containerHeight_p1*40/1206);
+      $("#prize2-1 font").css("font-size", containerHeight*40/mainScaleY);
+
+      var prize22Top = 2062;
+      var prize22Left = 375;
+      $("#prize2-2").css("position", "absolute");
+      $("#prize2-2 img").css("width", containerWidth*prize12Width/mainScaleX);
+      $("#prize2-2 img").css("height", containerHeight*prize12Height/mainScaleY);
+      $("#prize2-2").css("top", containerHeight*prize22Top/mainScaleY);
+      $("#prize2-2").css("left", containerWidth*prize22Left/mainScaleX);
+
+
+      var prize2ScaleY = 4742;
+      var containerHeight_prize2 = containerWidth*prize2ScaleY/mainScaleX;
+      $("#container_p2").css("width", containerWidth);
+      $("#container_p2").css("height", containerHeight_prize2);
+
+      var prize2BackTop = 4652;
+      var prize2BackWidth = 700;
+      var prize2BackHeight = 90;
+      $("#prize2-back").css("margin-top", containerHeight_prize2*prize2BackTop/prize2ScaleY);
+      $('img[name="prize2Back"]').css("width", containerWidth*prize2BackWidth/mainScaleX);
+      $('img[name="prize2Back"]').css("height", containerHeight_prize2*prize2BackHeight/prize2ScaleY);
+
+      var prize2QrTop = 4495;
+      var prize2QrLeft = 594;
+      var prize2QrWidth = 142;
+      var prize2QrHeight = 142;
+      $("#prize2-qr").css("position", "absolute");
+      $("#prize2-qr").css("top", containerHeight_prize2*prize2QrTop/prize2ScaleY);
+      $("#prize2-qr").css("left", containerWidth*prize2QrLeft/mainScaleX);
+      $('img[name="prize2Qr"]').css("width", containerWidth*prize2QrWidth/mainScaleX);
+      $('img[name="prize2Qr"]').css("height", containerHeight_prize2*prize2QrHeight/prize2ScaleY);
+
+      
+
+      //$("#prize2-1").css("margin-left", "-"+containerHeight_p2*40/1206*0.7+"px");
+      //$("#prize2-1").css("margin-top", "-"+containerHeight_p2*40/1206*0.5+"px");
+      /*
+      $("#prize2-1").css("position", "absolute");
+      $("#prize2-1").css("top", containerHeight_p1*200.5/1206);
+      $("#prize2-1").css("left", containerWidth*565.5/mainScaleX);
+
+
+      var prize11Width = $("#prize2-1").css("width");
+      var prize11Height = $("#prize2-1").css("height");
+      $("#prize2-1").css("margin-left", "-"+36*0.5+"px");
+      $("#prize2-1").css("margin-top", "-"+20*0.5+"px");*/
+
+
+      var redeemWidth = 170;
+      //$('img[name="redeem"]').css("width", containerWidth*redeemWidth/mainScaleX);
+      $('img[name="go-wash"]').css("width", containerWidth*153/mainScaleX);
+      $('img[name="continue-bubble"]').css("width", containerWidth*153/mainScaleX);
+      //alert("450");
+      $(".fancybox").fancybox({
+    		fitToView	: true,
+    		width		: '100%',
+    		height		: '95%',
+    		autoSize	: true,
+    		closeClick	: false,
+    		openEffect	: 'elastic',
+    		closeEffect	: 'elastic',
+        overlayColor: '#000',
+        overlayShow: true,
+        overlayOpacity: 1,
+        padding: '0px'
+        // helpers : {
+        //     overlay : {
+        //         css : {
+        //             'background' : 'rgba(255, 255, 255, 0.05)'
+        //         }
+        //     },
+
+        // }
+    	});
+
+
+
+      //window.onorientationchange = reorient;
+      //window.setTimeout(reorient, 0);
+      //window.onorientationchange = reorient;
+      //window.setTimeout(reorient, 0);
+
+
+    });
+
+
+
+
+
+
+    </script>
+    <script>
+      $(function(){
+        var $ppc = $('.progress-pie-chart'),
+          percent = parseInt($ppc.data('percent')),
+          deg = 360*percent/100;
+        if (percent > 50) {
+          $ppc.addClass('gt-50');
+        }
+        $('.ppc-progress-fill').css('transform','rotate('+ deg +'deg)');
+        $('.ppc-percents span').html(percent+'%');
+      });
+    </script>
+  </body>
+</html>

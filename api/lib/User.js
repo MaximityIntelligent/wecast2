@@ -5,7 +5,7 @@ function User (){
 
 module.exports = User;
 
-var adString = "adUEFA";
+var adString = ["adUEFA", "adDPower"];
 
 User.sharedToUsers_c = function (userContext, adId, cb){ //找出user 分享過的follower
 
@@ -23,7 +23,7 @@ User.sharedToUsers_c = function (userContext, adId, cb){ //找出user 分享過�
       //console.log("[]");
       return;
     }else{
-      user.find({ where: {openId: {$in: shareOne.sharedTo}}, select:['openId']}).exec(function (err, sharedTo) {
+      user.find({ where: {openId: {$in: shareOne.sharedTo}, ad: adId}, select:['openId']}).exec(function (err, sharedTo) {
         if(err){
           cb(err);
           return;
@@ -54,14 +54,14 @@ User.userExists = function (userOpenId, adId, cb){ //check user 是否存在DB
 }
 
 User.shareAd_c = function (sharedBy, sharedTo, adId, cb){ //按制share點擊獲得積分的function
-  var ad_c = [adString];
+  var ad_c = adString;
   if(-1==ad_c.indexOf(adId)){
-    //console.log("121");
+    console.log("121");
     cb(null);
     return;
   }
   if(sharedBy==sharedTo||sharedBy=="wecast"){ //如果係公众號進入或進入自己分享的post，就不用加分
-    //console.log("127"+sharedBy);
+    console.log("127"+sharedBy);
     cb(null);
     return;
   }
@@ -71,6 +71,7 @@ User.shareAd_c = function (sharedBy, sharedTo, adId, cb){ //按制share點擊獲
       return;
     }
     if(!userExists){
+      console.log(sharedBy + adId);
       cb({code: 400, msg: "User not found"});
       return;
     }
@@ -146,7 +147,7 @@ User.incrementCredit = function(userOpenId, increment, adId, cb){ //User增加cr
   });
 }
 User.create = function(userInfo, cb){ //Create User, 如果原有就return現有資料
-  user.findOne({openId: userInfo.openId}).exec(function(err, userOne){
+  user.findOne({openId: userInfo.openId, ad: userInfo.ad}).exec(function(err, userOne){
     if(err){
       cb(err);
       return;
