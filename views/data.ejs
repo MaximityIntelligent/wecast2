@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>資料統計</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/fancybox2.1.5/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/styles/custom.css">
+    <!--<script type="text/javascript" src="http://fgnass.github.io/spin.js/spin.min.js"></script>-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/fancybox2.1.5/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script src="/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="/js/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js"></script>
+    <script src="//cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"></script>
+    <script src="/controllers/data.js"></script>
+  </head>
+  <body data-ng-app="data" data-ng-controller="IndexCtrl" orient="portrait" ng-init="loading=0">
+
+    <div ng-init="init()" id="top">
+    </div>
+    <div class="container content">
+      <div class="row">
+          <div id="panel" class="panel panel-dashboard full-width">
+              <div class="panel-heading panel-heading-cbj">點擊量</div>
+                <div class="panel-body">
+                  <form class="form-inline" method="post"  name="form" action="/data/access">
+                    <div class="panel-elem">
+                      <div class="form-group">
+                          <label>點擊對象</label>
+                          <div class="form-group">
+                          累加<input ng-model="accumulated" type="checkbox">&nbsp;
+                          全選<input ng-model="clickAll" type="checkbox" ng-change="allAction()">&nbsp;
+                          註冊<input type="checkbox" ng-model="action.regist">&nbsp;
+                          微信朋友分享次數<input type="checkbox" ng-model="action.share_friend">&nbsp;
+                          微信朋友圈分享次數<input type="checkbox" ng-model="action.share_timeline">&nbsp;
+                          分享按鈕<input type="checkbox" ng-model="action.share_button">&nbsp;
+                          <!-- 活動詳情<input type="checkbox" name="action2" value="about_easywash"  />&nbsp; -->
+                          活動規則<input type="checkbox" ng-model="action.rules">&nbsp;
+                          <!-- 地址MAP<input type="checkbox" name="action2" value="address"  />&nbsp; -->
+                          立即前往<input type="checkbox" ng-model="action.google_map">&nbsp;
+                          CALL客服<input type="checkbox" ng-model="action.tel">&nbsp;
+                          <!-- 獎品1詳情<input type="checkbox" name="action2" value="prize1_page"  />&nbsp;
+                          獎品2詳情<input type="checkbox" name="action2" value="prize2_page"  />&nbsp; -->
+                          獎品1成功領獎<input type="checkbox" ng-model="action.redeem_prize1">&nbsp;
+                          獎品2成功領獎<input type="checkbox" ng-model="action.redeem_prize2">&nbsp;
+                          繼續儲泡<input type="checkbox" ng-model="action.continue_collect">&nbsp;
+                          <!-- 去洗車<input type="checkbox" name="action2" value="go_wash"  />&nbsp;
+                          獎品1返回<input type="checkbox" name="action2" value="prize1_return"  />&nbsp;
+                          獎品2返回<input type="checkbox" name="action2" value="prize2_return"  />&nbsp;
+                          活動詳情返回<input type="checkbox" name="action2" value="about_easywash_return"  />&nbsp; -->
+                          Thank You頁面<input type="checkbox" ng-model="action.thankyou_page">&nbsp;
+                          分享朋友總數<input type="checkbox" ng-model="action.total_share_friends">&nbsp;
+                          雙倍積分<input type="checkbox" ng-model="action.redeem_vote">&nbsp;
+                          </div>
+                      </div>
+                    </div>
+                    <div class="panel-elem">
+                      <div class="form-group">
+                          <label>年份</label>
+                          <select name="year" ng-model="year">
+                              <option value="2015">2015</option>
+                              <option value="2016">2016</option>
+                              <option value="2017">2017</option>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <label>月份</label>
+                          <select name="month" ng-model="month">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                          </select>
+                      </div>
+                      <input type="button" id="accessMonth" class="btn btn-default" value="月統計" ng-click="renderChart()">
+                      <div class="pull-right">
+                        <div class="form-group">
+                            <label>日期</label>
+                            <input type="date" class="form-control" id="date" ng-model="date">
+                        </div>
+                        <input type="button" class="btn btn-default" id="accessDate" value="日統計">
+                      </div>
+                      
+                    </div>
+                  </form>
+                  <canvas class="chart chart-line" chart-data="data" chart-labels="labels" 
+                  chart-series="series" chart-click="onClick"></canvas>
+                  <table class="table" style="width: 400px">
+                    <tr ng-repeat="action in accessAction">
+                      <td><span ng-style="chartColor($index)">&nbsp;&nbsp;&nbsp;&nbsp;</span> {{actionMap[action]}}</td>
+                      <td> {{actionAccessTotal[action]}}</td>
+                    </tr>
+                  </table>
+                </div>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

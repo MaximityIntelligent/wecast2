@@ -1,0 +1,127 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, serif;
+    color: #777;
+}
+
+.content {
+    padding-top: 100px;
+    padding-bottom: 70px;
+}
+
+.list-group-item {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.breadcrumb {
+  border-radius: 0px;
+}
+.no-l-padding {
+  padding-left: 0px;
+}
+.panel
+{
+  float: left;
+  margin: 12px;
+}
+.panel-elem
+{
+    margin-bottom: 15px;
+}
+.list-group-item{
+  background-color: #FFFFCC;
+}
+.panel {
+  margin: 20px;
+  border-style: solid;
+  border-color: #FFE301;
+}
+
+.panel-dashboard {
+  margin-left: 0px;
+}
+.panel-heading-dashboard {
+  color: #777;
+  padding: 5px;
+  padding-left: 15px;
+  font-weight: bold;
+  background-color: #00DB00!important;
+}
+.panel-heading-cbj {
+  background-color: #00DB00!important;
+  color: #777;
+  font-weight: bold;
+}
+.navbar-default {
+  background-image: none;
+  background: #FFE301;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
+}
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .active > a {
+  background-image: none;
+}
+.navbar-brand,
+.navbar-nav > li > a {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .25);
+  font-weight: bold;
+}
+
+
+.footer {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 10px rgba(0, 0, 0, .075);
+  border: 1px solid;
+  border-color: #e7e7e7;
+  position:fixed;
+  bottom:0%;
+  width:100%;
+  height:70px;
+  background-color:#FFE301;
+  font-weight: bold；
+  color: #777;
+
+}
+.form-control {
+    width: 200px;
+}
+#drawCouponExpiredTime_day, #drawCouponExpiredTime_hour, #drawCouponExpiredTime_minute, #drawCouponExpiredTime_second{
+    width: 80px;
+}
+#drawPerformInterval_day, #drawPerformInterval_hour, #drawPerformInterval_minute, #drawPerformInterval_second{
+    width: 80px;
+}
+
+.btn-primary{
+    background-color: #FFE301;
+    background-image: none;
+    color: black;
+    border-color: #dcdcdc;
+}
+.btn-primary:hover{
+    background-color: gold;
+    color: black
+}
+
+.full-width {
+    width: 100%;
+}
+.right {
+    float: right;
+    margin-right: 5px;
+}
+.mandatory {
+    color: red;
+}
+
+.btn-default:active,
+.btn-default.active {
+  background-color: #e0e0e0;
+  border-color: #dbdbdb;
+}
+.nav-pills>li.active>a {
+  background-color: #FFE301;
+}
+
+
+.login-logo,.register-logo{font-size:35px;text-align:center;margin-bottom:25px;font-weight:300}.login-logo a,.register-logo a{color:#444}.login-page,.register-page{background:#d2d6de}.login-box,.register-box{width:360px;margin:7% auto}@media (max-width:768px){.login-box,.register-box{width:90%;margin-top:20px}}.login-box-body,.register-box-body{background:#fff;padding:20px;border-top:0;color:#666}.login-box-body .form-control-feedback,.register-box-body .form-control-feedback{color:#777}.login-box-msg,.register-box-msg{margin:0;text-align:center;padding:0 20px 20px 20px}

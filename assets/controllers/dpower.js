@@ -132,8 +132,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
   $scope.updatePrizeRemain = function () {
      $http.get('/api/getPrizeRemain?ad='+adString).success(function (data) {
-        $scope.prize1Remain = data.prizeRemain.redeem_prize1;
-        console.log($scope.prize1Remain);
+        $scope.prizeRemain = data.prizeRemain;
+        console.log($scope.prizeRemain);
      });
   };
   $scope.updateGameResult = function () {

@@ -61,6 +61,9 @@ module.exports.routes = {
   '/log/log': {
     controller: 'LogController',
     action: 'log'
+  },
+  '/data' : {
+    view : 'data'
   }
   /*,
   'api/initialization': {
