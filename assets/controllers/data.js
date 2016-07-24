@@ -90,14 +90,25 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.onClick = function (points, evt) {
     console.log(points, evt);
   };
-
+  $scope.checkServer = function () {
+    $http.get('/api/checkAlive').success(function(data, status, headers, config) {
+      if (data.errMsg == "ok") {
+        $scope.status = "on";
+      } else {
+        $scope.status = "off";
+      }
+      $timeout(function () {
+        $scope.checkServer();
+      }, 5000);
+    }).error(function(data, status, headers, config) {
+      $scope.status = "off";
+      $timeout(function () {
+        $scope.checkServer();
+      }, 5000);
+    });
+  };
   // Simulate async data update 
-  $timeout(function () {
-    $scope.data = [
-      [28, 48, 40, 19, 86, 27, 90],
-      [65, 59, 80, 81, 56, 55, 40]
-    ];
-  }, 3000);
+
 
   $scope.init = function () {
     var now = new Date();
@@ -114,6 +125,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     });
   };
   $scope.getMonthData = function () {
+    $scope.updatePromise = undefined;
     $scope.buttonAction = 'accessMonth';
     $http.post('/log/access', {buttonAction:$scope.buttonAction, ad:$scope.ad, action: $scope.action, accumulated: $scope.accumulated, year:$scope.year, month:$scope.month}
       ).success(function(data, status, headers, config) { 
@@ -148,12 +160,18 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         $scope.totalUser = data.totalUser;
         // console.log({data: tempDataset, total: $scope.accessTotal});
         $scope.data = tempDataset;
+        if ($scope.auto) {
+          $scope.updatePromise = $timeout(function () {
+            $scope.getMonthData();
+          }, 60000);
+        }
       }).error(function(data, status, headers, config) {
 
       });
 
   };
   $scope.getDateData = function () {
+    $scope.updatePromise = undefined;
     $scope.buttonAction = 'accessDate';
     $http.post('/log/access', {buttonAction:$scope.buttonAction, ad:$scope.ad, action: $scope.action, accumulated: $scope.accumulated, date:$scope.date.toISOString()}
       ).success(function(data, status, headers, config) { 
@@ -190,7 +208,11 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         $scope.totalUser = data.totalUser;
         // console.log({data: tempDataset, total: $scope.accessTotal});
         $scope.data = tempDataset;
-
+        if ($scope.auto) {
+          $scope.updatePromise = $timeout(function () {
+            $scope.getMonthData();
+          }, 60000);
+        }
 
       }).error(function(data, status, headers, config) {
 

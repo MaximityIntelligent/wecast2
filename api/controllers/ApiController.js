@@ -8,24 +8,7 @@ var request = require('sync-request');
 var weixin = require('../../config/weixin');
 var sha1 = require('sha1');
 var User = require('../lib/User');
-var VERIFICATION_CODE = {
-      'adUEFA' : "cheers001"
-    };
-var prizeCreditAll = {
-  'adUEFA' : {
-    prize1: 15,
-    prize2: 30
-  }
-};
-var prizeListAll = {
-  'adUEFA': ['prize1', 'prize2']
-};
-var prizeAmountAll = {
-  'adUEFA' : {
-    'prize1':300, 
-    'prize2':100
-  }
-};
+
 var prizesInfo = {
   'adUEFA' : {
     'prize1' : {

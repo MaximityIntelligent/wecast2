@@ -29,18 +29,28 @@
                   <form class="form-inline" method="post"  name="form" action="/data/access">
                     <div class="panel-elem">
                       <div class="form-group">
-                          <label>活動</label>
-                          <select name="ad" id="ad" ng-model="ad">
-                            <option value="">---所有活動---</option> <!-- not selected / blank option -->
-                            <option value="adUEFA">歐國盃</option> <!-- interpolation -->
-                            <option value="adDPower">數碼動力</option>
-                          </select>
-                          {{ad}}
+                          <div class="panel-elem">
+                            <div class="form-group">
+                            <label>活動</label>
+                            <select style="font-size: 20px" name="ad" id="ad" ng-model="ad">
+                              <option value="">--所有活動--</option> <!-- not selected / blank option -->
+                              <option value="adUEFA">歐國盃</option> <!-- interpolation -->
+                              <option value="adDPower">數碼動力</option>
+                            </select>
+                          </div>
+                          <div class="pull-right" ng-init="checkServer()">
+                              <img width="32px" src="/images/server-online.png" alt="" ng-show="status=='on'">
+                              <img width="32px" src="/images/server-offline.png" alt="" ng-show="status=='off'">
+                          </div>
+                          </div>
+                          
                           <hr>
                           <label>點擊對象</label>
                           <div class="form-group">
+                          自動更新<input ng-model="auto" type="checkbox">&nbsp;
                           累加<input ng-model="accumulated" type="checkbox" ng-change="changeAccumulated()">&nbsp;
                           全選<input ng-model="clickAll" type="checkbox" ng-change="allAction()">&nbsp;
+                          <br>
                           註冊<input type="checkbox" ng-model="action.regist">&nbsp;
                           微信朋友分享次數<input type="checkbox" ng-model="action.share_friend">&nbsp;
                           微信朋友圈分享次數<input type="checkbox" ng-model="action.share_timeline">&nbsp;
