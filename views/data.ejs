@@ -29,6 +29,14 @@
                   <form class="form-inline" method="post"  name="form" action="/data/access">
                     <div class="panel-elem">
                       <div class="form-group">
+                          <label>活動</label>
+                          <select name="ad" id="ad" ng-model="ad">
+                            <option value="">---所有活動---</option> <!-- not selected / blank option -->
+                            <option value="adUEFA">歐國盃</option> <!-- interpolation -->
+                            <option value="adDPower">數碼動力</option>
+                          </select>
+                          {{ad}}
+                          <hr>
                           <label>點擊對象</label>
                           <div class="form-group">
                           累加<input ng-model="accumulated" type="checkbox" ng-change="changeAccumulated()">&nbsp;
@@ -99,9 +107,13 @@
                   </div>
                   
                   <table class="table" style="width: 400px">
-                    <tr ng-repeat="action in accessAction">
+                    <tr>
+                      <td>用戶數</td>
+                      <td>{{totalUser}}</td>
+                    </tr>
+                    <tr ng-repeat="action in series">
                       <td><span ng-style="chartColor($index)">&nbsp;&nbsp;&nbsp;&nbsp;</span> {{actionMap[action]}}</td>
-                      <td> {{actionAccessTotal[action]}}</td>
+                      <td> {{accessTotal[action]}}</td>
                     </tr>
                   </table>
                 </div>

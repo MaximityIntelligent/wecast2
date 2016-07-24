@@ -84,12 +84,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.actionMap['total_share_friends'] = "分享朋友總數";
   $scope.actionMap['redeem_vote'] = "雙倍積分";
 
-  $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-  $scope.series = ['Series A', 'Series B'];
-  $scope.data = [
-    [65, 59, 80, 81, 56, 55, 40],
-    [28, 48, 40, 19, 86, 27, 90]
-  ];
+  $scope.labels = [];
+  $scope.series = [];
+  $scope.data = [];
   $scope.onClick = function (points, evt) {
     console.log(points, evt);
   };
@@ -118,7 +115,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   };
   $scope.getMonthData = function () {
     $scope.buttonAction = 'accessMonth';
-    $http.post('/log/access', {buttonAction:$scope.buttonAction, action: $scope.action, accumulated: $scope.accumulated, year:$scope.year, month:$scope.month}
+    $http.post('/log/access', {buttonAction:$scope.buttonAction, ad:$scope.ad, action: $scope.action, accumulated: $scope.accumulated, year:$scope.year, month:$scope.month}
       ).success(function(data, status, headers, config) { 
         console.log(data);
         $scope.accessTotal = {};
@@ -127,14 +124,11 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           days.push(""+i);
         }
         $scope.labels = days;
-        $scope.series = Object.keys(data.daysAccess).map(function (key) {
-            return $scope.actionMap[key];
-        });
-        console.log($scope.series);
+        $scope.series = Object.keys(data.daysAccess);
         var tempDataset = [];
         Object.keys(data.daysAccess).forEach(function(action) {
-          console.log(action);
           var tempTotal = 0;
+          if ($scope.accumulated) tempTotal = data.offsetAccess[action] || 0;
           var tempData = [];
           for (var i=1; i<=31; i++) {
             if ($scope.accumulated) {
@@ -150,7 +144,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           $scope.accessTotal[action] = tempTotal;
         });
         $scope.access = data.daysAccess;
-        console.log({data: tempDataset, total: $scope.accessTotal});
+        $scope.offsetAccess = data.offsetAccess;
+        $scope.totalUser = data.totalUser;
+        // console.log({data: tempDataset, total: $scope.accessTotal});
         $scope.data = tempDataset;
       }).error(function(data, status, headers, config) {
 
@@ -159,8 +155,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   };
   $scope.getDateData = function () {
     $scope.buttonAction = 'accessDate';
-    console.log($scope.date.toISOString());
-    $http.post('/log/access', {buttonAction:$scope.buttonAction, action: $scope.action, accumulated: $scope.accumulated, date:$scope.date.toISOString()}
+    $http.post('/log/access', {buttonAction:$scope.buttonAction, ad:$scope.ad, action: $scope.action, accumulated: $scope.accumulated, date:$scope.date.toISOString()}
       ).success(function(data, status, headers, config) { 
         console.log(data);
         $scope.accessTotal = {};
@@ -172,11 +167,10 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         $scope.series = Object.keys(data.hoursAccess).map(function (key) {
             return $scope.actionMap[key];
         });
-        console.log($scope.series);
         var tempDataset = [];
         Object.keys(data.hoursAccess).forEach(function(action) {
-          console.log(action);
           var tempTotal = 0;
+          if ($scope.accumulated) tempTotal = data.offsetAccess[action] || 0;
           var tempData = [];
           for (var i=0; i< 24; i++) {
             if ($scope.accumulated) {
@@ -192,7 +186,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           $scope.accessTotal[action] = tempTotal;
         });
         $scope.access = data.hoursAccess;
-        console.log({data: tempDataset, total: $scope.accessTotal});
+        $scope.offsetAccess = data.offsetAccess;
+        $scope.totalUser = data.totalUser;
+        // console.log({data: tempDataset, total: $scope.accessTotal});
         $scope.data = tempDataset;
 
 
@@ -202,7 +198,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     
   };
   $scope.chartColor = function (index) {
-    $scope.color[index];
+    return {'background-color':$scope.color[index]};
   };
   $scope.renderChart = function () {
     
@@ -217,6 +213,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       Object.keys($scope.access).forEach(function(action) {
         console.log(action);
         var tempTotal = 0;
+        if ($scope.accumulated) tempTotal = $scope.offsetAccess[action] || 0;
         var tempData = [];
         for (var i=1; i<=31; i++) {
           if ($scope.accumulated) {
@@ -240,6 +237,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       Object.keys($scope.access).forEach(function(action) {
         console.log(action);
         var tempTotal = 0;
+        if ($scope.accumulated) tempTotal = $scope.offsetAccess[action] || 0;
         var tempData = [];
         for (var i=0; i< 24; i++) {
           if ($scope.accumulated) {

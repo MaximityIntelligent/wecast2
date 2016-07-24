@@ -69,8 +69,28 @@ module.exports = {
 						
 
 					});
-					console.log({daysAccess: daysAccess});
-					return res.json({daysAccess: daysAccess});
+
+					var offsetOption = {};
+					if(startOfMonthDate)
+						offsetOption.createdAt = {"<": startOfMonthDate};
+					if (ad)
+						offsetOption.ad = ad;
+					if (action2) {
+						offsetOption.action = action2;
+					}
+					var offsetAccess = {};
+					log.find({ where: offsetOption, select:['action', 'createdAt']}).exec(function(err, accessArr){
+						var actionAccess = _.groupBy(accessArr, function(access){
+							return access.action;
+						});
+						Object.keys(actionAccess).forEach(function (element, index, array) {
+							offsetAccess[element] = actionAccess[element].length;
+						});
+						console.log(offsetAccess);
+						return res.json({daysAccess: daysAccess, offsetAccess:offsetAccess, totalUser: users});
+					});
+
+					
 
 				});
 			} else if (buttonAction == 'accessDate') {
@@ -85,7 +105,7 @@ module.exports = {
 				if (action2) {
 					option.action = action2;
 				}
-				console.log(option);
+				// console.log(option);
 				var hoursAccess = {};
 				log.find({ where: option, select:['action', 'createdAt']}).exec(function(err, accessArr){
 					var actionAccess = _.groupBy(accessArr, function(access){
@@ -103,17 +123,29 @@ module.exports = {
 						
 
 					});
-					console.log({hoursAccess: hoursAccess});
-					return res.json({hoursAccess: hoursAccess});
+					var offsetOption = {};
+					if(accessDateFrom)
+						offsetOption.createdAt = {"<": accessDateFrom};
+					if (ad)
+						offsetOption.ad = ad;
+					if (action2) {
+						offsetOption.action = action2;
+					}
+					var offsetAccess = {};
+					log.find({ where: offsetOption, select:['action', 'createdAt']}).exec(function(err, accessArr){
+						var actionAccess = _.groupBy(accessArr, function(access){
+							return access.action;
+						});
+						Object.keys(actionAccess).forEach(function (element, index, array) {
+							offsetAccess[element] = actionAccess[element].length;
+						});
+						console.log(offsetAccess);
+						return res.json({hoursAccess: hoursAccess, offsetAccess:offsetAccess, totalUser: users});
+					});
+					
 				});
 			}
 		});
-
-		if (accumulated == true) {
-
-		} else {
-
-		}
 
 	}
 };
