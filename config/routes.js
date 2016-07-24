@@ -62,6 +62,10 @@ module.exports.routes = {
     controller: 'LogController',
     action: 'log'
   },
+  '/log/access': {
+    controller: 'LogController',
+    action: 'access'
+  },
   '/data' : {
     view : 'data'
   }

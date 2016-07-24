@@ -5,7 +5,8 @@ var app = angular.module('data', ['chart.js']).config(['$httpProvider', function
     // Configure all charts 
     ChartJsProvider.setOptions({
       chartColors: ["#46BFBD", "#FDB45C", "#212121", "#64af9c", "#6b1f3c", "#127690", "#a2798f", "#008b8b", "#99ccff", "#cc99ff", "#9feaae", "#40d65d", "#65ada2", "#5ee4bb", "#9ffff7", "#2412b4", "#34d491", "#da6665", "#f3d681", "#b9b9b9", "#b9b9b9", "#ffae1a", "#2137ff", "#d8941a", "#d8941a", "#ff2a1a", "#e6b3e6", "#e6b3e6", "#a8e4f0", "#6ef79c", "#5cf53d", "#d6d65c", "#adb87a", "#d6995c", "#f76e6e", "#f08a75", "#eb9947", "#ffdd33", "#cccc00", "#99eb47", "#75f075", "#85e0b3", "#33ffdd","#998cd9"],
-      responsive: false
+      responsive: true,
+      bezierCurve: true
     });
     // Configure all line charts 
     ChartJsProvider.setOptions('line', {
@@ -42,6 +43,8 @@ var debug = true;
 app.controller('IndexCtrl', [
 '$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll',
 function($scope, $http, $timeout, $interval, $location, $anchorScroll){
+  $scope.chartWidth = window.innerWidth*0.9;
+  $scope.chartHeight = window.innerHeight*0.5;
   $scope.color = ["#46BFBD", "#FDB45C", "#212121", "#64af9c", "#6b1f3c", "#127690", "#a2798f", "#008b8b", "#99ccff", "#cc99ff", "#9feaae", "#40d65d", "#65ada2", "#5ee4bb", "#9ffff7", "#2412b4", "#34d491", "#da6665", "#f3d681", "#b9b9b9", "#b9b9b9", "#ffae1a", "#2137ff", "#d8941a", "#d8941a", "#ff2a1a", "#e6b3e6", "#e6b3e6", "#a8e4f0", "#6ef79c", "#5cf53d", "#d6d65c", "#adb87a", "#d6995c", "#f76e6e", "#f08a75", "#eb9947", "#ffdd33", "#cccc00", "#99eb47", "#75f075", "#85e0b3", "#33ffdd","#998cd9"];
   $scope.action = {
     regist : false,
@@ -72,7 +75,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.actionMap['prize2_page'] = "獎品2詳情" ;
   $scope.actionMap['redeem_prize1'] = "獎品1成功領獎";
   $scope.actionMap['redeem_prize2'] = "獎品2成功領獎";
-  $scope.actionMap['continue_collect'] = "繼續儲泡";
+  $scope.actionMap['continue_collect'] = "繼續儲分";
   $scope.actionMap['go_wash'] = '去洗車';
   $scope.actionMap['prize1_return'] = "獎品1返回";
   $scope.actionMap['prize2_return'] = "獎品2返回";
@@ -115,11 +118,143 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   };
   $scope.getMonthData = function () {
     $scope.buttonAction = 'accessMonth';
+    $http.post('/log/access', {buttonAction:$scope.buttonAction, action: $scope.action, accumulated: $scope.accumulated, year:$scope.year, month:$scope.month}
+      ).success(function(data, status, headers, config) { 
+        console.log(data);
+        $scope.accessTotal = {};
+        var days = [];
+        for (var i=1; i<=31; i++) {
+          days.push(""+i);
+        }
+        $scope.labels = days;
+        $scope.series = Object.keys(data.daysAccess).map(function (key) {
+            return $scope.actionMap[key];
+        });
+        console.log($scope.series);
+        var tempDataset = [];
+        Object.keys(data.daysAccess).forEach(function(action) {
+          console.log(action);
+          var tempTotal = 0;
+          var tempData = [];
+          for (var i=1; i<=31; i++) {
+            if ($scope.accumulated) {
+              tempTotal += data.daysAccess[action][""+i] || 0;
+              tempData.push(tempTotal);
+            } else {
+              tempData.push(data.daysAccess[action][""+i] || 0);
+              tempTotal += data.daysAccess[action][""+i] || 0;
+            }
+            
+          }
+          tempDataset.push(tempData);
+          $scope.accessTotal[action] = tempTotal;
+        });
+        $scope.access = data.daysAccess;
+        console.log({data: tempDataset, total: $scope.accessTotal});
+        $scope.data = tempDataset;
+      }).error(function(data, status, headers, config) {
+
+      });
+
+  };
+  $scope.getDateData = function () {
+    $scope.buttonAction = 'accessDate';
+    console.log($scope.date.toISOString());
+    $http.post('/log/access', {buttonAction:$scope.buttonAction, action: $scope.action, accumulated: $scope.accumulated, date:$scope.date.toISOString()}
+      ).success(function(data, status, headers, config) { 
+        console.log(data);
+        $scope.accessTotal = {};
+        var hours = [];
+        for (var i=0; i< 24; i++) {
+          hours.push(""+i);
+        }
+        $scope.labels = hours;
+        $scope.series = Object.keys(data.hoursAccess).map(function (key) {
+            return $scope.actionMap[key];
+        });
+        console.log($scope.series);
+        var tempDataset = [];
+        Object.keys(data.hoursAccess).forEach(function(action) {
+          console.log(action);
+          var tempTotal = 0;
+          var tempData = [];
+          for (var i=0; i< 24; i++) {
+            if ($scope.accumulated) {
+              tempTotal += data.hoursAccess[action][""+i] || 0;
+              tempData.push(tempTotal);
+            } else {
+              tempData.push(data.hoursAccess[action][""+i] || 0);
+              tempTotal += data.hoursAccess[action][""+i] || 0;
+            }
+            
+          }
+          tempDataset.push(tempData);
+          $scope.accessTotal[action] = tempTotal;
+        });
+        $scope.access = data.hoursAccess;
+        console.log({data: tempDataset, total: $scope.accessTotal});
+        $scope.data = tempDataset;
+
+
+      }).error(function(data, status, headers, config) {
+
+      });
+    
   };
   $scope.chartColor = function (index) {
     $scope.color[index];
   };
   $scope.renderChart = function () {
     
-  }
+  };
+  $scope.changeAccumulated = function () {
+    if ($scope.buttonAction == "accessMonth") {
+      $scope.series = Object.keys($scope.access).map(function (key) {
+            return $scope.actionMap[key];
+        });
+      console.log($scope.series);
+      var tempDataset = [];
+      Object.keys($scope.access).forEach(function(action) {
+        console.log(action);
+        var tempTotal = 0;
+        var tempData = [];
+        for (var i=1; i<=31; i++) {
+          if ($scope.accumulated) {
+            tempTotal += $scope.access[action][""+i] || 0;
+            tempData.push(tempTotal);
+          } else {
+            tempData.push($scope.access[action][""+i] || 0);
+            tempTotal += $scope.access[action][""+i] || 0;
+          }
+          
+        }
+        tempDataset.push(tempData);
+      });
+      $scope.data = tempDataset;
+    } else if ($scope.buttonAction == "accessDate") {
+      $scope.series = Object.keys($scope.access).map(function (key) {
+            return $scope.actionMap[key];
+        });
+      console.log($scope.series);
+      var tempDataset = [];
+      Object.keys($scope.access).forEach(function(action) {
+        console.log(action);
+        var tempTotal = 0;
+        var tempData = [];
+        for (var i=0; i< 24; i++) {
+          if ($scope.accumulated) {
+            tempTotal += $scope.access[action][""+i] || 0;
+            tempData.push(tempTotal);
+          } else {
+            tempData.push($scope.access[action][""+i] || 0);
+            tempTotal += $scope.access[action][""+i] || 0;
+          }
+          
+        }
+        tempDataset.push(tempData);
+      });
+      $scope.data = tempDataset;
+    }
+  };
+  
 }]);
