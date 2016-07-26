@@ -89,6 +89,9 @@ User.shareAd_c = function (sharedBy, sharedTo, adId, cb){ //按制share點擊獲
             return;
           }
           User.incrementCredit(sharedBy, 1, adId, cb);
+          log.create({action: "total_share_friends", openId: sharedBy, date: new Date(), ad: adId}).exec(function(err, results){
+            //res.json(results);
+          });
           return;
         });
       }else{ 
@@ -104,6 +107,10 @@ User.shareAd_c = function (sharedBy, sharedTo, adId, cb){ //按制share點擊獲
               return;
             }
             User.incrementCredit(sharedBy, 1, adId, cb);
+            log.create({action: "total_share_friends", openId: sharedBy, date: new Date(), ad: adId}).exec(function(err, results){
+              //res.json(results);
+
+            });
             return;
           })
         }
@@ -126,22 +133,23 @@ User.incrementCredit = function(userOpenId, increment, adId, cb){ //User增加cr
       cb({code: 400, errMsg: "User not found"})
       return;
     }
-    increment = parseInt(increment);
+    increment = parseFloat(increment);
     if(isNaN(increment)){
-      cb({code: 400, errMsg: "Increment must be integer"});
+      cb({code: 400, errMsg: "Increment must be number"});
       return;
     }
     userOne.credit = userOne.credit + increment;
-    userOne.save(function(err){
+    userOne.save(function(err, savedUser){
       if(err){
         cb(err);
         return;
       }
-      var date = new Date();
-  		log.create({action: "total_share_friends", openId: userOpenId, date: new Date(), ad: adId}).exec(function(err, results){
-  			//res.json(results);
+      if (savedUser.parent) {
+        User.incrementCredit(savedUser.parent, increment*0, adId, cb);
+      } else {
         cb(null);
-  		});
+      }
+  		
 
     })
   });
@@ -158,6 +166,9 @@ User.create = function(userInfo, cb){ //Create User, 如果原有就return現有
           cb(err);
           return;
         }
+        log.create({action: "regist", openId: userCreated.openId, date: new Date(), ad: userCreated.ad}).exec(function(err, results){
+            
+        });
         cb(null, userCreated);
       });
     }else{
@@ -187,9 +198,7 @@ User.create = function(userInfo, cb){ //Create User, 如果原有就return現有
             cb(err);
             return;
           }
-          log.create({action: "regist", openId: savedUser.openId, date: new Date(), ad: savedUser.ad}).exec(function(err, results){
-            
-          });
+
           cb(null, savedUser);
         });
         

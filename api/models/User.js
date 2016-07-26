@@ -15,13 +15,16 @@ module.exports = {
           //unique: true
     },
     credit: {
-      type: 'integer',
+      type: 'float',
       defaultsTo: 1,
       required: true
     },
     ad: {
       type: 'string',
       required: true
+    },
+    parent: {
+      type: 'string'
     },
     vote: {
       type: 'string'

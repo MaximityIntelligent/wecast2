@@ -28,13 +28,15 @@ var prizesInfo = {
     },
     'prize1' : {
         'credit' : 15,
-        'amount' : 2,
+        'weekAmount' : 3,
+        'amount' : 20,
         'code' : "cheers001",
         'probability' : 70
     },
     'prize2' : {
         'credit' : 30,
-        'amount' : 100,
+        'weekAmount' : 6,
+        'amount' : 10,
         'code' : "cheers001",
         'probability' : 30
     }
@@ -104,6 +106,9 @@ module.exports = {
         // Get UserInfo
         userInfo.openId = openId;
         userInfo.ad = ad;
+        if (sharedBy != "wechast") {
+          userInfo.parent = sharedBy;
+        }
         User.create(userInfo, function(err, userOne){
           if(err){
             res.status(500).json({errMsg: 'User create'});
@@ -113,7 +118,7 @@ module.exports = {
           if(!credit){
             credit = 0;
           }
-          console.log(sharedBy+openId+ad);
+          // console.log(sharedBy+openId+ad);
           User.shareAd_c(sharedBy, openId, ad, function(err){
             if(err) {
               console.log({shareAd_c_errMsg: err});
@@ -128,7 +133,7 @@ module.exports = {
             var ONE_HOUR = 60 * 60 * 1000;
             var oneHourAgo = new Date(now.getTime() - ONE_HOUR);
             //console.log(oneHourAgo);
-            wxToken.findOne({expireAt: {'<': now}}).sort({ createdAt: 'desc' }).exec(function (err, wxTokenOne) {
+            wxToken.findOne({expireAt: {'>': now}}).sort({ createdAt: 'desc' }).exec(function (err, wxTokenOne) {
               if (!wxTokenOne) {
                   //console.log('-----no token-----');
                   var resp = request('GET', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appid+'&secret='+secret);
@@ -218,7 +223,7 @@ module.exports = {
                 });
 
                 retResult.userPrize = userPrize;
-                //console.log(retResult);
+                console.log(retResult);
                 res.json(retResult);
                 return;
               });
@@ -263,7 +268,7 @@ module.exports = {
 
         var prize = 0;
         var rand = Math.floor((Math.random() * total));
-        console.log(rand);
+        // console.log(rand);
         for (var i = 0; i <= probability.length - 1; i++) {
           if (rand < probability[i]) {
               prize = prizeList[i];
@@ -274,27 +279,36 @@ module.exports = {
         }
         console.log(prize);
         var prizeAmount = prizeInfo[prize].amount || 1000;
-        log.find({action:'redeem_'+prize, ad: ad}).exec(function (err, logs) {
-          if (logs.length >= prizeAmount) {
+        log.count({action:'redeem_'+prize, ad: ad}).exec(function (err, redeems) {
+          if (redeems >= prizeAmount) {
             prize = 'none';
+            console.log("month");
           }
-          userOne.credit -= 1;
-          userOne.save(function (err) {
-            log.create({action: 'redeem_'+prize, openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
+          var startOfWeek = new Date();
+          startOfWeek.setHours(0,0,0,0);
+          startOfWeek = new Date(startOfWeek.getTime()- 86400*1000*startOfWeek.getDay());
+          var prizeWeekAmount = prizeInfo[prize].weekAmount || prizeInfo[prize].amount || 1000;
+          log.count({action:'redeem_'+prize, ad: ad, createdAt: {'>=' : startOfWeek}}).exec(function (err, weekRedeems) {
+            if (weekRedeems >= prizeWeekAmount) {
+              prize = 'none';
+              console.log("week");
+            }
+            userOne.credit -= 1;
+            userOne.save(function (err) {
+              log.create({action: 'redeem_'+prize, openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
 
+              });
+              
+              return res.json({credit: userOne.credit, prize: prize});
             });
-            
-            return res.json({credit: userOne.credit, prize: prize});
           });
+          
 
           
         });
         
         
     });
-
-
-
   },
   redeem_c: function(req, res){
     var verificationCode = req.param('verificationCode');

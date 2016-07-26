@@ -15,6 +15,12 @@
     <script src="/js/angular.min.js"></script>
     <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script src="/controllers/dpower.js"></script>
+    <style>
+      @font-face {
+       font-family:loadingfont;
+       src: url(fonts/MSTIFFHEIHK-ULTRABOLD.OTF);
+      }
+    </style>
   </head>
   <body data-ng-app="dpower" data-ng-controller="IndexCtrl" orient="portrait" ng-init="loading=0">
     <div id="landscape-container" data-ng-show="LANDSCAPE==atPage" >
@@ -56,7 +62,7 @@
 
       </div>-->
       <div class="spinner-precentage" ng-cloak>
-        <center><h4 style="color: red;">{{loading}}%</h4></center>
+        <center><h4 style="color: red; font-family: loadingfont;">{{loading}}%</h4></center>
       </div>
     </div>
     <!--
