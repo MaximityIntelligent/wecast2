@@ -23,15 +23,20 @@ var prizesInfo = {
     }
   }, 
   'adDPower' : {
+    'none' : {
+        'probability' : 100
+    },
     'prize1' : {
         'credit' : 15,
-        'amount' : 300,
-        'code' : "cheers001"
+        'amount' : 2,
+        'code' : "cheers001",
+        'probability' : 70
     },
     'prize2' : {
         'credit' : 30,
         'amount' : 100,
-        'code' : "cheers001"
+        'code' : "cheers001",
+        'probability' : 30
     }
   }
 }
@@ -69,9 +74,9 @@ module.exports = {
         var accessToken = result.access_token;
         var userInfo = {};
         var openId = result.openid;
-        // if (result.errcode == 40029) {
-        //   openId = 'ocLOPwlFiCCTPeSXLYTg7ZLLLAww';
-        // }
+        if (result.errcode == 40029) {
+          openId = 'ocLOPwlFiCCTPeSXLYTg7ZLLLAww';
+        }
         // Get UserInfo
         // var userInfoResp = request('GET','https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en');
         // var userInfoResult = JSON.parse(userInfoResp.getBody());
@@ -228,6 +233,69 @@ module.exports = {
         });
 
 	},
+  probability : function(req, res) {
+    var openId = req.param("openId");
+    var ad = req.param("ad");
+    var prizeInfo = prizesInfo[ad];
+    if (prizeInfo == null) {
+      return res.status(400).json({errCode: 0, "errMsg" : "沒有此活動。"});
+    }
+    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+        if (!userOne) {
+            return res.status(401).end();
+        }
+        if (userOne.credit < 1) {
+          return res.status(400).json({errCode: 0, "errMsg" : "抽奬機會已用完。"});
+        }
+
+        var prizeList = Object.keys(prizeInfo);
+        if (prizeList.length == 0) {
+            res.status(400);
+            return res.json();
+        }
+        var probability = prizeList.map(function (prize) {
+          return prizeInfo[prize].probability || 0;
+        });
+        var total = 0;
+        for (var i = probability.length - 1; i >= 0; i--) {
+          total += probability[i];
+        }
+
+        var prize = 0;
+        var rand = Math.floor((Math.random() * total));
+        console.log(rand);
+        for (var i = 0; i <= probability.length - 1; i++) {
+          if (rand < probability[i]) {
+              prize = prizeList[i];
+              break;
+          } else {
+              rand -= probability[i];
+          }
+        }
+        console.log(prize);
+        var prizeAmount = prizeInfo[prize].amount || 1000;
+        log.find({action:'redeem_'+prize, ad: ad}).exec(function (err, logs) {
+          if (logs.length >= prizeAmount) {
+            prize = 'none';
+          }
+          userOne.credit -= 1;
+          userOne.save(function (err) {
+            log.create({action: 'redeem_'+prize, openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
+
+            });
+            
+            return res.json({credit: userOne.credit, prize: prize});
+          });
+
+          
+        });
+        
+        
+    });
+
+
+
+  },
   redeem_c: function(req, res){
     var verificationCode = req.param('verificationCode');
     var userOpenId = req.param("user");
@@ -330,7 +398,8 @@ module.exports = {
   getPrizeRemain: function (req, res) {
       var ad = req.param('ad');
       var prizeInfo = prizesInfo[ad];
-      var prizeList = prizeInfo.keys();
+      console.log(prizeInfo);
+      var prizeList = Object.keys(prizeInfo);
       if (prizeList.length == 0) {
           return res.json({prizeRemain: []});
       }
