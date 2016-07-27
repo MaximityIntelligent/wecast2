@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>資料統計</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/0.4.2/weui.min.css">
+    <link rel="stylesheet" href="/styles/example.css">
+    <!--<script type="text/javascript" src="http://fgnass.github.io/spin.js/spin.min.js"></script>-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/fancybox2.1.5/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script src="/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="/js/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js"></script>
+    <script src="//cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"></script>
+
+    <script src="/controllers/data.js"></script>
+  </head>
+  <body data-ng-app="data" data-ng-controller="IndexCtrl" orient="portrait" ng-init="loading=0">
+
+    <div ng-init="init()" id="top">
+    </div>
+    <div class="container content">
+      <div class="panel">
+        <div class="hd">
+          <h1 class="page_title">數據統計</h1>
+        </div>
+        <div class="bd">
+            <div class="weui_panel">
+              <div class="weui_panel_bd">
+                <div class="weui_media_box weui_media_small_appmsg">
+                  <div class="weui_cells">
+                    <div class="weui_cell">
+                      <div class="weui_cell_bd weui_cell_primary">
+                        <p>系統狀態</p>
+                      </div>
+                      <div class="weui_cell_ft" ng-init="checkServer()">
+                          <p style="color: green;" ng-show="status=='on'">On</p>
+                          <p style="color: red;" ng-show="status=='off'">Off</p>
+                      </div>
+                    </div>
+                      
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="weui_panel">
+              <div class="weui_panel_hd">
+                選項
+              </div>
+              <div class="weui_panel_bd">
+                <div class="weui_media_box weui_media_small_appmsg">
+                    
+                    <div class="weui_cells">
+                            <div class="weui_cell weui_cell_select weui_select_after">
+                              <div class="weui_cell_hd">
+                                
+                                <label for class="weui_label">活動</label>
+                              </div>
+                              <div class="weui_cell_bd weui_cell_primary">
+                                <select class="weui_select" name="ad" id="ad" ng-model="ad">
+                                  <option value="">--所有活動--</option> <!-- not selected / blank option -->
+                                  <option value="adUEFA">歐國盃</option> <!-- interpolation -->
+                                  <option value="adDPower">數碼動力</option>
+                                </select>
+                              </div>
+                            
+                            </div>
+                    </div>
+                    <div class="weui_cells_title">附加功能</div>
+                    <div class="weui_cells weui_cells_form">
+                      <div class="weui_cell weui_cell_switch">
+                        <div class="weui_cell_hd weui_cell_primary">自動更新</div>
+                        <div class="weui_cell_ft">
+                          <input class="weui_switch" ng-model="auto" type="checkbox">
+                        </div>
+                      </div>
+                      <div class="weui_cell weui_cell_switch">
+                        <div class="weui_cell_hd weui_cell_primary">累加</div>
+                        <div class="weui_cell_ft">
+                          <input class="weui_switch" ng-model="accumulated" type="checkbox" ng-change="changeAccumulated()">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="weui_cells_title">點擊對象</div>
+                    <div class="weui_cells weui_cells_checkbox">
+                      <label class="weui_cell weui_check_label" for="clickAll">
+                        <div class="weui_cell_hd">
+                          <input ng-model="clickAll" type="checkbox" ng-change="allAction()" id="clickAll" class="weui_check">
+                          <i class="weui_icon_checked"></i>
+                        </div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                          <p>全選</p>
+                        </div>
+                      </label>
+                      <label class="weui_cell weui_check_label" for="regist">
+                        <div class="weui_cell_hd">
+                          <input ng-model="action.regist" type="checkbox" id="regist" class="weui_check">
+                          <i class="weui_icon_checked"></i>
+                        </div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                          <p>註冊</p>
+                        </div>
+                      </label>
+                      <label class="weui_cell weui_check_label" for="share_friend">
+                        <div class="weui_cell_hd">
+                          <input ng-model="action.share_friend" type="checkbox" id="share_friend" class="weui_check">
+                          <i class="weui_icon_checked"></i>
+                        </div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                          <p>微信朋友分享次數</p>
+                        </div>
+                      </label>
+                      <label class="weui_cell weui_check_label" for="share_timeline">
+                        <div class="weui_cell_hd">
+                          <input ng-model="action.share_timeline" type="checkbox" id="share_timeline" class="weui_check">
+                          <i class="weui_icon_checked"></i>
+                        </div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                          <p>微信朋友圈分享次數</p>
+                        </div>
+                      </label>
+                      <label class="weui_cell weui_check_label" for="share_button">
+                        <div class="weui_cell_hd">
+                          <input ng-model="action.share_button" type="checkbox" id="share_button" class="weui_check">
+                          <i class="weui_icon_checked"></i>
+                        </div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                          <p>分享按鈕</p>
+                        </div>
+                      </label>
+                      <label class="weui_cell weui_check_label" for="rules">
+                        <div class="weui_cell_hd">
+                          <input ng-model="action.rules" type="checkbox" id="rules" class="weui_check">
+                          <i class="weui_icon_checked"></i>
+                        </div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                          <p>活動規則</p>
+                        </div>
+                      </label>
+                      <label class="weui_cell weui_check_label" for="google_map">
+                        <div class="weui_cell_hd">
+                          <input ng-model="action.google_map" type="checkbox" id="google_map" class="weui_check">
+                          <i class="weui_icon_checked"></i>
+                        </div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                          <p>立即前往</p>
+                        </div>
+                      </label>
+                      <label class="weui_cell weui_check_label" for="tel">
+                        <div class="weui_cell_hd">
+                          <input ng-model="action.tel" type="checkbox" id="tel" class="weui_check">
+                          <i class="weui_icon_checked"></i>
+                        </div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                          <p>CALL客服</p>
+                        </div>
+                      </label>
+                      <label class="weui_cell weui_check_label" for="thankyou_page">
+                        <div class="weui_cell_hd">
+                          <input ng-model="action.thankyou_page" type="checkbox" id="thankyou_page" class="weui_check">
+                          <i class="weui_icon_checked"></i>
+                        </div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                          <p>Thank You頁面</p>
+                        </div>
+                      </label>
+                      <label class="weui_cell weui_check_label" for="total_share_friends">
+                        <div class="weui_cell_hd">
+                          <input ng-model="action.total_share_friends" type="checkbox" id="total_share_friends" class="weui_check">
+                          <i class="weui_icon_checked"></i>
+                        </div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                          <p>分享朋友總數</p>
+                        </div>
+                      </label>
+
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="weui_panel">
+              <div class="weui_panel_hd">
+                時段
+              </div>
+              <div class="weui_panel_bd">
+                <div class="weui_media_box weui_media_small_appmsg">
+                    <div class="weui_cells">
+                      <div class="weui_cell weui_cell_select weui_select_after">
+                        <div class="weui_cell_hd">
+                          <select name="year" ng-model="year" class="weui_select">
+                              <option value="2015">2015年</option>
+                              <option value="2016">2016年</option>
+                              <option value="2017">2017年</option>
+                          </select>
+                        </div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                          <select name="month" ng-model="month" class="weui_select">
+                            <option value="1">1月</option>
+                            <option value="2">2月</option>
+                            <option value="3">3月</option>
+                            <option value="4">4月</option>
+                            <option value="5">5月</option>
+                            <option value="6">6月</option>
+                            <option value="7">7月</option>
+                            <option value="8">8月</option>
+                            <option value="9">9月</option>
+                            <option value="10">10月</option>
+                            <option value="11">11月</option>
+                            <option value="12">12月</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="weui_btn_area">
+                        <input type="button" id="accessMonth" class="weui_btn weui_btn_plain_primary" value="月統計" ng-click="getMonthData()">
+                      </div>
+                        
+                      <div class="weui_cell">
+                        <div class="weui_cell_hd">
+                          <label for class="weui_label">日期</label>
+                        </div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <input type="date" class="weui_input" id="date" ng-model="date">
+                        </div>
+                        
+                      </div>
+                      <div class="weui_btn_area">
+                        <input type="button" class="weui_btn weui_btn_plain_primary" id="accessDate" value="日統計" ng-click="getDateData()">
+                      </div>
+                      <div id="loadingToast" class="weui_loading_toast" ng-style="loadingStyle">
+                          <div class="weui_mask_transparent"></div>
+                          <div class="weui_toast">
+                              <div class="weui_loading">
+                                  <!-- :) -->
+                                  <div class="weui_loading_leaf weui_loading_leaf_0"></div>
+                                  <div class="weui_loading_leaf weui_loading_leaf_1"></div>
+                                  <div class="weui_loading_leaf weui_loading_leaf_2"></div>
+                                  <div class="weui_loading_leaf weui_loading_leaf_3"></div>
+                                  <div class="weui_loading_leaf weui_loading_leaf_4"></div>
+                                  <div class="weui_loading_leaf weui_loading_leaf_5"></div>
+                                  <div class="weui_loading_leaf weui_loading_leaf_6"></div>
+                                  <div class="weui_loading_leaf weui_loading_leaf_7"></div>
+                                  <div class="weui_loading_leaf weui_loading_leaf_8"></div>
+                                  <div class="weui_loading_leaf weui_loading_leaf_9"></div>
+                                  <div class="weui_loading_leaf weui_loading_leaf_10"></div>
+                                  <div class="weui_loading_leaf weui_loading_leaf_11"></div>
+                              </div>
+                              <p class="weui_toast_content">数据加载中</p>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="weui_panel weui_panel_access">
+              <div class="weui_panel_hd">
+                統計圖
+              </div>
+              <div class="weui_panel_bd">
+                <canvas class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-click="onClick" chart-options="options"></canvas>
+              </div>
+            </div>
+            <div class="weui_panel weui_panel_access">
+              <div class="weui_panel_hd">
+                統計數
+              </div>
+              <div class="weui_panel_bd">
+                <div class="weui_media_box weui_media_small_appmsg">
+                  <div class="weui_cells">
+                  <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">
+                      <p>用戶數</p>
+                    </div>
+                    <div class="weui_cell_ft">
+                      {{totalUser}}
+                    </div>
+                  </div>
+                  <div class="weui_cell" ng-repeat="action in series">
+                    <div class="weui_cell_hd">
+                      <span ng-style="chartColor($index)"></span>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                      <p>{{actionMap[action]}}</p>
+                    </div>
+                    <div class="weui_cell_ft">
+                      {{accessTotal[action]}}
+                    </div>
+                  </div>
+                </div>
+                </div>
+                
+              </div>
+            </div>      
+
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>

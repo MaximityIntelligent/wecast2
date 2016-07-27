@@ -43,6 +43,7 @@ var debug = true;
 app.controller('IndexCtrl', [
 '$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll',
 function($scope, $http, $timeout, $interval, $location, $anchorScroll){
+  $scope.loadingStyle = {'display' : 'none'};
   $scope.chartWidth = window.innerWidth*0.9;
   $scope.chartHeight = window.innerHeight*0.5;
   $scope.color = ["#46BFBD", "#FDB45C", "#212121", "#64af9c", "#6b1f3c", "#127690", "#a2798f", "#008b8b", "#99ccff", "#cc99ff", "#9feaae", "#40d65d", "#65ada2", "#5ee4bb", "#9ffff7", "#2412b4", "#34d491", "#da6665", "#f3d681", "#b9b9b9", "#b9b9b9", "#ffae1a", "#2137ff", "#d8941a", "#d8941a", "#ff2a1a", "#e6b3e6", "#e6b3e6", "#a8e4f0", "#6ef79c", "#5cf53d", "#d6d65c", "#adb87a", "#d6995c", "#f76e6e", "#f08a75", "#eb9947", "#ffdd33", "#cccc00", "#99eb47", "#75f075", "#85e0b3", "#33ffdd","#998cd9"];
@@ -125,10 +126,12 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     });
   };
   $scope.getMonthData = function () {
+    $scope.loadingStyle = {};
     $scope.updatePromise = undefined;
     $scope.buttonAction = 'accessMonth';
     $http.post('/log/access', {buttonAction:$scope.buttonAction, ad:$scope.ad, action: $scope.action, accumulated: $scope.accumulated, year:$scope.year, month:$scope.month}
       ).success(function(data, status, headers, config) { 
+        $scope.loadingStyle = {'display' : 'none'};
         console.log(data);
         $scope.accessTotal = {};
         var days = [];
@@ -136,20 +139,26 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           days.push(""+i);
         }
         $scope.labels = days;
-        $scope.series = Object.keys(data.daysAccess);
+        $scope.series = data.action;
         var tempDataset = [];
-        Object.keys(data.daysAccess).forEach(function(action) {
+        data.action.forEach(function(action) {
           var tempTotal = 0;
           if ($scope.accumulated) tempTotal = data.offsetAccess[action] || 0;
           var tempData = [];
           for (var i=1; i<=31; i++) {
-            if ($scope.accumulated) {
-              tempTotal += data.daysAccess[action][""+i] || 0;
-              tempData.push(tempTotal);
+            if (data.daysAccess[action] == undefined) {
+              tempTotal += 0;
+              tempData.push(0);
             } else {
-              tempData.push(data.daysAccess[action][""+i] || 0);
-              tempTotal += data.daysAccess[action][""+i] || 0;
+              if ($scope.accumulated) {
+                tempTotal += data.daysAccess[action][""+i] || 0;
+                tempData.push(tempTotal);
+              } else {
+                tempData.push(data.daysAccess[action][""+i] || 0);
+                tempTotal += data.daysAccess[action][""+i] || 0;
+              }
             }
+            
             
           }
           tempDataset.push(tempData);
@@ -166,15 +175,17 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           }, 60000);
         }
       }).error(function(data, status, headers, config) {
-
+        $scope.loadingStyle = {'display' : 'none'};
       });
 
   };
   $scope.getDateData = function () {
+    $scope.loadingStyle = {};
     $scope.updatePromise = undefined;
     $scope.buttonAction = 'accessDate';
     $http.post('/log/access', {buttonAction:$scope.buttonAction, ad:$scope.ad, action: $scope.action, accumulated: $scope.accumulated, date:$scope.date.toISOString()}
       ).success(function(data, status, headers, config) { 
+        $scope.loadingStyle = {'display' : 'none'};
         console.log(data);
         $scope.accessTotal = {};
         var hours = [];
@@ -182,22 +193,26 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           hours.push(""+i);
         }
         $scope.labels = hours;
-        $scope.series = Object.keys(data.hoursAccess).map(function (key) {
-            return $scope.actionMap[key];
-        });
+        $scope.series = data.action;
         var tempDataset = [];
-        Object.keys(data.hoursAccess).forEach(function(action) {
+        data.action.forEach(function(action) {
           var tempTotal = 0;
           if ($scope.accumulated) tempTotal = data.offsetAccess[action] || 0;
           var tempData = [];
           for (var i=0; i< 24; i++) {
-            if ($scope.accumulated) {
-              tempTotal += data.hoursAccess[action][""+i] || 0;
-              tempData.push(tempTotal);
+            if (data.daysAccess[action] == undefined) {
+              tempTotal += 0;
+              tempData.push(0);
             } else {
-              tempData.push(data.hoursAccess[action][""+i] || 0);
-              tempTotal += data.hoursAccess[action][""+i] || 0;
+              if ($scope.accumulated) {
+                tempTotal += data.hoursAccess[action][""+i] || 0;
+                tempData.push(tempTotal);
+              } else {
+                tempData.push(data.hoursAccess[action][""+i] || 0);
+                tempTotal += data.hoursAccess[action][""+i] || 0;
+              }
             }
+            
             
           }
           tempDataset.push(tempData);
@@ -206,7 +221,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         $scope.access = data.hoursAccess;
         $scope.offsetAccess = data.offsetAccess;
         $scope.totalUser = data.totalUser;
-        // console.log({data: tempDataset, total: $scope.accessTotal});
+        console.log({data: tempDataset, total: $scope.accessTotal});
         $scope.data = tempDataset;
         if ($scope.auto) {
           $scope.updatePromise = $timeout(function () {
@@ -215,7 +230,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         }
 
       }).error(function(data, status, headers, config) {
-
+        $scope.loadingStyle = {'display' : 'none'};
       });
     
   };

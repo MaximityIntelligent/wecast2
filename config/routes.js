@@ -68,6 +68,9 @@ module.exports.routes = {
   },
   '/data' : {
     view : 'data'
+  },
+  '/weui' : {
+    view : 'weui'
   }
   /*,
   'api/initialization': {

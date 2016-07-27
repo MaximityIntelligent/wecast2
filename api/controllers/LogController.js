@@ -31,8 +31,11 @@ module.exports = {
 				action2.push(element);
 			}
 		});
-		
-		user.count({ad: ad}).exec(function(err, users){
+		var userOption = {};
+		if (ad) {
+			userOption.ad = ad;
+		}
+		user.count(userOption).exec(function(err, users){
 			if (err) {
 				console.log(err);
 			}
@@ -87,7 +90,7 @@ module.exports = {
 							offsetAccess[element] = actionAccess[element].length;
 						});
 						console.log(offsetAccess);
-						return res.json({daysAccess: daysAccess, offsetAccess:offsetAccess, totalUser: users});
+						return res.json({daysAccess: daysAccess, offsetAccess:offsetAccess, totalUser: users, action: action2});
 					});
 
 					
@@ -140,7 +143,7 @@ module.exports = {
 							offsetAccess[element] = actionAccess[element].length;
 						});
 						console.log(offsetAccess);
-						return res.json({hoursAccess: hoursAccess, offsetAccess:offsetAccess, totalUser: users});
+						return res.json({hoursAccess: hoursAccess, offsetAccess:offsetAccess, totalUser: users, action: action2});
 					});
 					
 				});
