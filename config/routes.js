@@ -71,6 +71,9 @@ module.exports.routes = {
   },
   '/weui' : {
     view : 'weui'
+  },
+  '/oneMember' : {
+    view : 'one_member'
   }
   /*,
   'api/initialization': {
