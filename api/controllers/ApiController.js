@@ -80,32 +80,32 @@ module.exports = {
         //   openId = 'ocLOPwlFiCCTPeSXLYTg7ZLLLAww';
         // }
         // Get UserInfo
-        var userInfoResp = request('GET','https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en');
-        var userInfoResult = JSON.parse(userInfoResp.getBody());
-        if (userInfoResult.nickname) {
-          userInfo.nickname = userInfoResult.nickname;
-        }
-        if (userInfoResult.sex) {
-          userInfo.sex = userInfoResult.sex;
-        }
-        if (userInfoResult.province) {
-          userInfo.province = userInfoResult.province;
-        }
-        if (userInfoResult.city) {
-          userInfo.city = userInfoResult.city;
-        }
-        if (userInfoResult.country) {
-          userInfo.country = userInfoResult.country;
-        }
-        if (userInfoResult.headimgurl) {
-          userInfo.headimgurl = userInfoResult.headimgurl;
-        }
-        if (userInfoResult.language) {
-          userInfo.language = userInfoResult.language;
-        }
-        if (userInfoResult.unionid) {
-          userInfo.unionId = userInfoResult.unionid;
-        }
+        // var userInfoResp = request('GET','https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en');
+        // var userInfoResult = JSON.parse(userInfoResp.getBody());
+        // if (userInfoResult.nickname) {
+        //   userInfo.nickname = userInfoResult.nickname;
+        // }
+        // if (userInfoResult.sex) {
+        //   userInfo.sex = userInfoResult.sex;
+        // }
+        // if (userInfoResult.province) {
+        //   userInfo.province = userInfoResult.province;
+        // }
+        // if (userInfoResult.city) {
+        //   userInfo.city = userInfoResult.city;
+        // }
+        // if (userInfoResult.country) {
+        //   userInfo.country = userInfoResult.country;
+        // }
+        // if (userInfoResult.headimgurl) {
+        //   userInfo.headimgurl = userInfoResult.headimgurl;
+        // }
+        // if (userInfoResult.language) {
+        //   userInfo.language = userInfoResult.language;
+        // }
+        // if (userInfoResult.unionid) {
+        //   userInfo.unionId = userInfoResult.unionid;
+        // }
         // Get UserInfo
         userInfo.openId = openId;
         if (result.unionid) {
