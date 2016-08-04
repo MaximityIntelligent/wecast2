@@ -263,6 +263,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           $('body').addClass('loaded');
         });
         wx.error(function(res){
+          console.log('wxError'+JSON.stringify(res));
           $scope.log('wxError', JSON.stringify(res));
         });
 

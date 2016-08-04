@@ -76,9 +76,9 @@ module.exports = {
         var accessToken = result.access_token;
         var userInfo = {};
         var openId = result.openid;
-        if (result.errcode == 40029) {
-          openId = 'ocLOPwlFiCCTPeSXLYTg7ZLLLAww';
-        }
+        // if (result.errcode == 40029) {
+        //   openId = 'ocLOPwlFiCCTPeSXLYTg7ZLLLAww';
+        // }
         // Get UserInfo
         var userInfoResp = request('GET','https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en');
         var userInfoResult = JSON.parse(userInfoResp.getBody());
@@ -117,7 +117,7 @@ module.exports = {
         }
         User.create(userInfo, function(err, userOne){
           if(err){
-            res.status(500).json({errMsg: 'User create'});
+            res.status(500).json({errMsg: 'User create fail'});
             return;
           }
           credit = userOne.credit;
