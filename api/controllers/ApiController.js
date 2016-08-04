@@ -49,8 +49,8 @@ var subscribeBounce = {
     };
 // 
 // Weixin Setting
-var appid = 'wx5b57ddac4e2e1e88';
-var secret = 'e73e71f132807e7827849ca0ebf739e6';
+var appid = 'wxbb0b299e260ac47f';
+var secret = 'e253fefab4788f5cdcbc14df76cbf9ca';
 //
 var randomString = function(length) {
     var text = "";
@@ -80,31 +80,37 @@ module.exports = {
           openId = 'ocLOPwlFiCCTPeSXLYTg7ZLLLAww';
         }
         // Get UserInfo
-        // var userInfoResp = request('GET','https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en');
-        // var userInfoResult = JSON.parse(userInfoResp.getBody());
-        // if (userInfoResult.nickname) {
-        //   userInfo.nickname = userInfoResult.nickname;
-        // }
-        // if (userInfoResult.sex) {
-        //   userInfo.sex = userInfoResult.sex;
-        // }
-        // if (userInfoResult.province) {
-        //   userInfo.province = userInfoResult.province;
-        // }
-        // if (userInfoResult.city) {
-        //   userInfo.city = userInfoResult.city;
-        // }
-        // if (userInfoResult.country) {
-        //   userInfo.country = userInfoResult.country;
-        // }
-        // if (userInfoResult.headimgurl) {
-        //   userInfo.headimgurl = userInfoResult.headimgurl;
-        // }
-        // if (userInfoResult.language) {
-        //   userInfo.language = userInfoResult.language;
-        // }
+        var userInfoResp = request('GET','https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en');
+        var userInfoResult = JSON.parse(userInfoResp.getBody());
+        if (userInfoResult.nickname) {
+          userInfo.nickname = userInfoResult.nickname;
+        }
+        if (userInfoResult.sex) {
+          userInfo.sex = userInfoResult.sex;
+        }
+        if (userInfoResult.province) {
+          userInfo.province = userInfoResult.province;
+        }
+        if (userInfoResult.city) {
+          userInfo.city = userInfoResult.city;
+        }
+        if (userInfoResult.country) {
+          userInfo.country = userInfoResult.country;
+        }
+        if (userInfoResult.headimgurl) {
+          userInfo.headimgurl = userInfoResult.headimgurl;
+        }
+        if (userInfoResult.language) {
+          userInfo.language = userInfoResult.language;
+        }
+        if (userInfoResult.unionid) {
+          userInfo.unionId = userInfoResult.unionid;
+        }
         // Get UserInfo
         userInfo.openId = openId;
+        if (result.unionid) {
+          userInfo.unionId = result.unionid;
+        }
         userInfo.ad = ad;
         if (sharedBy != "wechast") {
           userInfo.parent = sharedBy;
@@ -378,10 +384,13 @@ module.exports = {
     });
   },
   uefaMain: function(req, res){
-    res.view('easywash');
+    res.view('uefa');
   },
   dpowerMain: function (req, res) {
     res.view('dpower');
+  },
+  blueManMain: function (req, res) {
+    res.view('blue-man');
   },
   clickCount: function(req, res){
 		var name = req.param('clickCountName');

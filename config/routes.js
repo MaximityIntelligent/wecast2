@@ -41,6 +41,9 @@ module.exports.routes = {
     controller: 'ApiController',
     action: 'redeem_c'
   },
+  '/adMood': {
+    view: 'mood'
+  },
   '/adUEFA': {
     controller: 'ApiController',
     action: 'uefaMain'
@@ -48,6 +51,10 @@ module.exports.routes = {
   '/adDPower': {
     controller: 'ApiController',
     action: 'dpowerMain'
+  },
+  '/adBlueMan': {
+    controller: 'ApiController',
+    action: 'blueManMain'
   },
   '/api/clickCount': {
     controller: 'ApiController',

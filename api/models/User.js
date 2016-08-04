@@ -73,6 +73,11 @@ module.exports = {
     },
     language: {
           type: 'string'
+    },
+    unionId: {
+          type: 'string'
+          //primaryKey: true,
+          //unique: true
     }
 
   }

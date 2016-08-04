@@ -1,5 +1,5 @@
 
-var app = angular.module('easywash', []);
+var app = angular.module('uefa', []);
 
 var QueryString = function () {  //提取由公众號或分享LINK時的CODE參數
   // This function is anonymous, is executed immediately and
@@ -36,7 +36,7 @@ var adString = 'adUEFA';
 // var snsapi = 'snsapi_base';
 var snsapi = 'snsapi_base';
 var prizeCredit = {'prize1':15, 'prize2':30};
-var host = 'localhost:8080';
+var host = 'lb.ibeacon-macau.com';
 var appid = 'wx5b57ddac4e2e1e88';
 var debug = true;
 

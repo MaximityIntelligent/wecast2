@@ -1,22 +1,28 @@
 <!DOCTYPE HTML>
 <html lang="en">
   <head>
-    <title>玩盡歐國!Cheers帶你吃喝玩樂</title>
+    <title>Blue Man Show</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/fancybox2.1.5/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
-    <link rel="stylesheet" href="/styles/easywash.css">
+    <link rel="stylesheet" href="/styles/blue-man.css">
     <!--<script type="text/javascript" src="http://fgnass.github.io/spin.js/spin.min.js"></script>-->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="/fancybox2.1.5/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <script src="https://code.angularjs.org/1.3.15/angular.min.js"></script>
+    <script src="/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="/js/angular.min.js"></script>
     <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-    <script src="/controllers/easywash.js"></script>
+    <script src="/controllers/blue-man.js"></script>
+    <style>
+      @font-face {
+       font-family:loadingfont;
+       src: url(fonts/MSTIFFHEIHK-ULTRABOLD.OTF);
+      }
+    </style>
   </head>
-  <body data-ng-app="easywash" data-ng-controller="IndexCtrl" orient="portrait" ng-init="loading=0">
+  <body data-ng-app="blueman" data-ng-controller="IndexCtrl" orient="portrait" ng-init="loading=0">
     <div id="landscape-container" data-ng-show="LANDSCAPE==atPage" >
       <br>
       <div class="" id="landscapeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -44,7 +50,7 @@
         <div class="cssload-cube cssload-c3"></div>
       </div>-->
       <div class="spinner-logo">
-        <center><img style="width: 150px;opacity: 0;" src="/images/easywash/loading-logo.png"></center>
+        <center><img style="width: 150px;opacity: 0;" src="/images/blueman/loading-logo.png"></center>
       </div>
       <div class="spinner" ng-show="false">
         <div class="bounce1"></div>
@@ -56,7 +62,7 @@
 
       </div>-->
       <div class="spinner-precentage" ng-cloak>
-        <center><h4 style="color: red;">{{loading}}%</h4></center>
+        <center><h4 style="color: red; font-family: loadingfont;">{{loading}}%</h4></center>
       </div>
     </div>
     <!--
@@ -111,19 +117,19 @@
       </p> -->
 <!--     </div> -->
 
-    <div ng-init="init()" data-ng-hide="1">
+    <div ng-init="init()" id="top">
     </div>
 
-    <div class="container-fluid" id="main-container" data-ng-show="MAIN==atPage" >
+    <div class="container-fluid" id="main-container" data-ng-show="MAIN==MAIN" >
       <div id="main-event-info">
-        <a class="fancybox" href="#container_e"><img name="event-info" src="/images/easywash/main/event-info.png" ng-click="clickCount('rules');log('rules');"></a>
+        <a class="fancybox" href="#container_e"><img name="event-info" src="/images/blueman/main/event-info.png" ng-click="clickCount('rules');log('rules');"></a>
 
       </div>
       <div id="main-1" style="text-align: center;color: yellow">
-        <img style="opacity: 0;" class="img-responsive" src="/images/easywash/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_button');log('share_button')">
+        <img style="opacity: 0;" class="img-responsive" src="/images/blueman/main/get-bubble.gif" ng-click="atPage=SHARE;clickCount('share_button');log('share_button');gotoTop();">
       </div>
       <div id="main-arrow" style="text-align: center;">
-        <img class="img-responsive" src="/images/easywash/main/arrow.png">
+        <img class="img-responsive" src="/images/blueman/main/arrow.png">
       </div>
       <div id="prize1-1" style="color: white">
         <font>
@@ -131,8 +137,8 @@
         </font>
       </div>
       <div id="prize1-2">
-          <img name="redeem" style="opacity: 0;" class="img-responsive" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" ng-hide="showPrize1()">
-          <img name="redeem" style="opacity: 1;" class="img-responsive" src="/images/easywash/main/prize1.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" ng-show="showPrize1()">
+          <img name="redeem" style="opacity: 0;" class="img-responsive" src="/images/blueman/prize/redeem.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" ng-hide="showPrize1()">
+          <img name="redeem" style="opacity: 1;" class="img-responsive" src="/images/blueman/main/prize1.png" ng-click="showRedeem('prize1');clickCount('show_redeem');log('show_redeem')" ng-show="showPrize1()">
       </div>
       <div id="prize2-1" style="color: white">
         <font>
@@ -140,41 +146,41 @@
         </font>
       </div>
       <div id="prize2-2">
-          <img name="redeem" style="opacity: 0;" class="img-responsive" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')" ng-hide="showPrize2()">
-          <img name="redeem" style="opacity: 1;" class="img-responsive" src="/images/easywash/main/prize2.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')" ng-show="showPrize2()">
+          <img name="redeem" style="opacity: 0;" class="img-responsive" src="/images/blueman/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')" ng-hide="showPrize2()">
+          <img name="redeem" style="opacity: 1;" class="img-responsive" src="/images/blueman/main/prize2.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')" ng-show="showPrize2()">
       </div>
       <div id="main-2">
 <!--         <a href="#top">
-        <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1;resetVideo();clickCount('prize1_page');log('prize1_page')">
-        <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize1-dim.png" ng-show="showPrize1Dim();" ng-click="atPage=PRIZE1;resetVideo();clickCount('prize1_page');log('prize1_page')">
+        <img class="img-responsive" style="opacity: 0;" src="/images/blueman/main/prize1.png" ng-show="showPrize1();" ng-click="atPage=PRIZE1;resetVideo();clickCount('prize1_page');log('prize1_page')">
+        <img class="img-responsive" style="opacity: 0;" src="/images/blueman/main/prize1-dim.png" ng-show="showPrize1Dim();" ng-click="atPage=PRIZE1;resetVideo();clickCount('prize1_page');log('prize1_page')">
         </a> -->
-        <!-- <img class="img-responsive" src="/images/easywash/main/choose.png" ng-hide="userVote" ng-click="showQuestionnaire()"> -->
-        <img class="img-responsive" src="/images/easywash/main/game-result1.png" ng-show="userVote=='vote1'">
-        <img class="img-responsive" src="/images/easywash/main/game-result2.png" ng-show="userVote=='vote2'">
-        <img class="img-responsive" src="/images/easywash/main/game-result.png" ng-hide="userVote">
+        <!-- <img class="img-responsive" src="/images/blueman/main/choose.png" ng-hide="userVote" ng-click="showQuestionnaire()"> -->
+        <img class="img-responsive" src="/images/blueman/main/game-result1.png" ng-show="userVote=='vote1'">
+        <img class="img-responsive" src="/images/blueman/main/game-result2.png" ng-show="userVote=='vote2'">
+        <img class="img-responsive" src="/images/blueman/main/game-result.png" ng-hide="userVote">
       </div>
       <div id="main-3" data-ng-show="false">
         <a href="#top">
-        <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize2.png" ng-show="showPrize2();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
-        <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize2-dim.png" ng-show="showPrize2Dim();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
+        <img class="img-responsive" style="opacity: 0;" src="/images/blueman/main/prize2.png" ng-show="showPrize2();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
+        <img class="img-responsive" style="opacity: 0;" src="/images/blueman/main/prize2-dim.png" ng-show="showPrize2Dim();" ng-click="atPage=PRIZE2;clickCount('prize2_page');log('prize2_page')">
         </a>
       </div>
       <div id="main-4">
-        <img class="img-responsive" src="/images/easywash/main/redeem-btn-win.png" ng-show="userVote==gameResult">
-        <img class="img-responsive" src="/images/easywash/main/redeem-btn-lose.png" ng-show="userVote&&userVote!=gameResult">
-        <img class="img-responsive" src="/images/easywash/main/redeem-btn.png" ng-hide="userVote">
+        <img class="img-responsive" src="/images/blueman/main/redeem-btn-win.png" ng-show="userVote&&userVote==gameResult">
+        <img class="img-responsive" src="/images/blueman/main/redeem-btn-lose.png" ng-show="userVote&&userVote!=gameResult">
+        <img class="img-responsive" src="/images/blueman/main/redeem-btn.png" ng-hide="userVote">
       </div>
       <div id="vote-1" ng-show="false">
-        <img class="img-responsive" src="/images/easywash/main/vote1.png" ng-click="showVote('vote1')" ng-hide="userVote=='vote1'">
-        <img class="img-responsive" src="/images/easywash/main/vote1-pick.png" ng-show="userVote=='vote1'" ng-click="showVotedModal('vote1')">
+        <img class="img-responsive" src="/images/blueman/main/vote1.png" ng-click="showVote('vote1')" ng-hide="userVote=='vote1'">
+        <img class="img-responsive" src="/images/blueman/main/vote1-pick.png" ng-show="userVote=='vote1'" ng-click="showVotedModal('vote1')">
       </div>
       <div id="vote-2" ng-show="false">
-        <img class="img-responsive" src="/images/easywash/main/vote3.png" ng-click="showVote('vote2')" ng-hide="userVote=='vote2'">
-        <img class="img-responsive" src="/images/easywash/main/vote3-pick.png" ng-show="userVote=='vote2'" ng-click="showVotedModal('vote2')">
+        <img class="img-responsive" src="/images/blueman/main/vote3.png" ng-click="showVote('vote2')" ng-hide="userVote=='vote2'">
+        <img class="img-responsive" src="/images/blueman/main/vote3-pick.png" ng-show="userVote=='vote2'" ng-click="showVotedModal('vote2')">
       </div>
       <div id="redeem-vote" ng-click="showRedeemVote()" ng-show="showRedeemVoteBtn()">
         <center>
-          <img class="img-responsive" style="opacity: 1;" src="/images/easywash/main/green-finger.png">
+          <img class="img-responsive" style="opacity: 1;" src="/images/blueman/main/green-finger.png">
         </center>
       </div>
       <div id="voteRate-1" ng-show="false">
@@ -186,36 +192,36 @@
         <p><font>{{voteRate2}}</font>%</p>
       </div>
       <div id="voteBar-2" ng-show="false">
-        <img class="img-responsive" src="/images/easywash/main/vote2-bar.png">
+        <img class="img-responsive" src="/images/blueman/main/vote2-bar.png">
       </div>
       <div id="voteBar-1" ng-show="false">
-        <img class="img-responsive" src="/images/easywash/main/vote1-bar.png" ng-style="voteBar1Style">
+        <img class="img-responsive" src="/images/blueman/main/vote1-bar.png" ng-style="voteBar1Style">
       </div>
       
       <div id="main-finger">
-        <img class="img-responsive" src="/images/easywash/main/main-finger.png">
+        <img class="img-responsive" src="/images/blueman/main/main-finger.png">
       </div>
       <div id="main-5" ng-click="atPage=THANKYOU;" data-ng-show="false" >
       </div>
       <div id="main-qr">
-        <a class="fancybox" href="/images/easywash/main/maximity-qr.png">
-          <img style="opacity: 0;" name="mainQr" src="/images/easywash/main/main-qr.png">
+        <a class="fancybox" href="/images/blueman/main/maximity-qr.png">
+          <img style="opacity: 0;" name="mainQr" src="/images/blueman/main/main-qr.png">
         </a>
       </div>
       <div id="main-map">
         <a href="https://www.google.com.hk/maps/place/%E6%BE%B3%E9%96%80%E6%96%B0%E5%9F%8E%E5%B8%82%E8%8A%B1%E5%9C%92(%E7%AC%AC%E4%B9%9D%E5%BA%A7%E8%90%AC%E5%8B%9D%E9%96%A3)/@22.2132536,113.5470802,19.5z/data=!4m5!3m4!1s0x34017b185d296d9b:0xd99eb70c2e755386!8m2!3d22.2132787!4d113.5473906" ng-click="log('google_map')">
-          <img style="opacity: 0;" class="img-responsive" src="/images/easywash/main/map.png">
+          <img style="opacity: 0;" class="img-responsive" src="/images/blueman/main/map.png">
         </a>
       </div>
       <div id="main-phone" ng-click="log('tel')">
-        <a href="tel:85328235399"><img style="opacity: 0;" class="img-responsive" src="/images/easywash/main/map.png"></a>
+        <a href="tel:85328235399"><img style="opacity: 0;" class="img-responsive" src="/images/blueman/main/map.png"></a>
       </div>
       <div id="customer-qr">
-          <img name="customerQr" src="/images/easywash/main/cheers-qr.png">
+          <img name="customerQr" src="/images/blueman/main/cheers-qr.png">
       </div>
 <!--       <div id="share-friend">
         <a id="show-friend" class="fancybox" href="#friends-list" ng-click="friendClick('button',$event);log('friends_page')">
-        <img class="img-responsive" style="opacity: 0;" src="/images/easywash/main/prize1.png">
+        <img class="img-responsive" style="opacity: 0;" src="/images/blueman/main/prize1.png">
         </a>
       </div> -->
     </div>
@@ -227,14 +233,14 @@
         <div id="event-1-content">
         <p class="text-justify">1. 玩家將遊戲頁面<font class="yellow">Share</font>比朋友，<font class="yellow">每位朋友點擊可贈送一個"❤"比你</font>。玩家可憑相應數量的"❤"兌換獎品，每位玩家每項獎品每天只可兌換一次；</p>
         <p class="text-justify">2. 如玩家所投選的國家隊伍勝出2016年歐洲國家杯冠軍，玩家所擁有的"❤"可享有一次雙倍獎勵，投票截止時間為澳門時間2016/07/11凌晨02:45 (即2016歐國杯決賽開賽前15分鐘)；雙倍獎勵兌換的截止日期為2016/07/20；</p>
-        <p class="text-justify">3. 收集足夠"❤"後，得獎者須於2016年7月31日前，前往澳門台山<font class="yellow">Cheers Pub</font>，出示相應的領獎頁給予在場的工作人員兌換獎品；若得獎者無法按照活動規定時間內領獎，Cheers Pub有權取消其得獎資格；</p>
-        <p class="text-justify">4. 獎品換領地址：澳門台山菜園涌邊街73號Cheers Pub</p>
+        <p class="text-justify">3. 收集足夠"❤"後，得獎者須於2016年7月31日前，前往澳門台山<font class="yellow">數碼動力</font>，出示相應的領獎頁給予在場的工作人員兌換獎品；若得獎者無法按照活動規定時間內領獎，數碼動力有權取消其得獎資格；</p>
+        <p class="text-justify">4. 獎品換領地址：澳門台山菜園涌邊街73號數碼動力</p>
         <p class="text-justify">5. 獎品換領時間：<font class="yellow">18:00-03:00</font></p>
         <p class="text-justify">6. 得獎者所提供之個人資料，僅用作此活動聯絡領獎事宜；</p>
         <p class="text-justify">7. 活動參加者不得以任何非法手段破壞活動規則及影響活動數據，否則其參加及得獎資格將作廢；</p>
-        <p class="text-justify">8. Cheers Pub有權隨時修改此活動條款及細則，無須事前通知；</p>
-        <p class="text-justify">9. Cheers Pub保留最終活動解釋權；</p>
-        <p class="text-justify">10. 如有任何查詢請致電Cheers Pub，電話<font class="yellow">28235399</font>或微信公眾號：<font class="yellow">Cheers_macau</font>查詢</p>
+        <p class="text-justify">8. 數碼動力有權隨時修改此活動條款及細則，無須事前通知；</p>
+        <p class="text-justify">9. 數碼動力保留最終活動解釋權；</p>
+        <p class="text-justify">10. 如有任何查詢請致電數碼動力，電話<font class="yellow"></font>或微信公眾號：<font class="yellow"></font>查詢</p>
         </div>
       </div>
       </center>
@@ -249,10 +255,10 @@
     </div>
     <div class="container-fluid" id="container_thankyou" data-ng-show="THANKYOU==atPage" ng-click="log('thankyou_page');" >
       <div id="thankyou-1">
-        <a href="#top"><img name="iwant" style="opacity: 0;" src="/images/easywash/thankyou/iwant.gif" ng-click="atPage=MAIN;"></a>
+        <a href="#top"><img name="iwant" style="opacity: 0;" src="/images/blueman/thankyou/iwant.gif" ng-click="atPage=MAIN;"></a>
       </div>
       <div id="qrcode" ng-show="false" style="position: absolute;right: 0;bottom: 0;left: 0;">
-        <img src="/images/easywash/thankyou/qrcode.png" style="max-width:100%;max-height:20%;">
+        <img src="/images/blueman/thankyou/qrcode.png" style="max-width:100%;max-height:20%;">
       </div>
     </div>
 
@@ -263,22 +269,22 @@
       </div>
       <div class="close-btn"  data-ng-show="false">
         <a href="#top">
-          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('prize1_return')">
+          <img class="img-responsive" src="/images/blueman/close.png" ng-click="atPage=MAIN;log('prize1_return')">
         </a>
       </div>
       
       <div id="prize1-qr" ng-click="log('mood_qr')">
-        <img name="prize1Qr" src="/images/easywash/prize/prize1-qr.png">
+        <img name="prize1Qr" src="/images/blueman/prize/prize1-qr.png">
       </div>
       <div id="prize1-back" ng-click="atPage=MAIN;initAboutEasywash();log('prize1_return')">
-        <center><a href="#top"><img style="opacity: 0;" name="prize1Back" src="/images/easywash/about-easywash/address.png"></a></center>
+        <center><a href="#top"><img style="opacity: 0;" name="prize1Back" src="/images/blueman/about-easywash/address.png"></a></center>
       </div>
     </div> -->
 
 <!--     <div class="container-fluid" id="container_p2" data-ng-show="PRIZE2==atPage" ng-click="atPage=MAIN;log('prize2_return')">
       <div class="close-btn" data-ng-show="false">
         <a href="#top">
-          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('prize2_return')">
+          <img class="img-responsive" src="/images/blueman/close.png" ng-click="atPage=MAIN;log('prize2_return')">
         </a>
       </div>
       <div id="prize2-1" style="color: white" data-ng-show="false">
@@ -287,19 +293,19 @@
       <div id="prize2-2" class="row" data-ng-show="false">
         <center>
           <a href="#top" data-ng-show="false">
-          <img name="continue-bubble" src="/images/easywash/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('continue_collect');log('continue_collect')">
+          <img name="continue-bubble" src="/images/blueman/prize/continue-bubble.png" ng-click="atPage=SHARE;clickCount('continue_collect');log('continue_collect')">
           </a>
           <a href="#top">
-          <img name="redeem" class="img-responsive redeem" src="/images/easywash/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')"> //ng-click="redeem('2')">
+          <img name="redeem" class="img-responsive redeem" src="/images/blueman/prize/redeem.png" ng-click="showRedeem('prize2');clickCount('show_redeem');log('show_redeem')"> //ng-click="redeem('2')">
           </a>
 
         </center>
       </div>
       <div id="prize2-qr">
-        <img name="prize2Qr" src="/images/easywash/prize/prize2-qr.png">
+        <img name="prize2Qr" src="/images/blueman/prize/prize2-qr.png">
       </div>
       <div id="prize2-back" ng-click="atPage=MAIN;log('prize2_return')">
-        <center><a href="#top"><img style="opacity: 0;" name="prize2Back" src="/images/easywash/about-easywash/address.png"></a></center>
+        <center><a href="#top"><img style="opacity: 0;" name="prize2Back" src="/images/blueman/about-easywash/address.png"></a></center>
       </div>
     </div> -->
 
@@ -396,11 +402,11 @@
               </div>
               <hr style="margin-top: 10px; margin-bottom: 10px;">
               <div id="redeem-rule">
-                <p>・請前往Cheers Pub換領奬品</p >
+                <p>・請前往數碼動力換領奬品</p >
                 <p>・地址: 澳門台山菜園涌邊街73號新城市花園第九座地下CJ鋪</p >
                 <p>・領獎截止日期: 2016/07/31</p >
                 <p>・領獎時間: 6pm-3am</p >
-                <p>・Cheers Pub享有活動及獎品最終解釋權</p >
+                <p>・數碼動力享有活動及獎品最終解釋權</p >
               </div>
             </form>
           </div>
@@ -523,12 +529,12 @@
 <!--     <div class="container-fluid" id="container_easywash" data-ng-show="ABOUT_EASYWASH==atPage">
       <div class="close-btn" data-ng-show="false">
         <a href="#top">
-          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('about_easywash_return')"/>
+          <img class="img-responsive" src="/images/blueman/close.png" ng-click="atPage=MAIN;log('about_easywash_return')"/>
         </a>
       </div>
       <div id="rules" ng-click="clickCount('rules');log('rules');">
         <a class="fancybox" href="#container_e">
-          <img style="width:100%;height:100%;border:0" class="img-responsive" src="/images/easywash/about-easywash/rules.png">
+          <img style="width:100%;height:100%;border:0" class="img-responsive" src="/images/blueman/about-easywash/rules.png">
         </a>
       </div>
       <div id="easywash-1" ng-click="clickCount('video');log('video');" data-ng-show="false">
@@ -536,19 +542,19 @@
         </iframe>
       </div>
       <div id="about-qr" ng-click="luckyDraw()">
-        <img name="aboutQr" src="/images/easywash/about-easywash/about-qr.png">
+        <img name="aboutQr" src="/images/blueman/about-easywash/about-qr.png">
       </div>
       <div id="easywash-2" ng-click="atPage=MAIN;log('about_easywash_return')">
-        <center><a href="#top"><img style="opacity: 0;" name="address" src="/images/easywash/about-easywash/address.png"></a></center>
+        <center><a href="#top"><img style="opacity: 0;" name="address" src="/images/blueman/about-easywash/address.png"></a></center>
       </div>
       <div id="easywash-3" ng-click="clickCount('tel');log('tel')" data-ng-show="false">
-        <center><a href="tel:85363539002"><img name="call" src="/images/easywash/about-easywash/call.png"></a></center>
+        <center><a href="tel:85363539002"><img name="call" src="/images/blueman/about-easywash/call.png"></a></center>
       </div>
 
     </div> -->
 <!--     <div class="container-fluid" id="container_questionnaire" data-ng-show="QUESTIONNAIRE==atPage">
       <div class="close-btn">
-          <img class="img-responsive" src="/images/easywash/close.png" ng-click="atPage=MAIN;log('questionnaire_return')"/>
+          <img class="img-responsive" src="/images/blueman/close.png" ng-click="atPage=MAIN;log('questionnaire_return')"/>
       </div>
       <div class="col-xs-10 col-xs-offset-1">
         <center>
@@ -571,9 +577,9 @@
       </div>
 
     </div> -->
-    <a id="prize-redeem" class="fancybox" href="/images/easywash/verification/prize-redeem.png"></a>
+    <a id="prize-redeem" class="fancybox" href="/images/blueman/verification/prize-redeem.png"></a>
     <a id="share-success" class="fancybox" href="#share-success-div"></a>
-    <div id="share-success-div" style="display: none;text-align: center;color:white;background-color:black;" ng-click="shareSuccess();"><img src="/images/easywash/share/share-success.png" width="100%"></div>
+    <div id="share-success-div" style="display: none;text-align: center;color:white;background-color:black;" ng-click="shareSuccess();"><img src="/images/blueman/share/share-success.png" width="100%"></div>
     <div class="container" id="friends-list" >
       <div id="container_e-inner" >
       <center>
@@ -594,7 +600,7 @@
       </center>
       </div>
     </div>
-<!--href="/images/easywash/map.png"
+<!--href="/images/blueman/map.png"
 
     <!--
     <script src="js/classie.js"></script>
@@ -620,6 +626,7 @@
       $(".close-btn").css("margin-top", "2%");
       $(".close-btn img").css("width", containerWidth*115/mainScaleX);
 
+      $("#main-container").css("position", "absolute");
       $("#main-container").css("width", containerWidth);
       $("#main-container").css("height", containerHeight);
 
@@ -807,6 +814,7 @@
 
       var shareScaleY = 1206;
       var containerHeight_share = containerWidth*shareScaleY/mainScaleX;
+      $("#container_share").css("position", "absolute");
       $("#container_share").css("width", containerWidth);
       $("#container_share").css("height", containerHeight_share);
       $("#share-1").css("position", "absolute");

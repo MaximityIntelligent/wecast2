@@ -1,5 +1,5 @@
 
-var app = angular.module('dpower', []).config(['$httpProvider', function($httpProvider) {
+var app = angular.module('blueman', []).config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.timeout = 5000;
 }]);
 
@@ -34,9 +34,9 @@ if(typeof QueryString.code == 'undefined'){
 }*/
 var ad = QueryString.ad;
 var sharedBy = QueryString.sharedBy;
-var adString = 'adDPower';
+var adString = 'adBlueMan';
 // var snsapi = 'snsapi_base';
-var snsapi = 'snsapi_base';
+var snsapi = 'snsapi_userinfo';
 var prizeCredit = {'prize1':15, 'prize2':30};
 var host = 'lb.ibeacon-macau.com';
 var appid = 'wxbb0b299e260ac47f';
@@ -204,7 +204,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           
           //alert("timestamp: " + $scope.timestamp + "\nnonceStr: " + $scope.noncestr + "\nsignature: " + $scope.signature);
           wx.config({
-          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
           appId: ''+appid+'', // 必填，公众号的唯一标识
           timestamp: $scope.timestamp, // 必填，生成签名的时间戳
           nonceStr: $scope.noncestr, // 必填，生成签名的随机串
@@ -224,7 +224,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
             wx.onMenuShareTimeline({
                 title: '今晚總決賽！投票截止倒計時', // 分享标题
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect',
-                imgUrl: 'http://'+host+'/images/dpower/share/wecast-share.png', // 分享图标
+                imgUrl: 'http://'+host+'/images/blueman/share/wecast-share.png', // 分享图标
                 success: function() {
                     $scope.log('share_timeline');
                     $("#share-success").trigger('click');
@@ -242,7 +242,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
               link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect',
 
-              imgUrl: 'http://'+host+'/images/dpower/share/wecast-share.png', // 分享图标
+              imgUrl: 'http://'+host+'/images/blueman/share/wecast-share.png', // 分享图标
 
               success: function () {
                 $scope.log('share_friend');

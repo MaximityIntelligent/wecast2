@@ -2,20 +2,20 @@
    orientation: portrait;
  }
 #main-container {
-  background-image:url('/images/easywash/main/main-background.png');
+  background-image:url('/images/uefa/main/main-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
   animation-name: fade-in;
   animation-duration: 0.8s;
 }
 #container_share {
-  background-image:url('/images/easywash/share/share-background.png');
+  background-image:url('/images/uefa/share/share-background.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
 #share-2
 {
-  background-image:url('/images/easywash/share/share-bubble.png');
+  background-image:url('/images/uefa/share/share-bubble.png');
   background-repeat: no-repeat;
   background-position: top right;
   background-size: 100% 100%;
@@ -23,14 +23,14 @@
   animation-duration: 1s;
 }
 #container_p1 {
-  background-image:url('/images/easywash/prize/prize1-background.png');
+  background-image:url('/images/uefa/prize/prize1-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
   animation-name: fade-in;
   animation-duration: 0.8s;
 }
 #container_p2 {
-  background-image:url('/images/easywash/prize/prize2-background.png');
+  background-image:url('/images/uefa/prize/prize2-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
   animation-name: fade-in;
@@ -38,28 +38,28 @@
 }
 
 #container_e {
-  background-image:url('/images/easywash/event/event-background.png');
+  background-image:url('/images/uefa/event/event-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
   width: 90%;
 }
 
 #friends-list {
-  background-image:url('/images/easywash/share/share-friend-background.png');
+  background-image:url('/images/uefa/share/share-friend-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
   width: 90%;
 }
 
 #container_easywash {
-  background-image:url('/images/easywash/about-easywash/about-easywash-background.png');
+  background-image:url('/images/uefa/about-easywash/about-easywash-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
   animation-name: fade-in;
   animation-duration: 0.8s;
 }
 #container_thankyou {
-  background-image:url('/images/easywash/thankyou/thankyou-background.png');
+  background-image:url('/images/uefa/thankyou/thankyou-background.png');
   background-repeat: no-repeat;;
   background-size: 100% 100%;
 }
@@ -100,7 +100,7 @@
     z-index: 1000;
     background: #FFFFFF;
     background-color: #FFFFFF;
-    background-image: url('/images/easywash/loading-background.png');
+    background-image: url('/images/uefa/loading-background.png');
     background-repeat: no-repeat;;
     background-size: 100% 100%;
 }
