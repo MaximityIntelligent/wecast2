@@ -193,6 +193,9 @@ User.create = function(userInfo, cb){ //Create User, 如果原有就return現有
         if (userInfo.language) {
           userOne.language = userInfo.language;
         }
+        if (userInfo.unionId) {
+          userOne.unionId = userInfo.unionId;
+        }
         userOne.save(function (err, savedUser) {
           if(err){
             cb(err);

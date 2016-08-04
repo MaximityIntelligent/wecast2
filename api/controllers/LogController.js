@@ -90,7 +90,7 @@ module.exports = {
 							offsetAccess[element] = actionAccess[element].length;
 						});
 						console.log(offsetAccess);
-						return res.json({daysAccess: daysAccess, offsetAccess:offsetAccess, totalUser: users, action: action2});
+						return res.json({access: daysAccess, offsetAccess:offsetAccess, totalUser: users, action: action2});
 					});
 
 					
@@ -143,7 +143,7 @@ module.exports = {
 							offsetAccess[element] = actionAccess[element].length;
 						});
 						console.log(offsetAccess);
-						return res.json({hoursAccess: hoursAccess, offsetAccess:offsetAccess, totalUser: users, action: action2});
+						return res.json({access: hoursAccess, offsetAccess:offsetAccess, totalUser: users, action: action2});
 					});
 					
 				});

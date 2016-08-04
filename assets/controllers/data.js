@@ -140,35 +140,10 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         }
         $scope.labels = days;
         $scope.series = data.action;
-        var tempDataset = [];
-        data.action.forEach(function(action) {
-          var tempTotal = 0;
-          if ($scope.accumulated) tempTotal = data.offsetAccess[action] || 0;
-          var tempData = [];
-          for (var i=1; i<=31; i++) {
-            if (data.daysAccess[action] == undefined) {
-              tempTotal += 0;
-              tempData.push(0);
-            } else {
-              if ($scope.accumulated) {
-                tempTotal += data.daysAccess[action][""+i] || 0;
-                tempData.push(tempTotal);
-              } else {
-                tempData.push(data.daysAccess[action][""+i] || 0);
-                tempTotal += data.daysAccess[action][""+i] || 0;
-              }
-            }
-            
-            
-          }
-          tempDataset.push(tempData);
-          $scope.accessTotal[action] = tempTotal;
-        });
-        $scope.access = data.daysAccess;
+        $scope.access = data.access;
         $scope.offsetAccess = data.offsetAccess;
         $scope.totalUser = data.totalUser;
-        // console.log({data: tempDataset, total: $scope.accessTotal});
-        $scope.data = tempDataset;
+        $scope.dataGenerator(1, 31);
         if ($scope.auto) {
           $scope.updatePromise = $timeout(function () {
             $scope.getMonthData();
@@ -194,35 +169,10 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         }
         $scope.labels = hours;
         $scope.series = data.action;
-        var tempDataset = [];
-        data.action.forEach(function(action) {
-          var tempTotal = 0;
-          if ($scope.accumulated) tempTotal = data.offsetAccess[action] || 0;
-          var tempData = [];
-          for (var i=0; i< 24; i++) {
-            if (data.hoursAccess[action] == undefined) {
-              tempTotal += 0;
-              tempData.push(0);
-            } else {
-              if ($scope.accumulated) {
-                tempTotal += data.hoursAccess[action][""+i] || 0;
-                tempData.push(tempTotal);
-              } else {
-                tempData.push(data.hoursAccess[action][""+i] || 0);
-                tempTotal += data.hoursAccess[action][""+i] || 0;
-              }
-            }
-            
-            
-          }
-          tempDataset.push(tempData);
-          $scope.accessTotal[action] = tempTotal;
-        });
-        $scope.access = data.hoursAccess;
         $scope.offsetAccess = data.offsetAccess;
+        $scope.access = data.access;
         $scope.totalUser = data.totalUser;
-        console.log({data: tempDataset, total: $scope.accessTotal});
-        $scope.data = tempDataset;
+        $scope.dataGenerator(0, 23);
         if ($scope.auto) {
           $scope.updatePromise = $timeout(function () {
             $scope.getMonthData();
@@ -242,68 +192,38 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   };
   $scope.changeAccumulated = function () {
     if ($scope.buttonAction == "accessMonth") {
-      // $scope.series = Object.keys($scope.access).map(function (key) {
-      //       return $scope.actionMap[key];
-      //   });
-      // console.log($scope.series);
-      var tempDataset = [];
-      $scope.series.forEach(function(action) {
-        console.log(action);
-        var tempTotal = 0;
-        if ($scope.accumulated) tempTotal = $scope.offsetAccess[action] || 0;
-        var tempData = [];
-        for (var i=1; i<=31; i++) {
-          if ($scope.access[action] == undefined) {
-            tempTotal += 0;
-            tempData.push(0);
-          } else {
-            if ($scope.accumulated) {
-              tempTotal += $scope.access[action][""+i] || 0;
-              tempData.push(tempTotal);
-            } else {
-              tempData.push($scope.access[action][""+i] || 0);
-              tempTotal += $scope.access[action][""+i] || 0;
-            }
-          }
-          
-          
-        }
-        tempDataset.push(tempData);
-        $scope.accessTotal[action] = tempTotal;
-      });
-      $scope.data = tempDataset;
+      $scope.dataGenerator(1, 31);
     } else if ($scope.buttonAction == "accessDate") {
-      // $scope.series = Object.keys($scope.access).map(function (key) {
-      //       return $scope.actionMap[key];
-      //   });
-      // console.log($scope.series);
-      var tempDataset = [];
-      $scope.series.forEach(function(action) {
-        console.log(action);
-        var tempTotal = 0;
-        if ($scope.accumulated) tempTotal = $scope.offsetAccess[action] || 0;
-        var tempData = [];
-        for (var i=0; i< 24; i++) {
-          if ($scope.access[action] == undefined) {
-            tempTotal += 0;
-            tempData.push(0);
-          } else {
-            if ($scope.accumulated) {
-              tempTotal += $scope.access[action][""+i] || 0;
-              tempData.push(tempTotal);
-            } else {
-              tempData.push($scope.access[action][""+i] || 0);
-              tempTotal += $scope.access[action][""+i] || 0;
-            }  
-          }
-          
-          
-        }
-        tempDataset.push(tempData);
-        $scope.accessTotal[action] = tempTotal;
-      });
-      $scope.data = tempDataset;
+      $scope.dataGenerator(0, 23);
     }
   };
+
+  $scope.dataGenerator = function (xFrom, xTo) {
+    var tempDataset = [];
+    $scope.series.forEach(function(action) {
+      console.log(action);
+      var tempTotal = 0;
+      if ($scope.accumulated) tempTotal = $scope.offsetAccess[action] || 0;
+      var tempData = [];
+      for (var i=xFrom; i<=xTo; i++) {
+        if ($scope.access[action] == undefined) {
+          tempTotal += 0;
+          tempData.push(0);
+        } else {
+          if ($scope.accumulated) {
+            tempTotal += $scope.access[action][""+i] || 0;
+            tempData.push(tempTotal);
+          } else {
+            tempData.push($scope.access[action][""+i] || 0);
+            tempTotal += $scope.access[action][""+i] || 0;
+          }  
+        }
+      }
+      tempDataset.push(tempData);
+      $scope.accessTotal[action] = tempTotal;
+    });
+    $scope.data = tempDataset;
+  }
   
+
 }]);

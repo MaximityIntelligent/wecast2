@@ -40,7 +40,7 @@ var snsapi = 'snsapi_userinfo';
 var prizeCredit = {'prize1':15, 'prize2':30};
 var host = 'lb.ibeacon-macau.com';
 var appid = 'wxbb0b299e260ac47f';
-var debug = false;
+var debug = true;
 
 app.controller('IndexCtrl', [
 '$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll',
@@ -644,6 +644,29 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       // call $anchorScroll()
       $anchorScroll();
     };
+  $scope.render = {
+      mainRect : function (top, left, width, height) {
+        return $scope.rect(750, 4140, top, left, width, height);
+      },
+      shareRect : function (top, left, width, height) {
+        return $scope.rect(750, 1206, top, left, width, height);
+      },
+      thankyouRect : function (top, left, width, height) {
+        return $scope.rect(750, 1206, top, left, width, height);
+      }
+  }
+
+  $scope.rect = function (scaleX, scaleY, top, left, width, height) {
+    var containerWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    var containerHeight = containerWidth*scaleY/scaleX;
+    return {
+      "position" : "absolute",
+      "top" : (containerHeight*top/scaleY)+"px",
+      "left" : (containerWidth*left/scaleX)+"px",
+      "width" : (containerWidth*width/scaleX)+"px",
+      "height" : (containerHeight*height/scaleY)+"px"
+    };
+  }
   /*
   $scope.draw = function() {
     $http.get('/api/draw?userid='+$scope.userId+'&ad=56f0bf95b955d4f916852073'
