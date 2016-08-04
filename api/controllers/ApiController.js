@@ -80,32 +80,35 @@ module.exports = {
         //   openId = 'ocLOPwlFiCCTPeSXLYTg7ZLLLAww';
         // }
         // Get UserInfo
-        // var userInfoResp = request('GET','https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en');
-        // var userInfoResult = JSON.parse(userInfoResp.getBody());
-        // if (userInfoResult.nickname) {
-        //   userInfo.nickname = userInfoResult.nickname;
-        // }
-        // if (userInfoResult.sex) {
-        //   userInfo.sex = userInfoResult.sex;
-        // }
-        // if (userInfoResult.province) {
-        //   userInfo.province = userInfoResult.province;
-        // }
-        // if (userInfoResult.city) {
-        //   userInfo.city = userInfoResult.city;
-        // }
-        // if (userInfoResult.country) {
-        //   userInfo.country = userInfoResult.country;
-        // }
-        // if (userInfoResult.headimgurl) {
-        //   userInfo.headimgurl = userInfoResult.headimgurl;
-        // }
-        // if (userInfoResult.language) {
-        //   userInfo.language = userInfoResult.language;
-        // }
-        // if (userInfoResult.unionid) {
-        //   userInfo.unionId = userInfoResult.unionid;
-        // }
+        if (result.scope == 'snsapi_userinfo') {
+
+          var userInfoResp = request('GET','https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en');
+          var userInfoResult = JSON.parse(userInfoResp.getBody());
+          if (userInfoResult.nickname) {
+            userInfo.nickname = userInfoResult.nickname;
+          }
+          if (userInfoResult.sex) {
+            userInfo.sex = userInfoResult.sex;
+          }
+          if (userInfoResult.province) {
+            userInfo.province = userInfoResult.province;
+          }
+          if (userInfoResult.city) {
+            userInfo.city = userInfoResult.city;
+          }
+          if (userInfoResult.country) {
+            userInfo.country = userInfoResult.country;
+          }
+          if (userInfoResult.headimgurl) {
+            userInfo.headimgurl = userInfoResult.headimgurl;
+          }
+          if (userInfoResult.language) {
+            userInfo.language = userInfoResult.language;
+          }
+          if (userInfoResult.unionid) {
+            userInfo.unionId = userInfoResult.unionid;
+          }
+        }
         // Get UserInfo
         userInfo.openId = openId;
         if (result.unionid) {
@@ -168,13 +171,14 @@ module.exports = {
                 //console.log(wxTokenOne);
                 
               }
-
+              
               if (!userOne.subscribe) {
                 var subscribeResp = request('GET', 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='+appAccessToken+'&openid='+userOne.openId);
                 var subscribeResult = JSON.parse(subscribeResp.getBody());
                 if (subscribeResult.subscribe == 1) {
                   userOne.credit += subscribeBounce[ad];
                   userOne.subscribe = true;
+                  retResult.subscribeBonus = subscribeBounce[ad];
                   userOne.save(function (err, savedUser) {
                     // body...
                     console.log("subscribe bounce");
@@ -202,6 +206,7 @@ module.exports = {
               retResult.userVote = userOne.vote;
               retResult.isRedeemVote = userOne.isRedeemVote;
               retResult.sharedToUsers = sharedToUsers;
+              retResult.subscribe = userOne.subscribe;
               var userPrize = {};
               var prizeList = ['redeem_prize1', 'redeem_prize2'];
               var pickPrizeList = prizeList.map(function (item) {
