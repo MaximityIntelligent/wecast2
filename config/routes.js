@@ -45,16 +45,13 @@ module.exports.routes = {
     view: 'mood'
   },
   '/adUEFA': {
-    controller: 'ApiController',
-    action: 'uefaMain'
+    view: 'uefa'
   },
   '/adDPower': {
-    controller: 'ApiController',
-    action: 'dpowerMain'
+    view: 'dpower'
   },
   '/adBlueMan': {
-    controller: 'ApiController',
-    action: 'blueManMain'
+    view: 'blue-man'
   },
   '/api/clickCount': {
     controller: 'ApiController',

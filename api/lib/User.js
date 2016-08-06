@@ -5,7 +5,7 @@ function User (){
 
 module.exports = User;
 
-var adString = ["adUEFA", "adDPower"];
+var adString = ["adMood", "adUEFA", "adDPower", "adBlueMan"];
 
 User.sharedToUsers_c = function (userContext, adId, cb){ //找出user 分享過的follower
 

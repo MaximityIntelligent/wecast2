@@ -40,14 +40,51 @@ var prizesInfo = {
         'code' : "cheers001",
         'probability' : 30
     }
+  }, 
+  'adBlueMan' : {
+    'none' : {
+        'probability' : 100
+    },
+    'prize1' : {
+        'credit' : 15,
+        'weekAmount' : 3,
+        'amount' : 20,
+        'code' : "good001",
+        'probability' : 70
+    },
+    'prize2' : {
+        'credit' : 30,
+        'weekAmount' : 6,
+        'amount' : 10,
+        'code' : "good001",
+        'probability' : 30
+    }
   }
 }
 // Subscribe Setting
-var subscribeBounce = {
+var subscribeBonus = {
       'adUEFA' : 0,
-      'adDPower' : 5
+      'adDPower' : 5,
+      'adBlueMan' : 0
     };
 // 
+// Questionnaire Setting
+var questionnaireBonus = {
+      'adUEFA' : 5,
+      'adDPower' : 5,
+      'adBlueMan' : 5
+    };
+//
+// Vote Setting
+var votesInfo = {
+  'adBlueMan' : {
+    'votes': ['vote1', 'vote2'],
+    'voteExp' : new Date('2017-07-20T16:00:00'),
+    'redeemExp' : new Date('2017-07-20T16:00:00')
+  }
+}
+
+//
 // Weixin Setting
 var appid = 'wxbb0b299e260ac47f';
 var secret = 'e253fefab4788f5cdcbc14df76cbf9ca';
@@ -115,7 +152,7 @@ module.exports = {
           userInfo.unionId = result.unionid;
         }
         userInfo.ad = ad;
-        if (sharedBy != "wechast") {
+        if (sharedBy != "wecast") {
           userInfo.parent = sharedBy;
         }
         User.create(userInfo, function(err, userOne){
@@ -176,13 +213,16 @@ module.exports = {
                 var subscribeResp = request('GET', 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='+appAccessToken+'&openid='+userOne.openId);
                 var subscribeResult = JSON.parse(subscribeResp.getBody());
                 if (subscribeResult.subscribe == 1) {
-                  userOne.credit += subscribeBounce[ad];
-                  userOne.subscribe = true;
-                  retResult.subscribeBonus = subscribeBounce[ad];
-                  userOne.save(function (err, savedUser) {
-                    // body...
-                    console.log("subscribe bounce");
-                  });
+                  var bonus = subscribeBonus[ad] || 0;
+                  if (bonus > 0) {
+                    userOne.credit += subscribeBonus[ad];
+                    userOne.subscribe = true;
+                    retResult.subscribeBonus = subscribeBonus[ad];
+                    userOne.save(function (err, savedUser) {
+                      // body...
+                      console.log("subscribe bounce");
+                    });
+                  }
                 }
               }
 
@@ -208,13 +248,17 @@ module.exports = {
               retResult.sharedToUsers = sharedToUsers;
               retResult.subscribe = userOne.subscribe;
               var userPrize = {};
-              var prizeList = ['redeem_prize1', 'redeem_prize2'];
+              var prizeInfo = prizesInfo[ad];
+              var prizeList = Object.keys(prizeInfo);
+              var redeemPrizeList = prizeList.map(function (item) {
+                 return 'redeem_'+item;
+              })
               var pickPrizeList = prizeList.map(function (item) {
                  return 'pick_'+item;
               })
-              log.find({openId:openId, ad: ad, action: {$in:prizeList.concat(pickPrizeList)}}).exec(function (err, prizes) {
+              log.find({openId:openId, ad: ad, action: {$in:redeemPrizeList.concat(pickPrizeList)}}).exec(function (err, logs) {
                 var groupPrizes = {};
-                prizes.forEach(function (item, index, array) {
+                logs.forEach(function (item, index, array) {
                   if (groupPrizes[item.action] == undefined) {
                     groupPrizes[item.action] = [item];
                   } else { 
@@ -223,8 +267,8 @@ module.exports = {
                 });
 
                 prizeList.forEach(function (item, index, array) {
-                  if (groupPrizes[item] != undefined) {
-                    userPrize[item] = groupPrizes[item].length;
+                  if (groupPrizes['redeem_'+item] != undefined) {
+                    userPrize[item] = groupPrizes['redeem_'+item].length;
                     if (groupPrizes['pick_'+item] != undefined) {
                       userPrize[item] -= groupPrizes['pick_'+item].length;
                     }
@@ -289,7 +333,7 @@ module.exports = {
           }
         }
         console.log(prize);
-        var prizeAmount = prizeInfo[prize].amount || 1000;
+        var prizeAmount = prizeInfo[prize].amount || 100000;
         log.count({action:'redeem_'+prize, ad: ad}).exec(function (err, redeems) {
           if (redeems >= prizeAmount) {
             prize = 'none';
@@ -298,8 +342,8 @@ module.exports = {
           var startOfWeek = new Date();
           startOfWeek.setHours(0,0,0,0);
           startOfWeek = new Date(startOfWeek.getTime()- 86400*1000*startOfWeek.getDay());
-          var prizeWeekAmount = prizeInfo[prize].weekAmount || prizeInfo[prize].amount || 1000;
-          log.count({action:'redeem_'+prize, ad: ad, createdAt: {'>=' : startOfWeek}}).exec(function (err, weekRedeems) {
+          var prizeWeekAmount = prizeInfo[prize].weekAmount || prizeInfo[prize].amount || 100000;
+          log.count({action:'redeem_'+prize, ad: ad, date: {'>=' : startOfWeek}}).exec(function (err, weekRedeems) {
             if (weekRedeems >= prizeWeekAmount) {
               prize = 'none';
               console.log("week");
@@ -345,7 +389,7 @@ module.exports = {
           if(verificationCode==prizeCode){
             
               var prizeCredit = prizeInfo.credit || 1;
-              var prizeAmount = prizeInfo.amount || 1000;
+              var prizeAmount = prizeInfo.amount || 100000;
               log.find({action:'redeem_'+prize, ad: ad}).exec(function (err, logs) {
                  if (logs.length < prizeAmount) {
                     if(credit<prizeCredit){
@@ -354,12 +398,14 @@ module.exports = {
                       return;
                     } else{
                       userOne.credit = userOne.credit - prizeCredit;
-                      userOne.save(function(){
+                      userOne.save(function(err, savedUser){
                         log.create({action: 'redeem_'+prize, openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
-
+                          log.create({action: 'pick_'+prize, openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
+                            res.json({credit: savedUser.credit, prize: prize});
+                            return;
+                          });
                         });
-                        res.json({credit: userOne.credit, prize: prize});
-                        return;
+                        
                       });
                     }
                  } else {
@@ -387,15 +433,6 @@ module.exports = {
     user.update({}, {credit: 100}).exec(function(err){
       res.end();
     });
-  },
-  uefaMain: function(req, res){
-    res.view('uefa');
-  },
-  dpowerMain: function (req, res) {
-    res.view('dpower');
-  },
-  blueManMain: function (req, res) {
-    res.view('blue-man');
   },
   clickCount: function(req, res){
 		var name = req.param('clickCountName');
@@ -472,7 +509,7 @@ module.exports = {
         log.find({action: 'luckyDraw', openId: userOne.openId, date: {$gte: startOfDay}, ad: ad}).exec(function (err, logs) {
           
            if (logs.length < 1) {
-              log.create({action: 'luckyDraw', openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
+              log.create({action: 'luckyDraw', openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err){
 
                   var prizeArray = [0, 1, 2, 5];
                   var probability = [10, 50, 30, 10];
@@ -510,8 +547,12 @@ module.exports = {
     var openId = req.param('openId');
     var ad = req.param('ad');
     var userVote = req.param('userVote');
+    var voteInfo = votesInfo[ad];
+    if (voteInfo == undefined) {
+      return res.status(400).json({errCode: 0, errMsg:'沒有投票活動。'});
+    }
     var now = new Date();
-    var exp = new Date('2016-07-10T19:00:00');
+    var exp = voteInfo.voteExp || now;
     //console.log(exp);
     if (now.getTime() > exp.getTime()) {
       return res.status(400).json({errCode: 0, errMsg:'投票時限已過了。'});
@@ -523,15 +564,40 @@ module.exports = {
         if (userVote) {
           userOne.vote = userVote;
           userOne.save(function (err, savedUser) {
-            user.count({ad: ad, vote:'vote1'}).exec(function (err, count1) {
-              user.count({ad:ad, vote: 'vote2'}).exec(function (err, count2) {
-                  log.create({action: 'vote', openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
+            log.create({action: 'vote', openId: savedUser.openId, date: new Date(), ad: ad}).exec(function(err, results){
 
-                  });
-                  return res.json({userVote: savedUser.vote, votes:{vote1:count1, vote2:count2}});
+            });
+            var votes = voteInfo.votes || [];
+            var resultVotes = {};
+            user.find({where: {ad:ad, vote: {$in: votes}}, select:['vote']}).exec(function (err, users) {
+              var groupBy = {};
+              users.forEach(function (item, index, array) {
+                if (groupBy[item.vote] == undefined) {
+                  groupBy[item.vote] = [item];
+                } else {
+                  groupBy[item.vote].push(item);
+                }
+              });
+
+              votes.forEach(function (item, index, array) {
+                if (groupBy[item] != undefined) {
+                  resultVotes[item] = groupBy[item].length;
+                } else {
+                  resultVotes[item] = 0;
+                }
                 
               });
+
+              return res.json({userVote: savedUser.vote, votes: resultVotes});
             });
+
+            // user.count({ad: ad, vote:'vote1'}).exec(function (err, count1) {
+            //   user.count({ad:ad, vote: 'vote2'}).exec(function (err, count2) {
+
+            //       return res.json({userVote: savedUser.vote, votes:{vote1:count1, vote2:count2}});
+                
+            //   });
+            // });
             
           });
         } else {
@@ -542,8 +608,12 @@ module.exports = {
   redeemVote: function (req, res) {
     var openId = req.param('openId');
     var ad = req.param('ad');
+    var voteInfo = votesInfo[ad];
+    if (voteInfo == undefined) {
+      return res.status(400).json({errCode: 0, errMsg:'沒有投票活動。'});
+    }
     var now = new Date();
-    var exp = new Date('2016-07-20T16:00:00');
+    var exp = voteInfo.redeemExp || now;
     if (now.getTime() > exp.getTime()) {
       return res.status(400).json({errCode:0, errMsg: '領奬時限已過'});
     }
@@ -551,12 +621,17 @@ module.exports = {
         if (!userOne) {
             return res.status(401).end();
         }
-        if (userOne.isRedeemVote) { return res.status(400).json({errCode:0, errMsg: '您已經成功領奬。'});}
+        if (userOne.isRedeemVote) { 
+          return res.status(400).json({errCode:0, errMsg: '您已經成功領奬。'});
+        }
+        var votes = voteInfo.votes || [];
+        
         log.findOne({action: {$in:['gameResult_vote1', 'gameResult_vote2']}, ad: ad}).exec(function (err, logOne) {
           if (!logOne) {
             return res.status(400).json({errCode:0, errMsg: '比賽結果還沒出來。'});
           } else {
             if (logOne.action == 'gameResult_'+userOne.vote) {
+              // vote bonus
               userOne.credit = userOne.credit * 2;
               userOne.isRedeemVote = true;
               userOne.save(function (err, savedUser) {
@@ -565,7 +640,7 @@ module.exports = {
                   });
                 return res.json({credit: savedUser.credit, isRedeemVote: userOne.isRedeemVote});
               });
-
+              //
             } else {
                return res.status(400).json({errCode:0, errMsg: '抱歉，您猜不中呢。'});
             }
@@ -691,7 +766,7 @@ module.exports = {
         userOne.email = email;
         userOne.age = age;
         if (!userOne.isQuestionnaire) {
-          userOne.credit = userOne.credit + 3;
+          userOne.credit = userOne.credit + questionnaireBonus[ad] || 0;
         }
         userOne.isQuestionnaire = true;
         userOne.save(function (err, savedUser) {

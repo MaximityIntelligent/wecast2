@@ -47,7 +47,7 @@ module.exports = {
 				var endOfMonthDate = moment(startOfMonthStr, "MM/DD/YYYY").endOf('month').toDate();
 				var option = {};
 				if(startOfMonthDate&&endOfMonthDate)
-						option.createdAt = {">=": startOfMonthDate, "<=": endOfMonthDate};
+						option.date = {">=": startOfMonthDate, "<=": endOfMonthDate};
 				if (ad)
 					option.ad = ad;
 				if (action2) {
@@ -55,14 +55,14 @@ module.exports = {
 				}
 				console.log(option);
 				var daysAccess = {};
-				log.find({ where: option, select:['action', 'createdAt']}).exec(function(err, accessArr){
+				log.find({ where: option, select:['action', 'date']}).exec(function(err, accessArr){
 					
 					var actionAccess = _.groupBy(accessArr, function(access){
 						return access.action;
 					});
 					Object.keys(actionAccess).forEach(function (element, index, array) {
 						var temp = _.groupBy(actionAccess[element], function(access){
-							return access.createdAt.getDate();
+							return access.date.getDate();
 						});
 						var tempAction = {};
 						Object.keys(temp).forEach(function (element, index, array) {
@@ -75,14 +75,14 @@ module.exports = {
 
 					var offsetOption = {};
 					if(startOfMonthDate)
-						offsetOption.createdAt = {"<": startOfMonthDate};
+						offsetOption.date = {"<": startOfMonthDate};
 					if (ad)
 						offsetOption.ad = ad;
 					if (action2) {
 						offsetOption.action = action2;
 					}
 					var offsetAccess = {};
-					log.find({ where: offsetOption, select:['action', 'createdAt']}).exec(function(err, accessArr){
+					log.find({ where: offsetOption, select:['action', 'date']}).exec(function(err, accessArr){
 						var actionAccess = _.groupBy(accessArr, function(access){
 							return access.action;
 						});
@@ -102,7 +102,7 @@ module.exports = {
 				var accessDateFrom = moment(dateStr).startOf('day').toDate();
 				var accessDateTo = moment(dateStr).endOf('day').toDate();
 				var option = {};
-				option.createdAt = {">=": accessDateFrom, "<=": accessDateTo};
+				option.date = {">=": accessDateFrom, "<=": accessDateTo};
 				if (ad)
 					option.ad = ad;
 				if (action2) {
@@ -110,13 +110,13 @@ module.exports = {
 				}
 				// console.log(option);
 				var hoursAccess = {};
-				log.find({ where: option, select:['action', 'createdAt']}).exec(function(err, accessArr){
+				log.find({ where: option, select:['action', 'date']}).exec(function(err, accessArr){
 					var actionAccess = _.groupBy(accessArr, function(access){
 						return access.action;
 					});
 					Object.keys(actionAccess).forEach(function (element, index, array) {
 						var temp = _.groupBy(actionAccess[element], function(access){
-							return moment(access.createdAt).hour();
+							return moment(access.date).hour();
 						});
 						var tempAction = {};
 						Object.keys(temp).forEach(function (element, index, array) {
@@ -128,14 +128,14 @@ module.exports = {
 					});
 					var offsetOption = {};
 					if(accessDateFrom)
-						offsetOption.createdAt = {"<": accessDateFrom};
+						offsetOption.date = {"<": accessDateFrom};
 					if (ad)
 						offsetOption.ad = ad;
 					if (action2) {
 						offsetOption.action = action2;
 					}
 					var offsetAccess = {};
-					log.find({ where: offsetOption, select:['action', 'createdAt']}).exec(function(err, accessArr){
+					log.find({ where: offsetOption, select:['action', 'date']}).exec(function(err, accessArr){
 						var actionAccess = _.groupBy(accessArr, function(access){
 							return access.action;
 						});
