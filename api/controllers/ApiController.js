@@ -5,12 +5,15 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 var request = require('sync-request');
-var weixin = require('../../config/weixin');
+var config = require('../../config/event-config');
 var sha1 = require('sha1');
 var User = require('../lib/User');
 
 var prizesInfo = {
   'adUEFA' : {
+    'none' : {
+        'probability' : 100
+    },
     'prize1' : {
         'credit' : 15,
         'amount' : 300,
@@ -18,7 +21,7 @@ var prizesInfo = {
     },
     'prize2' : {
         'credit' : 30,
-        'amount' : 100,
+        'amount' : 3,
         'code' : "cheers001"
     }
   }, 
@@ -77,10 +80,19 @@ var questionnaireBonus = {
 //
 // Vote Setting
 var votesInfo = {
+  'adUEFA' : {
+      'votes': ['vote1', 'vote2'],
+      'voteExp' : new Date('2017-07-20T16:00:00'),
+      'redeemExp' : new Date('2017-07-20T16:00:00'),
+      'bonus' : 10
+    
+  },
   'adBlueMan' : {
-    'votes': ['vote1', 'vote2'],
-    'voteExp' : new Date('2017-07-20T16:00:00'),
-    'redeemExp' : new Date('2017-07-20T16:00:00')
+      'votes': ['vote1', 'vote2'],
+      'voteExp' : new Date('2017-07-20T16:00:00'),
+      'redeemExp' : new Date('2017-07-20T16:00:00'),
+      'bonus' : 10
+    
   }
 }
 
@@ -97,6 +109,49 @@ var randomString = function(length) {
     }
     return text;
 };
+
+var getVoteResult = function (ad, cb) {
+    var voteInfo = config[ad].votesInfo || {};
+    var votes = voteInfo.votes || [];
+    var resultVotes = votes.map(function (vote) {
+      return 'gameResult_'+vote;
+    });
+    log.findOne({action: {$in: resultVotes}, ad: ad}).exec(function (err, logOne) {
+      if (!logOne) {
+        return cb(null);
+      }
+      var temp = logOne.action.split('_');
+      if (temp.length != 2) { return cb(null);}
+      return cb(temp[temp.length-1]);
+      
+    });
+};
+
+var getVoteRecord = function (ad, cb) {
+  var voteInfo = config[ad].votesInfo || {};
+  var votes = voteInfo.votes || [];
+  var resultVotes = {};
+  user.find({where: {ad:ad, vote: {$in: votes}}, select:['vote']}).exec(function (err, users) {
+    var groupBy = {};
+    users.forEach(function (item, index, array) {
+      if (groupBy[item.vote] == undefined) {
+        groupBy[item.vote] = [item];
+      } else {
+        groupBy[item.vote].push(item);
+      }
+    });
+
+    votes.forEach(function (item, index, array) {
+      if (groupBy[item] != undefined) {
+        resultVotes[item] = groupBy[item].length;
+      } else {
+        resultVotes[item] = 0;
+      }
+    });
+    return cb(resultVotes);
+  });
+};
+
 module.exports = {
 	init_c: function(req, res){ //首次進入會跑的流程
     var code = req.param("code");
@@ -213,11 +268,11 @@ module.exports = {
                 var subscribeResp = request('GET', 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='+appAccessToken+'&openid='+userOne.openId);
                 var subscribeResult = JSON.parse(subscribeResp.getBody());
                 if (subscribeResult.subscribe == 1) {
-                  var bonus = subscribeBonus[ad] || 0;
+                  var bonus = config[ad].subscribeBonus || 0;
                   if (bonus > 0) {
-                    userOne.credit += subscribeBonus[ad];
+                    userOne.credit += bonus;
                     userOne.subscribe = true;
-                    retResult.subscribeBonus = subscribeBonus[ad];
+                    retResult.subscribeBonus = bonus;
                     userOne.save(function (err, savedUser) {
                       // body...
                       console.log("subscribe bounce");
@@ -248,7 +303,7 @@ module.exports = {
               retResult.sharedToUsers = sharedToUsers;
               retResult.subscribe = userOne.subscribe;
               var userPrize = {};
-              var prizeInfo = prizesInfo[ad];
+              var prizeInfo = config[ad].prizesInfo || {};
               var prizeList = Object.keys(prizeInfo);
               var redeemPrizeList = prizeList.map(function (item) {
                  return 'redeem_'+item;
@@ -296,7 +351,7 @@ module.exports = {
   probability : function(req, res) {
     var openId = req.param("openId");
     var ad = req.param("ad");
-    var prizeInfo = prizesInfo[ad];
+    var prizeInfo = config[ad].prizesInfo;
     if (prizeInfo == null) {
       return res.status(400).json({errCode: 0, "errMsg" : "沒有此活動。"});
     }
@@ -367,23 +422,18 @@ module.exports = {
   },
   redeem_c: function(req, res){
     var verificationCode = req.param('verificationCode');
-    var userOpenId = req.param("user");
+    var openId = req.param("user") || req.param("openId");
     var prize = req.param("prize");
     var ad = req.param("ad");
-    var prizeInfo = prizesInfo[ad][prize];
-    if (prizeInfo==null) {
+    if (config[ad].prizesInfo==null || config[ad].prizesInfo[prize] == null) {
       res.status(400);
       res.json({errCode: 0, errMsg: '沒有此奬品。'});
       return;
     }
-    redeem_c.findOne({user: userOpenId, advertisement: ad}).exec(function(err, redeemOne){
-      user.findOne({openId: userOpenId, ad: ad}).exec(function(err, userOne){
-        if(!userOne){
-          res.status(500);
-          res.end();
-          return;
-        }
-        User.sharedToUsers_c(userOne, ad, function(err, sharedToUsers){
+    var prizeInfo = config[ad].prizesInfo[prize];
+      user.findOne({openId: openId, ad: ad}).exec(function(err, userOne){
+        if(!userOne) return res.status(401).end();
+        
           var credit = userOne.credit;
           prizeCode = prizeInfo.code || "";
           if(verificationCode==prizeCode){
@@ -393,9 +443,8 @@ module.exports = {
               log.find({action:'redeem_'+prize, ad: ad}).exec(function (err, logs) {
                  if (logs.length < prizeAmount) {
                     if(credit<prizeCredit){
-                      res.status(500);
-                      res.json({errCode: 1, errMsg: '暫時無法兌換，請集齊'+prizeCredit+'個印花'});
-                      return;
+                      return res.status(500).json({errCode: 1, errMsg: '暫時無法兌換，請集齊'+prizeCredit+'個印花'});
+                      
                     } else{
                       userOne.credit = userOne.credit - prizeCredit;
                       userOne.save(function(err, savedUser){
@@ -410,29 +459,29 @@ module.exports = {
                     }
                  } else {
                     //console.log('Out of amount');
-                    res.status(400);
-                    res.json({errCode: 0, errMsg: '奬品已全部換領完畢。'});
-                    return;
+                    return res.status(400).json({errCode: 0, errMsg: '奬品已全部換領完畢。'});
+                    
                  }
               });
             
-          }else{
-            res.status(500);
-            res.json({errCode: 0, errMsg: 'SORRY  領獎碼有誤'});
-            return;
+          } else {
+            return res.status(400).json({errCode: 0, errMsg: 'SORRY  領獎碼有誤'});
+            
           }
 
-        })
-
     });
-
-  });
 
   },
   updateCredit: function(req, res){
-    user.update({}, {credit: 100}).exec(function(err){
-      res.end();
-    });
+    var ad = req.param('ad');
+    var secret = req.param('secret');
+    if (secret == 'kitkit!@#$') {
+      user.update({ad: ad}, {credit: 100}).exec(function(err){
+        return res.end();
+      });
+    } else {
+        return res.status(400).end();
+    }
   },
   clickCount: function(req, res){
 		var name = req.param('clickCountName');
@@ -457,43 +506,52 @@ module.exports = {
     var openId = req.param('openId');
     var ad = req.param('ad');
     user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
-        return res.json(userOne);
+        if (!userOne) {
+            return res.status(401).end();
+        }
+        return res.json({credit: userOne.credit});
     });
   },
   getPrizeRemain: function (req, res) {
+      var openId = req.param('openId');
       var ad = req.param('ad');
-      var prizeInfo = prizesInfo[ad];
-      console.log(prizeInfo);
-      var prizeList = Object.keys(prizeInfo);
-      if (prizeList.length == 0) {
-          return res.json({prizeRemain: []});
-      }
-      var redeemPrizeList = prizeList.map(function (item) {
-          return 'redeem_'+item;
-      });
-      // var prizeAmount = prizeAmountAll[ad];
-      var prizeRemain = {};
-      log.find({action: {$in: redeemPrizeList}, ad:ad}).exec(function (err, logs) {
-          var groupLogs = {};
-          logs.forEach(function (item, index, array) {
-            if (groupLogs[item.action] == undefined) {
-              groupLogs[item.action] = [item];
-            } else {
-              groupLogs[item.action].push(item);
-            }
-          });
+      user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+        if (!userOne) {
+            return res.status(401).end();
+        }
+        var prizeInfo = config[ad].prizesInfo;
+        var prizeList = Object.keys(prizeInfo);
+        if (prizeList.length == 0) {
+            return res.json({prizeRemain: {}});
+        }
+        var redeemPrizeList = prizeList.map(function (item) {
+            return 'redeem_'+item;
+        });
+        // var prizeAmount = prizeAmountAll[ad];
+        var prizeRemain = {};
+        log.find({action: {$in: redeemPrizeList}, ad:ad}).exec(function (err, logs) {
+            var groupLogs = {};
+            logs.forEach(function (item, index, array) {
+              if (groupLogs[item.action] == undefined) {
+                groupLogs[item.action] = [item];
+              } else {
+                groupLogs[item.action].push(item);
+              }
+            });
 
-          prizeList.forEach(function (item, index, array) {
-            if (groupLogs['redeem_'+item] != undefined) {
-              prizeRemain[item] = prizeInfo[item].amount - groupLogs['redeem_'+item].length;
-            } else {
-              prizeRemain[item] = prizeInfo[item].amount;
-            }
-            
-          });
+            prizeList.forEach(function (item, index, array) {
+              if (groupLogs['redeem_'+item] != undefined) {
+                prizeRemain[item] = prizeInfo[item].amount - groupLogs['redeem_'+item].length;
+              } else {
+                prizeRemain[item] = prizeInfo[item].amount;
+              }
+              
+            });
 
-          return res.json({prizeRemain: prizeRemain});
+            return res.json({prizeRemain: prizeRemain});
+        });
       });
+      
 
   },
 
@@ -547,9 +605,13 @@ module.exports = {
     var openId = req.param('openId');
     var ad = req.param('ad');
     var userVote = req.param('userVote');
-    var voteInfo = votesInfo[ad];
+    var voteInfo = config[ad].votesInfo;
     if (voteInfo == undefined) {
       return res.status(400).json({errCode: 0, errMsg:'沒有投票活動。'});
+    }
+    var votes = voteInfo.votes || [];
+    if (votes.indexOf(userVote) == -1){
+      return res.status(400).end();
     }
     var now = new Date();
     var exp = voteInfo.voteExp || now;
@@ -567,37 +629,10 @@ module.exports = {
             log.create({action: 'vote', openId: savedUser.openId, date: new Date(), ad: ad}).exec(function(err, results){
 
             });
-            var votes = voteInfo.votes || [];
-            var resultVotes = {};
-            user.find({where: {ad:ad, vote: {$in: votes}}, select:['vote']}).exec(function (err, users) {
-              var groupBy = {};
-              users.forEach(function (item, index, array) {
-                if (groupBy[item.vote] == undefined) {
-                  groupBy[item.vote] = [item];
-                } else {
-                  groupBy[item.vote].push(item);
-                }
-              });
 
-              votes.forEach(function (item, index, array) {
-                if (groupBy[item] != undefined) {
-                  resultVotes[item] = groupBy[item].length;
-                } else {
-                  resultVotes[item] = 0;
-                }
-                
-              });
-
-              return res.json({userVote: savedUser.vote, votes: resultVotes});
+            getVoteRecord(ad, function (result) {
+              return res.json({userVote: savedUser.vote, votes: result});
             });
-
-            // user.count({ad: ad, vote:'vote1'}).exec(function (err, count1) {
-            //   user.count({ad:ad, vote: 'vote2'}).exec(function (err, count2) {
-
-            //       return res.json({userVote: savedUser.vote, votes:{vote1:count1, vote2:count2}});
-                
-            //   });
-            // });
             
           });
         } else {
@@ -608,7 +643,7 @@ module.exports = {
   redeemVote: function (req, res) {
     var openId = req.param('openId');
     var ad = req.param('ad');
-    var voteInfo = votesInfo[ad];
+    var voteInfo = config[ad].votesInfo;
     if (voteInfo == undefined) {
       return res.status(400).json({errCode: 0, errMsg:'沒有投票活動。'});
     }
@@ -624,54 +659,50 @@ module.exports = {
         if (userOne.isRedeemVote) { 
           return res.status(400).json({errCode:0, errMsg: '您已經成功領奬。'});
         }
-        var votes = voteInfo.votes || [];
-        
-        log.findOne({action: {$in:['gameResult_vote1', 'gameResult_vote2']}, ad: ad}).exec(function (err, logOne) {
-          if (!logOne) {
+        getVoteResult(ad, function (result) {
+          if (!result) {
             return res.status(400).json({errCode:0, errMsg: '比賽結果還沒出來。'});
           } else {
-            if (logOne.action == 'gameResult_'+userOne.vote) {
-              // vote bonus
-              userOne.credit = userOne.credit * 2;
+            if (result == userOne.vote) {
+              userOne.credit = userOne.credit + voteInfo.bonus;
               userOne.isRedeemVote = true;
               userOne.save(function (err, savedUser) {
-                log.create({action: 'redeem_vote', openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
-
-                  });
-                return res.json({credit: savedUser.credit, isRedeemVote: userOne.isRedeemVote});
+                log.create({action: 'redeem_vote', openId: savedUser.openId, date: new Date(), ad: ad}).exec(function(err, results){
+                  return res.json({credit: savedUser.credit, isRedeemVote: userOne.isRedeemVote});
+                });
+                
               });
-              //
             } else {
-               return res.status(400).json({errCode:0, errMsg: '抱歉，您猜不中呢。'});
+              return res.status(400).json({errCode:0, errMsg: '抱歉，您猜不中呢。'});
             }
           }
-
-          
         });
+        
     });
   },
   redeemVoteAll: function (req, res) {
     var openId = req.param('openId');
     var ad = req.param('ad');
     var secret = req.param('secret');
+    var voteInfo = config[ad].votesInfo;
+    if (voteInfo == undefined) {
+      return res.status(400).json({errCode: 0, errMsg:'沒有投票活動。'});
+    }
     if (secret == 'kitkit!@#$') {
       user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
         if (!userOne) {
             return res.status(401).end();
         }
-        log.findOne({action: {$in:['gameResult_vote1', 'gameResult_vote2']}, ad: ad}).exec(function (err, logOne) {
-          if (!logOne) {
+        getVoteResult(ad, function (result) {
+          if (!result) {
             return res.status(400).end();
-          }
-
-          var gameResult = logOne.action.split("_")[1];
-
-          user.find({ad:ad, vote: gameResult, isRedeemVote: false}).exec(function (err, users) {
+          } else {
+            user.find({ad:ad, vote: result, isRedeemVote: false}).exec(function (err, users) {
             if (users.length > 0) {
               var count = users.length;
               users.forEach(function (item, index) {
                 if (item.isRedeemVote == false) {
-                  item.credit = item.credit * 2;
+                  item.credit = item.credit + voteInfo.bonus;
                   item.isRedeemVote = true;
                   item.save(function (err, savedUser) {
                     count = count - 1;
@@ -687,7 +718,9 @@ module.exports = {
             }
             
           });
+          }
         });
+
     });
     } else {
       return res.status(400).end();
@@ -700,15 +733,14 @@ module.exports = {
         if (!userOne) {
             return res.status(401).end();
         }
-        log.findOne({action: {$in:['gameResult_vote1', 'gameResult_vote2']}, ad: ad}).exec(function (err, logOne) {
-          if (!logOne) {
+        getVoteResult(ad, function (result) {
+          if (!result) {
             return res.status(400).end();
+          } else {
+            return res.json({gameResult: result});
           }
-          var temp = logOne.action.split('_');
-          if (temp.length != 2) { return res.status(400).end();}
-          return res.json({gameResult: temp[temp.length-1]});
-          
         });
+        
     });
   },  
   getVotes: function (req, res) {
@@ -718,10 +750,8 @@ module.exports = {
         if (!userOne) {
             return res.status(401).end();
         }
-        user.count({ad: ad, vote:'vote1'}).exec(function (err, count1) {
-          user.count({ad:ad, vote: 'vote2'}).exec(function (err, count2) {
-            return res.json({vote1:count1, vote2:count2});
-          });
+        getVoteRecord(ad, function (result) {
+          return res.json(result);
         });
     });
   },
@@ -733,20 +763,11 @@ module.exports = {
         if (!userOne) {
             return res.status(401).end();
         }
-        user.count({ad: ad, vote:'vote1'}).exec(function (err, count1) {
-          user.count({ad:ad, vote: 'vote2'}).exec(function (err, count2) {
+        getVoteRecord(ad, function (record) {
             //getGameResult
-            log.findOne({action: {$in:['gameResult_vote1', 'gameResult_vote2']}, ad: ad}).exec(function (err, logOne) {
-              var gameResult;
-              if (logOne) {
-                var temp = logOne.action.split('_');
-                if (temp.length == 2) { gameResult = temp[temp.length-1]}
-                
-              }
-              return res.json({votes:{vote1:count1, vote2:count2}, gameResult: gameResult, credit: userOne.credit});
-              
+            getVoteResult(ad, function (result) {
+              return res.json({votes:record, gameResult: result, credit: userOne.credit});
             });
-          });
         });
     });
   },
@@ -766,7 +787,7 @@ module.exports = {
         userOne.email = email;
         userOne.age = age;
         if (!userOne.isQuestionnaire) {
-          userOne.credit = userOne.credit + questionnaireBonus[ad] || 0;
+          userOne.credit = userOne.credit + config[ad].questionnaireBonus || 0;
         }
         userOne.isQuestionnaire = true;
         userOne.save(function (err, savedUser) {
@@ -775,15 +796,20 @@ module.exports = {
     });
   },
   initialization: function(req, res){
-    log.destroy().exec(function(){});
-    redeem_c.destroy().exec(function(){});
-    share_c.destroy().exec(function(){});
-    ClickCount.destroy().exec(function () {});
-    wxToken.destroy().exec(function () {});
-    user.destroy().exec(function(){
-      res.end();
-      return;
-    });
+    var ad = req.param('ad');
+    var secret = req.param('secret');
+    if (secret == 'kitkit!@#$') {
+      log.destroy({ad: ad}).exec(function(){});
+      share_c.destroy({advertisement_c: ad}).exec(function(){});
+      ClickCount.destroy().exec(function () {});
+      wxToken.destroy().exec(function () {});
+      user.destroy({ad: ad}).exec(function(){
+        
+        return res.end();
+      });
+    } else {
+        return res.status(400).end();
+    }
 
   },
   checkAlive: function (req, res) {
