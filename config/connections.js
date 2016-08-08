@@ -32,15 +32,15 @@ module.exports.connections = {
   mongo_local: {
       adapter: 'sails-mongo',
       // url: 'mongodb://uefaUser:uefaUser2016@dds-wz9a31bd644279341.mongodb.rds.aliyuncs.com:3717,dds-wz9a31bd644279342.mongodb.rds.aliyuncs.com:3717/uefa?replicaSet=mgset-1382405'
-      host: 'ds021689.mlab.com',
-      port: 21689,
-      user: 'wecast',
-      password: 'wecastdev',
-      database: 'wecast'
-      // adapter: 'sails-mongo',
-      // host: 'localhost',
-      // port: 27017,
-      // database: 'uefa'
+      // host: 'ds021689.mlab.com',
+      // port: 21689,
+      // user: 'wecast',
+      // password: 'wecastdev',
+      // database: 'wecast'
+      adapter: 'sails-mongo',
+      host: 'localhost',
+      port: 27017,
+      database: 'good'
   },
 
   mongo_dev: {

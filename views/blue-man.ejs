@@ -15,12 +15,12 @@
     <script src="/js/angular.min.js"></script>
     <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script src="/controllers/blue-man.js"></script>
-    <style>
+<!--     <style>
       @font-face {
        font-family:loadingfont;
        src: url(fonts/MSTIFFHEIHK-ULTRABOLD.OTF);
       }
-    </style>
+    </style> -->
   </head>
   <body data-ng-app="blueman" data-ng-controller="IndexCtrl" orient="portrait" ng-init="loading=0" ng-class="{portrait: isPortrait, loaded: isLoaded}">
     <div id="landscape-container" data-ng-show="LANDSCAPE==atPage" >
@@ -30,7 +30,7 @@
           <div class="modal-content">
 
             <div class="modal-body" style="text-align: center;">
-              <div style="position: relative;top: 10%">
+              <div style="position: relative;top: 40%">
                 <h4 class="modal-title">溫馨提示</h4>
                 <br>
                 <h4 class="modal-title" id="myModalLabel">本遊戲需要手機螢幕於直向模式時操作</h4>
@@ -53,7 +53,7 @@
       </div>
 
       <div class="spinner-precentage" ng-cloak>
-        <center><h4 style="color: red; font-family: loadingfont;">{{loading}}%</h4></center>
+        <center><h4 style="color: red;">{{loading}}%</h4></center>
       </div>
     </div>
 
