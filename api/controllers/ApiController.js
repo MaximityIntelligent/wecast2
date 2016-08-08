@@ -911,7 +911,6 @@ module.exports = {
         emitter.on('done', function (event, result) {
           results[event] = result;
           delete events[event];
-          console.log(events);
           if (Object.keys(events).length == 0) {
             return res.json(results);
           }
