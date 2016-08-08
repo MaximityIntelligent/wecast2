@@ -75,16 +75,20 @@ module.exports = {
     var retResult = {};
     var resp;
     var result;
-    if (code == undefined) {
-      return res.status(400).end();
+    console.log(typeof code);
+    if (code == 'undefined' || sharedBy == 'undefined') {
+      return res.status(400).json({errMsg: "miss param"});
     }
     var emitter = new eventEmitter();
     // step 1
     request.get('https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code', function (err, res, result) {
+        result = JSON.parse(result);
         console.log(result);
-        if (err) {
-          emitter.emit('error', result);
+        if (result.errcode >= 40000 && result.errcode < 60000) {
+          console.log('step1-A');
+          emitter.emit('error', {errMsg: JSON.stringify(result)});
         } else {
+          console.log('step1-B');
           var accessToken = result.access_token;
           var userInfo = {};
           var openId = result.openid;
@@ -100,6 +104,7 @@ module.exports = {
           if (result.scope == 'snsapi_userinfo') {
 
             request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, res, result) {
+              result = JSON.parse(result);
               if (result.nickname) {
                 userInfo.nickname = result.nickname;
               }
@@ -124,7 +129,7 @@ module.exports = {
               if (result.unionid) {
                 userInfo.unionId = result.unionid;
               }
-
+              console.log(userInfo);
               emitter.emit('userInfo', userInfo);
             });
  
@@ -138,17 +143,17 @@ module.exports = {
 
     emitter.on('userInfo', function (userInfo) {
         User.create(userInfo, function(err, userOne){
-          if(err){
+          if(!userOne){
             emitter.emit('error', {errMsg: 'User create fail'});
-          }
+          } else {
           // console.log(sharedBy+openId+ad);
-          User.shareAd_c(sharedBy, userOne.openId, ad, function(err){
-            if(err) {
-              console.log({shareAd_c_errMsg: err});
-            }
-          });
-          emitter.emit('done', 'userInfo', userOne);
-          emitter.emit('final', 'userInfo', userOne);
+            User.shareAd_c(sharedBy, userOne.openId, ad, function(err){
+              if(err) {
+                console.log({shareAd_c_errMsg: err});
+              }
+            });
+            emitter.emit('done', 'userInfo', userOne);
+          }
         });
 
     });
@@ -158,16 +163,18 @@ module.exports = {
       if (!wxTokenOne) {
           //console.log('-----no token-----');
           request.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appid+'&secret='+secret, function (err, res, token) {
+            token = JSON.parse(token);
             request.get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+token.access_token+'&type=jsapi', function (err, res, ticket) {
-              if (result.errmsg == 'ok') {
+              ticket = JSON.parse(ticket);
+              console.log(ticket);
+              if (ticket.errmsg == 'ok') {
                 var expireAt = new Date();
                 expireAt = new Date(expireAt.getTime() + (ticket.expires_in - 60 * 60) * 1000);
                 wxToken.create({access_token: token.access_token, expires_in: ticket.expires_in, jsapi_ticket: ticket.ticket, expireAt: expireAt}).exec(function (err, createdToken) {
                   // body...
-                  console.log('------new token----: '+oneHourAgo);
+                  console.log('------new token----: ');
                   console.log(createdToken);
                   emitter.emit('done', 'ticket', createdToken);
-                  emitter.emit('final', 'ticket', createdToken);
                 });
               } else {
                 emitter.emit('error', {errMsg: 'get ticket fail'});
@@ -178,7 +185,6 @@ module.exports = {
         // appAccessToken = wxTokenOne.access_token;
         // jsapiTicket = wxTokenOne.jsapi_ticket;
         emitter.emit('done', 'ticket', wxTokenOne);
-        emitter.emit('final', 'ticket', wxTokenOne);
         //console.log('------old token----');
         //console.log(wxTokenOne);
         
@@ -190,15 +196,19 @@ module.exports = {
     var eventResult = {};
     emitter.on('done', function (event, result) {
       eventResult[event] = result;
+      console.log(eventResult);
       delete events[event];
       if (Object.keys(events) == 0) {
+        emitter.emit('final', 'userInfo', eventResult.userInfo);
+        emitter.emit('final', 'ticket', eventResult.ticket);
         // 1st
-        User.sharedToUsers_c(userOne, ad, function(err, sharedToUsers){
+        User.sharedToUsers_c(eventResult.userInfo, ad, function(err, sharedToUsers){
             emitter.emit('final', 'sharedToUsers', sharedToUsers);
         });
         // 2nd
         if (!eventResult.userInfo.subscribe) {
           request.get('https://api.weixin.qq.com/cgi-bin/user/info?access_token='+eventResult.ticket.access_token+'&openid='+eventResult.userInfo.openId, function (err, res, info) {
+            info = JSON.parse(info);
             if (info.subscribe == 1) {
               var bonus = config.adInfo(ad).subscribeBonus || 0;
               if (bonus > 0) {
@@ -277,6 +287,11 @@ module.exports = {
         console.log(retResult);
         return res.json(retResult);
       }
+    });
+
+    emitter.once('error', function (err) {
+      console.log('error: ' + JSON.stringify(err));
+      return res.status(400).json(err);
     });
     // resp = requestSync('GET','https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code');
     //     result = JSON.parse(resp.getBody());  //得到USER的AccessToken from weixin

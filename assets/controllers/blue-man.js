@@ -40,7 +40,7 @@ var snsapi = 'snsapi_userinfo';
 var prizeCredit = {'prize1':15, 'prize2':30};
 var host = 'lb.ibeacon-macau.com';
 var appid = 'wxbb0b299e260ac47f';
-var debug = true;
+var debug = false;
 
 app.controller('IndexCtrl', [
 '$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll',
@@ -74,32 +74,33 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $(window)
   .bind('orientationchange', function(){ 
 
-    if (window.orientation % 180 == 0 || debug){ //如果是垂直
-      $scope.$apply(function(){
-          if( typeof $scope.landscape != 'undefined' && !debug){
-            if(typeof QueryString.pg == 'undefined'){
-              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'&state=123#wechat_redirect';
-            }
-            else {
-              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect';
-            }
-          }
+    if (window.orientation % 180 == 0){ //如果是垂直
+      //$scope.$apply(function(){
+      //   if( typeof $scope.landscape != 'undefined' && !debug){
+      //     if(typeof QueryString.pg == 'undefined'){
+      //       window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'&state=123#wechat_redirect';
+      //     }
+      //     else {
+      //       window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect';
+      //     }
+      //   }
 
-      });
-      $('body').addClass("portrait");
+      // });
+      $scope.isPortrait = true;
 
     }
     else { //如果是水平
       //alert('landscape');
-      $scope.$apply(function(){
-          $(".spinner").remove();
-          $('body').remove(".spinner");
-          $scope.landscape = 'landscape-first';
+      // $scope.$apply(function(){
+          // $(".spinner").remove();
+          // $('body').remove(".spinner");
+          //$scope.landscape = 'landscape-first';
           $scope.atPage = $scope.LANDSCAPE;
-          $('body').removeClass('portrait');
-          $(".spinner").remove();
-          $('body').remove(".spinner");
-      });
+          // $('body').removeClass('portrait');
+          $scope.isPortrait = false;
+          // $(".spinner").remove();
+          // $('body').remove(".spinner");
+      // });
 
     }
   });//.trigger('orientationchange');
@@ -131,7 +132,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   };
 
   $scope.updatePrizeRemain = function () {
-     $http.get('/api/getPrizeRemain?ad='+adString).success(function (data) {
+     $http.get('/api/getPrizeRemain?ad='+adString+'&openId='+$scope.userId).success(function (data) {
         $scope.prizeRemain = data.prizeRemain;
         console.log($scope.prizeRemain);
      });
