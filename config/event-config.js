@@ -52,6 +52,9 @@ module.exports = {
 		    'redeemExp' : new Date('2017-07-20T16:00:00'),
 		    'bonus' : 10 
 		}
+    },
+    adInfo: function (ad) {
+    	return this[ad] || {};
     }
 
 }
