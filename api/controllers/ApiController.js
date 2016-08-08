@@ -83,7 +83,7 @@ module.exports = {
     // step 1
     request.get('https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code', function (err, res, result) {
         result = JSON.parse(result);
-        console.log(result);
+        // console.log(result);
         if (result.errcode >= 40000 && result.errcode < 60000) {
           console.log('step1-A');
           emitter.emit('error', {errMsg: JSON.stringify(result)});
@@ -286,7 +286,7 @@ module.exports = {
         retResult.subscribe = finalResult.userInfo.subscribe;
         retResult.subscribeBonus = finalResult.subscribeBonus;
         retResult.userPrize = finalResult.userPrize;
-        console.log(retResult);
+        console.log('retResult');
         return res.json(retResult);
       }
     });
