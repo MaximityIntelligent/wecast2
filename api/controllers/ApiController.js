@@ -129,7 +129,6 @@ module.exports = {
               if (result.unionid) {
                 userInfo.unionId = result.unionid;
               }
-              console.log(userInfo);
               emitter.emit('userInfo', userInfo);
             });
  
@@ -166,7 +165,6 @@ module.exports = {
             token = JSON.parse(token);
             request.get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+token.access_token+'&type=jsapi', function (err, res, ticket) {
               ticket = JSON.parse(ticket);
-              console.log(ticket);
               if (ticket.errmsg == 'ok') {
                 var expireAt = new Date();
                 expireAt = new Date(expireAt.getTime() + (ticket.expires_in - 60 * 60) * 1000);
@@ -196,7 +194,6 @@ module.exports = {
     var eventResult = {};
     emitter.on('done', function (event, result) {
       eventResult[event] = result;
-      console.log(eventResult);
       delete events[event];
       if (Object.keys(events) == 0) {
         emitter.emit('final', 'userInfo', eventResult.userInfo);
@@ -219,7 +216,11 @@ module.exports = {
                   emitter.emit('final', 'subscribeBonus', bonus);
                   console.log("subscribe bounce");
                 });
+              } else {
+                emitter.emit('final', 'subscribeBonus', null);
               }
+            } else {
+              emitter.emit('final', 'subscribeBonus', null);
             }
           });
           
@@ -267,6 +268,7 @@ module.exports = {
     emitter.on('final', function (event, result) {
       finalResult[event] = result;
       delete finalEvents[event];
+      console.log(finalEvents);
       if (Object.keys(finalEvents) == 0) {
         var timestamp = Math.floor(Date.now() / 1000);
         var noncestr = randomString(16);
