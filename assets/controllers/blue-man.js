@@ -75,34 +75,36 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   .bind('orientationchange', function(){ 
 
     if (window.orientation % 180 == 0){ //如果是垂直
-      $scope.$apply(function(){
-          if( typeof $scope.landscape != 'undefined' && !debug){
-            if(typeof QueryString.pg == 'undefined'){
-              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'&state=123#wechat_redirect';
-            }
-            else {
-              window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect';
-            }
-          }
+      // $scope.$apply(function(){
+      //     if( typeof $scope.landscape != 'undefined' && !debug){
+      //       if(typeof QueryString.pg == 'undefined'){
+      //         window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'&state=123#wechat_redirect';
+      //       }
+      //       else {
+      //         window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'%26pg%3D1&response_type=code&scope='+snsapi+'&state=123#wechat_redirect';
+      //       }
+      //     }
 
-      });
-      $('body').addClass("portrait");
-      // $scope.isPortrait = true;
+      // });
+      // $('body').addClass("portrait");
+      $scope.isPortrait = true;
 
     }
     else { //如果是水平
       //alert('landscape');
-      $scope.$apply(function(){
-          $(".spinner").remove();
-          $('body').remove(".spinner");
-          $scope.landscape = 'landscape-first';
-          $scope.atPage = $scope.LANDSCAPE;
-          $('body').removeClass('portrait');
-          // $scope.isPortrait = false;
-          $(".spinner").remove();
-          $('body').remove(".spinner");
-      });
-
+      // $scope.$apply(function(){
+      //     $(".spinner").remove();
+      //     $('body').remove(".spinner");
+      //     $scope.landscape = 'landscape-first';
+      //     $scope.atPage = $scope.LANDSCAPE;
+      //     $('body').removeClass('portrait');
+      //     // $scope.isPortrait = false;
+      //     $(".spinner").remove();
+      //     $('body').remove(".spinner");
+      // });
+      $scope.landscape = 'landscape-first';
+      $scope.atPage = $scope.LANDSCAPE;
+      $scope.isPortrait = false;
     }
   });//.trigger('orientationchange');
 
@@ -262,7 +264,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           $interval(function () {
             $scope.updateMain();
           }, 10000);
-          $('body').addClass('loaded');
+          //$('body').addClass('loaded');
+          $scope.isLoaded = true;
         });
         wx.error(function(res){
           $scope.log('wxError', JSON.stringify(res));
@@ -277,7 +280,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
           alert("reload");
           window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+adString+'%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'#wechat_redirect';
         } else {
-          $('body').addClass('loaded');
+          // $('body').addClass('loaded');
+          $scope.isLoaded = true;
           $scope.sharedBy = sharedBy;
           $scope.userId = 'ocLOPwlFiCCTPeSXLYTg7ZLLLAww';
           $scope.shareCount = 0;
