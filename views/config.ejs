@@ -1,0 +1,211 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>活動設定</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/fancybox2.1.5/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/styles/custom.css">
+    <!--<script type="text/javascript" src="http://fgnass.github.io/spin.js/spin.min.js"></script>-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/fancybox2.1.5/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script src="/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="/js/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js"></script>
+    <script src="//cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"></script>
+    <script src="/controllers/config.js"></script>
+  </head>
+  <body data-ng-app="config" data-ng-controller="IndexCtrl" orient="portrait" ng-init="loading=0;view='normal';">
+
+    <div ng-init="init()" id="top">
+    </div>
+    <div class="container content">
+      <div class="row">
+          <div id="panel" class="panel panel-dashboard full-width">
+              <div class="panel-heading panel-heading-cbj">設定</div>
+                <div class="panel-body">
+                  
+                    <div class="panel-elem">
+                      <form class="form-inline" name="formAd"> 
+                        <div class="form-group">
+                          <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">活動</span>
+                            <select class="form-control" name="ad" id="ad" ng-model="ad" ng-options="config.ad for config in configs" ng-change="select(ad.ad)" aria-describedby="basic-addon1">
+                            <option value="">－請選擇－</option>
+                          </select>
+                          </div>
+                          
+                        </div>
+                        <div class="form-group pull-right">
+                          <div class="input-group">
+                            <input type="text" class="form-control" name="newAd" ng-model="newAd" required ng-trim="true" placeholder="標籤 ex:'adExample'" ng-minlength="3">
+                            <span class="input-group-btn">
+                              <input type="button" class="btn btn-primary" value="新增" ng-click="create(newAd);newAd=undefined;" ng-disabled="!formAd.newAd.$valid">
+                            </span>
+                          </div>
+                        </div> 
+                      </form>
+                    </div>
+                    <hr>
+                    <div class="panel-elem" ng-show="selectConfig" class="panel-group" id="accordion">
+                      
+                      
+                      <form class="form" name="form">
+                        <div id="normal" class="panel-collapse collapse in">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <span class="input-group-addon" id="title">標題</span>
+                            <input type="text" class="form-control" name="title" ng-model="selectConfig.title" aria-describedby="title">
+                          </div>
+                            
+                        </div>
+                        <div class="form-group">
+                          <div class="input-group">
+                            <span class="input-group-addon" ng-class="{mandatory: !form.subscribeBonus.$valid}" id="subscribeBonus">關注奬勵</span>
+                            <input type="number" class="form-control" name="subscribeBonus" ng-model="selectConfig.subscribeBonus" min="0" required aria-describedby="subscribeBonus" ng-class="{inputmandatory: !form.subscribeBonus.$valid}">
+                          </div>
+                          <span class="error mandatory" ng-show="form.subscribeBonus.$error.number || form.subscribeBonus.$error.min">
+                            number >= 0</span>
+                        </div>
+                        <div class="form-group">
+                          <div class="input-group">
+                            <span class="input-group-addon" ng-class="{mandatory: !form.loginBonus.$valid}" id="loginBonus">登陸奬勵</span>
+                            <input type="number" class="form-control" name="loginBonus" ng-model="selectConfig.loginBonus" min="0" required aria-describedby="loginBonus" ng-class="{inputmandatory: !form.loginBonus.$valid}">
+                          </div>
+                          <span class="error mandatory" ng-show="form.loginBonus.$error.number || form.loginBonus.$error.min">
+                            number >= 0</span>
+                        </div>
+                        <div class="form-group">
+                          <div class="input-group">
+                            <span class="input-group-addon" ng-class="{mandatory: !form.questionnaireBonus.$valid}" id="questionnaireBonus">問卷奬勵</span>
+                            <input type="number" class="form-control" name="questionnaireBonus" ng-model="selectConfig.questionnaireBonus" min="0" required aria-describedby="subscribeBonus" ng-class="{inputmandatory: !form.questionnaireBonus.$valid}">
+                          </div>
+                          <span class="error mandatory" ng-show="form.questionnaireBonus.$error.number">
+                            number >= 0</span>
+                        </div>
+                        </div>
+                        <hr>
+                        <div>
+                          <a data-toggle="collapse" data-parent="#accordion" href="#prize"><h4>奬品設定</h4></a>
+                        </div>
+                        <div id="prize" class="panel-collapse collapse in">
+                        <div class="form-group" ng-repeat="(key, value) in selectConfig.prizesInfo">
+                          <div class="input-group">
+                            <span class="input-group-addon tag">{{key}}</span>
+                            <span class="input-group-addon" ng-class="{mandatory: !form[key+'credit'].$valid}" id="credit">積分</span>
+                            <input type="number" class="form-control" name="{{key}}credit" ng-model="value.credit" min="0" required aria-describedby="credit" placeholder=">= 0" ng-class="{inputmandatory: !form[key+'credit'].$valid}">
+                            <span class="input-group-addon" ng-class="{mandatory: !form[key+'amount'].$valid}" id="amount">總數</span>
+                            <input type="number" class="form-control" name="{{key}}amount" ng-model="value.amount" min="0" required aria-describedby="amount" placeholder=">= 0" ng-class="{inputmandatory: !form[key+'amount'].$valid}">
+                            <span class="input-group-addon" ng-class="{mandatory: !form[key+'name'].$valid}" id="name">奬品名</span>
+                            <input type="text" class="form-control" name="{{key}}name" ng-model="value.name" aria-describedby="name" ng-trim="true" required placeholder="" ng-class="{inputmandatory: !form[key+'name'].$valid}">
+                          </div>
+                          <div class="input-group">
+                            <span class="input-group-addon option">選填</span>
+                            <span class="input-group-addon" ng-class="{mandatory: !form[key+'probability'].$valid}" id="probability">機率</span>
+                            <input type="number" class="form-control" name="{{key}}probability" ng-model="value.probability" min="0" aria-describedby="probability" placeholder=">= 0" ng-class="{inputmandatory: !form[key+'probability'].$valid}">
+                            <span class="input-group-addon" ng-class="{mandatory: !form[key+'code'].$valid}" id="probability">領奬碼</span>
+                            <input type="text" class="form-control" name="{{key}}code" ng-model="value.code" aria-describedby="code" ng-trim="true" placeholder="6位以上英數" ng-minlength="6" ng-class="{inputmandatory: !form[key+'code'].$valid}">
+                            <span class="input-group-addon" ng-class="{mandatory: !form[key+'weekAmount'].$valid}" id="weekAmount">每週限額</span>
+                            <input type="number" class="form-control" name="{{key}}weekAmount" ng-model="value.weekAmount" min="0" aria-describedby="weekAmount" placeholder=">= 0" ng-class="{inputmandatory: !form[key+'weekAmount'].$valid}">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="input-group">
+                            <span class="input-group-addon tag">奬品標籤</span>
+                            <input type="text" class="form-control" name="newPrize" ng-model="newPrize" ng-trim="true" placeholder="3位以上英數" ng-minlength="3">
+                            <span class="input-group-btn">
+                              <input type="button" class="btn btn-primary" value="新增" ng-click="createPrize(newPrize);newPrize=undefined;" ng-disabled="!form.newPrize.$valid||!newPrize">
+                            </span>
+                          </div>
+                            form.newPrize.$valid = {{form.newPrize.$valid}}<br>
+                            form.newPrize.$error = {{form.newPrize.$error}}<br>
+                        </div>
+                        </div>
+                        <hr>
+                        <div>
+                          <a data-toggle="collapse" data-parent="#accordion" href="#vote"><h4>投票設定</h4></a>
+                        </div>
+                        <div id="vote" class="panel-collapse collapse in">
+                          <div class="form-group">
+                            <div class="input-group">
+                              <span class="input-group-addon">投票標籤</span>
+                              <span class="input-group-btn" ng-repeat="vote in selectConfig.votesInfo.votes">
+                                <button class="btn btn-secondary" type="button" ng-style="voteStyle(vote)" ng-click="updateVoteResult(vote)">{{vote}}</button>
+                              </span>
+                              <input type="text" class="form-control" name="newVote" ng-model="newVote" ng-trim="true" placeholder="3位以上英數" ng-minlength="3">
+                              <span class="input-group-btn">
+                                <input type="button" class="btn btn-primary" value="新增" ng-click="createVote(newVote);newVote=undefined;" ng-disabled="!form.newVote.$valid||!newVote">
+                              </span>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <span class="input-group-addon">投票起始</span>
+                              <input type="date" class="form-control" name="voteStart" ng-model="selectConfig.votesInfo.voteStart" ng-trim="true" placeholder="yyyy-MM-dd" ng-min="today">
+                              <span class="input-group-addon">投票結束</span>
+                              <input type="date" class="form-control" name="voteExp" ng-model="selectConfig.votesInfo.voteExp" ng-trim="true" placeholder="yyyy-MM-dd" ng-min="today">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <span class="input-group-addon" id="bonus">奬勵積分</span>
+                              <input type="number" class="form-control" name="bonus" ng-model="selectConfig.votesInfo.bonus" min="0" aria-describedby="bonus" placeholder=">= 0" ng-class="{inputmandatory: !form.bonus.$valid}">
+                              <span class="input-group-addon">奬勵截止</span>
+                              <input type="date" class="form-control" name="redeemExp" ng-model="selectConfig.votesInfo.redeemExp" ng-trim="true" placeholder="yyyy-MM-dd">
+                            </div>
+                            <tt>form.bonus.$valid = {{form.bonus.$valid}}</tt><br/>
+                            <tt>form.bonus.$error = {{form.bonus.$error}}</tt><br/>
+                            <tt>form.redeemExp.$valid = {{form.redeemExp.$valid}}</tt><br/>
+                            <tt>form.redeemExp.$error = {{form.redeemExp.$error}}</tt><br/>
+                          </div>
+                        </div>
+                        <hr>
+                        <div role="alert">
+                          <span class="error mandatory" ng-show="form.$error.required">
+                            請填寫必要項目</span>
+                        </div>
+                        <input type="button" class="btn btn-primary" value="更新" ng-click="update(selectConfig)" ng-disabled="!form.$valid">
+                        <div class="alert alert-success alert-dismissible fade in" role="alert" ng-show="updateOK">
+                          <button type="button" class="close" ng-click="updateOK=false">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                          <strong>操作成功</strong>
+                        </div>
+                        <div class="alert alert-danger alert-dismissible fade in" role="alert" ng-show="updateFail">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                          <strong>操作失敗</strong>
+                        </div>
+                        <div>
+                          <a data-toggle="collapse" data-parent="#accordion" href="#normal"><h4>一般設定</h4></a>
+                        </div>
+                        <br/>
+                        <tt>myForm.$valid = {{form.$valid}}</tt><br/>
+                        <tt>myForm.$error.required = {{!!form.$error.required}}</tt><br/>
+
+                      </form>  
+                    </div>
+                  
+<!--                   <div>
+                    <canvas class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-click="onClick" chart-options="options"></canvas>
+                  </div> -->
+                  
+<!--                   <table class="table" style="width: 400px">
+                    <tr>
+                      <td>用戶數</td>
+                      <td>{{totalUser}}</td>
+                    </tr>
+                    <tr ng-repeat="action in series">
+                      <td><span ng-style="chartColor($index)">&nbsp;&nbsp;&nbsp;&nbsp;</span> {{actionMap[action]}}</td>
+                      <td> {{accessTotal[action]}}</td>
+                    </tr>
+                  </table> -->
+                </div>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

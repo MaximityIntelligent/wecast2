@@ -1,6 +1,6 @@
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, serif;
-    color: #777;
+    color: #000;
 }
 
 .content {
@@ -33,24 +33,18 @@ body {
 .panel {
   margin: 20px;
   border-style: solid;
-  border-color: #FFE301;
+  border-color: lightblue;
 }
 
 .panel-dashboard {
   margin-left: 0px;
 }
-.panel-heading-dashboard {
-  color: #777;
-  padding: 5px;
-  padding-left: 15px;
-  font-weight: bold;
-  background-color: #00DB00!important;
+
+.panel-heading {
+  background-color: lightblue;
+  color: #FFF;
 }
-.panel-heading-cbj {
-  background-color: #00DB00!important;
-  color: #777;
-  font-weight: bold;
-}
+
 .navbar-default {
   background-image: none;
   background: #FFE301;
@@ -85,23 +79,6 @@ body {
 .form-control {
     width: 200px;
 }
-#drawCouponExpiredTime_day, #drawCouponExpiredTime_hour, #drawCouponExpiredTime_minute, #drawCouponExpiredTime_second{
-    width: 80px;
-}
-#drawPerformInterval_day, #drawPerformInterval_hour, #drawPerformInterval_minute, #drawPerformInterval_second{
-    width: 80px;
-}
-
-.btn-primary{
-    background-color: #FFE301;
-    background-image: none;
-    color: black;
-    border-color: #dcdcdc;
-}
-.btn-primary:hover{
-    background-color: gold;
-    color: black
-}
 
 .full-width {
     width: 100%;
@@ -114,14 +91,23 @@ body {
     color: red;
 }
 
-.btn-default:active,
-.btn-default.active {
-  background-color: #e0e0e0;
-  border-color: #dbdbdb;
-}
-.nav-pills>li.active>a {
-  background-color: #FFE301;
+.tag .input-group-addon.tag {
+    color: white;
+    background-color: royalblue;
 }
 
+.input-group-addon.option {
+    color: white;
+    background-color: lightgreen;
+}
 
-.login-logo,.register-logo{font-size:35px;text-align:center;margin-bottom:25px;font-weight:300}.login-logo a,.register-logo a{color:#444}.login-page,.register-page{background:#d2d6de}.login-box,.register-box{width:360px;margin:7% auto}@media (max-width:768px){.login-box,.register-box{width:90%;margin-top:20px}}.login-box-body,.register-box-body{background:#fff;padding:20px;border-top:0;color:#666}.login-box-body .form-control-feedback,.register-box-body .form-control-feedback{color:#777}.login-box-msg,.register-box-msg{margin:0;text-align:center;padding:0 20px 20px 20px}
+.inputmandatory {
+    border-color: #d9534f;
+    box-shadow: inset 0 0.5px 0.5px rgba(0,0,0,.075),0 0 8px rgba(255,0,0,0.6);
+}
+
+.inputmandatory:focus {
+    border-color: #d9534f;
+    box-shadow: inset 0 0.5px 0.5px rgba(0,0,0,.075),0 0 8px rgba(255,0,0,0.6);
+}
+

@@ -10,6 +10,7 @@ var eventEmitter = require('events').EventEmitter;
 var config = require('../../config/event-config');
 var sha1 = require('sha1');
 var User = require('../lib/User');
+var Config = require('../lib/Config');
 
 // Weixin Setting
 var appid = 'wxbb0b299e260ac47f';
@@ -25,45 +26,54 @@ var randomString = function(length) {
 };
 
 var getVoteResult = function (ad, cb) {
-    var voteInfo = config.adInfo(ad).votesInfo || {};
-    var votes = voteInfo.votes || [];
-    var resultVotes = votes.map(function (vote) {
-      return 'gameResult_'+vote;
+    Config.adInfo(ad).exec(function (err, configOne) {
+      var voteInfo = configOne.votesInfo || {};
+      var votes = voteInfo.votes || [];
+      var resultVotes = votes.map(function (vote) {
+        return 'gameResult_'+vote;
+      });
+      log.findOne({action: {$in: resultVotes}, ad: ad}).exec(function (err, logOne) {
+        if (err) {
+          return cb(null);
+        }
+        if (!logOne) {
+          return cb(null);
+        }
+        var temp = logOne.action.split('_');
+        if (temp.length != 2) { return cb(null);}
+        return cb(votesInfo.voteResult || temp[temp.length-1]);
+        
+      });
     });
-    log.findOne({action: {$in: resultVotes}, ad: ad}).exec(function (err, logOne) {
-      if (!logOne) {
-        return cb(null);
-      }
-      var temp = logOne.action.split('_');
-      if (temp.length != 2) { return cb(null);}
-      return cb(temp[temp.length-1]);
-      
-    });
+    
 };
 
 var getVoteRecord = function (ad, cb) {
-  var voteInfo = config.adInfo(ad).votesInfo || {};
-  var votes = voteInfo.votes || [];
-  var resultVotes = {};
-  user.find({where: {ad:ad, vote: {$in: votes}}, select:['vote']}).exec(function (err, users) {
-    var groupBy = {};
-    users.forEach(function (item, index, array) {
-      if (groupBy[item.vote] == undefined) {
-        groupBy[item.vote] = [item];
-      } else {
-        groupBy[item.vote].push(item);
-      }
-    });
+  Config.adInfo(ad).exec(function (err, configOne) {
+    var voteInfo = configOne.votesInfo || {};
+    var votes = voteInfo.votes || [];
+    var resultVotes = {};
+    user.find({where: {ad:ad, vote: {$in: votes}}, select:['vote']}).exec(function (err, users) {
+      var groupBy = {};
+      users.forEach(function (item, index, array) {
+        if (groupBy[item.vote] == undefined) {
+          groupBy[item.vote] = [item];
+        } else {
+          groupBy[item.vote].push(item);
+        }
+      });
 
-    votes.forEach(function (item, index, array) {
-      if (groupBy[item] != undefined) {
-        resultVotes[item] = groupBy[item].length;
-      } else {
-        resultVotes[item] = 0;
-      }
+      votes.forEach(function (item, index, array) {
+        if (groupBy[item] != undefined) {
+          resultVotes[item] = groupBy[item].length;
+        } else {
+          resultVotes[item] = 0;
+        }
+      });
+      return cb(resultVotes);
     });
-    return cb(resultVotes);
   });
+  
 };
 
 module.exports = {
@@ -202,68 +212,90 @@ module.exports = {
         User.sharedToUsers_c(eventResult.userInfo, ad, function(err, sharedToUsers){
             emitter.emit('final', 'sharedToUsers', sharedToUsers);
         });
-        // 2nd
-        if (!eventResult.userInfo.subscribe) {
-          request.get('https://api.weixin.qq.com/cgi-bin/user/info?access_token='+eventResult.ticket.access_token+'&openid='+eventResult.userInfo.openId, function (err, res, info) {
-            info = JSON.parse(info);
-            if (info.subscribe == 1) {
-              var bonus = config.adInfo(ad).subscribeBonus || 0;
-              if (bonus > 0) {
-                eventResult.userInfo.credit += bonus;
-                eventResult.userInfo.subscribe = true;
-                // retResult.subscribeBonus = bonus;
-                eventResult.userInfo.save(function (err, savedUser) {
-                  emitter.emit('final', 'subscribeBonus', bonus);
-                  console.log("subscribe bounce");
-                });
+        
+        Config.adInfo(ad).exec(function (err, configOne) {
+          // 2nd
+          if (!eventResult.userInfo.subscribe) {
+            request.get('https://api.weixin.qq.com/cgi-bin/user/info?access_token='+eventResult.ticket.access_token+'&openid='+eventResult.userInfo.openId, function (err, res, info) {
+              info = JSON.parse(info);
+              if (info.subscribe == 1) {
+                var bonus = configOne.subscribeBonus || 0;
+                if (bonus > 0) {
+                  eventResult.userInfo.credit += bonus;
+                  eventResult.userInfo.subscribe = true;
+                  // retResult.subscribeBonus = bonus;
+                  eventResult.userInfo.save(function (err, savedUser) {
+                    emitter.emit('final', 'subscribeBonus', bonus);
+                    console.log("subscribe bounce");
+                  });
+                } else {
+                  emitter.emit('final', 'subscribeBonus', null);
+                }
               } else {
                 emitter.emit('final', 'subscribeBonus', null);
               }
-            } else {
-              emitter.emit('final', 'subscribeBonus', null);
-            }
+            });
+            
+          }
+          // 3rd
+          var userPrize = {};
+          var prizeInfo = configOne.prizesInfo || {};
+          var prizeList = Object.keys(prizeInfo);
+          var redeemPrizeList = prizeList.map(function (item) {
+             return 'redeem_'+item;
           });
-          
-        }
-        // 3rd
-        var userPrize = {};
-        var prizeInfo = config.adInfo(ad).prizesInfo || {};
-        var prizeList = Object.keys(prizeInfo);
-        var redeemPrizeList = prizeList.map(function (item) {
-           return 'redeem_'+item;
-        });
-        var pickPrizeList = prizeList.map(function (item) {
-           return 'pick_'+item;
-        });
-        log.find({openId:eventResult.userInfo.openId, ad: ad, action: {$in:redeemPrizeList.concat(pickPrizeList)}}).exec(function (err, logs) {
-          var groupPrizes = {};
-          logs.forEach(function (item, index, array) {
-            if (groupPrizes[item.action] == undefined) {
-              groupPrizes[item.action] = [item];
-            } else { 
-              groupPrizes[item.action].push(item);
-            }
+          var pickPrizeList = prizeList.map(function (item) {
+             return 'pick_'+item;
           });
-
-          prizeList.forEach(function (item, index, array) {
-            if (groupPrizes['redeem_'+item] != undefined) {
-              userPrize[item] = groupPrizes['redeem_'+item].length;
-              if (groupPrizes['pick_'+item] != undefined) {
-                userPrize[item] -= groupPrizes['pick_'+item].length;
+          log.find({openId:eventResult.userInfo.openId, ad: ad, action: {$in:redeemPrizeList.concat(pickPrizeList)}}).exec(function (err, logs) {
+            var groupPrizes = {};
+            logs.forEach(function (item, index, array) {
+              if (groupPrizes[item.action] == undefined) {
+                groupPrizes[item.action] = [item];
+              } else { 
+                groupPrizes[item.action].push(item);
               }
-            } else {
-              userPrize[item] = 0;
-            }
+            });
+
+            prizeList.forEach(function (item, index, array) {
+              if (groupPrizes['redeem_'+item] != undefined) {
+                userPrize[item] = groupPrizes['redeem_'+item].length;
+                if (groupPrizes['pick_'+item] != undefined) {
+                  userPrize[item] -= groupPrizes['pick_'+item].length;
+                }
+              } else {
+                userPrize[item] = 0;
+              }
+            });
+
+            emitter.emit('final', 'userPrize', userPrize);
+
           });
-
-          emitter.emit('final', 'userPrize', userPrize);
-
+        })
+        
+        // 4th
+        var startOfDay = new Date();
+        startOfDay.setHours(0,0,0,0);
+        log.find({action: 'login', openId: eventResult.userInfo.openId, date: {$gte: startOfDay}, ad: ad}).exec(function (err, logs) {
+          
+           if (logs.length < 1) {
+              log.create({action: 'login', openId: eventResult.userInfo.openId, date: new Date(), ad: ad}).exec(function(err){
+                var bonus = 5;
+                userOne.credit += bonus;
+                userOne.save(function (err) {
+                  emitter.emit('final', 'loginBonus', bonus);
+                });
+                      
+              });  
+           } else {
+              emitter.emit('final', 'loginBonus', null);
+           }
         });
       }
     });
 
     // step3
-    var finalEvents = {'userInfo': true, 'ticket': true, 'sharedToUsers': true, 'subscribeBonus': true, 'userPrize': true};
+    var finalEvents = {'userInfo': true, 'ticket': true, 'sharedToUsers': true, 'subscribeBonus': true, 'userPrize': true, 'loginBonus': true};
     var finalResult = {};
     emitter.on('final', function (event, result) {
       finalResult[event] = result;
@@ -286,7 +318,8 @@ module.exports = {
         retResult.subscribe = finalResult.userInfo.subscribe;
         retResult.subscribeBonus = finalResult.subscribeBonus;
         retResult.userPrize = finalResult.userPrize;
-        console.log('retResult');
+        retResult.loginBonus = finalResult.loginBonus;
+        console.log(retResult);
         return res.json(retResult);
       }
     });
@@ -484,74 +517,73 @@ module.exports = {
   probability : function(req, res) {
     var openId = req.param("openId");
     var ad = req.param("ad");
-    var prizeInfo = config.adInfo(ad).prizesInfo;
-    if (prizeInfo == null) {
-      return res.status(400).json({errCode: 0, "errMsg" : "沒有此活動。"});
-    }
-    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
-        if (!userOne) {
-            return res.status(401).end();
-        }
-        if (userOne.credit < 1) {
-          return res.status(400).json({errCode: 0, "errMsg" : "抽奬機會已用完。"});
-        }
-
-        var prizeList = Object.keys(prizeInfo);
-        if (prizeList.length == 0) {
-            res.status(400);
-            return res.json();
-        }
-        var probability = prizeList.map(function (prize) {
-          return prizeInfo[prize].probability || 0;
-        });
-        var total = 0;
-        for (var i = probability.length - 1; i >= 0; i--) {
-          total += probability[i];
-        }
-
-        var prize = 0;
-        var rand = Math.floor((Math.random() * total));
-        // console.log(rand);
-        for (var i = 0; i <= probability.length - 1; i++) {
-          if (rand < probability[i]) {
-              prize = prizeList[i];
-              break;
-          } else {
-              rand -= probability[i];
+    Config.adInfo(ad).exec(function (err, configOne) {
+      var prizeInfo = configOne.prizesInfo;
+      if (prizeInfo == null) {
+        return res.status(400).json({errCode: 0, "errMsg" : "沒有此活動。"});
+      }
+      user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+          if (!userOne) {
+              return res.status(401).end();
           }
-        }
-        console.log(prize);
-        var prizeAmount = prizeInfo[prize].amount || 100000;
-        log.count({action:'redeem_'+prize, ad: ad}).exec(function (err, redeems) {
-          if (redeems >= prizeAmount) {
-            prize = 'none';
-            console.log("month");
+          if (userOne.credit < 1) {
+            return res.status(400).json({errCode: 0, "errMsg" : "抽奬機會已用完。"});
           }
-          var startOfWeek = new Date();
-          startOfWeek.setHours(0,0,0,0);
-          startOfWeek = new Date(startOfWeek.getTime()- 86400*1000*startOfWeek.getDay());
-          var prizeWeekAmount = prizeInfo[prize].weekAmount || prizeInfo[prize].amount || 100000;
-          log.count({action:'redeem_'+prize, ad: ad, date: {'>=' : startOfWeek}}).exec(function (err, weekRedeems) {
-            if (weekRedeems >= prizeWeekAmount) {
-              prize = 'none';
-              console.log("week");
+
+          var prizeList = Object.keys(prizeInfo);
+          if (prizeList.length == 0) {
+              res.status(400);
+              return res.json();
+          }
+          var probability = prizeList.map(function (prize) {
+            return prizeInfo[prize].probability || 0;
+          });
+          var total = 0;
+          for (var i = probability.length - 1; i >= 0; i--) {
+            total += probability[i];
+          }
+
+          var prize = 'none';
+          var rand = Math.floor((Math.random() * total));
+          // console.log(rand);
+          for (var i = 0; i <= probability.length - 1; i++) {
+            if (rand < probability[i]) {
+                prize = prizeList[i];
+                break;
+            } else {
+                rand -= probability[i];
             }
-            userOne.credit -= 1;
-            userOne.save(function (err) {
-              log.create({action: 'redeem_'+prize, openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
+          }
+          console.log(prize);
+          var prizeAmount = prizeInfo[prize].amount || 100000;
+          log.count({action:'redeem_'+prize, ad: ad}).exec(function (err, redeems) {
+            if (redeems >= prizeAmount) {
+              prize = 'none';
+              console.log("month");
+            }
+            var startOfWeek = new Date();
+            startOfWeek.setHours(0,0,0,0);
+            startOfWeek = new Date(startOfWeek.getTime()- 86400*1000*startOfWeek.getDay());
+            var prizeWeekAmount = prizeInfo[prize].weekAmount || prizeInfo[prize].amount || 100000;
+            log.count({action:'redeem_'+prize, ad: ad, date: {'>=' : startOfWeek}}).exec(function (err, weekRedeems) {
+              if (weekRedeems >= prizeWeekAmount) {
+                prize = 'none';
+                console.log("week");
+              }
+              userOne.credit -= 1;
+              userOne.save(function (err) {
+                log.create({action: 'redeem_'+prize, openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
 
+                });
+                
+                return res.json({credit: userOne.credit, prize: prize});
               });
-              
-              return res.json({credit: userOne.credit, prize: prize});
             });
           });
-          
-
-          
-        });
-        
-        
-    });
+                
+      });
+    })
+    
   },
   redeem_c: function(req, res){
     var verificationCode = req.param('verificationCode');
@@ -730,7 +762,7 @@ module.exports = {
            } else {
               return res.status(400).end();
            }
-        })
+        });
         
     });
     

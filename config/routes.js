@@ -78,6 +78,9 @@ module.exports.routes = {
   },
   '/oneMember' : {
     view : 'one_member'
+  },
+  '/ad/config' : {
+    view : 'config'
   }
   /*,
   'api/initialization': {
