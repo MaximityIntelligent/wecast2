@@ -125,7 +125,7 @@ Config.updateVoteResult = function (ad, vote, cb) {
 Config.adInfo = function (ad, cb) {
 	config.findOne({ad: ad}).exec(function (err, configOne) {
 		if (err) {
-			return cb(err);
+			return cb(err, {});
 		}
 		if (!configOne) {
 			return cb(null, {});

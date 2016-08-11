@@ -92,62 +92,62 @@ module.exports = {
     var emitter = new eventEmitter();
     // step 1
     request.get('https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code', function (err, res, result) {
-        result = JSON.parse(result);
-        // console.log(result);
-        if (result.errcode >= 40000 && result.errcode < 60000) {
-          console.log('step1-A');
-          emitter.emit('error', {errMsg: JSON.stringify(result)});
-        } else {
-          console.log('step1-B');
-          var accessToken = result.access_token;
-          var userInfo = {};
-          var openId = result.openid;
-          userInfo.openId = openId;
-          if (result.unionid) {
-            userInfo.unionId = result.unionid;
-          }
-          userInfo.ad = ad;
-          if (sharedBy != "wecast") {
-            userInfo.parent = sharedBy;
-          }
-          // Get UserInfo
-          if (result.scope == 'snsapi_userinfo') {
-
-            request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, res, result) {
-              result = JSON.parse(result);
-              if (result.nickname) {
-                userInfo.nickname = result.nickname;
-              }
-              if (result.sex) {
-                userInfo.sex = result.sex;
-              }
-              if (result.province) {
-                userInfo.province = result.province;
-              }
-              if (result.city) {
-                userInfo.city = result.city;
-              }
-              if (result.country) {
-                userInfo.country = result.country;
-              }
-              if (result.headimgurl) {
-                userInfo.headimgurl = result.headimgurl;
-              }
-              if (result.language) {
-                userInfo.language = result.language;
-              }
-              if (result.unionid) {
-                userInfo.unionId = result.unionid;
-              }
-              emitter.emit('userInfo', userInfo);
-            });
- 
-          } else {
-            emitter.emit('userInfo', userInfo);
-          }
-          // Get UserInfo
-          
+      result = JSON.parse(result);
+      // console.log(result);
+      if (result.errcode >= 40000 && result.errcode < 60000) {
+        console.log('step1-A');
+        emitter.emit('error', {errMsg: JSON.stringify(result)});
+      } else {
+        console.log('step1-B');
+        var accessToken = result.access_token;
+        var userInfo = {};
+        var openId = result.openid;
+        userInfo.openId = openId;
+        if (result.unionid) {
+          userInfo.unionId = result.unionid;
         }
+        userInfo.ad = ad;
+        if (sharedBy != "wecast") {
+          userInfo.parent = sharedBy;
+        }
+        // Get UserInfo
+        if (result.scope == 'snsapi_userinfo') {
+
+          request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, res, result) {
+            result = JSON.parse(result);
+            if (result.nickname) {
+              userInfo.nickname = result.nickname;
+            }
+            if (result.sex) {
+              userInfo.sex = result.sex;
+            }
+            if (result.province) {
+              userInfo.province = result.province;
+            }
+            if (result.city) {
+              userInfo.city = result.city;
+            }
+            if (result.country) {
+              userInfo.country = result.country;
+            }
+            if (result.headimgurl) {
+              userInfo.headimgurl = result.headimgurl;
+            }
+            if (result.language) {
+              userInfo.language = result.language;
+            }
+            if (result.unionid) {
+              userInfo.unionId = result.unionid;
+            }
+            emitter.emit('userInfo', userInfo);
+          });
+
+        } else {
+          emitter.emit('userInfo', userInfo);
+        }
+        // Get UserInfo
+        
+      }
     });
 
     emitter.on('userInfo', function (userInfo) {
@@ -219,23 +219,17 @@ module.exports = {
             request.get('https://api.weixin.qq.com/cgi-bin/user/info?access_token='+eventResult.ticket.access_token+'&openid='+eventResult.userInfo.openId, function (err, res, info) {
               info = JSON.parse(info);
               if (info.subscribe == 1) {
-                var bonus = configOne.subscribeBonus || 0;
-                if (bonus > 0) {
-                  eventResult.userInfo.credit += bonus;
-                  eventResult.userInfo.subscribe = true;
-                  // retResult.subscribeBonus = bonus;
-                  eventResult.userInfo.save(function (err, savedUser) {
-                    emitter.emit('final', 'subscribeBonus', bonus);
-                    console.log("subscribe bounce");
-                  });
-                } else {
-                  emitter.emit('final', 'subscribeBonus', null);
-                }
+                eventResult.userInfo.subscribe = true;
+                eventResult.userInfo.save(function (err, savedUser) {
+                  emitter.emit('final', 'subscribe', true);
+                });
               } else {
-                emitter.emit('final', 'subscribeBonus', null);
+                emitter.emit('final', 'subscribe', false);
               }
             });
             
+          } else {
+            emitter.emit('final', 'subscribe', true);
           }
           // 3rd
           var userPrize = {};
@@ -271,31 +265,13 @@ module.exports = {
             emitter.emit('final', 'userPrize', userPrize);
 
           });
-        })
-        
-        // 4th
-        var startOfDay = new Date();
-        startOfDay.setHours(0,0,0,0);
-        log.find({action: 'login', openId: eventResult.userInfo.openId, date: {$gte: startOfDay}, ad: ad}).exec(function (err, logs) {
           
-           if (logs.length < 1) {
-              log.create({action: 'login', openId: eventResult.userInfo.openId, date: new Date(), ad: ad}).exec(function(err){
-                var bonus = 5;
-                userOne.credit += bonus;
-                userOne.save(function (err) {
-                  emitter.emit('final', 'loginBonus', bonus);
-                });
-                      
-              });  
-           } else {
-              emitter.emit('final', 'loginBonus', null);
-           }
         });
       }
     });
 
     // step3
-    var finalEvents = {'userInfo': true, 'ticket': true, 'sharedToUsers': true, 'subscribeBonus': true, 'userPrize': true, 'loginBonus': true};
+    var finalEvents = {'userInfo': true, 'ticket': true, 'sharedToUsers': true, 'subscribe': true, 'userPrize': true};
     var finalResult = {};
     emitter.on('final', function (event, result) {
       finalResult[event] = result;
@@ -315,10 +291,8 @@ module.exports = {
         retResult.userVote = finalResult.userInfo.vote;
         retResult.isRedeemVote = finalResult.userInfo.isRedeemVote;
         retResult.sharedToUsers = finalResult.sharedToUsers;
-        retResult.subscribe = finalResult.userInfo.subscribe;
-        retResult.subscribeBonus = finalResult.subscribeBonus;
+        retResult.subscribe = finalResult.subscribe;
         retResult.userPrize = finalResult.userPrize;
-        retResult.loginBonus = finalResult.loginBonus;
         console.log(retResult);
         return res.json(retResult);
       }
@@ -590,12 +564,13 @@ module.exports = {
     var openId = req.param("user") || req.param("openId");
     var prize = req.param("prize");
     var ad = req.param("ad");
-    if (config.adInfo(ad).prizesInfo==null || config.adInfo(ad).prizesInfo[prize] == null) {
-      res.status(400);
-      res.json({errCode: 0, errMsg: '沒有此奬品。'});
-      return;
-    }
-    var prizeInfo = config.adInfo(ad).prizesInfo[prize];
+    Config.adInfo(ad, function (err, configOne) {
+      if (configOne.prizesInfo==null || configOne.prizesInfo[prize] == null) {
+        res.status(400);
+        res.json({errCode: 0, errMsg: '沒有此奬品。'});
+        return;
+      }
+      var prizeInfo = configOne.prizesInfo[prize];
       user.findOne({openId: openId, ad: ad}).exec(function(err, userOne){
         if(!userOne) return res.status(401).end();
         
@@ -634,7 +609,9 @@ module.exports = {
             
           }
 
+      });
     });
+    
 
   },
   updateCredit: function(req, res){
@@ -670,7 +647,6 @@ module.exports = {
   getCredit: function (req, res) {
     var openId = req.param('openId');
     var ad = req.param('ad');
-    console.log(config.adInfo(ad));
     user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
         if (!userOne) {
             return res.status(401).end();
@@ -685,37 +661,40 @@ module.exports = {
         if (!userOne) {
             return res.status(401).end();
         }
-        var prizeInfo = config.adInfo(ad).prizesInfo;
-        var prizeList = Object.keys(prizeInfo);
-        if (prizeList.length == 0) {
-            return res.json({prizeRemain: {}});
-        }
-        var redeemPrizeList = prizeList.map(function (item) {
-            return 'redeem_'+item;
-        });
-        // var prizeAmount = prizeAmountAll[ad];
-        var prizeRemain = {};
-        log.find({action: {$in: redeemPrizeList}, ad:ad}).exec(function (err, logs) {
-            var groupLogs = {};
-            logs.forEach(function (item, index, array) {
-              if (groupLogs[item.action] == undefined) {
-                groupLogs[item.action] = [item];
-              } else {
-                groupLogs[item.action].push(item);
-              }
-            });
+        Config.adInfo(ad, function (err, configOne) {
+          var prizeInfo = configOne.prizesInfo;
+          var prizeList = Object.keys(prizeInfo);
+          if (prizeList.length == 0) {
+              return res.json({prizeRemain: {}});
+          }
+          var redeemPrizeList = prizeList.map(function (item) {
+              return 'redeem_'+item;
+          });
+          // var prizeAmount = prizeAmountAll[ad];
+          var prizeRemain = {};
+          log.find({action: {$in: redeemPrizeList}, ad:ad}).exec(function (err, logs) {
+              var groupLogs = {};
+              logs.forEach(function (item, index, array) {
+                if (groupLogs[item.action] == undefined) {
+                  groupLogs[item.action] = [item];
+                } else {
+                  groupLogs[item.action].push(item);
+                }
+              });
 
-            prizeList.forEach(function (item, index, array) {
-              if (groupLogs['redeem_'+item] != undefined) {
-                prizeRemain[item] = prizeInfo[item].amount - groupLogs['redeem_'+item].length;
-              } else {
-                prizeRemain[item] = prizeInfo[item].amount;
-              }
-              
-            });
+              prizeList.forEach(function (item, index, array) {
+                if (groupLogs['redeem_'+item] != undefined) {
+                  prizeRemain[item] = prizeInfo[item].amount - groupLogs['redeem_'+item].length;
+                } else {
+                  prizeRemain[item] = prizeInfo[item].amount;
+                }
+                
+              });
 
-            return res.json({prizeRemain: prizeRemain});
+              return res.json({prizeRemain: prizeRemain});
+          });
         });
+        
       });
       
 
@@ -771,126 +750,135 @@ module.exports = {
     var openId = req.param('openId');
     var ad = req.param('ad');
     var userVote = req.param('userVote');
-    var voteInfo = config.adInfo(ad).votesInfo;
-    if (voteInfo == undefined) {
-      return res.status(400).json({errCode: 0, errMsg:'沒有投票活動。'});
-    }
-    var votes = voteInfo.votes || [];
-    if (votes.indexOf(userVote) == -1){
-      return res.status(400).end();
-    }
-    var now = new Date();
-    var exp = voteInfo.voteExp || now;
-    //console.log(exp);
-    if (now.getTime() > exp.getTime()) {
-      return res.status(400).json({errCode: 0, errMsg:'投票時限已過了。'});
-    }
-    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
-        if (!userOne) {
-            return res.status(401).end();
-        }
-        if (userVote) {
-          userOne.vote = userVote;
-          userOne.save(function (err, savedUser) {
-            log.create({action: 'vote', openId: savedUser.openId, date: new Date(), ad: ad}).exec(function(err, results){
+    Config.adInfo(ad, function (err, configOne) {
+      var voteInfo = configOne.votesInfo;
+      if (voteInfo == undefined) {
+        return res.status(400).json({errCode: 0, errMsg:'沒有投票活動。'});
+      }
+      var votes = voteInfo.votes || [];
+      if (votes.indexOf(userVote) == -1){
+        return res.status(400).end();
+      }
+      var now = new Date();
+      var exp = voteInfo.voteExp || now;
+      //console.log(exp);
+      if (now.getTime() > exp.getTime()) {
+        return res.status(400).json({errCode: 0, errMsg:'投票時限已過了。'});
+      }
+      user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+          if (!userOne) {
+              return res.status(401).end();
+          }
+          if (userVote) {
+            userOne.vote = userVote;
+            userOne.save(function (err, savedUser) {
+              log.create({action: 'vote', openId: savedUser.openId, date: new Date(), ad: ad}).exec(function(err, results){
 
-            });
+              });
 
-            getVoteRecord(ad, function (result) {
-              return res.json({userVote: savedUser.vote, votes: result});
+              getVoteRecord(ad, function (result) {
+                return res.json({userVote: savedUser.vote, votes: result});
+              });
+              
             });
-            
-          });
-        } else {
-           return res.status(400).end();
-        }
-    });
+          } else {
+             return res.status(400).end();
+          }
+      });
+    })
+    
   },
   redeemVote: function (req, res) {
     var openId = req.param('openId');
     var ad = req.param('ad');
-    var voteInfo = config.adInfo(ad).votesInfo;
-    if (voteInfo == undefined) {
-      return res.status(400).json({errCode: 0, errMsg:'沒有投票活動。'});
-    }
-    var now = new Date();
-    var exp = voteInfo.redeemExp || now;
-    if (now.getTime() > exp.getTime()) {
-      return res.status(400).json({errCode:0, errMsg: '領奬時限已過'});
-    }
-    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
-        if (!userOne) {
-            return res.status(401).end();
-        }
-        if (userOne.isRedeemVote) { 
-          return res.status(400).json({errCode:0, errMsg: '您已經成功領奬。'});
-        }
-        getVoteResult(ad, function (result) {
-          if (!result) {
-            return res.status(400).json({errCode:0, errMsg: '比賽結果還沒出來。'});
-          } else {
-            if (result == userOne.vote) {
-              userOne.credit = userOne.credit + voteInfo.bonus;
-              userOne.isRedeemVote = true;
-              userOne.save(function (err, savedUser) {
-                log.create({action: 'redeem_vote', openId: savedUser.openId, date: new Date(), ad: ad}).exec(function(err, results){
-                  return res.json({credit: savedUser.credit, isRedeemVote: userOne.isRedeemVote});
-                });
-                
-              });
-            } else {
-              return res.status(400).json({errCode:0, errMsg: '抱歉，您猜不中呢。'});
-            }
+    Config.adInfo(ad, function (err, configOne) {
+      var voteInfo = configOne.votesInfo;
+      if (voteInfo == undefined) {
+        return res.status(400).json({errCode: 0, errMsg:'沒有投票活動。'});
+      }
+      var now = new Date();
+      var exp = voteInfo.redeemExp || now;
+      if (now.getTime() > exp.getTime()) {
+        return res.status(400).json({errCode:0, errMsg: '領奬時限已過'});
+      }
+      user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+          if (!userOne) {
+              return res.status(401).end();
           }
-        });
-        
-    });
+          if (userOne.isRedeemVote) { 
+            return res.status(400).json({errCode:0, errMsg: '您已經成功領奬。'});
+          }
+          getVoteResult(ad, function (result) {
+            if (!result) {
+              return res.status(400).json({errCode:0, errMsg: '比賽結果還沒出來。'});
+            } else {
+              if (result == userOne.vote) {
+                userOne.credit = userOne.credit + voteInfo.bonus;
+                userOne.isRedeemVote = true;
+                userOne.save(function (err, savedUser) {
+                  log.create({action: 'redeem_vote', openId: savedUser.openId, date: new Date(), ad: ad}).exec(function(err, results){
+                    return res.json({credit: savedUser.credit, isRedeemVote: userOne.isRedeemVote});
+                  });
+                  
+                });
+              } else {
+                return res.status(400).json({errCode:0, errMsg: '抱歉，您猜不中呢。'});
+              }
+            }
+          });
+          
+      });
+    })
+    
   },
   redeemVoteAll: function (req, res) {
     var openId = req.param('openId');
     var ad = req.param('ad');
     var secret = req.param('secret');
-    var voteInfo = config.adInfo(ad).votesInfo;
-    if (voteInfo == undefined) {
-      return res.status(400).json({errCode: 0, errMsg:'沒有投票活動。'});
-    }
-    if (secret == 'kitkit!@#$') {
-      user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
-        if (!userOne) {
-            return res.status(401).end();
-        }
-        getVoteResult(ad, function (result) {
-          if (!result) {
-            return res.status(400).end();
-          } else {
-            user.find({ad:ad, vote: result, isRedeemVote: false}).exec(function (err, users) {
-            if (users.length > 0) {
-              var count = users.length;
-              users.forEach(function (item, index) {
-                if (item.isRedeemVote == false) {
-                  item.credit = item.credit + voteInfo.bonus;
-                  item.isRedeemVote = true;
-                  item.save(function (err, savedUser) {
-                    count = count - 1;
-                    if (count == 0) {
-                      return res.status(200).end();
-                    }
-                  });
-                }
-                
-              });
-            } else {
-              return res.status(204).end();
-            }
-            
-          });
+    Config.adInfo(ad, function (err, configOne) {
+      var voteInfo = configOne.votesInfo;
+      if (voteInfo == undefined) {
+        return res.status(400).json({errCode: 0, errMsg:'沒有投票活動。'});
+      }
+      if (secret == 'kitkit!@#$') {
+        user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+          if (!userOne) {
+              return res.status(401).end();
           }
-        });
+          getVoteResult(ad, function (result) {
+            if (!result) {
+              return res.status(400).end();
+            } else {
+              user.find({ad:ad, vote: result, isRedeemVote: false}).exec(function (err, users) {
+              if (users.length > 0) {
+                var count = users.length;
+                users.forEach(function (item, index) {
+                  if (item.isRedeemVote == false) {
+                    item.credit = item.credit + voteInfo.bonus;
+                    item.isRedeemVote = true;
+                    item.save(function (err, savedUser) {
+                      count = count - 1;
+                      if (count == 0) {
+                        return res.status(200).end();
+                      }
+                    });
+                  }
+                  
+                });
+              } else {
+                return res.status(204).end();
+              }
+              
+            });
+            }
+          });
 
-    });
-    } else {
-      return res.status(400).end();
-    }
+        });
+      } else {
+        return res.status(400).end();
+      }
+    })
+    
   },
   getGameResult: function (req, res) {
     var openId = req.param('openId');
@@ -949,6 +937,60 @@ module.exports = {
         });
     });
   },
+  redeemSubscribe: function (req, res) {
+    var openId = req.param('openId');
+    var ad = req.param('ad');
+    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+      if (!userOne) {
+          return res.status(401).end();
+      }
+      if (userOne.subscribe && !userOne.isRedeemSubscribe) {
+        Config.adInfo(ad, function (err, configOne) {
+          var bonus = configOne.subscribeBonus || 0
+          if (bonus > 0) {
+            userOne.credit += bonus;
+            userOne.isRedeemSubscribe = true;
+            userOne.save(function (err, savedUser) {
+              return res.json({subscribeBonus: bonus});
+            });
+          } else {
+            return res.status(400).end();
+          }
+        });
+      } else {
+        return res.status(400).end();
+      }
+    });
+  },
+  redeemLogin: function (req, res) {
+    var openId = req.param('openId');
+    var ad = req.param('ad');
+    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+      if (!userOne) {
+          return res.status(401).end();
+      }
+      var startOfDay = new Date();
+      startOfDay.setHours(0,0,0,0);
+      log.find({action: 'login', openId: eventResult.userInfo.openId, date: {$gte: startOfDay}, ad: ad}).exec(function (err, logs) {
+          
+          Config.adInfo(ad, function (err, configOne) {
+            var bonus = configOne.loginBonus || 0;
+            if (logs.length < 1 && bonus > 0) {
+              log.create({action: 'login', openId: eventResult.userInfo.openId, date: new Date(), ad: ad}).exec(function(err){
+                
+                userOne.credit += bonus;
+                userOne.save(function (err) {
+                  return res.json({'loginBonus': bonus});
+                });
+                      
+              });  
+            } else {
+              return res.status(400).end();
+            }
+          });
+      });
+    });
+  },
   questionnaire: function (req, res) {
     var openId = req.param('openId');
     var ad = req.param('ad');
@@ -956,7 +998,8 @@ module.exports = {
     var phone = req.param('phone');
     var email = req.param('email');
     var age = req.param('age');
-    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+    Config.adInfo(ad, function (err, configOne) {
+      user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
         if (!userOne) {
             return res.status(401).end();
         }
@@ -965,13 +1008,15 @@ module.exports = {
         userOne.email = email;
         userOne.age = age;
         if (!userOne.isQuestionnaire) {
-          userOne.credit = userOne.credit + config.adInfo(ad).questionnaireBonus || 0;
+          userOne.credit = userOne.credit + configOne.questionnaireBonus || 0;
         }
         userOne.isQuestionnaire = true;
         userOne.save(function (err, savedUser) {
           return res.json({credit: savedUser.credit});
         });
+      });
     });
+    
   },
   initialization: function(req, res){
     var ad = req.param('ad');

@@ -41,6 +41,10 @@ module.exports = {
       type: 'boolean',
       defaultsTo: false
     },
+    isRedeemSubscribe: {
+      type: 'boolean',
+      defaultsTo: false
+    },
     username: {
       type: 'string'
     },
