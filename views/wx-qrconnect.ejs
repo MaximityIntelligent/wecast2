@@ -25,7 +25,7 @@
             <div class="weui_icon_area"><i class="weui_icon_safe weui_icon_safe_warn"></i></div>
             <div class="weui_text_area">
                 <h2 class="weui_msg_title">登入操作</h2>
-                <p class="weui_msg_desc">{{$scope.userInfo.nickname}} 确定此操作嗎？</p>
+                <p class="weui_msg_desc">{{userInfo.nickname}} 确定此操作嗎？</p>
             </div>
             <div class="weui_opr_area">
                 <p class="weui_btn_area">
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="weui_msg" ng-show="loginSuccess">
-            <div class="weui_icon_area"><i class="weui_icon_safe weui_icon_safe_warn"></i></div>
+            <div class="weui_icon_area"><i class="weui_icon_safe weui_icon_safe_success"></i></div>
             <div class="weui_text_area">
                 <h2 class="weui_msg_title">登入完成</h2>
             </div>
@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="weui_msg" ng-show="loginError">
-            <div class="weui_icon_area"><i class="weui_icon_safe weui_icon_safe_warn"></i></div>
+            <div class="weui_icon_area"><i class="weui_icon_msg weui_icon_warn"></i></div>
             <div class="weui_text_area">
                 <h2 class="weui_msg_title">登入取消</h2>
             </div>
