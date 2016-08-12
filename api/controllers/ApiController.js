@@ -27,7 +27,7 @@ var randomString = function(length) {
 };
 
 var getVoteResult = function (ad, cb) {
-    Config.adInfo(ad).exec(function (err, configOne) {
+    Config.adInfo(ad, function (err, configOne) {
       var voteInfo = configOne.votesInfo || {};
       var votes = voteInfo.votes || [];
       var resultVotes = votes.map(function (vote) {
@@ -50,7 +50,7 @@ var getVoteResult = function (ad, cb) {
 };
 
 var getVoteRecord = function (ad, cb) {
-  Config.adInfo(ad).exec(function (err, configOne) {
+  Config.adInfo(ad, function (err, configOne) {
     var voteInfo = configOne.votesInfo || {};
     var votes = voteInfo.votes || [];
     var resultVotes = {};
@@ -214,7 +214,7 @@ module.exports = {
             emitter.emit('final', 'sharedToUsers', sharedToUsers);
         });
         
-        Config.adInfo(ad).exec(function (err, configOne) {
+        Config.adInfo(ad, function (err, configOne) {
           // 2nd
           if (!eventResult.userInfo.subscribe) {
             request.get('https://api.weixin.qq.com/cgi-bin/user/info?access_token='+eventResult.ticket.access_token+'&openid='+eventResult.userInfo.openId, function (err, res, info) {
@@ -492,7 +492,7 @@ module.exports = {
   probability : function(req, res) {
     var openId = req.param("openId");
     var ad = req.param("ad");
-    Config.adInfo(ad).exec(function (err, configOne) {
+    Config.adInfo(ad, function (err, configOne) {
       var prizeInfo = configOne.prizesInfo;
       if (prizeInfo == null) {
         return res.status(400).json({errCode: 0, "errMsg" : "沒有此活動。"});
@@ -1056,6 +1056,8 @@ module.exports = {
      return res.json({errMsg: "ok"});
   },
   wxPush: function (req, res) {
+    console.log(req.query);
+    console.log(req.body);
     var signature = req.param('signature');
     var timestamp = req.param('timestamp');
     var nonce = req.param('nonce');
