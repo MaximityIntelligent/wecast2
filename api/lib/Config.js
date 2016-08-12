@@ -17,7 +17,7 @@ Config.create = function (ad, cb) {
 				return cb(null, configNew);
 			});
 		} else {
-			return cb(null, configOne);
+			return cb(null, null);
 		}
 	});
 };
@@ -120,7 +120,52 @@ Config.updateVoteResult = function (ad, vote, cb) {
 		
 		
 	});
-}
+};
+
+Config.createOrEditLoginBonus = function (ad, index, loginBonus, cb) {
+	config.findOne({ad: ad}).exec(function (err, configOne) {
+		if (err) {
+			return cb(err);
+		}
+		if (configOne) {
+			if (index) {
+				configOne.loginBonus[index] = loginBonus;
+			} else {
+				configOne.loginBonus.push(loginBonus);
+			}
+			configOne.save(function (err) {
+				if (err) {
+					return cb(err);
+				}
+				return cb(null, index, loginBonus);
+			});
+			
+		}
+	});
+};
+
+Config.deleteLoginBonus = function (ad, index, cb) {
+	config.findOne({ad: ad}).exec(function (err, configOne) {
+		if (err) {
+			return cb(err);
+		}
+		if (configOne) {
+			if (index >= 0 && index < configOne.loginBonus.length) {
+				configOne.loginBonus.splice(index, 1);		
+				configOne.save(function (err) {
+					if (err) {
+						return cb(err);
+					}
+					return cb(null, index);
+				});
+			} else {
+				return cb(null, null);
+			}
+			
+			
+		}
+	});
+};
 
 Config.adInfo = function (ad, cb) {
 	config.findOne({ad: ad}).exec(function (err, configOne) {

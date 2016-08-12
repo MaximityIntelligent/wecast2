@@ -11,6 +11,7 @@ var config = require('../../config/event-config');
 var sha1 = require('sha1');
 var User = require('../lib/User');
 var Config = require('../lib/Config');
+var Weixin = require('../lib/Weixin');
 
 // Weixin Setting
 var appid = 'wxbb0b299e260ac47f';
@@ -971,19 +972,35 @@ module.exports = {
       }
       var startOfDay = new Date();
       startOfDay.setHours(0,0,0,0);
-      log.find({action: 'login', openId: eventResult.userInfo.openId, date: {$gte: startOfDay}, ad: ad}).exec(function (err, logs) {
-          
+      log.find({action: 'login', openId: openId, date: {$gte: startOfDay}, ad: ad}).exec(function (err, logs) {
           Config.adInfo(ad, function (err, configOne) {
-            var bonus = configOne.loginBonus || 0;
-            if (logs.length < 1 && bonus > 0) {
-              log.create({action: 'login', openId: eventResult.userInfo.openId, date: new Date(), ad: ad}).exec(function(err){
-                
-                userOne.credit += bonus;
+            var bonus = configOne.loginBonus || [];
+            if (logs.length < 1 && bonus.length > 0) {
+              var yesterday = new Date(startOfDay.getTime() - 86400 * 1000);
+              log.findOne({action: 'login', openId: openId, date: {$gte: yesterday, $lt: startOfDay}, ad: ad}).exec(function (err, logOne) {
+                var finalBonus;
+                if (!logOne && configOne.loginBonusContinuity) {
+                  finalBonus = bonus[0];
+                  userOne.credit += bonus[0];
+                  userOne.loginDays = 1;
+                }
+                else {
+                  if (configOne.loginBonusCycle) {
+                    finalBonus = bonus[Math.min(bonus.length - 1, userOne.loginDays)];
+                  } else {
+                    finalBonus = bonus[userOne.loginDays%bonus.length];
+                  }
+                  
+                  userOne.credit += finalBonus;
+                  userOne.loginDays = (userOne.loginDays || 0) + 1;
+                }
                 userOne.save(function (err) {
-                  return res.json({'loginBonus': bonus});
-                });
-                      
-              });  
+                  log.create({action: 'login', openId: openId, date: new Date(), ad: ad}).exec(function(err){
+                    return res.json({'loginBonus': bonus, loginDays: userOne.loginDays, finalBonus: finalBonus});
+                  });
+                        
+                }); 
+              }); 
             } else {
               return res.status(400).end();
             }
@@ -1037,6 +1054,10 @@ module.exports = {
   },
   checkAlive: function (req, res) {
      return res.json({errMsg: "ok"});
+  },
+  wxPush: function (req, res) {
+    console.log(req.body);
+    return req.end();
   }
 
 };

@@ -23,8 +23,16 @@ module.exports = {
       defaultsTo: 0
     },
     loginBonus: {
-      type: 'float',
-      defaultsTo: 0
+      type: 'array',
+      defaultsTo: []
+    },
+    loginBonusCycle: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+    loginBonusContinuity: {
+      type: 'boolean',
+      defaultsTo: false
     },
     questionnaireBonus: {
       type: 'float',

@@ -45,6 +45,10 @@ module.exports = {
       type: 'boolean',
       defaultsTo: false
     },
+    loginDays: {
+      type: 'integer',
+      defaultsTo: 0
+    },
     username: {
       type: 'string'
     },

@@ -99,6 +99,11 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     });
   };
 
+  $scope.initWXqrCode = function () {
+    $scope.qrImgUrl = "http://placehold.it/250x250";
+    
+  }
+
   $scope.select = function (ad) {
     if (ad == '') return;
     $http.get('/config/createConfig?ad='+ad).success(function(data, status, headers, config) {
@@ -216,6 +221,42 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       });
     }
   };
+  $scope.selectLoginBonus = function (index) {
+    console.log(index);
+    $scope.newLoginBonus = $scope.selectConfig.loginBonus[index];
+  };
+  $scope.createOrEditLoginBonus = function (newLoginBonus) {
+    $scope.updateOK = false;
+    $scope.updateFail = false;
+    var temp = $scope.selectConfig.loginBonus;
+    if (!$scope.selectBonus) {
+      $scope.selectConfig.loginBonus.push(newLoginBonus);
+    } else {
+      $scope.selectConfig.loginBonus[$scope.selectBonus] = newLoginBonus;
+    }
+    $http.post('/config/createOrEditLoginBonus', {ad: $scope.selectConfig.ad, index: $scope.selectBonus, loginBonus: newLoginBonus}).success(function(data, status, headers, config) {
+      $scope.updateOK = true;
+    }).error(function(data, status, headers, config) {
+      $scope.selectConfig.loginBonus = temp;
+      $scope.updateFail = true;
+    });
+    $scope.selectBonus = undefined;
+  };
+  $scope.deleteLoginBonus = function () {
+    $scope.updateOK = false;
+    $scope.updateFail = false;
+    var temp = $scope.selectConfig.loginBonus;
+    if ($scope.selectBonus) {
+      $scope.selectConfig.loginBonus.splice($scope.selectBonus, 1);
+      $http.post('/config/deleteLoginBonus', {ad: $scope.selectConfig.ad, index: $scope.selectBonus}).success(function(data, status, headers, config) {
+        $scope.updateOK = true;
+      }).error(function(data, status, headers, config) {
+        $scope.selectConfig.loginBonus = temp;
+        $scope.updateFail = true;
+      });
+    }
+
+  }
   $scope.voteStyle = function (vote) {
     if ($scope.selectConfig.votesInfo.voteResult == vote) {
       return {'color': 'white' ,'background-color': 'royalblue'};
