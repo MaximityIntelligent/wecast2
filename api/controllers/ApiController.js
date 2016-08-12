@@ -1067,7 +1067,8 @@ module.exports = {
     var tmpSHA1 = crypto.createHash('sha1').update(tmpStr).digest('hex');
     console.log(signature+':'+tmpSHA1);
     if (tmpSHA1 == signature) {
-      return res.json(echostr);
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      return res.end(echostr);
     } else {
       return res.status(400).end();
     }
