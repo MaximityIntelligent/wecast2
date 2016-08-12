@@ -92,7 +92,7 @@ module.exports = {
     }
     var emitter = new eventEmitter();
     // step 1
-    request.get('https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code', function (err, res, result) {
+    request.get('https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code', function (err, responce, result) {
       result = JSON.parse(result);
       // console.log(result);
       if (result.errcode >= 40000 && result.errcode < 60000) {
@@ -114,7 +114,7 @@ module.exports = {
         // Get UserInfo
         if (result.scope == 'snsapi_userinfo') {
 
-          request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, res, result) {
+          request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, responce, result) {
             result = JSON.parse(result);
             if (result.nickname) {
               userInfo.nickname = result.nickname;
@@ -172,9 +172,9 @@ module.exports = {
     wxToken.findOne({expireAt: {'>': now}}).sort({ createdAt: 'desc' }).exec(function (err, wxTokenOne) {
       if (!wxTokenOne) {
           //console.log('-----no token-----');
-          request.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appid+'&secret='+secret, function (err, res, token) {
+          request.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appid+'&secret='+secret, function (err, responce, token) {
             token = JSON.parse(token);
-            request.get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+token.access_token+'&type=jsapi', function (err, res, ticket) {
+            request.get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+token.access_token+'&type=jsapi', function (err, responce, ticket) {
               ticket = JSON.parse(ticket);
               if (ticket.errmsg == 'ok') {
                 var expireAt = new Date();
@@ -217,7 +217,7 @@ module.exports = {
         Config.adInfo(ad, function (err, configOne) {
           // 2nd
           if (!eventResult.userInfo.subscribe) {
-            request.get('https://api.weixin.qq.com/cgi-bin/user/info?access_token='+eventResult.ticket.access_token+'&openid='+eventResult.userInfo.openId, function (err, res, info) {
+            request.get('https://api.weixin.qq.com/cgi-bin/user/info?access_token='+eventResult.ticket.access_token+'&openid='+eventResult.userInfo.openId, function (err, responce, info) {
               info = JSON.parse(info);
               if (info.subscribe == 1) {
                 eventResult.userInfo.subscribe = true;
@@ -1078,7 +1078,7 @@ module.exports = {
   },
   wx_qrconnect: function (req, res) {
     var code = req.param("code");
-    request.get('https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code', function (err, res, result) {
+    request.get('https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code', function (err, responce, result) {
       result = JSON.parse(result);
       // console.log(result);
       if (result.errcode >= 40000 && result.errcode < 60000) {
@@ -1098,7 +1098,7 @@ module.exports = {
         // Get UserInfo
         if (result.scope == 'snsapi_userinfo') {
 
-          request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, res, result) {
+          request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, responce, result) {
             result = JSON.parse(result);
             if (result.nickname) {
               userInfo.nickname = result.nickname;
@@ -1141,7 +1141,7 @@ module.exports = {
     var accessToken = req.param("accessToken");
     var openId = req.param("openId");
     var tokenId = req.param("tokenId");
-    request.get('https://api.weixin.qq.com/sns/auth?access_token='+accessToken+'&openid='+openId, function (err, res, result) {
+    request.get('https://api.weixin.qq.com/sns/auth?access_token='+accessToken+'&openid='+openId, function (err, responce, result) {
       result = JSON.parse(result);
       // console.log(result);
       if (result.errcode != 0) {
@@ -1149,6 +1149,7 @@ module.exports = {
         return res.status(400).json({errMsg: JSON.stringify(result)});
       } else {
         console.log('step1-B');
+        return res.json({tokenId:tokenId});
 
       }
     });

@@ -63,7 +63,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.login = function () {
     $http.get('/api/wx_login?accessToken='+$scope.userInfo.accessToken+'&openId'+$scope.userInfo.openId+'&tokenId='+tokenId)
       .success(function(data, status, headers, config) { 
-
+          console.log(data);
           $scope.loginSuccess = true;
 
       })
