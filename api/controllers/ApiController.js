@@ -1141,9 +1141,10 @@ module.exports = {
     var accessToken = req.param("accessToken");
     var openId = req.param("openId");
     var tokenId = req.param("tokenId");
+    console.log('https://api.weixin.qq.com/sns/auth?access_token='+accessToken+'&openid='+openId);
     request.get('https://api.weixin.qq.com/sns/auth?access_token='+accessToken+'&openid='+openId, function (err, responce, result) {
       result = JSON.parse(result);
-      // console.log(result);
+      console.log(result);
       if (result.errcode != 0) {
         console.log('step1-A');
         return res.status(400).json({errMsg: JSON.stringify(result)});
