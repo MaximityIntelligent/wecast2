@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>資料統計</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/0.4.2/weui.min.css">
+    <link rel="stylesheet" href="/styles/example.css">
+    <!--<script type="text/javascript" src="http://fgnass.github.io/spin.js/spin.min.js"></script>-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/fancybox2.1.5/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script src="/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="/js/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js"></script>
+    <script src="//cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"></script>
+
+    <script src="/controllers/wx-qrconnect.js"></script>
+  </head>
+  <body data-ng-app="wx-qrconnect" data-ng-controller="IndexCtrl" orient="portrait" ng-init="loading=0">
+
+    <div ng-init="init()" id="top"></div>
+    <div class="container content">
+        <div class="weui_msg" ng-hide="loginSuccess||loginError">
+            <div class="weui_icon_area"><i class="weui_icon_safe weui_icon_safe_warn"></i></div>
+            <div class="weui_text_area">
+                <h2 class="weui_msg_title">登入操作</h2>
+                <p class="weui_msg_desc">{{$scope.userInfo.nickname}} 确定此操作嗎？</p>
+            </div>
+            <div class="weui_opr_area">
+                <p class="weui_btn_area">
+                    <a href="javascript:;" class="weui_btn weui_btn_primary" ng-click="login()">确定</a>
+                    <a href="javascript:;" class="weui_btn weui_btn_default" ng-click="loginError=true;">取消</a>
+                </p>
+            </div>
+            <div class="weui_extra_area">
+                <a href="">查看详情</a>
+            </div>
+        </div>
+        <div class="weui_msg" ng-show="loginSuccess">
+            <div class="weui_icon_area"><i class="weui_icon_safe weui_icon_safe_warn"></i></div>
+            <div class="weui_text_area">
+                <h2 class="weui_msg_title">登入完成</h2>
+            </div>
+
+            <div class="weui_extra_area">
+                <a href="">查看详情</a>
+            </div>
+        </div>
+        <div class="weui_msg" ng-show="loginError">
+            <div class="weui_icon_area"><i class="weui_icon_safe weui_icon_safe_warn"></i></div>
+            <div class="weui_text_area">
+                <h2 class="weui_msg_title">登入取消</h2>
+            </div>
+            <div class="weui_extra_area">
+                <a href="">查看详情</a>
+            </div>
+        </div>
+
+      
+    </div>
+  </body>
+</html>

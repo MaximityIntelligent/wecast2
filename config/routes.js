@@ -81,6 +81,9 @@ module.exports.routes = {
   },
   '/ad/config' : {
     view : 'config'
+  },
+  '/wx_qrconnect' : {
+    view : 'wx-qrconnect'
   }
   /*,
   'api/initialization': {

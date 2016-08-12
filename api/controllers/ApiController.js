@@ -1075,6 +1075,83 @@ module.exports = {
       return res.status(400).end();
     }
 
+  },
+  wx_qrconnect: function (req, res) {
+    var code = req.param("code");
+    request.get('https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code', function (err, res, result) {
+      result = JSON.parse(result);
+      // console.log(result);
+      if (result.errcode >= 40000 && result.errcode < 60000) {
+        console.log('step1-A');
+        return res.status(400).json({errMsg: JSON.stringify(result)});
+      } else {
+        console.log('step1-B');
+        var accessToken = result.access_token;
+        var userInfo = {};
+        var openId = result.openid;
+        userInfo.openId = openId;
+        userInfo.accessToken = accessToken;
+        userInfo.refreshToken = result.refresh_token;
+        if (result.unionid) {
+          userInfo.unionId = result.unionid;
+        }
+        // Get UserInfo
+        if (result.scope == 'snsapi_userinfo') {
+
+          request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, res, result) {
+            result = JSON.parse(result);
+            if (result.nickname) {
+              userInfo.nickname = result.nickname;
+            }
+            if (result.sex) {
+              userInfo.sex = result.sex;
+            }
+            if (result.province) {
+              userInfo.province = result.province;
+            }
+            if (result.city) {
+              userInfo.city = result.city;
+            }
+            if (result.country) {
+              userInfo.country = result.country;
+            }
+            if (result.headimgurl) {
+              userInfo.headimgurl = result.headimgurl;
+            }
+            if (result.language) {
+              userInfo.language = result.language;
+            }
+            if (result.unionid) {
+              userInfo.unionId = result.unionid;
+            }
+            console.log({'userInfo': userInfo});
+            return res.json({'userInfo': userInfo});
+          });
+
+        } else {
+          console.log({'userInfo': userInfo});
+          return res.json({'userInfo': userInfo});
+        }
+        // Get UserInfo
+        
+      }
+    });
+  },
+  wx_login: function (req, res) {
+    var accessToken = req.param("accessToken");
+    var openId = req.param("openId");
+    var tokenId = req.param("tokenId");
+    request.get('https://api.weixin.qq.com/sns/auth?access_token='+accessToken+'&openid='+openId, function (err, res, result) {
+      result = JSON.parse(result);
+      // console.log(result);
+      if (result.errcode != 0) {
+        console.log('step1-A');
+        return res.status(400).json({errMsg: JSON.stringify(result)});
+      } else {
+        console.log('step1-B');
+
+      }
+    });
   }
 
 };
