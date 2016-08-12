@@ -12,7 +12,7 @@ var sha1 = require('sha1');
 var User = require('../lib/User');
 var Config = require('../lib/Config');
 var Weixin = require('../lib/Weixin');
-
+var crypto = require('crypto');
 // Weixin Setting
 var appid = 'wxbb0b299e260ac47f';
 var secret = 'e253fefab4788f5cdcbc14df76cbf9ca';
@@ -1060,7 +1060,12 @@ module.exports = {
     var timestamp = req.param('timestamp');
     var nonce = req.param('nonce');
     var echostr = req.param('echostr');
-    console.log(signature+' '+timestamp+' '+nonce+' '+echostr);
+
+    var token = 'goodinteract2016';
+    var tmpArr = [token, timestamp, nonce].sort();
+    var tmpStr = tmpArr.join("");
+    var tmpSHA1 = crypto.createHash('sha1').update(tmpStr).digest('hex');
+    console.log(signature+':'+tmpSHA1);
 
   }
 
