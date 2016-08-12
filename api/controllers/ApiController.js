@@ -1056,8 +1056,12 @@ module.exports = {
      return res.json({errMsg: "ok"});
   },
   wxPush: function (req, res) {
-    console.log(req.body);
-    return req.end();
+    var signature = req.param('signature');
+    var timestamp = req.param('timestamp');
+    var nonce = req.param('nonce');
+    var echostr = req.param('echostr');
+    console.log(signature+' '+timestamp+' '+nonce+' '+echostr);
+
   }
 
 };
