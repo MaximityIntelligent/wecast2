@@ -31,6 +31,16 @@ Config.findAll = function (cb) {
 	});
 };
 
+Config.find = function (options, cb) {
+	config.find(options).exec(function (err, configs) {
+		if (err) {
+			return cb(err);
+		}
+		return cb(null, configs);
+	});
+};
+
+
 Config.findOne = function (ad, cb) {
 	config.findOne({ad: ad}).exec(function (err, configOne) {
 		if (err) {

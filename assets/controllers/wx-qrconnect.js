@@ -48,7 +48,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     $http.get('/api/wx_qrconnect?code='+code+'&tokenId='+tokenId)
       .success(function(data, status, headers, config) { 
 
-          $scope.userInfo = data.userInfo;
+          $scope.userInfo = data.merchantInfo;
           $scope.token = data.token;
       })
       .error(function(data, status, headers, config) { //如果從外部連結返回時會遇到code error問題，就要重新定向

@@ -1,6 +1,7 @@
 var Config = require('../lib/Config');
 var Weixin = require('../lib/Weixin');
 var LoginToken = require('../lib/LoginToken');
+var Merchant = require('../lib/Merchant');
 
 module.exports = {
 	initLoginToken: function (req, res) {
@@ -14,11 +15,11 @@ module.exports = {
 	},
 	checkScan: function (req, res) {
 		var tokenId = req.param('tokenId');
-		longCheckScan(tokenId, new Date(), function (err, scan) {
+		longCheckScan(tokenId, new Date(), function (err, token) {
 			if (err) {
 				return res.status(400).json(err);
 			}
-			return res.json({scan: scan});
+			return res.json({token: token});
 		});
 	},
 	checkLogin: function (req, res) {
@@ -49,12 +50,34 @@ module.exports = {
 		});
 	},
 	getConfigs: function (req, res) {
-		Config.findAll(function (err, configs) {
+		var openId = req.param('openId');
+		Merchant.findOne(openId, function (err, merchantOne) {
 			if (err) {
 				return res.status(400).json(err);
 			}
-			return res.json(configs);
+			if (!merchantOne) {
+				return res.status(404).end();
+			}
+			if (merchantOne.role == 'admin') {
+				Config.findAll(function (err, configs) {
+					if (err) {
+						return res.status(400).json(err);
+					}
+					return res.json(configs);
+				});
+			} else {
+				var options = {
+					ad: {$in: merchantOne.ads}
+				}
+				Config.find(options, function (err, configs) {
+					if (err) {
+						return res.status(400).json(err);
+					}
+					return res.json(configs);
+				});
+			}
 		});
+		
 	},
 	getConfig: function (req, res) {
 		var ad = req.param('ad');
@@ -165,29 +188,29 @@ module.exports = {
 
 function longCheckScan(tokenId, startTime, cb) {
 	var date = new Date();
-	if (date-startTime > 120000) {
+	if (date-startTime > 60000) {
 		console.log('end');
 		return cb({errMsg: 'token expire'});
 	} 
-	LoginToken.checkScan(tokenId, function (err, scan) {
+	LoginToken.checkScan(tokenId, function (err, token) {
 		if (err) {
 			console.log(err);
 			setTimeout(function() { longCheckScan(tokenId, startTime, cb) }, 1000);
 			return;
 		}
-		else if (scan == false) {
+		else if (!token) {
 			setTimeout(function() { longCheckScan(tokenId, startTime, cb) }, 1000);
 		}
 		else {
 			console.log('return');
-			cb(null, scan);
+			cb(null, token);
 		}
 	});
 };
 
 function longCheckLogin(tokenId, startTime, cb) {
 	var date = new Date();
-	if (date-startTime > 120000) {
+	if (date-startTime > 60000) {
 		console.log('end');
 		return cb({errMsg: 'token expire'});
 	} 

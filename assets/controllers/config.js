@@ -93,7 +93,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   };
   // Simulate async data update 
   $scope.init = function () {
-    $http.get('/config/getConfigs').success(function(data, status, headers, config) {
+    $http.get('/config/getConfigs?openId='+$scope.token.openId).success(function(data, status, headers, config) {
       $scope.configs = data;
     }).error(function(data, status, headers, config) {
 
@@ -120,8 +120,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
   $scope.watchScan = function () {
     $http.get('/config/checkScan?tokenId='+$scope.token.id).success(function(data, status, headers, config) {
-      if (data.scan == true) {
-        $scope.scanSuccess = true;
+      if (data.token) {
+        $scope.scanSuccess = data.token.isScan;
+        $scope.token = data.token;
         $scope.watchLogin();
       } else {
         $scope.tokenError = true;
@@ -135,6 +136,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     $http.get('/config/checkLogin?tokenId='+$scope.token.id).success(function(data, status, headers, config) {
       if (data.auth == true) {
         $scope.loginSuccess = true;
+        $scope.init();
       } else {
         $scope.tokenError = true;
       }

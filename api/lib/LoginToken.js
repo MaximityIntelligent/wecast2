@@ -5,7 +5,7 @@ function LoginToken (){
 module.exports = LoginToken;
 
 LoginToken.create = function (cb) {
-	var expires_in = 120;
+	var expires_in = 60;
 	var expireAt = new Date();
 	expireAt = new Date(expireAt.getTime() + expires_in * 1000);
 	loginToken.create({expires_in: expires_in, expireAt: expireAt}).exec(function (err, created) {
@@ -60,9 +60,9 @@ LoginToken.checkScan = function (tokenId, cb) {
 			return cb(err);
 		}
 		if (!found) {
-			return cb(null, false);
+			return cb(null, null);
 		}
-		return cb(null, true);
+		return cb(null, found);
 	})
 }
 

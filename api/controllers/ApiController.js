@@ -13,6 +13,7 @@ var User = require('../lib/User');
 var Config = require('../lib/Config');
 var LoginToken = require('../lib/LoginToken');
 var Weixin = require('../lib/Weixin');
+var Merchant = require('../lib/Merchant');
 var crypto = require('crypto');
 // Weixin Setting
 var appid = 'wxbb0b299e260ac47f';
@@ -1058,7 +1059,6 @@ module.exports = {
   },
   wxPush: function (req, res) {
     console.log(req.query);
-    console.log(req.body);
     var signature = req.param('signature');
     var timestamp = req.param('timestamp');
     var nonce = req.param('nonce');
@@ -1080,80 +1080,74 @@ module.exports = {
   wx_qrconnect: function (req, res) {
     var code = req.param("code");
     var tokenId = req.param("tokenId");
-    request.get('https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code', function (err, responce, result) {
-      result = JSON.parse(result);
-      // console.log(result);
-      if (result.errcode >= 40000 && result.errcode < 60000) {
-        return res.status(400).json({errMsg: JSON.stringify(result)});
-      } else {
-        var accessToken = result.access_token;
-        var userInfo = {};
-        var openId = result.openid;
-        userInfo.openId = openId;
-        userInfo.accessToken = accessToken;
-        userInfo.refreshToken = result.refresh_token;
-        if (result.unionid) {
-          userInfo.unionId = result.unionid;
-        }
-        // Get UserInfo
-        if (result.scope == 'snsapi_userinfo') {
+    var emitter = new eventEmitter();
 
-          request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, responce, result) {
-            result = JSON.parse(result);
-            // console.log(result);
+    Weixin.oauth2(code, function (err, result) {
+      if (err) {
+        emitter.emit('error', {errMsg: JSON.stringify(err)});
+      } else {
+        var merchantInfo = {};
+        merchantInfo.openId = result.openid;
+        merchantInfo.accessToken = result.access_token;
+        merchantInfo.refreshToken = result.refresh_token;
+        if (result.unionid) {
+          merchantInfo.unionId = result.unionid;
+        }
+        if (result.scope == 'snsapi_userinfo') {
+          Weixin.userinfo(merchantInfo.accessToken, merchantInfo.openId, function (err, result) {
             if (result.nickname) {
-              userInfo.nickname = result.nickname;
+              merchantInfo.nickname = result.nickname;
             }
             if (result.sex) {
-              userInfo.sex = result.sex;
+              merchantInfo.sex = result.sex;
             }
             if (result.province) {
-              userInfo.province = result.province;
+              merchantInfo.province = result.province;
             }
             if (result.city) {
-              userInfo.city = result.city;
+              merchantInfo.city = result.city;
             }
             if (result.country) {
-              userInfo.country = result.country;
+              merchantInfo.country = result.country;
             }
             if (result.headimgurl) {
-              userInfo.headimgurl = result.headimgurl;
+              merchantInfo.headimgurl = result.headimgurl;
             }
             if (result.language) {
-              userInfo.language = result.language;
+              merchantInfo.language = result.language;
             }
             if (result.unionid) {
-              userInfo.unionId = result.unionid;
+              merchantInfo.unionId = result.unionid;
             }
-            LoginToken.scan(tokenId, openId, accessToken, function (err, token) {
-              if (err) {
-                return res.status(400).json({errMsg: JSON.stringify(err)});
-              }
-              if (!token) {
-                return res.status(404).end();
-              }
-              console.log({'userInfo': userInfo});
-              return res.json({token:token, 'userInfo': userInfo});
-            });
+            emitter.emit('done', merchantInfo);
             
           });
-
         } else {
-          LoginToken.scan(tokenId, openId, accessToken, function (err, token) {
-              if (err) {
-                return res.status(400).json({errMsg: JSON.stringify(err)});
-              }
-              if (!token) {
-                return res.status(404).end();
-              }
-              console.log({'userInfo': userInfo});
-              return res.json({token:token, 'userInfo': userInfo});
-            });
+          emitter.emit('done', merchantInfo);
         }
-        // Get UserInfo
-        
       }
     });
+
+    emitter.once('done', function (merchantInfo) {
+      Merchant.findOrCreate(merchantInfo, function (err, merchantOne) {
+        LoginToken.scan(tokenId, merchantOne.openId, merchantOne.accessToken, function (err, token) {
+          if (err) {
+            return res.status(400).json({errMsg: JSON.stringify(err)});
+          }
+          if (!token) {
+            return res.status(404).end();
+          }
+          return res.json({token:token, 'merchantInfo': merchantOne});
+        });
+      })
+      
+    });
+
+    emitter.once('error', function (err) {
+      console.log('error: ' + JSON.stringify(err));
+      return res.status(400).json(err);
+    });
+
   },
   wx_login: function (req, res) {
     var accessToken = req.param("accessToken");

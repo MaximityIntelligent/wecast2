@@ -26,7 +26,7 @@ Weixin.oauth2 = function (code, cb) {
     });
 }
 
-Weixin.userinfo = function () {
+Weixin.userinfo = function (accessToken, openId, cb) {
 	request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, responce, result) {
         if (err) {
 	      	return cb(err);
