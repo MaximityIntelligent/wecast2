@@ -116,7 +116,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   };
 
   $scope.watchLogin = function () {
-    $http.get('/config/checkLogin').success(function(data, status, headers, config) {
+    $http.get('/config/checkLogin?tokenId='+$scope.token.id).success(function(data, status, headers, config) {
       if (data.auth == true) {
         $scope.loginSuccess = true;
       } else {

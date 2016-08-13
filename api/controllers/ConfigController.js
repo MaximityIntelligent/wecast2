@@ -13,7 +13,8 @@ module.exports = {
 			
 	},
 	checkLogin: function (req, res) {
-		longCheckLogin(new Date(), function (err, auth) {
+		var tokenId = req.param('tokenId');
+		longCheckLogin(tokenId, new Date(), function (err, auth) {
 			if (err) {
 				return res.status(400).json(err);
 			}
@@ -135,19 +136,19 @@ module.exports = {
 	}
 }
 
-function longCheckLogin(startTime, cb) {
+function longCheckLogin(tokenId, startTime, cb) {
 	var date = new Date();
 	if (date-startTime > 120000) {
 		console.log('end');
 		return cb({errMsg: 'token expire'});
 	} 
-	LoginToken.checkLogin(function (err, auth) {
+	LoginToken.checkLogin(tokenId, function (err, auth) {
 		if (err) {
 			console.log(err);
-			setTimeout(function() { longPolling(startTime, cb) }, 1000);
+			setTimeout(function() { longPolling(tokenId, startTime, cb) }, 1000);
 			return;
 		}
-		if (auth == false) {setTimeout(function() { longPolling(startTime, cb) }, 1000);}
+		if (auth == false) {setTimeout(function() { longPolling(tokenId, startTime, cb) }, 1000);}
 		else cb(null, auth);
 	});
 };
