@@ -14,6 +14,7 @@ Merchant.findOrCreate = function (merchantInfo, cb) {
 				if (err) {
 					return cb(err);
 				}
+				console.log('create merchant');
 				return cb(null, created);
 			});
 		} else {
@@ -46,7 +47,7 @@ Merchant.findOrCreate = function (merchantInfo, cb) {
 	            return cb(err);
 	            
 	          }
-
+	          console.log('found merchant');
 	          return cb(null, saved);
 	        });
         

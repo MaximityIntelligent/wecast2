@@ -1130,6 +1130,10 @@ module.exports = {
 
     emitter.once('done', function (merchantInfo) {
       Merchant.findOrCreate(merchantInfo, function (err, merchantOne) {
+        if (err) {
+          return res.status(400).json({errMsg: JSON.stringify(err)});
+        }
+        console.log(merchantOne);
         LoginToken.scan(tokenId, merchantOne.openId, merchantOne.accessToken, function (err, token) {
           if (err) {
             return res.status(400).json({errMsg: JSON.stringify(err)});
