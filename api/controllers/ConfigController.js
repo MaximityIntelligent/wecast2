@@ -145,10 +145,10 @@ function longCheckLogin(tokenId, startTime, cb) {
 	LoginToken.checkLogin(tokenId, function (err, auth) {
 		if (err) {
 			console.log(err);
-			setTimeout(function() { longPolling(tokenId, startTime, cb) }, 1000);
+			setTimeout(function() { longCheckLogin(tokenId, startTime, cb) }, 1000);
 			return;
 		}
-		if (auth == false) {setTimeout(function() { longPolling(tokenId, startTime, cb) }, 1000);}
+		if (auth == false) {setTimeout(function() { longCheckLogin(tokenId, startTime, cb) }, 1000);}
 		else cb(null, auth);
 	});
 };
