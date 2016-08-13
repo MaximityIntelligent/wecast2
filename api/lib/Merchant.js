@@ -5,7 +5,7 @@ function Merchant (){
 module.exports = Merchant;
 
 Merchant.findOrCreate = function (merchantInfo, cb) {
-	merchant.find({openId: merchantInfo.openId}).exec(function (err, found) {
+	merchant.findOne({openId: merchantInfo.openId}).exec(function (err, found) {
 		if (err) {
 			return cb(err);
 		}
