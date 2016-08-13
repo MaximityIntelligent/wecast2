@@ -31,6 +31,7 @@
                   <h4>請使微信掃一掃功能</h4>
                   <img ng-src="{{qrImgUrl}}" ng-hide="tokenError">
                   <img src="http://placehold.it/250x250" ng-show="tokenError">
+                  <span ng-show="scanSuccess">QR碼掃描成功</span>
                   <span ng-show="tokenError">QR碼失效, <a ng-click="initWXqrCode()">按此</a>刷新QR碼</span>
                 </div>
               </div>
