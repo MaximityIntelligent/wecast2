@@ -18,6 +18,12 @@ Merchant.findOrCreate = function (merchantInfo, cb) {
 				return cb(null, created);
 			});
 		} else {
+			if (merchantInfo.accessToken) {
+	          found.accessToken = merchantInfo.accessToken;
+	        }
+	        if (merchantInfo.refreshToken) {
+	          found.refreshToken = merchantInfo.refreshToken;
+	        }
 	        if (merchantInfo.nickname) {
 	          found.nickname = merchantInfo.nickname;
 	        }
