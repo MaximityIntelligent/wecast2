@@ -1082,7 +1082,7 @@ module.exports = {
     var tokenId = req.param("tokenId");
     request.get('https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code', function (err, responce, result) {
       result = JSON.parse(result);
-      console.log(result);
+      // console.log(result);
       if (result.errcode >= 40000 && result.errcode < 60000) {
         return res.status(400).json({errMsg: JSON.stringify(result)});
       } else {
@@ -1100,7 +1100,7 @@ module.exports = {
 
           request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, responce, result) {
             result = JSON.parse(result);
-            console.log(result);
+            // console.log(result);
             if (result.nickname) {
               userInfo.nickname = result.nickname;
             }

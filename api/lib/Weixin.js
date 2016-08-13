@@ -1,3 +1,5 @@
+var request = require('request');
+
 function Weixin (){
 
 }
@@ -16,7 +18,7 @@ Weixin.oauth2 = function (code, cb) {
       }
       result = JSON.parse(result);
       console.log(result);
-      if (result.errcode != 0) {
+      if (result.errcode) {
         return cb(result);
       } else {
       	return cb(null, result);
@@ -30,7 +32,7 @@ Weixin.userinfo = function () {
 	      	return cb(err);
 	    }    
         result = JSON.parse(result);
-        if (result.errcode != 0) {
+        if (result.errcode) {
 	        return cb(result);
 	    } else {
 	      	return cb(null, result);
