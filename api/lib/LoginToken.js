@@ -54,6 +54,18 @@ LoginToken.login = function (tokenId, cb) {
 	});
 };
 
+LoginToken.checkScan = function (tokenId, cb) {
+	loginToken.findOne({id: tokenId, isScan: true}).exec(function (err, found) {
+		if (err) {
+			return cb(err);
+		}
+		if (!found) {
+			return cb(null, false);
+		}
+		return cb(null, true);
+	})
+}
+
 LoginToken.checkLogin = function (tokenId, cb) {
 	loginToken.findOne({id: tokenId, isAuth: true}).exec(function (err, found) {
 		if (err) {

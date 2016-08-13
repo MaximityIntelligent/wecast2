@@ -49,7 +49,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       .success(function(data, status, headers, config) { 
 
           $scope.userInfo = data.userInfo;
-          $scope.token = token;
+          $scope.token = data.token;
       })
       .error(function(data, status, headers, config) { //如果從外部連結返回時會遇到code error問題，就要重新定向
 

@@ -29,8 +29,9 @@
               <div class="panel-body">
                 <div class="panel-elem">
                   <h4>請使微信掃一掃功能</h4>
-                  <img ng-src="{{qrImgUrl}}">
-                  <span ng-show="tokenError">QR碼失效, <a>按此</a>刷新QR碼</span>
+                  <img ng-src="{{qrImgUrl}}" ng-hide="tokenError">
+                  <img src="http://placehold.it/250x250" ng-show="tokenError">
+                  <span ng-show="tokenError">QR碼失效, <a ng-click="initWXqrCode()">按此</a>刷新QR碼</span>
                 </div>
               </div>
             </div>

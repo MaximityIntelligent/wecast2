@@ -12,6 +12,15 @@ module.exports = {
 		})
 			
 	},
+	checkScan: function (req, res) {
+		var tokenId = req.param('tokenId');
+		longCheckScan(tokenId, new Date(), function (err, scan) {
+			if (err) {
+				return res.status(400).json(err);
+			}
+			return res.json({scan: scan});
+		});
+	},
 	checkLogin: function (req, res) {
 		var tokenId = req.param('tokenId');
 		longCheckLogin(tokenId, new Date(), function (err, auth) {
@@ -136,20 +145,42 @@ module.exports = {
 	}
 }
 
+function longCheckScan(tokenId, startTime, cb) {
+	var date = new Date();
+	if (date-startTime > 120000) {
+		console.log('end');
+		return cb({errMsg: 'token expire'});
+	} 
+	LoginToken.checkScan(tokenId, function (err, scan) {
+		if (err) {
+			console.log(err);
+			setTimeout(function() { longCheckScan(tokenId, startTime, cb) }, 1000);
+			return;
+		}
+		else if (scan == false) {
+			setTimeout(function() { longCheckScan(tokenId, startTime, cb) }, 1000);
+		}
+		else {
+			console.log('return');
+			cb(null, scan);
+		}
+	});
+};
+
 function longCheckLogin(tokenId, startTime, cb) {
 	var date = new Date();
-	if (date-startTime > 60000) {
+	if (date-startTime > 120000) {
 		console.log('end');
 		return cb({errMsg: 'token expire'});
 	} 
 	LoginToken.checkLogin(tokenId, function (err, auth) {
 		if (err) {
 			console.log(err);
-			setTimeout(function() { longCheckLogin(tokenId, startTime, cb) }, 5000);
+			setTimeout(function() { longCheckLogin(tokenId, startTime, cb) }, 1000);
 			return;
 		}
 		else if (auth == false) {
-			setTimeout(function() { longCheckLogin(tokenId, startTime, cb) }, 5000);
+			setTimeout(function() { longCheckLogin(tokenId, startTime, cb) }, 1000);
 		}
 		else {
 			console.log('return');

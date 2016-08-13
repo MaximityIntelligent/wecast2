@@ -101,6 +101,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   };
 
   $scope.initWXqrCode = function () {
+    $scope.tokenError = false;
+    $scope.scanSuccess = false;
+    $scope.loginSuccess = false;
     $scope.qrImgUrl = "http://placehold.it/250x250";
     $http.get('/config/initLoginToken').success(function(data, status, headers, config) {
       console.log(data);
@@ -109,9 +112,22 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       url = encodeURIComponent(url);
       console.log(url);
       $scope.qrImgUrl = "http://chart.apis.google.com/chart?cht=qr&chl="+url+"&chs=250x250";
-      $scope.watchLogin();
+      $scope.watchScan();
     }).error(function(data, status, headers, config) {
 
+    });
+  };
+
+  $scope.watchScan = function () {
+    $http.get('/config/checkScan?tokenId='+$scope.token.id).success(function(data, status, headers, config) {
+      if (data.scan == true) {
+        $scope.scanSuccess = true;
+        $scope.watchLogin();
+      } else {
+        $scope.tokenError = true;
+      }
+    }).error(function(data, status, headers, config) {
+      $scope.tokenError = true;
     });
   };
 
