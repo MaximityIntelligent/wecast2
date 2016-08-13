@@ -47,7 +47,7 @@ Weixin.auth = function (accessToken, openId, cb) {
       result = JSON.parse(result);
       console.log(result);
       if (result.errcode != 0) {
-        return cb(result});
+        return cb(result);
       } else {
         return cb(null);
       }
