@@ -145,7 +145,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
   $scope.select = function (ad) {
     if (ad == '') return;
-    $http.get('/config/createConfig?ad='+ad).success(function(data, status, headers, config) {
+    $http.get('/config/getConfig?ad='+ad).success(function(data, status, headers, config) {
       console.log(data);
       $scope.selectConfig = data;
       if ($scope.selectConfig.votesInfo.voteExp) {
@@ -158,7 +158,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         $scope.selectConfig.votesInfo.redeemExp = new Date($scope.selectConfig.votesInfo.redeemExp);
       }
     }).error(function(data, status, headers, config) {
-
+      $scope.ad = undefined;
     });
   };
 

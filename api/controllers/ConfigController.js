@@ -43,7 +43,7 @@ module.exports = {
 				return res.status(400).json(err);
 			}
 			if (!configOne) {
-				return res.status(400).end();
+				return res.status(400).json({errMsg: 'duplicate error'});
 			}
 			return res.json(configOne);
 		});
@@ -54,6 +54,24 @@ module.exports = {
 				return res.status(400).json(err);
 			}
 			return res.json(configs);
+		});
+	},
+	getConfig: function (req, res) {
+		var ad = req.param('ad');
+		if (!ad) {
+			return res.status(404).end();
+		}
+		if (ad == '' || ad == 'undefined') {
+			return res.status(400).end();
+		}
+		Config.findOne(ad, function (err, configOne) {
+			if (err) {
+				return res.status(400).json(err);
+			}
+			if (!configOne) {
+				return res.status(404).end();
+			}
+			return res.json(configOne);
 		});
 	},
 	updateConfig: function (req, res) {

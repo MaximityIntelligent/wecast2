@@ -31,6 +31,19 @@ Config.findAll = function (cb) {
 	});
 };
 
+Config.findOne = function (ad, cb) {
+	config.findOne({ad: ad}).exec(function (err, configOne) {
+		if (err) {
+			return cb(err);
+		} 
+		if (!configOne) {
+			return cb(null, null);
+		} else {
+			return cb(null, configOne);
+		}
+	});
+}
+
 Config.update = function (configOne, cb) {
 	config.update({ad: configOne.ad}, configOne).exec(function (err, configUpdated) {
 		

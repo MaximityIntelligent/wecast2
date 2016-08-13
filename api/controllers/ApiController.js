@@ -1082,12 +1082,10 @@ module.exports = {
     var tokenId = req.param("tokenId");
     request.get('https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code', function (err, responce, result) {
       result = JSON.parse(result);
-      // console.log(result);
+      console.log(result);
       if (result.errcode >= 40000 && result.errcode < 60000) {
-        console.log('step1-A');
         return res.status(400).json({errMsg: JSON.stringify(result)});
       } else {
-        console.log('step1-B');
         var accessToken = result.access_token;
         var userInfo = {};
         var openId = result.openid;
@@ -1102,6 +1100,7 @@ module.exports = {
 
           request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, responce, result) {
             result = JSON.parse(result);
+            console.log(result);
             if (result.nickname) {
               userInfo.nickname = result.nickname;
             }
@@ -1160,15 +1159,10 @@ module.exports = {
     var accessToken = req.param("accessToken");
     var openId = req.param("openId");
     var tokenId = req.param("tokenId");
-    console.log('https://api.weixin.qq.com/sns/auth?access_token='+accessToken+'&openid='+openId);
-    request.get('https://api.weixin.qq.com/sns/auth?access_token='+accessToken+'&openid='+openId, function (err, responce, result) {
-      result = JSON.parse(result);
-      console.log(result);
-      if (result.errcode != 0) {
-        console.log('step1-A');
-        return res.status(400).json({errMsg: JSON.stringify(result)});
+    Weixin.auth(accessToken, openId, function (err) {
+      if (err) {
+        return res.status(400).json({errMsg: JSON.stringify(err)});
       } else {
-        console.log('step1-B');
         LoginToken.login(tokenId, function (err, token) {
           if (err) {
             return res.status(400).json({errMsg: JSON.stringify(err)});
@@ -1180,6 +1174,7 @@ module.exports = {
         });
       }
     });
+
   }
 
 };
