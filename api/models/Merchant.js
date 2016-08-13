@@ -16,7 +16,6 @@ module.exports = {
     },
     ads: {
       type: 'array',
-      required: true,
       defaultsTo: []
     },
     role: {
