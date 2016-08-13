@@ -17,21 +17,39 @@ LoginToken.create = function (cb) {
 };
 
 LoginToken.scan = function (tokenId, openId, accessToken, cb) {
-	loginToken.findOne({_id: tokenId}).exec(function (err, found) {
+	loginToken.findOne({id: tokenId}).exec(function (err, found) {
 		if (err) {
 			return cb(err);
 		}
 		if (!found) {
 			return cb(null, null);
 		}
-		loginToken.openId = openId;
-		loginToken.access_token = accessToken;
-		loginToken.isScan = true;
-		loginToken.save(function (err, saved) {
+		found.openId = openId;
+		found.access_token = accessToken;
+		found.isScan = true;
+		found.save(function (err, saved) {
+			if (err) {
+				return cb(err);
+			}
+			return cb(null, saved);
+		});
+	})
+};
+
+LoginToken.login = function (tokenId, cb) {
+	loginToken.findOne({id: tokenId, isScan: true}).exec(function (err, found) {
+		if (err) {
+			return cb(err);
+		}
+		if (!found) {
+			return cb(null, null);
+		}
+		found.isAuth = true;
+		found.save(function (err, saved) {
 			if (err) {
 				return cb(err);
 			}
 			return cb(null, saved);
 		})
-	})
+	});
 }

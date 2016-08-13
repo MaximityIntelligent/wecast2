@@ -1130,6 +1130,9 @@ module.exports = {
               if (err) {
                 return res.status(400).json({errMsg: JSON.stringify(err)});
               }
+              if (!token) {
+                return res.status(404).end();
+              }
               console.log({'userInfo': userInfo});
               return res.json({token:token, 'userInfo': userInfo});
             });
@@ -1140,6 +1143,9 @@ module.exports = {
           LoginToken.scan(tokenId, openId, accessToken, function (err, token) {
               if (err) {
                 return res.status(400).json({errMsg: JSON.stringify(err)});
+              }
+              if (!token) {
+                return res.status(404).end();
               }
               console.log({'userInfo': userInfo});
               return res.json({token:token, 'userInfo': userInfo});
@@ -1163,9 +1169,12 @@ module.exports = {
         return res.status(400).json({errMsg: JSON.stringify(result)});
       } else {
         console.log('step1-B');
-        LoginToken.scan(tokenId, openId, accessToken, function (err, token) {
+        LoginToken.login(tokenId, function (err, token) {
           if (err) {
             return res.status(400).json({errMsg: JSON.stringify(err)});
+          }
+          if (!token) {
+            return res.status(404).end();
           }
           return res.json({token:token});
         });
