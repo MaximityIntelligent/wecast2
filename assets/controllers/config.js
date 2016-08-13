@@ -1,5 +1,5 @@
 var app = angular.module('config', ['chart.js']).config(['$httpProvider', function($httpProvider) {
-    $httpProvider.defaults.timeout = 130000;
+    //$httpProvider.defaults.timeout = 130000;
 }]).config(['ChartJsProvider', function (ChartJsProvider) {
     // Configure all charts 
     ChartJsProvider.setOptions({

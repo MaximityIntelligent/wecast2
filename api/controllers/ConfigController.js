@@ -138,20 +138,18 @@ module.exports = {
 
 function longCheckLogin(tokenId, startTime, cb) {
 	var date = new Date();
-	console.log(date);
-	if (date-startTime > 120000) {
+	if (date-startTime > 60000) {
 		console.log('end');
 		return cb({errMsg: 'token expire'});
 	} 
 	LoginToken.checkLogin(tokenId, function (err, auth) {
 		if (err) {
 			console.log(err);
-			setTimeout(function() { longCheckLogin(tokenId, startTime, cb) }, 10000);
+			setTimeout(function() { longCheckLogin(tokenId, startTime, cb) }, 5000);
 			return;
 		}
-		if (auth == false) {
-			console.log(auth);
-			setTimeout(function() { longCheckLogin(tokenId, startTime, cb) }, 10000);
+		else if (auth == false) {
+			setTimeout(function() { longCheckLogin(tokenId, startTime, cb) }, 5000);
 		}
 		else {
 			console.log('return');
