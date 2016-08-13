@@ -11,6 +11,7 @@ var config = require('../../config/event-config');
 var sha1 = require('sha1');
 var User = require('../lib/User');
 var Config = require('../lib/Config');
+var LoginToken = require('../lib/LoginToken');
 var Weixin = require('../lib/Weixin');
 var crypto = require('crypto');
 // Weixin Setting
@@ -1078,6 +1079,7 @@ module.exports = {
   },
   wx_qrconnect: function (req, res) {
     var code = req.param("code");
+    var tokenId = req.param("tokenId");
     request.get('https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code', function (err, responce, result) {
       result = JSON.parse(result);
       // console.log(result);
@@ -1124,13 +1126,24 @@ module.exports = {
             if (result.unionid) {
               userInfo.unionId = result.unionid;
             }
-            console.log({'userInfo': userInfo});
-            return res.json({'userInfo': userInfo});
+            LoginToken.scan(tokenId, openId, accessToken, function (err, token) {
+              if (err) {
+                return res.status(400).json({errMsg: JSON.stringify(err)});
+              }
+              console.log({'userInfo': userInfo});
+              return res.json({token:token, 'userInfo': userInfo});
+            });
+            
           });
 
         } else {
-          console.log({'userInfo': userInfo});
-          return res.json({'userInfo': userInfo});
+          LoginToken.scan(tokenId, openId, accessToken, function (err, token) {
+              if (err) {
+                return res.status(400).json({errMsg: JSON.stringify(err)});
+              }
+              console.log({'userInfo': userInfo});
+              return res.json({token:token, 'userInfo': userInfo});
+            });
         }
         // Get UserInfo
         
@@ -1150,8 +1163,12 @@ module.exports = {
         return res.status(400).json({errMsg: JSON.stringify(result)});
       } else {
         console.log('step1-B');
-        return res.json({tokenId:tokenId});
-
+        LoginToken.scan(tokenId, openId, accessToken, function (err, token) {
+          if (err) {
+            return res.status(400).json({errMsg: JSON.stringify(err)});
+          }
+          return res.json({token:token});
+        });
       }
     });
   }

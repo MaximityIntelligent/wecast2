@@ -27,7 +27,7 @@
                 <h2 class="weui_msg_title">登入操作</h2>
                 <p class="weui_msg_desc">{{userInfo.nickname}} 确定此操作嗎？</p>
             </div>
-            <div class="weui_opr_area">
+            <div class="weui_opr_area" ng-show="userInfo.openId">
                 <p class="weui_btn_area">
                     <a href="javascript:;" class="weui_btn weui_btn_primary" ng-click="login()">确定</a>
                     <a href="javascript:;" class="weui_btn weui_btn_default" ng-click="loginError=true;">取消</a>

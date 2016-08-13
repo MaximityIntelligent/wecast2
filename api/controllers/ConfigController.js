@@ -1,8 +1,15 @@
 var Config = require('../lib/Config');
 var Weixin = require('../lib/Weixin');
+var LoginToken = require('../lib/LoginToken');
 
 module.exports = {
-	initWXqrCode: function (req, res) {
+	initLoginToken: function (req, res) {
+		LoginToken.create(function (err, token) {
+			if (err) {
+				return res.status(400).end();
+			}
+			return res.json({token: token});
+		})
 			
 	},
 	createConfig: function (req, res) {
