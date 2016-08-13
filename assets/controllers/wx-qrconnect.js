@@ -49,11 +49,12 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       .success(function(data, status, headers, config) { 
 
           $scope.userInfo = data.userInfo;
-
+          $scope.token = token;
       })
       .error(function(data, status, headers, config) { //如果從外部連結返回時會遇到code error問題，就要重新定向
 
-          window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+'wx_qrconnect'+'&response_type=code&scope='+snsapi+'&state='+tokenId+'#wechat_redirect';
+          $scope.tokenError = true;
+          //window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+'wx_qrconnect'+'&response_type=code&scope='+snsapi+'&state='+tokenId+'#wechat_redirect';
 
       });
 
@@ -61,7 +62,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   };
 
   $scope.login = function () {
-    $http.get('/api/wx_login?accessToken='+$scope.userInfo.accessToken+'&openId='+$scope.userInfo.openId+'&tokenId='+tokenId)
+    $http.get('/api/wx_login?accessToken='+$scope.userInfo.accessToken+'&openId='+$scope.userInfo.openId+'&tokenId='+$scope.token.id)
       .success(function(data, status, headers, config) { 
           console.log(data);
           $scope.loginSuccess = true;

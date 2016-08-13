@@ -12,6 +12,14 @@ module.exports = {
 		})
 			
 	},
+	checkLogin: function (req, res) {
+		longCheckLogin(new Date(), function (err, auth) {
+			if (err) {
+				return res.status(400).json(err);
+			}
+			return res.json({auth: auth});
+		});
+	},
 	createConfig: function (req, res) {
 		var ad = req.param('ad');
 		if (!ad) {
@@ -126,3 +134,20 @@ module.exports = {
 		}
 	}
 }
+
+function longCheckLogin(startTime, cb) {
+	var date = new Date();
+	if (date-startTime > 120000) {
+		console.log('end');
+		return cb({errMsg: 'token expire'});
+	} 
+	LoginToken.checkLogin(function (err, auth) {
+		if (err) {
+			console.log(err);
+			setTimeout(function() { longPolling(startTime, cb) }, 1000);
+			return;
+		}
+		if (auth == false) {setTimeout(function() { longPolling(startTime, cb) }, 1000);}
+		else cb(null, auth);
+	});
+};

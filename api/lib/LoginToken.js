@@ -17,7 +17,7 @@ LoginToken.create = function (cb) {
 };
 
 LoginToken.scan = function (tokenId, openId, accessToken, cb) {
-	loginToken.findOne({id: tokenId}).exec(function (err, found) {
+	loginToken.findOne({id: tokenId, isScan: false, expireAt: {$gte: new Date()}}).exec(function (err, found) {
 		if (err) {
 			return cb(err);
 		}
@@ -52,4 +52,16 @@ LoginToken.login = function (tokenId, cb) {
 			return cb(null, saved);
 		})
 	});
+};
+
+LoginToken.checkLogin = function (tokenId, cb) {
+	loginToken.findOne({id: tokenId, isAuth: true}).exec(function (err, found) {
+		if (err) {
+			return cb(err);
+		}
+		if (!found) {
+			return cb(null, false);
+		}
+		return cb(null, true);
+	})
 }

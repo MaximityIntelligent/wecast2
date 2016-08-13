@@ -1,5 +1,5 @@
 var app = angular.module('config', ['chart.js']).config(['$httpProvider', function($httpProvider) {
-    $httpProvider.defaults.timeout = 5000;
+    $httpProvider.defaults.timeout = 130000;
 }]).config(['ChartJsProvider', function (ChartJsProvider) {
     // Configure all charts 
     ChartJsProvider.setOptions({
@@ -106,11 +106,26 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       console.log(data);
       $scope.token = data.token;
       var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+'wx_qrconnect'+'&response_type=code&scope='+snsapi+'&state='+data.token.id+'#wechat_redirect';
+      url = encodeURIComponent(url);
       console.log(url);
+      $scope.qrImgUrl = "http://chart.apis.google.com/chart?cht=qr&chl="+url+"&chs=250x250";
+      $scope.watchLogin();
     }).error(function(data, status, headers, config) {
 
     });
-  }
+  };
+
+  $scope.watchLogin = function () {
+    $http.get('/config/checkLogin').success(function(data, status, headers, config) {
+      if (data.auth == true) {
+        $scope.loginSuccess = true;
+      } else {
+        $scope.tokenError = true;
+      }
+    }).error(function(data, status, headers, config) {
+      $scope.tokenError = true;
+    });
+  };
 
   $scope.select = function (ad) {
     if (ad == '') return;

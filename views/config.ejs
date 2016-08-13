@@ -24,18 +24,19 @@
     <div class="container content">
       <div class="row">
           <center>
-            <div class="panel panel-dashboard" ng-init="initWXqrCode()">
+            <div class="panel panel-dashboard" ng-init="initWXqrCode()" ng-hide="loginSuccess">
               <div class="panel-heading panel-heading-cbj">微信登入</div>
               <div class="panel-body">
                 <div class="panel-elem">
                   <h4>請使微信掃一掃功能</h4>
                   <img ng-src="{{qrImgUrl}}">
+                  <span ng-show="tokenError">QR碼失效, <a>按此</a>刷新QR碼</span>
                 </div>
               </div>
             </div>
           </center>
           
-          <div id="panel" class="panel panel-dashboard full-width" ng-show="access_token">
+          <div id="panel" class="panel panel-dashboard full-width" ng-show="loginSuccess">
               <div class="panel-heading panel-heading-cbj">設定</div>
                 <div class="panel-body">
                   
