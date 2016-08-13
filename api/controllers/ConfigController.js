@@ -33,6 +33,7 @@ module.exports = {
 	},
 	createConfig: function (req, res) {
 		var ad = req.param('ad');
+		var openId = req.param('openId');
 		if (!ad) {
 			return res.status(404).end();
 		}
@@ -46,7 +47,25 @@ module.exports = {
 			if (!configOne) {
 				return res.status(400).json({errMsg: 'duplicate error'});
 			}
-			return res.json(configOne);
+			Merchant.findOne(openId, function (err, merchantOne) {
+				if (err) {
+					return res.status(400).json(err);
+				}
+				if (!merchantOne) {
+					return res.status(400).json(err);
+				}
+				var temp = merchantOne.ads || [];
+				temp.push(ad);
+				merchantOne.ads = temp;
+				merchantOne.save(function (err, savedMerchant) {
+					if (err) {
+						return res.status(400).json(err);
+					}
+					return res.json(configOne);
+				});
+				
+			})
+			
 		});
 	},
 	getConfigs: function (req, res) {

@@ -136,6 +136,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     $http.get('/config/checkLogin?tokenId='+$scope.token.id).success(function(data, status, headers, config) {
       if (data.auth == true) {
         $scope.loginSuccess = true;
+        $scope.token.isAuth = true;
         $scope.init();
       } else {
         $scope.tokenError = true;
@@ -186,7 +187,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   }
   $scope.create = function (ad) {
     if (ad == '') return;
-    $http.get('/config/createConfig?ad='+ad).success(function(data, status, headers, config) {
+    $http.get('/config/createConfig?ad='+ad+'&openId='+$scope.token.openId).success(function(data, status, headers, config) {
       $scope.selectConfig = data;
       $scope.configs.push(data);
       $scope.ad = data;
