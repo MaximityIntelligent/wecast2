@@ -221,7 +221,6 @@ function longCheckScan(tokenId, startTime, cb) {
 			setTimeout(function() { longCheckScan(tokenId, startTime, cb) }, 1000);
 		}
 		else {
-			console.log('return');
 			cb(null, token);
 		}
 	});
@@ -243,7 +242,6 @@ function longCheckLogin(tokenId, startTime, cb) {
 			setTimeout(function() { longCheckLogin(tokenId, startTime, cb) }, 1000);
 		}
 		else {
-			console.log('return');
 			cb(null, auth);
 		}
 	});

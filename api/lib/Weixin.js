@@ -17,7 +17,6 @@ Weixin.oauth2 = function (code, cb) {
       	return cb(err);
       }
       result = JSON.parse(result);
-      console.log(result);
       if (result.errcode) {
         return cb(result);
       } else {
@@ -47,7 +46,6 @@ Weixin.auth = function (accessToken, openId, cb) {
       	return cb(err);
       }
       result = JSON.parse(result);
-      console.log(result);
       if (result.errcode != 0) {
         return cb(result);
       } else {
@@ -55,3 +53,34 @@ Weixin.auth = function (accessToken, openId, cb) {
       }
     });
 };
+
+Weixin.token = function (cb) {
+	request.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+Weixin.appid+'&secret='+Weixin.secret, function (err, responce, token) {
+        token = JSON.parse(token);
+        if (token.access_token) {
+        	return cb(null, token);
+        } else {
+        	return cb(err || token);
+        }
+    });
+};
+
+Weixin.ticket = function (cb) {
+	request.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+Weixin.appid+'&secret='+Weixin.secret, function (err, responce, token) {
+        token = JSON.parse(token);
+        if (token.access_token) {
+        	request.get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+token.access_token+'&type=jsapi', function (err, responce, ticket) {
+		      ticket = JSON.parse(ticket);
+		      if (ticket.errmsg == 'ok') {
+		      	return cb(null, token, ticket);
+		      } else {
+		        return cb(err || ticket);
+		      }
+		    });
+        } else {
+        	return cb(err || token);
+        }
+    });
+
+	
+}

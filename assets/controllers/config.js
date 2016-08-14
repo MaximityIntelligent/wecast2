@@ -104,6 +104,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     $scope.tokenError = false;
     $scope.scanSuccess = false;
     $scope.loginSuccess = false;
+    $scope.token = {};
     $scope.qrImgUrl = "http://placehold.it/250x250";
     $http.get('/config/initLoginToken').success(function(data, status, headers, config) {
       console.log(data);
@@ -147,7 +148,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   };
 
   $scope.select = function (ad) {
-    if (ad == '') return;
+    if (!ad) return;
     $http.get('/config/getConfig?ad='+ad).success(function(data, status, headers, config) {
       console.log(data);
       $scope.selectConfig = data;

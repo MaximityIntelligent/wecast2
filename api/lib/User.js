@@ -209,6 +209,34 @@ User.create = function(userInfo, cb){ //Create User, 如果原有就return現有
     //console.log("229");
   });
 }
+
+User.auth = function (openId, ad, cb) {
+  user.findOne({openId: userInfo.openId, ad: userInfo.ad}).exec(function(err, userOne){
+    if(err){
+      return cb(err);
+    }
+    if(!userOne){
+      return cb(null, null);
+    }
+    return cb(null, userOne);
+  });
+};
+
+User.find = function (options, cb) {
+  user.find(options).exec(function (err, users) {
+    if (err) {
+      return cb(err);
+    }
+    return cb(null, users);
+  });
+}
+
+User.destroy = function (ad, cb) {
+  user.destroy({ad: ad}).exec(function(){
+    return cb(true)
+  });
+}
+
 User.draw = function(userOpenId, cb){ //未有用到
   user.findOne({openId: userOpenId}).exec(function(err, userOne){
     if(err||!userOne){
@@ -229,4 +257,14 @@ User.draw = function(userOpenId, cb){ //未有用到
     })
 
   });
+
+  User.initTestCredit = function (ad, secret, cb) {
+    if (secret == 'kitkit!@#$') {
+      user.update({ad: ad}, {credit: 100}).exec(function(err){
+        return cb(true);
+      });
+    } else {
+        return cb(null);
+    }
+  }
 }

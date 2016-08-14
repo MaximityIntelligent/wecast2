@@ -13,11 +13,13 @@ var User = require('../lib/User');
 var Config = require('../lib/Config');
 var LoginToken = require('../lib/LoginToken');
 var Weixin = require('../lib/Weixin');
+var WxToken = require('../lib/WxToken');
 var Merchant = require('../lib/Merchant');
+var Log = require('../lib/Log');
 var crypto = require('crypto');
 // Weixin Setting
-var appid = 'wxbb0b299e260ac47f';
-var secret = 'e253fefab4788f5cdcbc14df76cbf9ca';
+// var appid = 'wxbb0b299e260ac47f';
+// var secret = 'e253fefab4788f5cdcbc14df76cbf9ca';
 //
 var randomString = function(length) {
     var text = "";
@@ -35,7 +37,7 @@ var getVoteResult = function (ad, cb) {
       var resultVotes = votes.map(function (vote) {
         return 'gameResult_'+vote;
       });
-      log.findOne({action: {$in: resultVotes}, ad: ad}).exec(function (err, logOne) {
+      Log.findOne({action: {$in: resultVotes}, ad: ad}, function (err, logOne) {
         if (err) {
           return cb(null);
         }
@@ -56,7 +58,7 @@ var getVoteRecord = function (ad, cb) {
     var voteInfo = configOne.votesInfo || {};
     var votes = voteInfo.votes || [];
     var resultVotes = {};
-    user.find({where: {ad:ad, vote: {$in: votes}}, select:['vote']}).exec(function (err, users) {
+    User.find({where: {ad:ad, vote: {$in: votes}}, select:['vote']}, function (err, users) {
       var groupBy = {};
       users.forEach(function (item, index, array) {
         if (groupBy[item.vote] == undefined) {
@@ -94,18 +96,12 @@ module.exports = {
     }
     var emitter = new eventEmitter();
     // step 1
-    request.get('https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+secret+'&code='+code+'&grant_type=authorization_code', function (err, responce, result) {
-      result = JSON.parse(result);
-      // console.log(result);
-      if (result.errcode >= 40000 && result.errcode < 60000) {
-        console.log('step1-A');
-        emitter.emit('error', {errMsg: JSON.stringify(result)});
+    Weixin.oauth2(code, function (err, result) {
+      if (err) {
+        emitter.emit('error', {errMsg: JSON.stringify(err)});
       } else {
-        console.log('step1-B');
-        var accessToken = result.access_token;
         var userInfo = {};
-        var openId = result.openid;
-        userInfo.openId = openId;
+        userInfo.openId = result.openid;
         if (result.unionid) {
           userInfo.unionId = result.unionid;
         }
@@ -115,34 +111,36 @@ module.exports = {
         }
         // Get UserInfo
         if (result.scope == 'snsapi_userinfo') {
-
-          request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, responce, result) {
-            result = JSON.parse(result);
-            if (result.nickname) {
-              userInfo.nickname = result.nickname;
+          Weixin.userinfo(result.access_token, userInfo.openId, function (err, result) {
+            if (err) {
+              emitter.emit('error', {errMsg: JSON.stringify(err)});
+            } else {
+              if (result.nickname) {
+                userInfo.nickname = result.nickname;
+              }
+              if (result.sex) {
+                userInfo.sex = result.sex;
+              }
+              if (result.province) {
+                userInfo.province = result.province;
+              }
+              if (result.city) {
+                userInfo.city = result.city;
+              }
+              if (result.country) {
+                userInfo.country = result.country;
+              }
+              if (result.headimgurl) {
+                userInfo.headimgurl = result.headimgurl;
+              }
+              if (result.language) {
+                userInfo.language = result.language;
+              }
+              if (result.unionid) {
+                userInfo.unionId = result.unionid;
+              }
+              emitter.emit('userInfo', userInfo);
             }
-            if (result.sex) {
-              userInfo.sex = result.sex;
-            }
-            if (result.province) {
-              userInfo.province = result.province;
-            }
-            if (result.city) {
-              userInfo.city = result.city;
-            }
-            if (result.country) {
-              userInfo.country = result.country;
-            }
-            if (result.headimgurl) {
-              userInfo.headimgurl = result.headimgurl;
-            }
-            if (result.language) {
-              userInfo.language = result.language;
-            }
-            if (result.unionid) {
-              userInfo.unionId = result.unionid;
-            }
-            emitter.emit('userInfo', userInfo);
           });
 
         } else {
@@ -170,37 +168,45 @@ module.exports = {
 
     });
 
-    var now = new Date();
-    wxToken.findOne({expireAt: {'>': now}}).sort({ createdAt: 'desc' }).exec(function (err, wxTokenOne) {
-      if (!wxTokenOne) {
-          //console.log('-----no token-----');
-          request.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appid+'&secret='+secret, function (err, responce, token) {
-            token = JSON.parse(token);
-            request.get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+token.access_token+'&type=jsapi', function (err, responce, ticket) {
-              ticket = JSON.parse(ticket);
-              if (ticket.errmsg == 'ok') {
-                var expireAt = new Date();
-                expireAt = new Date(expireAt.getTime() + (ticket.expires_in - 60 * 60) * 1000);
-                wxToken.create({access_token: token.access_token, expires_in: ticket.expires_in, jsapi_ticket: ticket.ticket, expireAt: expireAt}).exec(function (err, createdToken) {
-                  // body...
-                  console.log('------new token----: ');
-                  console.log(createdToken);
-                  emitter.emit('done', 'ticket', createdToken);
-                });
-              } else {
-                emitter.emit('error', {errMsg: 'get ticket fail'});
-              }
-            });
-          });
+    WxToken.validToken(function (err, wxTokenOne) {
+      if (err) {
+        emitter.emit('error', {errMsg: err});
       } else {
-        // appAccessToken = wxTokenOne.access_token;
-        // jsapiTicket = wxTokenOne.jsapi_ticket;
         emitter.emit('done', 'ticket', wxTokenOne);
-        //console.log('------old token----');
-        //console.log(wxTokenOne);
-        
       }
-    });
+    })
+    // var now = new Date();
+    // wxToken.findOne({expireAt: {'>': now}}).sort({ createdAt: 'desc' }).exec(function (err, wxTokenOne) {
+    //   if (!wxTokenOne) {
+    //       //console.log('-----no token-----');
+    //       Weixin.token(function (err, token) {
+    //         if (err) {
+    //           emitter.emit('error', {errMsg: err});
+    //         }
+    //         Weixin.ticket(token.access_token, function (err, ticket) {
+    //           if (err) {
+    //             emitter.emit('error', {errMsg: err});
+    //           } else {
+    //             var expireAt = new Date();
+    //             expireAt = new Date(expireAt.getTime() + (ticket.expires_in - 60 * 60) * 1000);
+    //             wxToken.create({access_token: token.access_token, expires_in: ticket.expires_in, jsapi_ticket: ticket.ticket, expireAt: expireAt}).exec(function (err, createdToken) {
+    //               // body...
+    //               console.log('------new token----: ');
+    //               console.log(createdToken);
+    //               emitter.emit('done', 'ticket', createdToken);
+    //             });
+    //           }
+    //         });
+    //       });
+    //   } else {
+    //     // appAccessToken = wxTokenOne.access_token;
+    //     // jsapiTicket = wxTokenOne.jsapi_ticket;
+    //     emitter.emit('done', 'ticket', wxTokenOne);
+    //     //console.log('------old token----');
+    //     //console.log(wxTokenOne);
+        
+    //   }
+    // });
 
     // step 2
     var events = {'userInfo': true, 'ticket': true};
@@ -244,7 +250,7 @@ module.exports = {
           var pickPrizeList = prizeList.map(function (item) {
              return 'pick_'+item;
           });
-          log.find({openId:eventResult.userInfo.openId, ad: ad, action: {$in:redeemPrizeList.concat(pickPrizeList)}}).exec(function (err, logs) {
+          Log.find({openId:eventResult.userInfo.openId, ad: ad, action: {$in:redeemPrizeList.concat(pickPrizeList)}}, function (err, logs) {
             var groupPrizes = {};
             logs.forEach(function (item, index, array) {
               if (groupPrizes[item.action] == undefined) {
@@ -499,7 +505,7 @@ module.exports = {
       if (prizeInfo == null) {
         return res.status(400).json({errCode: 0, "errMsg" : "沒有此活動。"});
       }
-      user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+      User.auth(openId, ad, function (err, userOne) {
           if (!userOne) {
               return res.status(401).end();
           }
@@ -533,7 +539,7 @@ module.exports = {
           }
           console.log(prize);
           var prizeAmount = prizeInfo[prize].amount || 100000;
-          log.count({action:'redeem_'+prize, ad: ad}).exec(function (err, redeems) {
+          Log.count({action:'redeem_'+prize, ad: ad}, function (err, redeems) {
             if (redeems >= prizeAmount) {
               prize = 'none';
               console.log("month");
@@ -542,14 +548,14 @@ module.exports = {
             startOfWeek.setHours(0,0,0,0);
             startOfWeek = new Date(startOfWeek.getTime()- 86400*1000*startOfWeek.getDay());
             var prizeWeekAmount = prizeInfo[prize].weekAmount || prizeInfo[prize].amount || 100000;
-            log.count({action:'redeem_'+prize, ad: ad, date: {'>=' : startOfWeek}}).exec(function (err, weekRedeems) {
+            Log.count({action:'redeem_'+prize, ad: ad, date: {'>=' : startOfWeek}}, function (err, weekRedeems) {
               if (weekRedeems >= prizeWeekAmount) {
                 prize = 'none';
                 console.log("week");
               }
               userOne.credit -= 1;
               userOne.save(function (err) {
-                log.create({action: 'redeem_'+prize, openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
+                Log.create({action: 'redeem_'+prize, openId: userOne.openId, ad: ad}, function(err, results){
 
                 });
                 
@@ -574,7 +580,7 @@ module.exports = {
         return;
       }
       var prizeInfo = configOne.prizesInfo[prize];
-      user.findOne({openId: openId, ad: ad}).exec(function(err, userOne){
+      User.auth(openId, ad, function(err, userOne){
         if(!userOne) return res.status(401).end();
         
           var credit = userOne.credit;
@@ -583,7 +589,7 @@ module.exports = {
             
               var prizeCredit = prizeInfo.credit || 1;
               var prizeAmount = prizeInfo.amount || 100000;
-              log.find({action:'redeem_'+prize, ad: ad}).exec(function (err, logs) {
+              Log.find({action:'redeem_'+prize, ad: ad}, function (err, logs) {
                  if (logs.length < prizeAmount) {
                     if(credit<prizeCredit){
                       return res.status(400).json({errCode: 1, errMsg: '暫時無法兌換，請集齊'+prizeCredit+'個印花'});
@@ -591,8 +597,8 @@ module.exports = {
                     } else{
                       userOne.credit = userOne.credit - prizeCredit;
                       userOne.save(function(err, savedUser){
-                        log.create({action: 'redeem_'+prize, openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
-                          log.create({action: 'pick_'+prize, openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err, results){
+                        Log.create({action: 'redeem_'+prize, openId: userOne.openId, ad: ad}, function(err, results){
+                          Log.create({action: 'pick_'+prize, openId: userOne.openId, ad: ad}, function(err, results){
                             res.json({credit: savedUser.credit, prize: prize});
                             return;
                           });
@@ -620,13 +626,13 @@ module.exports = {
   updateCredit: function(req, res){
     var ad = req.param('ad');
     var secret = req.param('secret');
-    if (secret == 'kitkit!@#$') {
-      user.update({ad: ad}, {credit: 100}).exec(function(err){
+    User.initTestCredit(ad, secret, function (done) {
+      if (done) {
         return res.end();
-      });
-    } else {
+      } else {
         return res.status(400).end();
-    }
+      }
+    });
   },
   clickCount: function(req, res){
 		var name = req.param('clickCountName');
@@ -650,7 +656,7 @@ module.exports = {
   getCredit: function (req, res) {
     var openId = req.param('openId');
     var ad = req.param('ad');
-    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+    User.auth(openId, ad, function (err, userOne) {
         if (!userOne) {
             return res.status(401).end();
         }
@@ -660,7 +666,7 @@ module.exports = {
   getPrizeRemain: function (req, res) {
       var openId = req.param('openId');
       var ad = req.param('ad');
-      user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+      User.auth(openId, ad, function (err, userOne) {
         if (!userOne) {
             return res.status(401).end();
         }
@@ -675,7 +681,7 @@ module.exports = {
           });
           // var prizeAmount = prizeAmountAll[ad];
           var prizeRemain = {};
-          log.find({action: {$in: redeemPrizeList}, ad:ad}).exec(function (err, logs) {
+          Log.find({action: {$in: redeemPrizeList}, ad:ad}, function (err, logs) {
               var groupLogs = {};
               logs.forEach(function (item, index, array) {
                 if (groupLogs[item.action] == undefined) {
@@ -706,16 +712,16 @@ module.exports = {
   luckyDraw: function (req, res) {
     var openId = req.param('openId');
     var ad = req.param('ad');
-    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+    User.auth(openId, ad, function (err, userOne) {
         if (!userOne) {
             return res.status(401).end();
         }
         var startOfDay = new Date();
         startOfDay.setHours(0,0,0,0);
-        log.find({action: 'luckyDraw', openId: userOne.openId, date: {$gte: startOfDay}, ad: ad}).exec(function (err, logs) {
+        Log.find({action: 'luckyDraw', openId: userOne.openId, date: {$gte: startOfDay}, ad: ad}, function (err, logs) {
           
            if (logs.length < 1) {
-              log.create({action: 'luckyDraw', openId: userOne.openId, date: new Date(), ad: ad}).exec(function(err){
+              Log.create({action: 'luckyDraw', openId: userOne.openId, ad: ad}, function(err){
 
                   var prizeArray = [0, 1, 2, 5];
                   var probability = [10, 50, 30, 10];
@@ -768,14 +774,14 @@ module.exports = {
       if (now.getTime() > exp.getTime()) {
         return res.status(400).json({errCode: 0, errMsg:'投票時限已過了。'});
       }
-      user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+      User.auth(openId, ad, function (err, userOne) {
           if (!userOne) {
               return res.status(401).end();
           }
           if (userVote) {
             userOne.vote = userVote;
             userOne.save(function (err, savedUser) {
-              log.create({action: 'vote', openId: savedUser.openId, date: new Date(), ad: ad}).exec(function(err, results){
+              Log.create({action: 'vote', openId: savedUser.openId, ad: ad}, function(err, results){
 
               });
 
@@ -804,7 +810,7 @@ module.exports = {
       if (now.getTime() > exp.getTime()) {
         return res.status(400).json({errCode:0, errMsg: '領奬時限已過'});
       }
-      user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+      User.auth(openId, ad, function (err, userOne) {
           if (!userOne) {
               return res.status(401).end();
           }
@@ -819,7 +825,7 @@ module.exports = {
                 userOne.credit = userOne.credit + voteInfo.bonus;
                 userOne.isRedeemVote = true;
                 userOne.save(function (err, savedUser) {
-                  log.create({action: 'redeem_vote', openId: savedUser.openId, date: new Date(), ad: ad}).exec(function(err, results){
+                  Log.create({action: 'redeem_vote', openId: savedUser.openId, ad: ad}, function(err, results){
                     return res.json({credit: savedUser.credit, isRedeemVote: userOne.isRedeemVote});
                   });
                   
@@ -844,7 +850,7 @@ module.exports = {
         return res.status(400).json({errCode: 0, errMsg:'沒有投票活動。'});
       }
       if (secret == 'kitkit!@#$') {
-        user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+        User.auth(openId, ad, function (err, userOne) {
           if (!userOne) {
               return res.status(401).end();
           }
@@ -852,7 +858,7 @@ module.exports = {
             if (!result) {
               return res.status(400).end();
             } else {
-              user.find({ad:ad, vote: result, isRedeemVote: false}).exec(function (err, users) {
+              User.find({ad:ad, vote: result, isRedeemVote: false}, function (err, users) {
               if (users.length > 0) {
                 var count = users.length;
                 users.forEach(function (item, index) {
@@ -886,7 +892,7 @@ module.exports = {
   getGameResult: function (req, res) {
     var openId = req.param('openId');
     var ad = req.param('ad');
-    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+    User.auth(openId, ad, function (err, userOne) {
         if (!userOne) {
             return res.status(401).end();
         }
@@ -904,7 +910,7 @@ module.exports = {
     var openId = req.param('openId');
     var ad = req.param('ad');
 
-    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+    User.auth(openId, ad, function (err, userOne) {
         if (!userOne) {
             return res.status(401).end();
         }
@@ -917,7 +923,7 @@ module.exports = {
     var openId = req.param('openId');
     var ad = req.param('ad');
     //getVotes
-    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+    User.auth(openId, ad, function (err, userOne) {
         if (!userOne) {
             return res.status(401).end();
         }
@@ -943,7 +949,7 @@ module.exports = {
   redeemSubscribe: function (req, res) {
     var openId = req.param('openId');
     var ad = req.param('ad');
-    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+    User.auth(openId, ad, function (err, userOne) {
       if (!userOne) {
           return res.status(401).end();
       }
@@ -968,18 +974,18 @@ module.exports = {
   redeemLogin: function (req, res) {
     var openId = req.param('openId');
     var ad = req.param('ad');
-    user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+    User.auth(openId, ad, function (err, userOne) {
       if (!userOne) {
           return res.status(401).end();
       }
       var startOfDay = new Date();
       startOfDay.setHours(0,0,0,0);
-      log.find({action: 'login', openId: openId, date: {$gte: startOfDay}, ad: ad}).exec(function (err, logs) {
+      Log.find({action: 'login', openId: openId, date: {$gte: startOfDay}, ad: ad}, function (err, logs) {
           Config.adInfo(ad, function (err, configOne) {
             var bonus = configOne.loginBonus || [];
             if (logs.length < 1 && bonus.length > 0) {
               var yesterday = new Date(startOfDay.getTime() - 86400 * 1000);
-              log.findOne({action: 'login', openId: openId, date: {$gte: yesterday, $lt: startOfDay}, ad: ad}).exec(function (err, logOne) {
+              Log.findOne({action: 'login', openId: openId, date: {$gte: yesterday, $lt: startOfDay}, ad: ad}, function (err, logOne) {
                 var finalBonus;
                 if (!logOne && configOne.loginBonusContinuity) {
                   finalBonus = bonus[0];
@@ -997,7 +1003,7 @@ module.exports = {
                   userOne.loginDays = (userOne.loginDays || 0) + 1;
                 }
                 userOne.save(function (err) {
-                  log.create({action: 'login', openId: openId, date: new Date(), ad: ad}).exec(function(err){
+                  Log.create({action: 'login', openId: openId, ad: ad}, function(err){
                     return res.json({'loginBonus': bonus, loginDays: userOne.loginDays, finalBonus: finalBonus});
                   });
                         
@@ -1018,7 +1024,7 @@ module.exports = {
     var email = req.param('email');
     var age = req.param('age');
     Config.adInfo(ad, function (err, configOne) {
-      user.findOne({openId: openId, ad: ad}).exec(function (err, userOne) {
+      User.auth(openId, ad, function (err, userOne) {
         if (!userOne) {
             return res.status(401).end();
         }
@@ -1041,11 +1047,11 @@ module.exports = {
     var ad = req.param('ad');
     var secret = req.param('secret');
     if (secret == 'kitkit!@#$') {
-      log.destroy({ad: ad}).exec(function(){});
+      Log.destroy(ad, function(){});
       share_c.destroy({advertisement_c: ad}).exec(function(){});
       ClickCount.destroy().exec(function () {});
       wxToken.destroy().exec(function () {});
-      user.destroy({ad: ad}).exec(function(){
+      User.destroy(ad, function(){
         
         return res.end();
       });
@@ -1095,32 +1101,36 @@ module.exports = {
         }
         if (result.scope == 'snsapi_userinfo') {
           Weixin.userinfo(merchantInfo.accessToken, merchantInfo.openId, function (err, result) {
-            if (result.nickname) {
-              merchantInfo.nickname = result.nickname;
+            if (err) {
+              emitter.emit('error', {errMsg: JSON.stringify(err)});
+            } else {
+              if (result.nickname) {
+                merchantInfo.nickname = result.nickname;
+              }
+              if (result.sex) {
+                merchantInfo.sex = result.sex;
+              }
+              if (result.province) {
+                merchantInfo.province = result.province;
+              }
+              if (result.city) {
+                merchantInfo.city = result.city;
+              }
+              if (result.country) {
+                merchantInfo.country = result.country;
+              }
+              if (result.headimgurl) {
+                merchantInfo.headimgurl = result.headimgurl;
+              }
+              if (result.language) {
+                merchantInfo.language = result.language;
+              }
+              if (result.unionid) {
+                merchantInfo.unionId = result.unionid;
+              }
+              emitter.emit('done', merchantInfo);
             }
-            if (result.sex) {
-              merchantInfo.sex = result.sex;
-            }
-            if (result.province) {
-              merchantInfo.province = result.province;
-            }
-            if (result.city) {
-              merchantInfo.city = result.city;
-            }
-            if (result.country) {
-              merchantInfo.country = result.country;
-            }
-            if (result.headimgurl) {
-              merchantInfo.headimgurl = result.headimgurl;
-            }
-            if (result.language) {
-              merchantInfo.language = result.language;
-            }
-            if (result.unionid) {
-              merchantInfo.unionId = result.unionid;
-            }
-            emitter.emit('done', merchantInfo);
-            
+ 
           });
         } else {
           emitter.emit('done', merchantInfo);
@@ -1133,7 +1143,6 @@ module.exports = {
         if (err) {
           return res.status(400).json({errMsg: JSON.stringify(err)});
         }
-        console.log(merchantOne);
         LoginToken.scan(tokenId, merchantOne.openId, merchantOne.accessToken, function (err, token) {
           if (err) {
             return res.status(400).json({errMsg: JSON.stringify(err)});
