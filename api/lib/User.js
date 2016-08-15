@@ -1,3 +1,6 @@
+var Log = require('../lib/Log');
+var Weixin = require('../lib/Weixin');
+var Config = require('../lib/Config');
 
 function User (){
 
@@ -7,10 +10,10 @@ module.exports = User;
 
 var adString = ["adMood", "adUEFA", "adDPower", "adBlueMan"];
 
-User.sharedToUsers_c = function (userContext, adId, cb){ //找出user 分享過的follower
+User.sharedToUsers_c = function (userContext, ad, cb){ //找出user 分享過的follower
 
   //console.log("26");
-  share_c.findOne({sharedBy: userContext.openId, advertisement_c: adId}).exec(function(err, shareOne){
+  share_c.findOne({sharedBy: userContext.openId, advertisement_c: ad}).exec(function(err, shareOne){
     //console.log("28");
     if(err){
       cb(err);
@@ -23,7 +26,7 @@ User.sharedToUsers_c = function (userContext, adId, cb){ //找出user 分享過�
       //console.log("[]");
       return;
     }else{
-      user.find({ where: {openId: {$in: shareOne.sharedTo}, ad: adId}, select:['openId']}).exec(function (err, sharedTo) {
+      user.find({ where: {openId: {$in: shareOne.sharedTo}, ad: ad}, select:['openId']}).exec(function (err, sharedTo) {
         if(err){
           cb(err);
           return;
@@ -37,8 +40,8 @@ User.sharedToUsers_c = function (userContext, adId, cb){ //找出user 分享過�
   })
 }
 
-User.userExists = function (userOpenId, adId, cb){ //check user 是否存在DB
-  user.findOne({openId: userOpenId, ad: adId}).exec(function(err, userOne){
+User.userExists = function (userOpenId, ad, cb){ //check user 是否存在DB
+  user.findOne({openId: userOpenId, ad: ad}).exec(function(err, userOne){
     if(err){
       cb(err);
       return;
@@ -53,78 +56,80 @@ User.userExists = function (userOpenId, adId, cb){ //check user 是否存在DB
   });
 }
 
-User.shareAd_c = function (sharedBy, sharedTo, adId, cb){ //按制share點擊獲得積分的function
-  var ad_c = adString;
-  if(-1==ad_c.indexOf(adId)){
-    console.log("121");
-    cb(null);
-    return;
-  }
-  if(sharedBy==sharedTo||sharedBy=="wecast"){ //如果係公众號進入或進入自己分享的post，就不用加分
-    console.log("127"+sharedBy);
-    cb(null);
-    return;
-  }
-  this.userExists(sharedBy, adId, function(err, userExists){
-    if(err){
-      cb(err);
+User.shareAd_c = function (sharedBy, sharedTo, ad, cb){ //按制share點擊獲得積分的function
+  Config.findOne(ad, function (err, configOne) {
+    if(!configOne){
+      console.log("121");
+      cb(null);
       return;
     }
-    if(!userExists){
-      console.log(sharedBy + adId);
-      cb({code: 400, msg: "User not found"});
+    if(sharedBy==sharedTo||sharedBy=="wecast"){ //如果係公众號進入或進入自己分享的post，就不用加分
+      console.log("127"+sharedBy);
+      cb(null);
       return;
     }
-    share_c.findOne({sharedBy: sharedBy, advertisement_c: adId}).exec(function(err, shareOne){ //找尋是否原先已經加過分的function
+    this.userExists(sharedBy, ad, function(err, userExists){
       if(err){
         cb(err);
         return;
       }
-      if(!shareOne){ //如果沒有分享過的記錄
-        var sharedToArr = [];
-        sharedToArr.push(sharedTo)
-        share_c.create({sharedBy: sharedBy, sharedTo: sharedToArr, advertisement_c: adId}).exec(function(err){
-          if(err){
-            cb(err);
-            return;
-          }
-          User.incrementCredit(sharedBy, 1, adId, cb);
-          log.create({action: "total_share_friends", openId: sharedBy, date: new Date(), ad: adId}).exec(function(err, results){
-            //res.json(results);
-          });
+      if(!userExists){
+        console.log(sharedBy + ad);
+        cb({code: 400, msg: "User not found"});
+        return;
+      }
+      share_c.findOne({sharedBy: sharedBy, advertisement_c: ad}).exec(function(err, shareOne){ //找尋是否原先已經加過分的function
+        if(err){
+          cb(err);
           return;
-        });
-      }else{ 
-        if(-1==shareOne.sharedTo.indexOf(sharedTo)){ //如果有記錄，找尋有沒有對應的follower
-          console.log("sharedTo not found");
-          var sharedToArr = shareOne.sharedTo;
-          sharedToArr.push(sharedTo);
-          shareOne.sharedTo = sharedToArr;
-          shareOne.save(function(err){
+        }
+        if(!shareOne){ //如果沒有分享過的記錄
+          var sharedToArr = [];
+          sharedToArr.push(sharedTo)
+          share_c.create({sharedBy: sharedBy, sharedTo: sharedToArr, advertisement_c: ad}).exec(function(err){
             if(err){
-              console.log("err");
               cb(err);
               return;
             }
-            User.incrementCredit(sharedBy, 1, adId, cb);
-            log.create({action: "total_share_friends", openId: sharedBy, date: new Date(), ad: adId}).exec(function(err, results){
-              //res.json(results);
-
+            User.incrementCredit(sharedBy, 1, ad, cb);
+            Log.create({action: "total_share_friends", openId: sharedBy, ad: ad}, function(err, results){
+              
             });
             return;
-          })
+          });
+        }else{ 
+          if(-1==shareOne.sharedTo.indexOf(sharedTo)){ //如果有記錄，找尋有沒有對應的follower
+            console.log("sharedTo not found");
+            var sharedToArr = shareOne.sharedTo;
+            sharedToArr.push(sharedTo);
+            shareOne.sharedTo = sharedToArr;
+            shareOne.save(function(err){
+              if(err){
+                console.log("err");
+                cb(err);
+                return;
+              }
+              User.incrementCredit(sharedBy, 1, ad, cb);
+              Log.create({action: "total_share_friends", openId: sharedBy, ad: ad}, function(err, results){
+                //res.json(results);
+
+              });
+              return;
+            })
+          }
+          cb(null);
         }
-        cb(null);
-      }
 
 
-    });
+      });
+    })
   })
+  
 
 }
 
-User.incrementCredit = function(userOpenId, increment, adId, cb){ //User增加credit時調用
-  user.findOne({openId: userOpenId, ad: adId}).exec(function(err, userOne){
+User.incrementCredit = function(userOpenId, increment, ad, cb){ //User增加credit時調用
+  user.findOne({openId: userOpenId, ad: ad}).exec(function(err, userOne){
     if(err){
       cb(err);
       return;
@@ -145,7 +150,7 @@ User.incrementCredit = function(userOpenId, increment, adId, cb){ //User增加cr
         return;
       }
       if (savedUser.parent) {
-        User.incrementCredit(savedUser.parent, increment*0, adId, cb);
+        User.incrementCredit(savedUser.parent, increment*0, ad, cb);
       } else {
         cb(null);
       }
@@ -166,12 +171,18 @@ User.create = function(userInfo, cb){ //Create User, 如果原有就return現有
           cb(err);
           return;
         }
-        log.create({action: "regist", openId: userCreated.openId, date: new Date(), ad: userCreated.ad}).exec(function(err, results){
+        Log.create({action: "regist", openId: userCreated.openId, ad: userCreated.ad}, function(err, results){
             
         });
         cb(null, userCreated);
       });
     }else{
+        if (userInfo.accessToken) {
+          userOne.accessToken = userInfo.accessToken;
+        }
+        if (userInfo.refreshToken) {
+          userOne.refreshToken = userInfo.refreshToken;
+        }
         if (userInfo.nickname) {
           userOne.nickname = userInfo.nickname;
         }
@@ -211,7 +222,7 @@ User.create = function(userInfo, cb){ //Create User, 如果原有就return現有
 }
 
 User.auth = function (openId, ad, cb) {
-  user.findOne({openId: userInfo.openId, ad: userInfo.ad}).exec(function(err, userOne){
+  user.findOne({openId: openId, ad: ad}).exec(function(err, userOne){
     if(err){
       return cb(err);
     }
@@ -231,9 +242,32 @@ User.find = function (options, cb) {
   });
 }
 
+User.count = function (options, cb) {
+  user.count(options).exec(function (err, count) {
+    if (err) {
+      return cb(err)
+    } else {
+      return cb(null, count);
+    }
+  });
+};
+
+User.save = function (userOne, cb) {
+  userOne.save(function (err, saved) {
+    if (err) {
+      return cb(err);
+    }
+    if (!saved) {
+      return cb({errMsg: 'save error'});
+    } else {
+      return cb(null, saved)
+    }
+  });
+}
+
 User.destroy = function (ad, cb) {
   user.destroy({ad: ad}).exec(function(){
-    return cb(true)
+    return cb(true);
   });
 }
 
@@ -257,14 +291,14 @@ User.draw = function(userOpenId, cb){ //未有用到
     })
 
   });
+};
 
-  User.initTestCredit = function (ad, secret, cb) {
-    if (secret == 'kitkit!@#$') {
-      user.update({ad: ad}, {credit: 100}).exec(function(err){
-        return cb(true);
-      });
-    } else {
-        return cb(null);
-    }
+User.initTestCredit = function (ad, secret, cb) {
+  if (secret == 'kitkit!@#$') {
+    user.update({ad: ad}, {credit: 100}).exec(function(err){
+      return cb(true);
+    });
+  } else {
+      return cb(null);
   }
-}
+};

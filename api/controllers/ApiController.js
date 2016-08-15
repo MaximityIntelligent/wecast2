@@ -42,11 +42,11 @@ var getVoteResult = function (ad, cb) {
           return cb(null);
         }
         if (!logOne) {
-          return cb(null);
+          return cb(voteInfo.voteResult || null);
         }
         var temp = logOne.action.split('_');
         if (temp.length != 2) { return cb(null);}
-        return cb(votesInfo.voteResult || temp[temp.length-1]);
+        return cb(voteInfo.voteResult || temp[temp.length-1]);
         
       });
     });
@@ -102,6 +102,8 @@ module.exports = {
       } else {
         var userInfo = {};
         userInfo.openId = result.openid;
+        userInfo.accessToken = result.access_token;
+        userInfo.refreshToken = result.refresh_token;
         if (result.unionid) {
           userInfo.unionId = result.unionid;
         }
@@ -159,10 +161,12 @@ module.exports = {
           // console.log(sharedBy+openId+ad);
             User.shareAd_c(sharedBy, userOne.openId, ad, function(err){
               if(err) {
-                console.log({shareAd_c_errMsg: err});
+                emitter.emit('error', {errMsg: err});
+              } else {
+                emitter.emit('done', 'userInfo', userOne);
               }
             });
-            emitter.emit('done', 'userInfo', userOne);
+            
           }
         });
 
@@ -225,12 +229,16 @@ module.exports = {
         Config.adInfo(ad, function (err, configOne) {
           // 2nd
           if (!eventResult.userInfo.subscribe) {
-            request.get('https://api.weixin.qq.com/cgi-bin/user/info?access_token='+eventResult.ticket.access_token+'&openid='+eventResult.userInfo.openId, function (err, responce, info) {
-              info = JSON.parse(info);
-              if (info.subscribe == 1) {
+            Weixin.subscribe(eventResult.ticket.access_token, eventResult.userInfo.openId, function (err, subscribe) {
+              if (subscribe) {
                 eventResult.userInfo.subscribe = true;
-                eventResult.userInfo.save(function (err, savedUser) {
-                  emitter.emit('final', 'subscribe', true);
+                User.save(eventResult.userInfo, function (err, savedUser) {
+                  if (err) {
+                    emitter.emit('error', {errMsg: err});
+                  } else {
+                    emitter.emit('final', 'subscribe', true);
+                  }
+                  
                 });
               } else {
                 emitter.emit('final', 'subscribe', false);
@@ -250,15 +258,7 @@ module.exports = {
           var pickPrizeList = prizeList.map(function (item) {
              return 'pick_'+item;
           });
-          Log.find({openId:eventResult.userInfo.openId, ad: ad, action: {$in:redeemPrizeList.concat(pickPrizeList)}}, function (err, logs) {
-            var groupPrizes = {};
-            logs.forEach(function (item, index, array) {
-              if (groupPrizes[item.action] == undefined) {
-                groupPrizes[item.action] = [item];
-              } else { 
-                groupPrizes[item.action].push(item);
-              }
-            });
+          Log.findGroup({openId:eventResult.userInfo.openId, ad: ad, action: {$in:redeemPrizeList.concat(pickPrizeList)}}, function (err, groupPrizes) {
 
             prizeList.forEach(function (item, index, array) {
               if (groupPrizes['redeem_'+item] != undefined) {
@@ -554,12 +554,18 @@ module.exports = {
                 console.log("week");
               }
               userOne.credit -= 1;
-              userOne.save(function (err) {
+              User.save(userOne, function (err) {
+                if (err) {
+                  return res.status(400).json({errCode: 0, "errMsg" : JSON.stringify(err)});
+                }
                 Log.create({action: 'redeem_'+prize, openId: userOne.openId, ad: ad}, function(err, results){
-
+                  if (err) {
+                    return res.status(400).json({errCode: 0, "errMsg" : JSON.stringify(err)});
+                  }
+                  return res.json({credit: userOne.credit, prize: prize});
                 });
                 
-                return res.json({credit: userOne.credit, prize: prize});
+                
               });
             });
           });
@@ -584,8 +590,8 @@ module.exports = {
         if(!userOne) return res.status(401).end();
         
           var credit = userOne.credit;
-          prizeCode = prizeInfo.code || "";
-          if(verificationCode==prizeCode){
+          prizeCode = prizeInfo.code;
+          if(verificationCode==prizeCode || !prizeCode){
             
               var prizeCredit = prizeInfo.credit || 1;
               var prizeAmount = prizeInfo.amount || 100000;
@@ -596,7 +602,10 @@ module.exports = {
                       
                     } else{
                       userOne.credit = userOne.credit - prizeCredit;
-                      userOne.save(function(err, savedUser){
+                      User.save(userOne, function(err, savedUser){
+                        if (err) {
+                          return res.status(400).json({errCode: 0, "errMsg" : JSON.stringify(err)});
+                        }
                         Log.create({action: 'redeem_'+prize, openId: userOne.openId, ad: ad}, function(err, results){
                           Log.create({action: 'pick_'+prize, openId: userOne.openId, ad: ad}, function(err, results){
                             res.json({credit: savedUser.credit, prize: prize});
@@ -681,15 +690,7 @@ module.exports = {
           });
           // var prizeAmount = prizeAmountAll[ad];
           var prizeRemain = {};
-          Log.find({action: {$in: redeemPrizeList}, ad:ad}, function (err, logs) {
-              var groupLogs = {};
-              logs.forEach(function (item, index, array) {
-                if (groupLogs[item.action] == undefined) {
-                  groupLogs[item.action] = [item];
-                } else {
-                  groupLogs[item.action].push(item);
-                }
-              });
+          Log.findGroup({action: {$in: redeemPrizeList}, ad:ad}, function (err, groupLogs) {
 
               prizeList.forEach(function (item, index, array) {
                 if (groupLogs['redeem_'+item] != undefined) {
@@ -736,8 +737,11 @@ module.exports = {
                     if (rand < probability[i]) {
                         prize = i;
                         userOne.credit += prizeArray[prize];
-                        userOne.save(function (err) {
-                          
+                        User.save(userOne, function (err, savedUser) {
+                          if (err) {
+                            return res.status(400).json({errCode: 0, "errMsg" : JSON.stringify(err)});
+                          }
+                          return res.json({prize: prizeArray[prize], currentCredit:savedUser.credit});
                         });
                         break;
                     } else {
@@ -745,7 +749,7 @@ module.exports = {
                     }
                   }
                   
-                  return res.json({prize: prizeArray[prize], currentCredit:userOne.credit});
+                  
               });  
            } else {
               return res.status(400).end();
@@ -769,8 +773,8 @@ module.exports = {
         return res.status(400).end();
       }
       var now = new Date();
-      var exp = voteInfo.voteExp || now;
-      //console.log(exp);
+      var exp = new Date(voteInfo.voteExp) || now;
+      // console.log(exp);
       if (now.getTime() > exp.getTime()) {
         return res.status(400).json({errCode: 0, errMsg:'投票時限已過了。'});
       }
@@ -780,7 +784,10 @@ module.exports = {
           }
           if (userVote) {
             userOne.vote = userVote;
-            userOne.save(function (err, savedUser) {
+            User.save(userOne, function (err, savedUser) {
+              if (err) {
+                return res.status(400).json({errCode: 0, "errMsg" : JSON.stringify(err)});
+              }
               Log.create({action: 'vote', openId: savedUser.openId, ad: ad}, function(err, results){
 
               });
@@ -822,9 +829,12 @@ module.exports = {
               return res.status(400).json({errCode:0, errMsg: '比賽結果還沒出來。'});
             } else {
               if (result == userOne.vote) {
-                userOne.credit = userOne.credit + voteInfo.bonus;
+                userOne.credit = userOne.credit + (voteInfo.bonus || 0);
                 userOne.isRedeemVote = true;
-                userOne.save(function (err, savedUser) {
+                User.save(userOne, function (err, savedUser) {
+                  if (err) {
+                    return res.status(400).json({errCode:0, errMsg: err});
+                  }
                   Log.create({action: 'redeem_vote', openId: savedUser.openId, ad: ad}, function(err, results){
                     return res.json({credit: savedUser.credit, isRedeemVote: userOne.isRedeemVote});
                   });
@@ -863,9 +873,9 @@ module.exports = {
                 var count = users.length;
                 users.forEach(function (item, index) {
                   if (item.isRedeemVote == false) {
-                    item.credit = item.credit + voteInfo.bonus;
+                    item.credit = item.credit + (voteInfo.bonus || 0);
                     item.isRedeemVote = true;
-                    item.save(function (err, savedUser) {
+                    User.save(item ,function (err, savedUser) {
                       count = count - 1;
                       if (count == 0) {
                         return res.status(200).end();
@@ -959,7 +969,10 @@ module.exports = {
           if (bonus > 0) {
             userOne.credit += bonus;
             userOne.isRedeemSubscribe = true;
-            userOne.save(function (err, savedUser) {
+            User.save(userOne, function (err, savedUser) {
+              if (err) {
+                return res.status(400).json({errCode: 0, "errMsg" : JSON.stringify(err)});
+              }
               return res.json({subscribeBonus: bonus});
             });
           } else {
@@ -1002,9 +1015,12 @@ module.exports = {
                   userOne.credit += finalBonus;
                   userOne.loginDays = (userOne.loginDays || 0) + 1;
                 }
-                userOne.save(function (err) {
+                User.save(userOne, function (err, savedUser) {
+                  if (err) {
+                    return res.status(400).json({errCode: 0, "errMsg" : JSON.stringify(err)});
+                  }
                   Log.create({action: 'login', openId: openId, ad: ad}, function(err){
-                    return res.json({'loginBonus': bonus, loginDays: userOne.loginDays, finalBonus: finalBonus});
+                    return res.json({'loginBonus': bonus, loginDays: savedUser.loginDays, finalBonus: finalBonus});
                   });
                         
                 }); 
@@ -1036,7 +1052,10 @@ module.exports = {
           userOne.credit = userOne.credit + configOne.questionnaireBonus || 0;
         }
         userOne.isQuestionnaire = true;
-        userOne.save(function (err, savedUser) {
+        User.save(userOne, function (err, savedUser) {
+          if (err) {
+            return res.status(400).json({errCode: 0, "errMsg" : JSON.stringify(err)});
+          }
           return res.json({credit: savedUser.credit});
         });
       });

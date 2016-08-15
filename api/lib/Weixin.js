@@ -80,7 +80,19 @@ Weixin.ticket = function (cb) {
         } else {
         	return cb(err || token);
         }
-    });
+    });	
+};
 
-	
-}
+Weixin.subscribe = function (access_token, openId, cb) {
+	request.get('https://api.weixin.qq.com/cgi-bin/user/info?access_token='+access_token+'&openid='+openId, function (err, responce, info) {
+      if (err) {
+      	return cb(err);
+      }
+      info = JSON.parse(info);
+      if (info.subscribe == 1) {
+        return cb(null, true);
+      } else {
+        return cb(null, false);
+      }
+    });
+};

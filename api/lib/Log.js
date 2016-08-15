@@ -22,6 +22,23 @@ Log.findOne = function (options, cb) {
 	});
 };
 
+Log.findGroup = function (options, cb) {
+	Log.find(options, function (err, logs) {
+		if (err) {
+			return cb(err);
+		}
+	    var groupLogs = {};
+	    logs.forEach(function (item, index, array) {
+		    if (groupLogs[item.action] == undefined) {
+		      groupLogs[item.action] = [item];
+		    } else {
+		      groupLogs[item.action].push(item);
+		    }
+	    });
+	    return cb(null, groupLogs)
+	});
+};
+
 Log.count = function (options, cb) {
 	log.count(options).exec(function (err, count) {
 		if (err) {
@@ -45,4 +62,4 @@ Log.destroy = function (ad, cb) {
 	log.destroy({ad: ad}).exec(function (err) {
 		return cb(true);
 	});
-}
+};
