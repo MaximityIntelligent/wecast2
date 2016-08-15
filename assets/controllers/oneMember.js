@@ -67,6 +67,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       $scope.nickname = data.nickname;
       $scope.config = data.config;
       $scope.phone = data.phone;
+      $scope.headimgurl = data.headimgurl;
       $scope.subscribe = data.subscribe;
       
       wx.config({
