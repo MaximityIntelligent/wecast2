@@ -104,7 +104,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         $scope.log('wxError', JSON.stringify(res));
       });
     }).error(function(data, status, headers, config) { //如果從外部連結返回時會遇到code error問題，就要重新定向
-        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2Fone_member%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'#wechat_redirect';
+        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2Fone_member%3FsharedBy%3Dwecast%26ad%3D'+ad+'&response_type=code&scope='+snsapi+'#wechat_redirect';
     });
   
   };

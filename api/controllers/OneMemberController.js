@@ -43,9 +43,6 @@ module.exports = {
           userInfo.unionId = result.unionid;
         }
         userInfo.ad = ad;
-        if (sharedBy != "wecast") {
-          userInfo.parent = sharedBy;
-        }
         // Get UserInfo
         if (result.scope == 'snsapi_userinfo') {
           Weixin.userinfo(result.access_token, userInfo.openId, function (err, result) {
