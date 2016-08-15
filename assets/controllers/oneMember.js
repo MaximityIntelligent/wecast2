@@ -38,6 +38,7 @@ var QueryString = function () {  //提取由公众號或分享LINK時的CODE參�
     return query_string;
 }();
 
+var code = QueryString.code;
 var debug = true;
 var ad = QueryString.ad;
 var snsapi = 'snsapi_userinfo';
@@ -54,7 +55,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     var url = location.href.split('#')[0];
     url = encodeURIComponent(url);
     
-    $http.get('/oneMember/init?code='+code+'&url='+url+'&ad='+ad).success(function(data, status, headers, config) { 
+    $http.get('/oneMember/init?code='+code+'&url='+url+'&ad='+ad).success(function(data, status, headers, config) {
+      config.log(data); 
       $scope.noncestr = data.noncestr;
       $scope.signature = data.signature;
       $scope.ticket = data.ticket;
