@@ -120,7 +120,7 @@ module.exports = {
         //     emitter.emit('final', 'sharedToUsers', sharedToUsers);
         // });
         // 2nd
-        Config.openDate(ad, function (err, configOne) {
+        Config.openData(ad, function (err, configOne) {
           if (err) {
             emitter.emit('error', {errMsg: err});
           } else {
