@@ -26,7 +26,7 @@ Weixin.oauth2 = function (code, cb) {
 }
 
 Weixin.userinfo = function (accessToken, openId, cb) {
-	request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, responce, result) {
+	request.get('https://api.weixin.qq.com/sns/userinfo?access_token='+accessToken+'&openid='+openId+'&lang=en', function (err, res, result) {
         if (err) {
 	      	return cb(err);
 	    }    
@@ -38,7 +38,7 @@ Weixin.userinfo = function (accessToken, openId, cb) {
 	    }
 
     });
-}
+};
 
 Weixin.auth = function (accessToken, openId, cb) {
 	request.get('https://api.weixin.qq.com/sns/auth?access_token='+accessToken+'&openid='+openId, function (err, responce, result) {

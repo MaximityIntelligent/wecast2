@@ -39,6 +39,10 @@ var QueryString = function () {  //提取由公众號或分享LINK時的CODE參�
 }();
 
 var debug = true;
+var ad = QueryString.ad;
+var snsapi = 'snsapi_userinfo';
+var host = 'lb.ibeacon-macau.com';
+var appid = 'wxbb0b299e260ac47f';
 
 app.controller('IndexCtrl', [
 '$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll',
@@ -47,8 +51,62 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   $scope.selected = 0;
 
   $scope.init = function () {
+    var url = location.href.split('#')[0];
+    url = encodeURIComponent(url);
     
+    $http.get('/oneMember/init?code='+code+'&url='+url+'&ad='+ad).success(function(data, status, headers, config) { 
+      $scope.noncestr = data.noncestr;
+      $scope.signature = data.signature;
+      $scope.ticket = data.ticket;
+      $scope.timestamp = data.timestamp;
+      $scope.openId = data.openId;
+      $scope.credit = data.credit;
+      $scope.credit = data.credit;
+      $scope.subscribe = data.subscribe;
+      
+      wx.config({
+      debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      appId: ''+appid+'', // 必填，公众号的唯一标识
+      timestamp: data.timestamp, // 必填，生成签名的时间戳
+      nonceStr: data.noncestr, // 必填，生成签名的随机串
+      signature: data.signature,// 必填，签名，见附录1
+      jsApiList: ['onMenuShareTimeline',"onMenuShareAppMessage", 'showMenuItems'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+      });
+      wx.ready(function(res){
+        wx.showOptionMenu();
+        wx.showMenuItems({
+          menuList: ['menuItem:share:timeline', 'menuItem:share:appMessage', "menuItem:favorite" ] // 要显示的菜单项，所有menu项见附录3
+        });
+        wx.onMenuShareTimeline({
+            title: '今晚總決賽！投票截止倒計時', // 分享标题
+            link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2Fone_member%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+ad+'&response_type=code&scope='+snsapi+'&state=123#wechat_redirect',
+            imgUrl: 'http://'+host+'/images/blueman/share/wecast-share.png', // 分享图标
+            success: function() {
+            },
+            cancel: function() {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        wx.onMenuShareAppMessage({
+          title: '今晚總決賽！投票截止倒計時', // 分享标题
+          desc: '估波仔! CheersPub 送你特色 Cocktail x Pizza', // 分享描述
+          link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2Fone_member%3FsharedBy%3D'+$scope.userId+'%26ad%3D'+ad+'&response_type=code&scope='+snsapi+'&state=123#wechat_redirect',
+          imgUrl: 'http://'+host+'/images/blueman/share/wecast-share.png', // 分享图标
+          success: function () {
+          },
+          cancel: function () {
+          }
+        });
+      });
+      wx.error(function(res){
+        $scope.log('wxError', JSON.stringify(res));
+      });
+    }).error(function(data, status, headers, config) { //如果從外部連結返回時會遇到code error問題，就要重新定向
+        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2Fone_member%3FsharedBy%3Dwecast%26ad%3D'+adString+'&response_type=code&scope='+snsapi+'#wechat_redirect';
+    });
+  
   };
+
   $scope.isSelected = function (index) {
     return index == $scope.selected;
   }

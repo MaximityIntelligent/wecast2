@@ -76,7 +76,7 @@ module.exports.routes = {
   '/weui' : {
     view : 'weui'
   },
-  '/oneMember' : {
+  '/one_member' : {
     view : 'one_member'
   },
   '/ad/config' : {
