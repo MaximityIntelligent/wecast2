@@ -58,13 +58,16 @@ User.userExists = function (userOpenId, ad, cb){ //check user 是否存在DB
 
 User.shareAd_c = function (sharedBy, sharedTo, ad, cb){ //按制share點擊獲得積分的function
   Config.findOne(ad, function (err, configOne) {
+    if (err) {
+      return cb(err);
+    }
     if(!configOne){
-      console.log("121");
+      console.log("no configOne");
       cb(null);
       return;
     }
     if(sharedBy==sharedTo||sharedBy=="wecast"){ //如果係公众號進入或進入自己分享的post，就不用加分
-      console.log("127"+sharedBy);
+      // console.log("share: "+sharedBy);
       cb(null);
       return;
     }

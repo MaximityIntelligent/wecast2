@@ -90,7 +90,6 @@ module.exports = {
     var retResult = {};
     var resp;
     var result;
-    console.log(typeof code);
     if (code == 'undefined' || sharedBy == 'undefined') {
       return res.status(400).json({errMsg: "miss param"});
     }
@@ -225,29 +224,33 @@ module.exports = {
         User.sharedToUsers_c(eventResult.userInfo, ad, function(err, sharedToUsers){
             emitter.emit('final', 'sharedToUsers', sharedToUsers);
         });
-        
-        Config.adInfo(ad, function (err, configOne) {
-          // 2nd
-          if (!eventResult.userInfo.subscribe) {
-            Weixin.subscribe(eventResult.ticket.access_token, eventResult.userInfo.openId, function (err, subscribe) {
-              if (subscribe) {
-                eventResult.userInfo.subscribe = true;
-                User.save(eventResult.userInfo, function (err, savedUser) {
-                  if (err) {
-                    emitter.emit('error', {errMsg: err});
-                  } else {
-                    emitter.emit('final', 'subscribe', true);
-                  }
-                  
-                });
-              } else {
-                emitter.emit('final', 'subscribe', false);
-              }
-            });
-            
+        // 2nd
+        Config.openDate(ad, function (err, configOne) {
+          if (err) {
+            emitter.emit('error', {errMsg: err});
           } else {
-            emitter.emit('final', 'subscribe', true);
+            if (!eventResult.userInfo.subscribe) {
+              Weixin.subscribe(eventResult.ticket.access_token, eventResult.userInfo.openId, function (err, subscribe) {
+                if (subscribe) {
+                  eventResult.userInfo.subscribe = true;
+                  User.save(eventResult.userInfo, function (err, savedUser) {
+                    if (err) {
+                      emitter.emit('error', {errMsg: err});
+                    } else {
+                      emitter.emit('final', 'subscribe', true);
+                    }
+                    
+                  });
+                } else {
+                  emitter.emit('final', 'subscribe', false);
+                }
+              });
+              
+            } else {
+              emitter.emit('final', 'subscribe', true);
+            }
           }
+          
           // 3rd
           var userPrize = {};
           var prizeInfo = configOne.prizesInfo || {};
@@ -285,7 +288,7 @@ module.exports = {
     emitter.on('final', function (event, result) {
       finalResult[event] = result;
       delete finalEvents[event];
-      console.log(finalEvents);
+      // console.log(finalEvents);
       if (Object.keys(finalEvents) == 0) {
         var timestamp = Math.floor(Date.now() / 1000);
         var noncestr = randomString(16);

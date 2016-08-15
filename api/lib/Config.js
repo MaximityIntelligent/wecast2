@@ -54,6 +54,39 @@ Config.findOne = function (ad, cb) {
 	});
 }
 
+Config.openData = function (ad, cb) {
+	config.findOne({ad: ad}).exec(function (err, configOne) {
+		if (err) {
+			return cb(err);
+		} 
+		if (!configOne) {
+			return cb(null, {});
+		} else {
+			var openConfig = {
+				prizesInfo: {}
+			};
+			openConfig.ad = configOne.ad;
+			openConfig.subscribeBonus = configOne.subscribeBonus;
+			openConfig.questionnaireBonus = configOne.questionnaireBonus;
+			openConfig.loginBonus = configOne.loginBonus;
+			openConfig.title = configOne.title;
+			openConfig.loginBonusCycle = configOne.loginBonusCycle;
+			openConfig.loginBonusContinuity = configOne.loginBonusContinuity;
+			openConfig.votesInfo = configOne.votesInfo;
+			Object.keys(configOne.prizesInfo).forEach(function (element, index, array) {
+				var prizeInfo = configOne.prizesInfo[element];
+				var temp = {};
+				temp.credit = prizeInfo.credit;
+				temp.name = prizeInfo.name;
+				temp.amount = prizeInfo.amount;
+				openConfig.prizesInfo[element] = temp;
+			});
+
+			return cb(null, openConfig);
+		}
+	});
+}
+
 Config.update = function (configOne, cb) {
 	config.update({ad: configOne.ad}, configOne).exec(function (err, configUpdated) {
 		
