@@ -169,6 +169,11 @@ module.exports = {
         retResult.noncestr = noncestr;
         retResult.ticket = finalResult.ticket.jsapi_ticket;
         retResult.credit = finalResult.userInfo.credit;
+        retResult.level = finalResult.userInfo.level;
+        retResult.nickname = finalResult.userInfo.nickname;
+        retResult.headimgurl = finalResult.userInfo.headimgurl;
+        retResult.phone = finalResult.userInfo.phone;
+        retResult.sex = finalResult.userInfo.sex;
         retResult.config = finalResult.config;
         retResult.subscribe = finalResult.subscribe;
         console.log(retResult);

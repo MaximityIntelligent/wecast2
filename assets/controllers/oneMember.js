@@ -56,14 +56,17 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     url = encodeURIComponent(url);
     
     $http.get('/oneMember/init?code='+code+'&url='+url+'&ad='+ad).success(function(data, status, headers, config) {
-      config.log(data); 
+      console.log(data); 
       $scope.noncestr = data.noncestr;
       $scope.signature = data.signature;
       $scope.ticket = data.ticket;
       $scope.timestamp = data.timestamp;
       $scope.openId = data.openId;
       $scope.credit = data.credit;
-      $scope.credit = data.credit;
+      $scope.level = data.level;
+      $scope.nickname = data.nickname;
+      $scope.config = data.config;
+      $scope.phone = data.phone;
       $scope.subscribe = data.subscribe;
       
       wx.config({

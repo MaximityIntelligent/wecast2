@@ -23,6 +23,10 @@ module.exports = {
       type: 'string',
       required: true
     },
+    level: {
+      type: 'integer',
+      defaultsTo: 0
+    },
     parent: {
       type: 'string'
     },
