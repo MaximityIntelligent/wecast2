@@ -23,10 +23,6 @@ module.exports = {
       type: 'string',
       required: true
     },
-    level: {
-      type: 'integer',
-      defaultsTo: 0
-    },
     parent: {
       type: 'string'
     },
@@ -90,7 +86,25 @@ module.exports = {
           type: 'string'
           //primaryKey: true,
           //unique: true
+    },
+    deleted: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+    level: {
+      type: 'integer',
+      defaultsTo: 0
+    },
+    validate: {
+      type: 'date'
+    },
+    active: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+    redeemCredit: {
+      type: 'float',
+      defaultsTo: 0
     }
-
   }
 };

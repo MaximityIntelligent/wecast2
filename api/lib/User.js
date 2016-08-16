@@ -268,6 +268,36 @@ User.save = function (userOne, cb) {
   });
 }
 
+User.todayLogin = function (userOne, cb) {
+  var startOfDay = new Date();
+  startOfDay.setHours(0,0,0,0);
+  Log.find({action: 'login', openId: userOne.openId, date: {$gte: startOfDay}, ad: userOne.ad}, function (err, logs) {
+    if (err) {
+      return cb(err);
+    }
+    if (logs.length < 1) {
+      return cb(null, false);
+    } else {
+      return cb(null, true);
+    }
+  });
+};
+
+User.yesterdayLogin = function (userOne, cb) {
+  var startOfDay = new Date();
+  startOfDay.setHours(0,0,0,0);
+  var yesterday = new Date(startOfDay.getTime() - 86400 * 1000);
+  Log.findOne({action: 'login', openId: userOne.openId, date: {$gte: yesterday, $lt: startOfDay}, ad: userOne.ad}, function (err, logOne) {
+    if (err) {
+      return cb(err);
+    }
+    if (logOne) {
+      return cb(null, true);
+    }
+    return cb(null, false);
+  });
+}
+
 User.destroy = function (ad, cb) {
   user.destroy({ad: ad}).exec(function(){
     return cb(true);

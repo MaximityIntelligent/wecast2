@@ -20,7 +20,19 @@
     <div class="container content">
       <div class="weui_tab">
         <div class="weui_tab_bd">
-          <div class="panel">
+          <div class="article" ng-show="isSelected(1)&&isPage(12)">
+            <div class="hd">
+              <h1 class="page_title">條款細則</h1>
+            </div>
+            <div class="bd">
+              <article class="weui_article" ng-click="page=11">
+                <section ng-repeat="sub in conditions track by $index">
+                  <p>{{sub}}</p>
+                </section>
+              </article>
+            </div>
+          </div>
+          <div class="panel" ng-show="isSelected(1)&&isPage(11)">
             <div class="hd">
               <div class="card_title">
                 <img width="100%" src="/images/MemberCardImage.jpg" alt="">
@@ -28,21 +40,19 @@
             </div>
             <div class="bd">
               <div class="weui_panel">
-                <div class="weui_panel_hd">
-                  詳細
-                </div>
                 <div class="weui_panel_bd">
-                  <a class="weui_media_box weui_media_appmsg weui_cells_title">
+                  <a class="weui_media_box weui_media_appmsg">
                     <div class="weui_media_hd">
                       <img ng-src="{{headimgurl}}" class="weui_media_appmsg_thumb">
                     </div>
                     <div class="weui_media_bd">
                       <h4 class="weui_media_title">{{nickname}}</h4>
-                      <p class="weui_media_desc">{{phone}}</p>
+                      <p class="weui_media_desc" ng-hide="active">未激活</p>
+                      <p class="weui_media_desc" ng-show="active">已激活</p>
                     </div>
                   </a>
-                  <div class="weui_cells weui_cells_access">
-                    <a class="weui_cell">
+                  <div class="weui_cells weui_cells_access" style="margin-top: 0px;">
+                    <a class="weui_cell"  ng-show="credit">
                       <div class="weui_cell_hd">
                         <img src="http://placehold.it/46x46" style="width:20px;margin-right:5px;display:block">
                       </div>
@@ -53,31 +63,64 @@
                         {{credit}}
                       </div>
                     </a>
-                    <a class="weui_cell">
+                    <a class="weui_cell" ng-show="level>=0">
                       <div class="weui_cell_hd">
                         <img src="http://placehold.it/46x46" style="width:20px;margin-right:5px;display:block">
                       </div>
                       <div class="weui_cell_bd weui_cell_primary">
-                        <p>等級</p>
+                        <p>會員等級</p>
                       </div>
                       <div class="weui_cell_ft">
                         {{level}}
                       </div>
-                    </a>                           
+                    </a>
+                    <a class="weui_cell" ng-show="validate">
+                      <div class="weui_cell_hd">
+                        <img src="http://placehold.it/46x46" style="width:20px;margin-right:5px;display:block">
+                      </div>
+                      <div class="weui_cell_bd weui_cell_primary">
+                        <p>到期日</p>
+                      </div>
+                      <div class="weui_cell_ft">
+                        {{validate}}
+                      </div>
+                    </a>
+                    <a class="weui_cell" ng-click="page=12">
+                      <div class="weui_cell_hd">
+                        <img src="http://placehold.it/46x46" style="width:20px;margin-right:5px;display:block">
+                      </div>
+                      <div class="weui_cell_bd weui_cell_primary">
+                        <p>條款細則</p>
+                      </div>
+                      <div class="weui_cell_ft">
+                      </div>
+                    </a>                                   
                   </div>
                 </div>
               </div>
             </div>
+            <div class="weui_dialog_alert" ng-show="showDialog">
+                <div class="weui_mask"></div>
+                <div class="weui_dialog">
+                    <div class="weui_dialog_hd">
+                      <strong class="weui_dialog_title">{{dialog.title}}</strong>
+                    </div>
+                    <div class="weui_dialog_bd">{{dialog.body}}</div>
+                    <div class="weui_dialog_ft">
+                        <a ng-click="showDialog=false" class="weui_btn_dialog primary">確定</a>
+                    </div>
+                </div>
+            </div>
           </div>
         </div>
         <div class="weui_tabbar">
-            <a href="" class="weui_tabbar_item" ng-class="{weui_bar_item_on: isSelected(0)}" ng-click="selected=0">
+            <a href="" class="weui_tabbar_item" ng-class="{weui_bar_item_on: isSelected(1)}" ng-click="selected=1;page=11">
                 <div class="weui_tabbar_icon">
                     <img src="http://placehold.it/56x56" alt="">
                 </div>
                 <p class="weui_tabbar_label">會員卡</p>
             </a>
-            <a href="" class="weui_tabbar_item" ng-class="{weui_bar_item_on: isSelected(1)}" ng-click="selected=1">
+            <a href="" class="weui_tabbar_item" ng-class="{weui_bar_item_on: isSelected(2)}" ng-click="selected=2">
                 <div class="weui_tabbar_icon">
                     <img src="http://placehold.it/56x56" alt="">
                 </div>

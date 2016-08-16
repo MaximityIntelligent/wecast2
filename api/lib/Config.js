@@ -60,7 +60,7 @@ Config.openData = function (ad, cb) {
 			return cb(err);
 		} 
 		if (!configOne) {
-			return cb(null, {});
+			return cb({errMsg: 'no config found'});
 		} else {
 			var openConfig = {
 				prizesInfo: {}
@@ -73,6 +73,7 @@ Config.openData = function (ad, cb) {
 			openConfig.loginBonusCycle = configOne.loginBonusCycle;
 			openConfig.loginBonusContinuity = configOne.loginBonusContinuity;
 			openConfig.votesInfo = configOne.votesInfo;
+			openConfig.condition = configOne.condition;
 			Object.keys(configOne.prizesInfo).forEach(function (element, index, array) {
 				var prizeInfo = configOne.prizesInfo[element];
 				var temp = {};
@@ -226,7 +227,7 @@ Config.deleteLoginBonus = function (ad, index, cb) {
 Config.adInfo = function (ad, cb) {
 	config.findOne({ad: ad}).exec(function (err, configOne) {
 		if (err) {
-			return cb(err, {});
+			return cb(err);
 		}
 		if (!configOne) {
 			return cb(null, {});

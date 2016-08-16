@@ -68,62 +68,69 @@
                       </div>
                       <form class="form" name="form">
                         <div id="normal" class="panel-collapse collapse in">
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon" id="title">標題</span>
-                            <input type="text" class="form-control" name="title" ng-model="selectConfig.title" aria-describedby="title">
+                          <div class="form-group">
+                            <div class="input-group">
+                              <span class="input-group-addon" id="title">標題</span>
+                              <input type="text" class="form-control" name="title" ng-model="selectConfig.title" aria-describedby="title">
+                            </div>
+                              
                           </div>
-                            
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon" ng-class="{mandatory: !form.subscribeBonus.$valid}" id="subscribeBonus">關注奬勵</span>
-                            <input type="number" class="form-control" name="subscribeBonus" ng-model="selectConfig.subscribeBonus" min="0" required aria-describedby="subscribeBonus" ng-class="{inputmandatory: !form.subscribeBonus.$valid}">
+                          <div class="form-group">
+                            <div class="input-group">
+                              <span class="input-group-addon" ng-class="{mandatory: !form.subscribeBonus.$valid}" id="subscribeBonus">關注奬勵</span>
+                              <input type="number" class="form-control" name="subscribeBonus" ng-model="selectConfig.subscribeBonus" min="0" required aria-describedby="subscribeBonus" ng-class="{inputmandatory: !form.subscribeBonus.$valid}">
+                            </div>
+                            <span class="error mandatory" ng-show="form.subscribeBonus.$error.number || form.subscribeBonus.$error.min">
+                              number >= 0</span>
                           </div>
-                          <span class="error mandatory" ng-show="form.subscribeBonus.$error.number || form.subscribeBonus.$error.min">
-                            number >= 0</span>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon">登陸奬勵模式</span>
-                            <span class="input-group-addon">
-                              <input type="checkbox" aria-label="loginBonusCycle" ng-model="selectConfig.loginBonusCycle"> 循環
-                            </span>
-                            <span class="input-group-addon">登陸連續性</span>
-                            <span class="input-group-addon">
-                              <input type="checkbox" aria-label="loginBonusContinuity" ng-model="selectConfig.loginBonusContinuity"> 連續
-                            </span>
-                          </div>
-                          <div class="input-group">
-                            <span class="input-group-addon">登陸奬勵</span>
-                            <select class="form-control" name="selectBonus" id="selectBonus" ng-model="selectBonus" aria-describedby="newLoginBonus" ng-change="selectLoginBonus(selectBonus)">
-                              <option value="">－新增奬勵－</option>
-                              <option ng-repeat="bonus in selectConfig.loginBonus track by $index" value="{{$index}}">第{{$index+1}}日 － {{bonus}}</option>
-                            </select>
-                            <span class="input-group-btn">
-                              <input type="button" class="btn btn-danger" value="刪除" ng-click="deleteLoginBonus(selectBonus);selectBonus=undefined;newLoginBonus=undefined;" ng-disabled="!selectBonus">
-                            </span>
-                          </div>
-                          <div class="input-group">
-                            <input type="number" class="form-control" name="newLoginBonus" ng-model="newLoginBonus" min="0" aria-describedby="selectBonus" ng-class="{inputmandatory: !form.newLoginBonus.$valid}">
-                            <span class="input-group-btn">
-                              <input type="button" class="btn btn-primary" value="送出" ng-click="createOrEditLoginBonus(newLoginBonus);newLoginBonus=undefined;" ng-disabled="!form.newLoginBonus.$valid||!newLoginBonus">
-                            </span>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <span class="input-group-addon">登陸奬勵模式</span>
+                              <span class="input-group-addon">
+                                <input type="checkbox" aria-label="loginBonusCycle" ng-model="selectConfig.loginBonusCycle"> 循環
+                              </span>
+                              <span class="input-group-addon">登陸連續性</span>
+                              <span class="input-group-addon">
+                                <input type="checkbox" aria-label="loginBonusContinuity" ng-model="selectConfig.loginBonusContinuity"> 連續
+                              </span>
+                            </div>
+                            <div class="input-group">
+                              <span class="input-group-addon">登陸奬勵</span>
+                              <select class="form-control" name="selectBonus" id="selectBonus" ng-model="selectBonus" aria-describedby="newLoginBonus" ng-change="selectLoginBonus(selectBonus)">
+                                <option value="">－新增奬勵－</option>
+                                <option ng-repeat="bonus in selectConfig.loginBonus track by $index" value="{{$index}}">第{{$index+1}}日 － {{bonus}}</option>
+                              </select>
+                              <span class="input-group-btn">
+                                <input type="button" class="btn btn-danger" value="刪除" ng-click="deleteLoginBonus(selectBonus);selectBonus=undefined;newLoginBonus=undefined;" ng-disabled="!selectBonus">
+                              </span>
+                            </div>
+                            <div class="input-group">
+                              <span class="input-group-addon">積分</span>
+                              <input type="number" class="form-control" name="newLoginBonus" ng-model="newLoginBonus" min="0" aria-describedby="selectBonus" ng-class="{inputmandatory: !form.newLoginBonus.$valid}">
+                              <span class="input-group-btn">
+                                <input type="button" class="btn btn-primary" value="送出" ng-click="createOrEditLoginBonus(newLoginBonus);newLoginBonus=undefined;" ng-disabled="!form.newLoginBonus.$valid||!newLoginBonus">
+                              </span>
 
+                            </div>
+                            <span class="error mandatory" ng-show="form.newLoginBonus.$error.number || form.newLoginBonus.$error.min">
+                              number >= 0</span>
                           </div>
-                          {{form.newLoginBonus.$error.number}}
-                          {{form.newLoginBonus.$error.min}}
-                          <span class="error mandatory" ng-show="form.newLoginBonus.$error.number || form.newLoginBonus.$error.min">
-                            number >= 0</span>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon" ng-class="{mandatory: !form.questionnaireBonus.$valid}" id="questionnaireBonus">問卷奬勵</span>
-                            <input type="number" class="form-control" name="questionnaireBonus" ng-model="selectConfig.questionnaireBonus" min="0" required aria-describedby="subscribeBonus" ng-class="{inputmandatory: !form.questionnaireBonus.$valid}">
+                          <div class="form-group">
+                            <div class="input-group">
+                              <span class="input-group-addon" ng-class="{mandatory: !form.questionnaireBonus.$valid}" id="questionnaireBonus">問卷奬勵</span>
+                              <input type="number" class="form-control" name="questionnaireBonus" ng-model="selectConfig.questionnaireBonus" min="0" required aria-describedby="subscribeBonus" ng-class="{inputmandatory: !form.questionnaireBonus.$valid}">
+                            </div>
+                            <span class="error mandatory" ng-show="form.questionnaireBonus.$error.number">
+                              number >= 0</span>
                           </div>
-                          <span class="error mandatory" ng-show="form.questionnaireBonus.$error.number">
-                            number >= 0</span>
-                        </div>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <span class="input-group-addon">條款及細則</span>
+                              <textarea ng-model="selectConfig.condition" name="condition" class="form-control" height="200px"/>
+                                
+                              
+                            </div>
+                          </div>
                         </div>
                         <hr>
                         <div>
