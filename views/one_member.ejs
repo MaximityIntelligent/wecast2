@@ -20,19 +20,8 @@
     <div class="container content">
       <div class="weui_tab">
         <div class="weui_tab_bd">
-          <div class="article" ng-show="isSelected(1)&&isPage(12)">
-            <div class="hd">
-              <h1 class="page_title">條款細則</h1>
-            </div>
-            <div class="bd">
-              <article class="weui_article" ng-click="page=11">
-                <section ng-repeat="sub in conditions track by $index">
-                  <p>{{sub}}</p>
-                </section>
-              </article>
-            </div>
-          </div>
-          <div class="panel" ng-show="isSelected(1)&&isPage(11)">
+          
+          <div class="panel" ng-show="isView('main')">
             <div class="hd">
               <div class="card_title">
                 <img width="100%" src="/images/MemberCardImage.jpg" alt="">
@@ -63,7 +52,7 @@
                         {{credit}}
                       </div>
                     </a>
-                    <a class="weui_cell" ng-show="level>=0">
+                    <a class="weui_cell" ng-show="level>=0" ng-click="getLevelUpCredit();pushView('level')">
                       <div class="weui_cell_hd">
                         <img src="http://placehold.it/46x46" style="width:20px;margin-right:5px;display:block">
                       </div>
@@ -85,7 +74,7 @@
                         {{validate}}
                       </div>
                     </a>
-                    <a class="weui_cell" ng-click="page=12">
+                    <a class="weui_cell" ng-click="pushView('condition')">
                       <div class="weui_cell_hd">
                         <img src="http://placehold.it/46x46" style="width:20px;margin-right:5px;display:block">
                       </div>
@@ -112,15 +101,50 @@
                 </div>
             </div>
           </div>
+          <div class="article" ng-show="isView('level')">
+            <div class="hd">
+              <h1 class="page_title">會員特權</h1>
+            </div>
+            <div class="bd">
+              <article class="weui_article">
+                <section ng-repeat="levelInfo in config.levelsInfo | filter:{enable: true}:false track by $index">
+                  <h2>{{levelInfo.levelName}}</h2>
+                  <p>特權：{{levelInfo.privilege}}</p>
+                  <p ng-hide="$index == 0">{{levelUpText(levelInfo)}}</p>
+                  <div class="weui_progress" ng-show="$index == level+1 && levelUpCredit">
+                      <div class="weui_progress_bar">
+                          <div class="weui_progress_inner_bar" ng-style="levelUpBarStyle(levelInfo.upCredit)"></div>
+                          <span class="label label-success">
+                            ( {{levelUpCredit}} ／ {{levelInfo.upCredit}} )
+                          </span>
+                      </div>
+                  </div>
+                  <hr>
+                </section>
+              </article>
+            </div>
+          </div>
+          <div class="article" ng-show="isView('condition')">
+            <div class="hd">
+              <h1 class="page_title">條款細則</h1>
+            </div>
+            <div class="bd">
+              <article class="weui_article">
+                <section ng-repeat="sub in conditions track by $index">
+                  <p>{{sub}}</p>
+                </section>
+              </article>
+            </div>
+          </div>
         </div>
         <div class="weui_tabbar">
-            <a href="" class="weui_tabbar_item" ng-class="{weui_bar_item_on: isSelected(1)}" ng-click="selected=1;page=11">
+            <a href="" class="weui_tabbar_item" ng-class="{weui_bar_item_on: isSelected(0)}" ng-click="selectTab(0)">
                 <div class="weui_tabbar_icon">
                     <img src="http://placehold.it/56x56" alt="">
                 </div>
                 <p class="weui_tabbar_label">會員卡</p>
             </a>
-            <a href="" class="weui_tabbar_item" ng-class="{weui_bar_item_on: isSelected(2)}" ng-click="selected=2">
+            <a href="" class="weui_tabbar_item" ng-class="{weui_bar_item_on: isSelected(1)}" ng-click="selectTab(1)">
                 <div class="weui_tabbar_icon">
                     <img src="http://placehold.it/56x56" alt="">
                 </div>

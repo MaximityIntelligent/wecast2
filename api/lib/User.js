@@ -304,28 +304,6 @@ User.destroy = function (ad, cb) {
   });
 }
 
-User.draw = function(userOpenId, cb){ //未有用到
-  user.findOne({openId: userOpenId}).exec(function(err, userOne){
-    if(err||!userOne){
-      cb(err);
-      return;
-    }
-    if(0>userOne.drawChance){
-      cb(err);
-      return;
-    }
-    userOne.drawChance = userOne.drawChance - 1;
-    userOne.save(function(err){
-      if(err){
-        cb(err);
-        return;
-      }
-      cb(null, {drawChance: userOne.drawChance, drawResult: 'Lose'});
-    })
-
-  });
-};
-
 User.initTestCredit = function (ad, secret, cb) {
   if (secret == 'kitkit!@#$') {
     user.update({ad: ad}, {credit: 100}).exec(function(err){
@@ -335,3 +313,48 @@ User.initTestCredit = function (ad, secret, cb) {
       return cb(null);
   }
 };
+
+User.levelUpCredit = function (userOne, cb) {
+  Config.adInfo(userOne.ad, function (err, configOne) {
+    if (err) {
+      return cb(err);
+    }
+    var levelsInfo = configOne.levelsInfo;
+    if (levelsInfo == undefined) {
+      return cb({errMsg: 'no level found'})
+    }
+    var levelInfo = levelsInfo[userOne.level+1];
+    if (levelInfo == undefined) {
+      return cb({errMsg: 'no level up found'})
+    }
+    var options = {};
+    if (levelInfo.upRequire == 'credit') {
+      options.action = 'gainCredit';
+    } else if (levelInfo.upRequire == 'redeemCredit') {
+      options.action = 'redeemCredit';
+    }
+    if (levelInfo.upRange == 'year') {
+      var startOfDay = new Date();
+      startOfDay.setHours(0,0,0,0);
+      startOfDay.setMonth(0);
+      startOfDay.setDate(1);
+      options.date = {$gte: startOfDay, $lt: new Date()}
+    }
+    options.ad = userOne.ad;
+    options.openId = userOne.openId;
+    
+    Log.find(options, function (err, logs) {
+      if (err) {
+        return cb(err);
+      }
+      var temp = 0;
+      logs.forEach(function (item, index, array) {
+        temp += +item.detail;
+      });
+
+      return cb(null, temp);
+    });
+  });
+};
+
+

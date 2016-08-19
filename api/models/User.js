@@ -102,6 +102,10 @@ module.exports = {
       type: 'boolean',
       defaultsTo: false
     },
+    gainCredit: {
+      type: 'float',
+      defaultsTo: 0
+    },
     redeemCredit: {
       type: 'float',
       defaultsTo: 0

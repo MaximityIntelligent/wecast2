@@ -312,7 +312,19 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
       $scope.action[key] = $scope.clickAll;
     });
   };
-
+  $scope.levelEnable= function (index, enable) {
+    console.log(index);
+    console.log(enable);
+    if (enable) {
+      for (var i = index-1; i >= 0; i--) {
+        $scope.selectConfig.levelsInfo[i].enable = true;
+      }
+    } else {
+      for (var i = $scope.selectConfig.levelsInfo.length - 1; i > index; i--) {
+        $scope.selectConfig.levelsInfo[i].enable = false;
+      }
+    }
+  }
 
 
   

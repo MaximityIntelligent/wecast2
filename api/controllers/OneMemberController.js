@@ -237,6 +237,7 @@ module.exports = {
                   }
                   
                   userOne.credit += finalBonus;
+                  userOne.gainCredit = (userOne.gainCredit || 0) + finalBonus;
                   userOne.loginDays = (userOne.loginDays || 0) + 1;
                 }
                 User.save(userOne, function (err, savedUser) {
@@ -245,8 +246,9 @@ module.exports = {
                     return res.status(400).json({errCode: 0, "errMsg" : JSON.stringify(err)});
                   }
                   Log.create({action: 'login', openId: openId, ad: ad}, function(err){
-
-                    return res.json({'loginBonus': bonus, loginDays: savedUser.loginDays, finalBonus: finalBonus});
+                  	Log.create({action: 'gainCredit', openId: openId, ad: ad, detail: finalBonus}, function(err){
+                    	return res.json({'loginBonus': bonus, loginDays: savedUser.loginDays, finalBonus: finalBonus});
+                	});
                   });
                         
                 }); 
@@ -256,6 +258,21 @@ module.exports = {
               return res.status(400).json({errCode: 0, errMsg: '今日的奬勵已領取。'});
             }
           });
+      });
+    });
+  },
+  getLevelUpCredit: function (req, res) {
+  	var openId = req.param('openId');
+    var ad = req.param('ad');
+    User.auth(openId, ad, function (err, userOne) {
+      if (!userOne) {
+          return res.status(401).end();
+      }
+      User.levelUpCredit(userOne, function (err, result) {
+      	if (err) {
+      		return res.status(400).json({errCode: 0, "errMsg" : JSON.stringify(err)});
+      	}
+      	return res.json({result: result});
       });
     });
   }

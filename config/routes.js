@@ -84,6 +84,9 @@ module.exports.routes = {
   },
   '/wx_qrconnect' : {
     view : 'wx-qrconnect'
+  },
+  '/shop' : {
+    view : 'shop_template'
   }
   /*,
   'api/initialization': {

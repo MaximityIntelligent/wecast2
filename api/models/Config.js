@@ -18,6 +18,10 @@ module.exports = {
         }
       }
     },
+    levelsInfo: {
+      type: 'array',
+      defaultsTo: []
+    },
     subscribeBonus: {
       type: 'float',
       defaultsTo: 0

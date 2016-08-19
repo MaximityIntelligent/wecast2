@@ -27,10 +27,17 @@
               <div class="panel-body">
                 <div class="panel-elem">
                   <h4>請使微信掃一掃功能</h4>
-                  <img ng-src="{{qrImgUrl}}" ng-hide="tokenError">
-                  <img src="http://placehold.it/250x250" ng-show="tokenError">
-                  <span ng-show="scanSuccess">QR碼掃描成功</span>
-                  <span ng-show="tokenError">QR碼失效, <a ng-click="initWXqrCode()">按此</a>刷新QR碼</span>
+                  <div>
+                    <img ng-src="{{qrImgUrl}}" ng-hide="tokenError">
+                    <img src="http://placehold.it/250x250" ng-show="tokenError">
+                  </div>
+                  <div>
+                    <span ng-show="scanSuccess">QR碼掃描成功</span>
+                  </div>
+                  <div>
+                    <span ng-show="tokenError">QR碼失效, <a ng-click="initWXqrCode()">按此</a>刷新QR碼</span>
+                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -96,7 +103,7 @@
                             </div>
                             <div class="input-group">
                               <span class="input-group-addon">登陸奬勵</span>
-                              <select class="form-control" name="selectBonus" id="selectBonus" ng-model="selectBonus" aria-describedby="newLoginBonus" ng-change="selectLoginBonus(selectBonus)">
+                              <select class="form-control" name="selectBonus" id="selectBonus" ng-model="selectBonus" aria-describedby="" ng-change="selectLoginBonus(selectBonus)">
                                 <option value="">－新增奬勵－</option>
                                 <option ng-repeat="bonus in selectConfig.loginBonus track by $index" value="{{$index}}">第{{$index+1}}日 － {{bonus}}</option>
                               </select>
@@ -126,9 +133,7 @@
                           <div class="form-group">
                             <div class="input-group">
                               <span class="input-group-addon">條款及細則</span>
-                              <textarea ng-model="selectConfig.condition" name="condition" class="form-control" height="200px"/>
-                                
-                              
+                              <textarea ng-model="selectConfig.condition" name="condition" class="form-control" style="resize: vertical;" rows="8"></textarea>
                             </div>
                           </div>
                         </div>
@@ -168,6 +173,42 @@
                             form.newPrize.$valid = {{form.newPrize.$valid}}<br>
                             form.newPrize.$error = {{form.newPrize.$error}}<br>
                         </div>
+                        </div>
+                        <hr>
+                        <div>
+                          <a data-toggle="collapse" data-parent="#accordion" href="#level"><h4>等級設定</h4></a>
+                        </div>
+                        <div id="level" class="panel-collapse collapse in">
+                          <div class="form-group" ng-repeat="level in selectConfig.levelsInfo track by $index">
+                            <div class="input-group">
+                              <span class="input-group-addon">
+                                <input type="checkbox" aria-label="enable" ng-model="level.enable" ng-change="levelEnable($index, level.enable)"> {{$index}}
+                              </span>
+                              <span class="input-group-addon" ng-class="{mandatory: !form['levelName'+$index].$valid}" id="levelName">等級名稱</span>
+                              <input type="text" class="form-control" name="levelName{{$index}}" ng-model="level.levelName" aria-describedby="levelName" placeholder="" ng-class="{inputmandatory: !form['levelName'+$index].$valid}" ng-required="level.enable" ng-disabled="!level.enable">
+                              <span class="input-group-addon" ng-class="{mandatory: !form['levelExp'+$index].$valid}" id="levelExp">會籍期（月）</span>
+                              <input type="number" class="form-control" name="levelExp{{$index}}" ng-model="level.levelExp" min="1" aria-describedby="levelExp" placeholder=">= 1" ng-class="{inputmandatory: !form['levelExp'+$index].$valid}" ng-required="level.enable" ng-disabled="!level.enable">
+                              <span class="input-group-addon" ng-class="{mandatory: !form['creditRate'+$index].$valid}" id="creditRate">積分倍率</span>
+                              <input type="number" class="form-control" name="creditRate{{$index}}" ng-model="level.creditRate" min="1" aria-describedby="creditRate" placeholder=">= 1" ng-class="{inputmandatory: !form['creditRate'+$index].$valid}" ng-required="level.enable" ng-disabled="!level.enable">
+                            </div>
+                            <div class="input-group">
+                              <span class="input-group-addon" ng-class="{mandatory: !form['upRequire'+$index].$valid}" id="levelUp">升級要求</span>
+                              <select class="form-control" name="upRequire{{$index}}" id="upRequire" ng-model="level.upRequire" aria-describedby="levelUp" style="width: 33%" ng-class="{inputmandatory: !form['upRequire'+$index].$valid}" ng-required="level.enable" ng-disabled="!level.enable">
+                                <option value="credit">獲取積分</option>
+                                <option value="redeemCredit">消費積分</option>
+                              </select>
+                              <select class="form-control" name="upRange{{$index}}" id="upRange" ng-model="level.upRange" aria-describedby="upRequire{{$index}}" style="width: 33%" ng-class="{inputmandatory: !form['upRange'+$index].$valid}" ng-required="level.enable" ng-disabled="!level.enable">
+                                <option value="year">每年累積</option>
+                                <option value="forever">不限期累積</option>
+                              </select>
+                              <input type="number" class="form-control" name="upCredit{{$index}}" ng-model="level.upCredit" min="1" aria-describedby="basic-addon2" placeholder=">= 1" style="width: 34%" ng-class="{inputmandatory: !form['upCredit'+$index].$valid}" ng-required="level.enable" ng-disabled="!level.enable">
+                              <span class="input-group-addon" id="basic-addon2">積分</span>
+                            </div>
+                            <div class="input-group">
+                              <span class="input-group-addon">等級權益</span>
+                              <textarea ng-model="level.privilege" name="privilege{{$index}}" class="form-control" style="resize: vertical;" rows="3" ng-class="{inputmandatory: !form['privilege'+$index].$valid}" ng-required="level.enable" ng-disabled="!level.enable"></textarea>
+                            </div>
+                          </div>
                         </div>
                         <hr>
                         <div>
