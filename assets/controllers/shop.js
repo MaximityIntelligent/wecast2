@@ -50,7 +50,6 @@ var apps = 'shop';
 app.controller('IndexCtrl', [
 '$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll',
 function($scope, $http, $timeout, $interval, $location, $anchorScroll){
-
   $scope.selected = 0;
   $scope.views = [
     ['main'],
@@ -58,7 +57,6 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     ['mine']
   ];
   $scope.currentView = 'main';
-
   $scope.category = ['水喉','電力','鎖具','鋁窗','門','冷氣','油漆','泥水','木器','其他'];
   $scope.tabName = ['商城', '購物車', '我'];
 
@@ -117,7 +115,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
         //window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+apps+'%3FsharedBy%3Dwecast%26ad%3D'+ad+'&response_type=code&scope='+snsapi+'#wechat_redirect';
       $scope.openId = 'o5OVfwJhe_dGCYTtjFgnKgZWR5jc';
       $scope.user = {
-        address: ['雅廉訪','高士德']
+        address: ['雅廉訪','高士德'],
+        orders: []
       }
       $scope.items = [
 
@@ -158,6 +157,11 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     });
   
   };
+
+  $scope.titleText = function (view) {
+    console.log(view);
+    return $scope.viewsTitle[view];
+  }
 
   $scope.isSelected = function (index) {
     return index == $scope.selected;
@@ -214,7 +218,6 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     $scope.selectedItem.item = item;
     $scope.selectedItem.value = 1;
     $scope.selectedItem.spec = 0;
-    console.log($scope.selectedItem);
     $scope.pushView('item');
   }
 
@@ -245,11 +248,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     }
 
     var index = $scope.cart.findIndex(function (item) {
-      console.log(item);
-      console.log(selectedItem);
+
       return item.item.id == selectedItem.item.id && item.spec == selectedItem.spec;
     });
-    console.log(index);
     if (index == -1) {
       $scope.cart.push(temp);
     } else {
@@ -259,7 +260,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     $scope.showToast = true;
     $timeout(function () {
         $scope.showToast = false;
-        $scope.selectedItem.value = 1;
+        $scope.selectedItem = undefined;
+        $scope.popView();
     }, 1000);
   };
 
@@ -287,16 +289,36 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     if (!$scope.selectedCartItem.value || $scope.selectedCartItem.value < 1 || $scope.selectedCartItem.value > 999) {
       return;
     }
-    console.log($scope.selectedCartItem);
     $scope.valueDialog = false;
     
   };
 
   $scope.placeOrder = function (cart) {
     $scope.newOrder = {};
+    $scope.newOrder.done = false;
+    $scope.newOrder.date = new Date();
     $scope.newOrder.list = [].concat(cart);
-    console.log($scope.newOrder);
+    $scope.newOrder.address = $scope.user.address[0];
+    $scope.newOrder.phone = $scope.user.phone;
     $scope.pushView('create_order');
+  };
+
+  $scope.confirmOrder = function (order) {
+    if (!$scope.orderFormValid()) {
+      return;
+    }
+    if (order.newAddress) {
+      $scope.user.address.unshift(order.newAddress);
+      order.address = order.newAddress;
+    }
+    $scope.user.phone = order.phone;
+    console.log(order);
+    $scope.user.orders.unshift(order); 
+
+    $scope.cart = [];
+    $scope.popView();
+    $scope.selectTab(2);
+    $scope.pushView('mine_order');
   }
 
   $scope.valueValid = function () {
@@ -313,4 +335,27 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     return $scope.valueValid();
   }
 
+  $scope.phoneValid = function () {
+    if (!$scope.newOrder) {
+      return;
+    }
+    if (!$scope.newOrder.phone) {
+      return false;
+    }
+    return true;
+  }
+
+  $scope.addressValid = function () {
+    if (!$scope.newOrder) {
+      return;
+    }
+    if (!$scope.newOrder.address && !$scope.newOrder.newAddress) {
+      return false;
+    }
+    return true;
+  }
+
+  $scope.orderFormValid = function () {
+    return $scope.phoneValid() & $scope.addressValid();
+  }
 }]);

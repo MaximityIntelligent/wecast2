@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="en" data-ng-app="shop" data-ng-controller="IndexCtrl" orient="portrait" ng-init="init()">
   <head>
-    <title>五金</title>
+    <title>五金商城</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
     <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/0.4.2/weui.min.css">
@@ -16,14 +16,14 @@
     <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script src="/controllers/shop.js"></script>
   </head>
-  <body data-ng-app="shop" data-ng-controller="IndexCtrl" orient="portrait" ng-init="init()">
+  <body>
     <div class="container content">
       <div class="weui_tab">
         <div class="weui_tab_bd">
           <div class="panel" ng-show="isView('main')">
             <div class="hd">
               <div class="card_title">
-                <h1>商城</h1>
+                <h1>分類</h1>
               </div>
             </div>
             <div class="bd">
@@ -143,7 +143,7 @@
               </div>
             </div>
             <div class="bd">
-              <div class="weui_cells weui_cells_access">
+              <div class="weui_cells weui_cells_access" ng-show="cart.length>0">
                 <a ng-click="placeOrder(cart)" class="weui_cell">
                   <div class="weui_cell_bd weui_cell_primary">
                     <p style="font-size: 14px;">{{sumCart()}}</p>
@@ -182,20 +182,82 @@
                     <option ng-repeat="address in user.address" ng-value="address">{{address}}</option>
                   </select>
                 </div>
-                <div class="weui_cell weui_cell_select weui_select_before" ng-hide="newOrder.address">
-                  <div class="weui_cell_hd">
-                    <select class="weui_select">
-                      <option value="0" selected>澳門</option>
-                      <option value="1">氹仔</option>
-                      <option value="2">路環</option>
-                    </select>
-                  </div>
+                <div class="weui_cell" ng-hide="newOrder.address">
                   <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="text" placeholder="請輸入地址"></input>
+                    <input class="weui_input" type="text" placeholder="請輸入地址" ng-model="newOrder.newAddress"></input>
                   </div>
                 </div>
               </div>
-              
+              <div class="weui_cells_title">聯絡電話</div>
+              <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
+                  <div class="weui_cell_hd">
+                    <label class="weui_label">澳門</label>
+                  </div>
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="number" ng-model="newOrder.phone" placeholder="請輸入電話" ng-minlength="8" ng-maxlength="11"></input>
+                  </div>
+                </div>
+              </div>
+              <div class="weui_cells_tips">請確認資料正確後確認下單, {{phoneValid()}}, {{addressValid()}}, {{orderFormValid()}}</div>
+              <div class="weui_btn_area">
+                <a ng-click="confirmOrder(newOrder)" class="weui_btn weui_btn_primary" ng-class="{weui_btn_disabled: !orderFormValid()}">
+                  確認下單
+                </a>
+              </div>
+              <div class="weui_toptips weui_warn js_tooltips" ng-show="showTooltips">資料不附合格式</div>
+            </div>
+          </div>
+          <div class="panel" ng-show="isView('mine')">
+            <div class="hd">
+              <div class="item_title">
+                <h1>我的</h1>
+              </div>
+            </div>
+            <div class="bd">
+              <div class="weui_cells weui_cells_access">
+                <div class="weui_cell" ng-click="pushView('mine_order')">
+                  <div class="weui_cell_hd">
+                    <img src="http://placehold.it/46x46" style="width:20px;margin-right:5px;display:block;">
+                  </div>
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <p>我的訂單</p>
+                  </div>
+                  <div class="weui_cell_ft">
+                    更多
+                  </div>
+                </div>
+                <div class="weui_cell">
+                  <div class="weui_cell_hd">
+                    <img src="http://placehold.it/46x46" style="width:20px;margin-right:5px;display:block;">
+                  </div>
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <p>我的資料</p>
+                  </div>
+                  <div class="weui_cell_ft">
+                    更多
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel" ng-show="isView('mine_order')">
+            <div class="bd">
+              <div class="weui_cells_title">所有訂單</div>
+              <div class="weui_cells weui_cells_access">
+                <div class="weui_cell" ng-repeat="order in user.orders">
+                  <div class="weui_cell_hd">
+                    <img src="http://placehold.it/46x46" style="width:20px;margin-right:5px;display:block;">
+                  </div>
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <p>{{order.date}}</p>
+                  </div>
+                  <div class="weui_cell_ft" ng-click="order.done=true">
+                    <font ng-hide="order.done">未完成</font>
+                    <font ng-show="order.done">已完成</font>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="weui_dialog_alert" ng-show="valueDialog" name="value_dialog">
@@ -207,11 +269,11 @@
                   <div class="weui_dialog_bd">
                     <div class="input-group">
                       <span class="input-group-btn">
-                        <a href="javascript:;" class="weui_btn weui_btn_mini weui_btn_default">－</a>
+                        <a ng-click="selectedCartItem.value=selectedCartItem.value-1" class="weui_btn weui_btn_mini weui_btn_default">－</a>
                       </span>
                       <input class="weui_input" style="width: 20%;" type="number" placeholder="請輸入數量" min="1" max="999" required ng-model="selectedCartItem.value"></input>
                       <span class="input-group-btn">
-                        <a href="javascript:;" class="weui_btn weui_btn_mini weui_btn_default">＋</a>
+                        <a ng-click="selectedCartItem.value=selectedCartItem.value+1" class="weui_btn weui_btn_mini weui_btn_default">＋</a>
                       </span>
                     </div>
                   </div>
