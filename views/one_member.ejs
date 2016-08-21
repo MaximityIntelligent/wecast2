@@ -30,7 +30,7 @@
             <div class="bd">
               <div class="weui_panel">
                 <div class="weui_panel_bd">
-                  <a class="weui_media_box weui_media_appmsg">
+                  <a class="weui_media_box weui_media_appmsg" ng-click="activeMember()">
                     <div class="weui_media_hd">
                       <img ng-src="{{headimgurl}}" class="weui_media_appmsg_thumb">
                     </div>
@@ -60,7 +60,7 @@
                         <p>會員等級</p>
                       </div>
                       <div class="weui_cell_ft">
-                        {{level}}
+                        {{config.levelsInfo[level].levelName}}
                       </div>
                     </a>
                     <a class="weui_cell" ng-show="validate">
@@ -71,7 +71,7 @@
                         <p>到期日</p>
                       </div>
                       <div class="weui_cell_ft">
-                        {{validate}}
+                        {{validateText(validate)}}
                       </div>
                     </a>
                     <a class="weui_cell" ng-click="pushView('condition')">
@@ -88,6 +88,18 @@
                 </div>
               </div>
             </div>
+            <div class="weui_dialog_alert" ng-show="showLoginDialog">
+                <div class="weui_mask"></div>
+                <div class="weui_dialog">
+                    <div class="weui_dialog_hd">
+                      <strong class="weui_dialog_title">連續登入奬勵</strong>
+                    </div>
+                    <div class="weui_dialog_bd">領取今天的登入奬勵</div>
+                    <div class="weui_dialog_ft">
+                        <a ng-click="redeemLogin()" class="weui_btn_dialog primary">確定</a>
+                    </div>
+                </div>
+            </div>
             <div class="weui_dialog_alert" ng-show="showDialog">
                 <div class="weui_mask"></div>
                 <div class="weui_dialog">
@@ -99,6 +111,49 @@
                         <a ng-click="showDialog=false" class="weui_btn_dialog primary">確定</a>
                     </div>
                 </div>
+            </div>
+          </div>
+          <div class="panel" ng-show="isView('active_form')">
+            <div class="hd">
+              <h1 class="page_title">會員激活</h1>
+            </div>
+            <div class="bd">
+              <div class="weui_cells_title">電話</div>
+              <div class="weui_cells weui_cells_form">
+                <div class="weui_cell weui_cell_select weui_select_before">
+                  <div class="weui_cell_hd">
+                    <select class="weui_select" ng-model="profile.countryCode">
+                      <option ng-repeat="code in countryCode" value="{{code}}">{{code}}</option>
+                    </select>
+                  </div>
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="number" ng-model="profile.phone" placeholder="請輸入電話號碼" minlength="8" maxlength="11">
+                  </div>
+                </div>
+              </div>
+              <div class="weui_cells_title">電郵</div>
+              <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="email" ng-model="profile.email" required placeholder="請輸入電郵地址">
+                  </div>
+                </div>
+              </div>
+              <div class="weui_cells_title">生日日期</div>
+              <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
+                  <div class="weui_cell_hd">
+                    <label for class="weui_label">生日</label>
+                  </div>
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="date" ng-model="profile.birthday" placeholder="yyyy-MM-dd" min="1916-01-01" ng-max="today" required />
+                  </div>
+                </div>
+              </div>
+              <div class="weui_btn_area">
+                <a href="" class="weui_btn weui_btn_primary" ng-click="applyActive(profile)">激活</a>
+              </div>
+              <div class="weui_toptips weui_warn js_tooltips" ng-style="tooltipsSytle">格式不符</div>
             </div>
           </div>
           <div class="article" ng-show="isView('level')">
@@ -138,17 +193,11 @@
           </div>
         </div>
         <div class="weui_tabbar">
-            <a href="" class="weui_tabbar_item" ng-class="{weui_bar_item_on: isSelected(0)}" ng-click="selectTab(0)">
+            <a href="" class="weui_tabbar_item" ng-class="{weui_bar_item_on: isSelected($index)}" ng-click="selectTab($index)" ng-repeat="name in tabName track by $index">
                 <div class="weui_tabbar_icon">
                     <img src="http://placehold.it/56x56" alt="">
                 </div>
-                <p class="weui_tabbar_label">會員卡</p>
-            </a>
-            <a href="" class="weui_tabbar_item" ng-class="{weui_bar_item_on: isSelected(1)}" ng-click="selectTab(1)">
-                <div class="weui_tabbar_icon">
-                    <img src="http://placehold.it/56x56" alt="">
-                </div>
-                <p class="weui_tabbar_label">發現</p>
+                <p class="weui_tabbar_label">{{tabLabel($index)}}</p>
             </a>
         </div>
       </div>

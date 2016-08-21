@@ -96,7 +96,8 @@ module.exports = {
       defaultsTo: 0
     },
     validate: {
-      type: 'date'
+      type: 'date',
+      defaultsTo: new Date()
     },
     active: {
       type: 'boolean',

@@ -74,6 +74,7 @@ Config.openData = function (ad, cb) {
 			openConfig.loginBonusContinuity = configOne.loginBonusContinuity;
 			openConfig.votesInfo = configOne.votesInfo;
 			openConfig.condition = configOne.condition;
+			openConfig.levelsInfo = configOne.levelsInfo;
 			Object.keys(configOne.prizesInfo).forEach(function (element, index, array) {
 				var prizeInfo = configOne.prizesInfo[element];
 				var temp = {};

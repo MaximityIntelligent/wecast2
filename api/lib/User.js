@@ -169,16 +169,28 @@ User.create = function(userInfo, cb){ //Create User, 如果原有就return現有
       return;
     }
     if(!userOne){
-      user.create(userInfo).exec(function(err, userCreated){
+      Config.adInfo(userInfo.ad, function(err, configOne) {
         if(err){
           cb(err);
           return;
         }
-        Log.create({action: "regist", openId: userCreated.openId, ad: userCreated.ad}, function(err, results){
-            
+        if (configOne.levelsInfo) {
+          var validate = new Date();
+          validate = new Date(validate.getTime() + (configOne.levelsInfo.levelExp || 0) * 30 * 86400000); 
+          userInfo.validate = validate;
+        }
+        user.create(userInfo).exec(function(err, userCreated){
+          if(err){
+            cb(err);
+            return;
+          }
+          Log.create({action: "regist", openId: userCreated.openId, ad: userCreated.ad}, function(err, results){
+              
+          });
+          cb(null, userCreated);
         });
-        cb(null, userCreated);
       });
+
     }else{
         if (userInfo.accessToken) {
           userOne.accessToken = userInfo.accessToken;
