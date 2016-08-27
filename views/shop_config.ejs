@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>活動設定</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="/js/angular.min.js"></script>
+    <script src="/controllers/shop-config.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.5/ui-bootstrap.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.5/ui-bootstrap-tpls.min.js"></script>
+  </head>
+  <body data-ng-app="shopconfig" data-ng-controller="IndexCtrl" orient="portrait" ng-init="init()">
+
+    <div class="container content">
+      <div class="row">  
+          <div id="panel" class="panel panel-dashboard full-width">
+              <div class="panel-heading panel-heading-cbj">設定</div>
+                <div class="panel-body">
+                  
+                  <uib-tabset active="active">
+                    <uib-tab index="0" heading="Product">
+                      <div class="input-group">
+                        <input type="text" class="form-control" ng-model="search" placeholder="Search for...">
+                        <span class="input-group-btn">
+                          <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                      </div><!-- /input-group -->
+                      <div class="table-responsive">
+                        <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th ng-repeat="name in fields.name">{{name}}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="row in data | filter:search:false track by row.pid">
+                              <td ng-repeat="prop in fields.prop">{{row[prop]}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </uib-tab>
+                    <uib-tab index="1" heading="Order">
+                      
+                    </uib-tab>
+                    <uib-tab index="2" heading="User">
+                      
+                    </uib-tab>
+
+                  </uib-tabset>
+                    
+                
+                </div>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

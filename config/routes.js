@@ -87,6 +87,9 @@ module.exports.routes = {
   },
   '/shop' : {
     view : 'shop_template'
+  },
+  '/shop_config' : {
+    view : 'shop_config'
   }
   /*,
   'api/initialization': {
