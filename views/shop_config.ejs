@@ -11,6 +11,11 @@
     <script src="/controllers/shop-config.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.5/ui-bootstrap.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.5/ui-bootstrap-tpls.min.js"></script>
+    <style>
+    .mandatory {
+        color: #d9534f;
+    }
+    </style>
   </head>
   <body data-ng-app="shopconfig" data-ng-controller="IndexCtrl" orient="portrait" ng-init="init()">
 
@@ -21,80 +26,221 @@
                 <div class="panel-body">
                   
                   <uib-tabset active="active">
-                    <uib-tab index="0" heading="Product">
-                      <div class="input-group">
-                        <input type="text" class="form-control" ng-model="search" placeholder="Search for...">
-                        <span class="input-group-btn">
-                          <button class="btn btn-default" type="button" ng-click="showCreateForm()">Create</button>
-                        </span>
-                      </div><!-- /input-group -->
-                      <div class="table-responsive">
-                        <table class="table table-hover">
-                          <thead>
-                            <tr>
-                              <th ng-repeat="name in fields.name">{{name}}</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr ng-repeat="row in data | filter:search:false track by row.pid">
-                              <td ng-repeat="prop in fields.prop">{{row[prop]}}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <hr>
-                      <div ng-show="showCreate">
-                        <h3>新增產品</h3>
-                        <form name="createForm">
-                          <div class="form-group">
-                            <div class="input-group">
-                              <span class="input-group-addon" id="pid">PID</span>
-                              <input type="number" name="pid" class="form-control" ng-model="newProduct.pid" placeholder="100001 < x < 999999" aria-describedby="pid" min="100001" max="999999" required>
+                    <uib-tab index="0" heading="Order">
+                      <div class="panel-elem">
+                        <div class="input-group">
+                          <input type="text" class="form-control" ng-model="orderSearch" placeholder="Search for...">
+                          <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="">搜尋</button>
+                          </span>
+                        </div><!-- /input-group -->
+                        <div class="table-responsive">
+                          <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th ng-repeat="name in orderFields.name">{{name}}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr ng-repeat="row in orderData | filter:orderSearch:false track by $index">
+                                <td>
+                                  <span class="glyphicon glyphicon-ok" style="color: green;" ng-show="row.done"></span>
+                                  <span class="glyphicon glyphicon-remove" style="color: red;" ng-hide="row.done"></span>
+                                </td>
+                                <td ng-repeat="prop in orderFields.prop">{{row[prop]}}</td>
+                                <td>{{sumOrder(row)}}</td>
+                                <td>
+                                  <a ng-click="showEditOrderForm(row)"><span class="glyphicon glyphicon-pencil"></span></a>
+                                  <a ng-click=""><span class="glyphicon glyphicon-trash"></span></a>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <hr>
+                        <div ng-show="showEditOrder">
+                          <h3>處理訂單</h3>
+                          <form name="editOrderForm">
+                            <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon" id="phone">客戶電話</span>
+                                <input type="text" name="phone" class="form-control" ng-model="selectOrder.phone" aria-describedby="phone" required disabled>
+                              </div>
+                              <div class="input-group">
+                                <span class="input-group-addon" id="address">送貨地址</span>
+                                <input type="text" name="address" class="form-control" ng-model="selectOrder.address" aria-describedby="address" required disabled>
+                              </div>
+                              <div class="input-group">
+                                <span class="input-group-addon" id="date">訂單日期</span>
+                                <input type="text" name="date" class="form-control" ng-model="selectOrder.date" aria-describedby="date" required disabled>
+                              </div>
                             </div>
-                            <tt>createForm.pid.$valid = {{createForm.pid.$valid}}</tt><br/>
-                          </div>
-                          <div class="form-group">
-                            <div class="input-group">
-                              <span class="input-group-addon" id="name">產品名稱</span>
-                              <input type="text" name="name" class="form-control" ng-model="newProduct.name" placeholder="請輸入產品名稱" aria-describedby="name" required>
+                            <div class="table-responsive">
+                              <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <th>PID+SID</th>
+                                    <th>產品名稱</th>
+                                    <th>規格</th>
+                                    <th>數量</th>
+                                    <th>單價</th>
+                                    <th>小計</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr ng-repeat="row in selectOrder.list track by $index">
+                                    <td>{{row.item.pid*100+row.item.specification[row.spec].sid}}</td>
+                                    <td>{{row.item.name}}</td>
+                                    <td>{{row.item.specification[row.spec].label}}</td>
+                                    <td>{{row.value}}</td>
+                                    <td>{{row.item.specification[row.spec].price}}</td>
+                                    <td>{{row.value*row.item.specification[row.spec].price}}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
                             </div>
-                            <tt>createForm.name.$valid = {{createForm.name.$valid}}</tt><br/>
-                          </div>
-                          <div class="form-group">
-                            <div class="input-group">
-                              <span class="input-group-addon" id="description">產品簡介</span>
-                              <input type="text" name="description" class="form-control" ng-model="newProduct.description" placeholder="請輸入產品名稱" aria-describedby="description">
-                            </div>
-                            <tt>createForm.description.$valid = {{createForm.description.$valid}}</tt><br/>
-                          </div>
-                          <div class="form-group">
-                            <h4>規格</h4>
-                            <div class="input-group" ng-repeat="spec in newProduct.specification track by $index">
-                              <span class="input-group-addon" id="sid">SID</span>
-                              <input type="number" name="sid{{$index}}" class="form-control" ng-model="spec.sid" aria-describedby="sid" required disabled>
-                              <span class="input-group-addon" id="label">規格標籤</span>
-                              <input type="text" name="label{{$index}}" class="form-control" ng-model="spec.label" placeholder="請輸入規格標籤" aria-describedby="label" required>
-                              <span class="input-group-addon" id="price">售價</span>
-                              <input type="number" name="price{{$index}}" class="form-control" ng-model="spec.price" placeholder="請輸入售價"  aria-describedby="price" min="0.01" required>
-                              <span class="input-group-btn" ng-show="$index==0">
-                                <button class="btn btn-success" type="button" ng-click="addSpecification()">
-                                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                </button>
-                              </span>
-                              <span class="input-group-btn" ng-show="$index>0">
-                                <button class="btn btn-danger" type="button" ng-click="removeSpecification($index)">
-                                  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                                </button>
-                              </span>
-                            </div>
-                            <tt>createForm.price.$valid = {{createForm.price.$valid}}</tt><br/>
-                          </div>
-                          <button class="btn btn-primary" type="button btn-primary" ng-click="createProduct(newProduct)" ng-disabled="!createForm.$valid">新增</button>
-                          <button class="btn btn-default" type="button btn-default" ng-click="hideCreateForm()">取消</button>
-                        </form>
+                            <div class="form-group">
+                              <button class="btn btn-primary" type="button btn-primary" ng-click="editOrder(selectOrder)" ng-disabled="!editOrderForm.$valid"><span class="glyphicon glyphicon-ok"></span>完成訂單</button>
+                              <button class="btn btn-default" type="button btn-default" ng-click="hideEditOrderForm()"><span class="glyphicon glyphicon-remove"></span>取消</button>
+                            </div> 
+                            
+                          </form>
+                        </div>
                       </div>
                     </uib-tab>
-                    <uib-tab index="1" heading="Order">
+                    <uib-tab index="1" heading="Product" select="selectTab(1)">
+                      <div class="panel-elem">
+                        <div class="input-group">
+                          <input type="text" class="form-control" ng-model="search" placeholder="Search for...">
+                          <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="showCreateForm()">Create</button>
+                          </span>
+                        </div><!-- /input-group -->
+                        <div class="table-responsive">
+                          <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th ng-repeat="name in fields.name">{{name}}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr ng-repeat="row in data | filter:search:false track by row.pid">
+                                <td ng-repeat="prop in fields.prop">{{row[prop]}}</td>
+                                <td>{{priceRange(row)}}</td>
+                                <td>
+                                  <a ng-click="showEditForm(row)"><span class="glyphicon glyphicon-pencil"></span></a>
+                                  <a ng-click="removeProduct(row.pid)"><span class="glyphicon glyphicon-trash"></span></a>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <hr>
+                        <div ng-show="showCreate">
+                          <h3>新增產品</h3>
+                          <form name="createForm">
+                            <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon" id="pid" ng-class="{mandatory: true}">PID</span>
+                                <input type="number" name="pid" class="form-control" ng-model="newProduct.pid" placeholder="100001 < x < 999999" aria-describedby="pid" min="100001" max="999999" required ng-change="sidChange(newProduct)">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon" id="name">產品名稱</span>
+                                <input type="text" name="name" class="form-control" ng-model="newProduct.name" placeholder="請輸入產品名稱" aria-describedby="name" required>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon" id="description">產品簡介</span>
+                                <input type="text" name="description" class="form-control" ng-model="newProduct.description" placeholder="請輸入產品名稱" aria-describedby="description">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon" id="imgUrl">產品圖片</span>
+                                <input type="url" name="imgUrl" class="form-control" ng-model="newProduct.imgUrl" placeholder="請輸入產品圖片" aria-describedby="imgUrl" required>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <h4>規格</h4>
+                              <div class="input-group" ng-repeat="spec in newProduct.specification track by $index">
+                                <span class="input-group-addon" id="sid">SID</span>
+                                <input type="number" name="sid{{$index}}" class="form-control" ng-model="spec.sid" aria-describedby="sid" required disabled>
+                                <span class="input-group-addon" id="label">規格標籤</span>
+                                <input type="text" name="label{{$index}}" class="form-control" ng-model="spec.label" placeholder="請輸入規格標籤" aria-describedby="label" required>
+                                <span class="input-group-addon" id="price">售價</span>
+                                <input type="number" name="price{{$index}}" class="form-control" ng-model="spec.price" placeholder="請輸入售價"  aria-describedby="price" min="0" required>
+                                <span class="input-group-btn" ng-show="$index==0">
+                                  <button class="btn btn-success" type="button" ng-click="addSpecification()">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                  </button>
+                                </span>
+                                <span class="input-group-btn" ng-show="$index>0">
+                                  <button class="btn btn-danger" type="button" ng-click="removeSpecification($index)">
+                                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                  </button>
+                                </span>
+                              </div>
+                            </div>
+                            <button class="btn btn-primary" type="button btn-primary" ng-click="createProduct(newProduct)" ng-disabled="!createForm.$valid"><span class="glyphicon glyphicon-ok"></span>新增</button>
+                            <button class="btn btn-default" type="button btn-default" ng-click="hideCreateForm()"><span class="glyphicon glyphicon-remove"></span>取消</button>
+                          </form>
+                        </div>
+                        <div ng-show="showEdit">
+                          <h3>修改產品</h3>
+                          <form name="editForm">
+                            <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon" id="pid">PID</span>
+                                <input type="number" name="pid" class="form-control" ng-model="selectProduct.pid" placeholder="100001 < x < 999999" aria-describedby="pid" min="100001" max="999999" required ng-change="sidChange(selectProduct)" disabled>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon" id="name">產品名稱</span>
+                                <input type="text" name="name" class="form-control" ng-model="selectProduct.name" placeholder="請輸入產品名稱" aria-describedby="name" required>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon" id="description">產品簡介</span>
+                                <input type="text" name="description" class="form-control" ng-model="selectProduct.description" placeholder="請輸入產品名稱" aria-describedby="description">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon" id="imgUrl">產品圖片</span>
+                                <input type="url" name="imgUrl" class="form-control" ng-model="selectProduct.imgUrl" placeholder="請輸入產品圖片" aria-describedby="imgUrl" required>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <h4>規格</h4>
+                              <div class="input-group" ng-repeat="spec in selectProduct.specification track by $index">
+                                <span class="input-group-addon" id="sid">SID</span>
+                                <input type="number" name="sid{{$index}}" class="form-control" ng-model="spec.sid" aria-describedby="sid" required disabled>
+                                <span class="input-group-addon" id="label">規格標籤</span>
+                                <input type="text" name="label{{$index}}" class="form-control" ng-model="spec.label" placeholder="請輸入規格標籤" aria-describedby="label" required>
+                                <span class="input-group-addon" id="price">售價</span>
+                                <input type="number" name="price{{$index}}" class="form-control" ng-model="spec.price" placeholder="請輸入售價"  aria-describedby="price" min="0" required>
+                                <span class="input-group-btn" ng-show="$index==0">
+                                  <button class="btn btn-success" type="button" ng-click="addSelectSpecification()">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                  </button>
+                                </span>
+                                <span class="input-group-btn" ng-show="$index>0">
+                                  <button class="btn btn-danger" type="button" ng-click="removeSelectSpecification($index)">
+                                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                  </button>
+                                </span>
+                              </div>
+                            </div>
+                            <button class="btn btn-primary" type="button btn-primary" ng-click="editProduct(selectProduct)" ng-disabled="!editForm.$valid"><span class="glyphicon glyphicon-ok"></span>修改</button>
+                            <button class="btn btn-default" type="button btn-default" ng-click="hideEditForm()"><span class="glyphicon glyphicon-remove"></span>取消</button>
+                          </form>
+                        </div>
+                      </div>
                       
                     </uib-tab>
                     <uib-tab index="2" heading="User">

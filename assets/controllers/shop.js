@@ -260,9 +260,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
     $scope.showToast = true;
     $timeout(function () {
         $scope.showToast = false;
-        $scope.selectedItem = undefined;
-        $scope.popView();
     }, 1000);
+    $scope.selectedItem = undefined;
+    $scope.popView();
   };
 
   $scope.sumCart = function () {
