@@ -57,8 +57,9 @@
                             </tbody>
                           </table>
                         </div>
-                        <hr>
+                        
                         <div ng-show="showEditOrder">
+                          <hr>
                           <h3>處理訂單</h3>
                           <form name="editOrderForm">
                             <div class="form-group">
@@ -135,8 +136,9 @@
                             </tbody>
                           </table>
                         </div>
-                        <hr>
+                        
                         <div ng-show="showCreate">
+                          <hr>
                           <h3>新增產品</h3>
                           <form name="createForm">
                             <div class="form-group">
@@ -158,37 +160,64 @@
                               </div>
                             </div>
                             <div class="form-group">
-                              <div class="input-group">
-                                <span class="input-group-addon" id="imgUrl">產品圖片</span>
-                                <input type="url" name="imgUrl" class="form-control" ng-model="newProduct.imgUrl" placeholder="請輸入產品圖片" aria-describedby="imgUrl" required>
+                              <div class="media">
+                                <div class="media-left">
+                                  <a ng-href="{{newProduct.imgUrl}}" target="_blank">
+                                    <img class="media-object" ng-src="{{newProduct.imgUrl}}" style="height: 68px" ng-show="newProduct.imgUrl">
+                                    <img class="media-object" ng-src="http://placehold.it/32x32" style="height: 68px" ng-hide="newProduct.imgUrl">
+                                  </a>
+                                </div>
+                                <div class="media-body">
+                                  <div class="input-group">
+                                    <span class="input-group-addon" id="imgUrl">產品圖片</span>
+                                    <input type="url" name="imgUrl" class="form-control" ng-model="newProduct.imgUrl" placeholder="請輸入產品圖片" aria-describedby="imgUrl" required>
+                                  </div>
+                                </div>
                               </div>
+
                             </div>
                             <div class="form-group">
                               <h4>規格</h4>
-                              <div class="input-group" ng-repeat="spec in newProduct.specification track by $index">
-                                <span class="input-group-addon" id="sid">SID</span>
-                                <input type="number" name="sid{{$index}}" class="form-control" ng-model="spec.sid" aria-describedby="sid" required disabled>
-                                <span class="input-group-addon" id="label">規格標籤</span>
-                                <input type="text" name="label{{$index}}" class="form-control" ng-model="spec.label" placeholder="請輸入規格標籤" aria-describedby="label" required>
-                                <span class="input-group-addon" id="price">售價</span>
-                                <input type="number" name="price{{$index}}" class="form-control" ng-model="spec.price" placeholder="請輸入售價"  aria-describedby="price" min="0" required>
-                                <span class="input-group-btn" ng-show="$index==0">
-                                  <button class="btn btn-success" type="button" ng-click="addSpecification()">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                  </button>
-                                </span>
-                                <span class="input-group-btn" ng-show="$index>0">
-                                  <button class="btn btn-danger" type="button" ng-click="removeSpecification($index)">
-                                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                                  </button>
-                                </span>
+                              <div class="media" ng-repeat="spec in newProduct.specification track by $index">
+                                <div class="media-left">
+                                  <a ng-href="{{spec.imgUrl}}" target="_blank">
+                                    <img class="media-object" ng-src="{{spec.imgUrl}}" style="height: 68px" ng-show="spec.imgUrl">
+                                    <img class="media-object" ng-src="http://placehold.it/32x32" style="height: 68px" ng-hide="spec.imgUrl">
+                                  </a>
+                                </div>
+                                <div class="media-body">
+                                  <div class="input-group">
+                                    <span class="input-group-addon" id="sid">SID</span>
+                                    <input type="number" name="sid{{$index}}" class="form-control" ng-model="spec.sid" aria-describedby="sid" required disabled>
+                                    <span class="input-group-addon" id="label">規格標籤</span>
+                                    <input type="text" name="label{{$index}}" class="form-control" ng-model="spec.label" placeholder="請輸入規格標籤" aria-describedby="label" required>
+                                    <span class="input-group-addon" id="price">售價</span>
+                                    <input type="number" name="price{{$index}}" class="form-control" ng-model="spec.price" placeholder="請輸入售價"  aria-describedby="price" min="0" required>
+                                    <span class="input-group-btn" ng-show="$index==0">
+                                      <button class="btn btn-success" type="button" ng-click="addSpecification()">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                      </button>
+                                    </span>
+                                    <span class="input-group-btn" ng-show="$index>0">
+                                      <button class="btn btn-danger" type="button" ng-click="removeSpecification($index)">
+                                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                      </button>
+                                    </span>
+                                  </div>
+                                  <div class="input-group">
+                                    <span class="input-group-addon" id="imgUrl">產品圖片</span>
+                                    <input type="url" name="imgUrl" class="form-control" ng-model="spec.imgUrl" placeholder="請輸入產品圖片" aria-describedby="imgUrl" required>
+                                  </div>
+                                </div>
                               </div>
+                              
                             </div>
                             <button class="btn btn-primary" type="button btn-primary" ng-click="createProduct(newProduct)" ng-disabled="!createForm.$valid"><span class="glyphicon glyphicon-ok"></span>新增</button>
                             <button class="btn btn-default" type="button btn-default" ng-click="hideCreateForm()"><span class="glyphicon glyphicon-remove"></span>取消</button>
                           </form>
                         </div>
                         <div ng-show="showEdit">
+                          <hr>
                           <h3>修改產品</h3>
                           <form name="editForm">
                             <div class="form-group">
@@ -210,31 +239,56 @@
                               </div>
                             </div>
                             <div class="form-group">
-                              <div class="input-group">
-                                <span class="input-group-addon" id="imgUrl">產品圖片</span>
-                                <input type="url" name="imgUrl" class="form-control" ng-model="selectProduct.imgUrl" placeholder="請輸入產品圖片" aria-describedby="imgUrl" required>
+                              <div class="media">
+                                <div class="media-left">
+                                  <a ng-href="{{selectProduct.imgUrl}}" target="_blank">
+                                    <img class="media-object" ng-src="{{selectProduct.imgUrl}}" style="height: 68px">
+                                  </a>
+                                </div>
+                                <div class="media-body">
+                                  <div class="input-group">
+                                    <span class="input-group-addon" id="imgUrl">產品圖片</span>
+                                    <input type="url" name="imgUrl" class="form-control" ng-model="selectProduct.imgUrl" placeholder="請輸入產品圖片" aria-describedby="imgUrl" required>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                             <div class="form-group">
                               <h4>規格</h4>
-                              <div class="input-group" ng-repeat="spec in selectProduct.specification track by $index">
-                                <span class="input-group-addon" id="sid">SID</span>
-                                <input type="number" name="sid{{$index}}" class="form-control" ng-model="spec.sid" aria-describedby="sid" required disabled>
-                                <span class="input-group-addon" id="label">規格標籤</span>
-                                <input type="text" name="label{{$index}}" class="form-control" ng-model="spec.label" placeholder="請輸入規格標籤" aria-describedby="label" required>
-                                <span class="input-group-addon" id="price">售價</span>
-                                <input type="number" name="price{{$index}}" class="form-control" ng-model="spec.price" placeholder="請輸入售價"  aria-describedby="price" min="0" required>
-                                <span class="input-group-btn" ng-show="$index==0">
-                                  <button class="btn btn-success" type="button" ng-click="addSelectSpecification()">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                  </button>
-                                </span>
-                                <span class="input-group-btn" ng-show="$index>0">
-                                  <button class="btn btn-danger" type="button" ng-click="removeSelectSpecification($index)">
-                                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                                  </button>
-                                </span>
+                              <div class="media" ng-repeat="spec in selectProduct.specification track by $index">
+                                <div class="media-left">
+                                  <a ng-href="{{spec.imgUrl}}" target="_blank">
+                                    <img class="media-object" ng-src="{{spec.imgUrl}}" style="height: 68px" ng-show="spec.imgUrl">
+                                    <img class="media-object" ng-src="http://placehold.it/32x32" style="height: 68px" ng-hide="spec.imgUrl">
+                                  </a>
+                                </div>
+                                <div class="media-body">
+                                  <div class="input-group">
+                                    <span class="input-group-addon" id="sid">SID</span>
+                                    <input type="number" name="sid{{$index}}" class="form-control" ng-model="spec.sid" aria-describedby="sid" required disabled>
+                                    <span class="input-group-addon" id="label">規格標籤</span>
+                                    <input type="text" name="label{{$index}}" class="form-control" ng-model="spec.label" placeholder="請輸入規格標籤" aria-describedby="label" required>
+                                    <span class="input-group-addon" id="price">售價</span>
+                                    <input type="number" name="price{{$index}}" class="form-control" ng-model="spec.price" placeholder="請輸入售價"  aria-describedby="price" min="0" required>
+                                    
+                                    <span class="input-group-btn" ng-show="$index==0">
+                                      <button class="btn btn-success" type="button" ng-click="addSelectSpecification()">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                      </button>
+                                    </span>
+                                    <span class="input-group-btn" ng-show="$index>0">
+                                      <button class="btn btn-danger" type="button" ng-click="removeSelectSpecification($index)">
+                                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                      </button>
+                                    </span>
+                                  </div>
+                                  <div class="input-group">
+                                    <span class="input-group-addon" id="imgUrl">產品圖片</span>
+                                    <input type="url" name="imgUrl" class="form-control" ng-model="spec.imgUrl" placeholder="請輸入產品圖片" aria-describedby="imgUrl" required>
+                                  </div>
+                                </div>
                               </div>
+                              
                             </div>
                             <button class="btn btn-primary" type="button btn-primary" ng-click="editProduct(selectProduct)" ng-disabled="!editForm.$valid"><span class="glyphicon glyphicon-ok"></span>修改</button>
                             <button class="btn btn-default" type="button btn-default" ng-click="hideEditForm()"><span class="glyphicon glyphicon-remove"></span>取消</button>

@@ -92,42 +92,42 @@ app.factory('products', ['$http', function ($http) {
   };
 
   output.getAll = function () {
-    output.data = [
-      {
-        pid: 100001,
-        name: 'A',
-        description: 'aaaaaaaaaaaaa',
-        specification: [
-          {sid: 10000101, label: 'A1', price: 10},
-          {sid: 10000102, label: 'A2', price: 20},
-          {sid: 10000103, label: 'A3', price: 30}
-        ],
-        imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
-      },
-      {
-        pid: 100002,
-        name: 'B',
-        description: 'bbbbbbbbb',
-        specification: [
-          {sid: 10000201, label: 'B1', price: 10},
-          {sid: 10000202, label: 'B2', price: 20},
-          {sid: 10000203, label: 'B3', price: 30}
-        ],
-        imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
-      },
-      {
-        pid: 100003,
-        name: 'C',
-        description: 'cccccccc',
-        specification: [
-          {sid: 10000301, label: 'C1', price: 10},
-          {sid: 10000302, label: 'C2', price: 20},
-          {sid: 10000303, label: 'C3', price: 30}
-        ],
-        imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
-      }
-    ];
-    return;
+    // output.data = [
+    //   {
+    //     pid: 100001,
+    //     name: 'A',
+    //     description: 'aaaaaaaaaaaaa',
+    //     specification: [
+    //       {sid: 10000101, label: 'A1', price: 10},
+    //       {sid: 10000102, label: 'A2', price: 20},
+    //       {sid: 10000103, label: 'A3', price: 30}
+    //     ],
+    //     imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
+    //   },
+    //   {
+    //     pid: 100002,
+    //     name: 'B',
+    //     description: 'bbbbbbbbb',
+    //     specification: [
+    //       {sid: 10000201, label: 'B1', price: 10},
+    //       {sid: 10000202, label: 'B2', price: 20},
+    //       {sid: 10000203, label: 'B3', price: 30}
+    //     ],
+    //     imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
+    //   },
+    //   {
+    //     pid: 100003,
+    //     name: 'C',
+    //     description: 'cccccccc',
+    //     specification: [
+    //       {sid: 10000301, label: 'C1', price: 10},
+    //       {sid: 10000302, label: 'C2', price: 20},
+    //       {sid: 10000303, label: 'C3', price: 30}
+    //     ],
+    //     imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
+    //   }
+    // ];
+    return $http.get('/shopConfig/getProducts');
   };
 
   output.get = function (pid) {
@@ -137,7 +137,7 @@ app.factory('products', ['$http', function ($http) {
   };
 
   output.create = function (product) {
-    return output.data.push(product);
+    return $http.post('/shopConfig/createProduct', product);
   };
 
   output.remove = function (pid) {
@@ -148,10 +148,7 @@ app.factory('products', ['$http', function ($http) {
   };
 
   output.edit = function (product) {
-    var index = output.data.map(function (p) {
-      return p.pid;
-    }).indexOf(product.pid);
-    output.data[index] = product;
+    return $http.post('/shopConfig/editProduct', product);
   }
 
   return output;
@@ -193,8 +190,12 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
         console.log('order');
         break;
       case 1: 
-        products.getAll();
-        $scope.data = products.data;
+        products.getAll().success(function (data) {
+          products.data = angular.copy(data);
+          $scope.data = products.data;
+          console.log(data);
+        });;
+        
         console.log('product');
         break;
       default:
@@ -287,13 +288,16 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   }
 
   $scope.createProduct = function (product) {
-    if (products.get(product.pid)) {
-      return;
-    }
-    products.create(product);
-    $scope.newProduct = {};
-    $scope.showCreate = false;
-    console.log(product);
+    products.create(product).success(function (data) {
+      products.data.push(data);
+      $scope.data = products.data;
+      $scope.newProduct = {};
+      $scope.showCreate = false;
+      console.log(data);
+    }).error(function (err) {
+      console.log(err);
+    });
+    
   };
 
   $scope.removeProduct = function(pid) {
@@ -301,9 +305,18 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   };
 
   $scope.editProduct = function (product) {
-    products.edit(product);
-    $scope.selectProduct = undefined;
-    $scope.showEdit = false;
+    products.edit(product).success(function (data) {
+      var index = products.data.map(function (p) {
+        return p.pid;
+      }).indexOf(product.pid);
+      products.data[index] = data;
+      $scope.data = products.data;
+      $scope.selectProduct = undefined;
+      $scope.showEdit = false;
+    }).error(function (err) {
+      console.log(err);
+    });
+
   };
 
   $scope.editOrder = function (order) {
