@@ -33,4 +33,23 @@ Product.edit = function (options, cb) {
 			return cb(null, edited[0]);
 		}
 	})
+};
+
+Product.remove = function (pid, cb) {
+	product.findOne({pid: pid}).exec(function (err, productOne) {
+		if (err) {
+			return cb(err);
+		}
+		if (!productOne) {
+			return cb({errMsg: 'not found'});
+		} else {
+			productOne.deleted = true;
+			productOne.save(function (err, saved) {
+				if (err) {
+					return cb(err);
+				}
+				return cb(null);
+			})
+		}
+	});
 }

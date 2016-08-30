@@ -40,7 +40,7 @@ var QueryString = function () {  //提取由公众號或分享LINK時的CODE參�
 
 var code = QueryString.code;
 var debug = true;
-var ad = QueryString.ad || 'adJack';
+var ad = QueryString.ad || 'adShop';
 var sharedBy = QueryString.sharedBy;
 var snsapi = 'snsapi_userinfo';
 var host = 'lb.ibeacon-macau.com';

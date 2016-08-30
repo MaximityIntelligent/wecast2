@@ -160,6 +160,14 @@
                               </div>
                             </div>
                             <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon" id="category">產品分類</span>
+                                <select name="category" id="category" ng-model="newProduct.category" aria-describedby="category" class="form-control" required>
+                                  <option ng-repeat="cat in category" value="{{cat}}">{{cat}}</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
                               <div class="media">
                                 <div class="media-left">
                                   <a ng-href="{{newProduct.imgUrl}}" target="_blank">
@@ -236,6 +244,14 @@
                               <div class="input-group">
                                 <span class="input-group-addon" id="description">產品簡介</span>
                                 <input type="text" name="description" class="form-control" ng-model="selectProduct.description" placeholder="請輸入產品名稱" aria-describedby="description">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon" id="category">產品分類</span>
+                                <select name="category" id="category" ng-model="selectProduct.category" aria-describedby="category" class="form-control" required>
+                                  <option ng-repeat="cat in category" value="{{cat}}">{{cat}}</option>
+                                </select>
                               </div>
                             </div>
                             <div class="form-group">

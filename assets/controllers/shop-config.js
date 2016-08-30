@@ -141,10 +141,7 @@ app.factory('products', ['$http', function ($http) {
   };
 
   output.remove = function (pid) {
-    var index = output.data.map(function (p) {
-      return p.pid;
-    }).indexOf(pid);
-    output.data.splice(index, 1);
+    return $http.post('/shopConfig/removeProduct', {pid: pid});
   };
 
   output.edit = function (product) {
@@ -158,7 +155,9 @@ app.controller('IndexCtrl', [
 '$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll', 'products', 'orders',
 function($scope, $http, $timeout, $interval, $location, $anchorScroll, products, orders){
   $scope.today = new Date();
-  
+  $scope.ad = 'adShop';
+  $scope.category = ['水喉','電力','鎖具','鋁窗','門','冷氣','油漆','泥水','木器','其他'];
+
   $scope.orderFields = {
     name: ["狀態", "時間", "客戶", "總價"],
     prop: ["date", "phone"]
@@ -231,7 +230,10 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   }
 
   $scope.showCreateForm = function () {
-    $scope.newProduct = {};
+    $scope.newProduct = {
+      ad: $scope.ad,
+      category: '其他'
+    };
     $scope.newProduct.specification = [
       {sid: 1}
     ];
@@ -301,7 +303,15 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   };
 
   $scope.removeProduct = function(pid) {
-    products.remove(pid);
+    products.remove(pid).success(function (data) {
+      var index = products.data.map(function (p) {
+        return p.pid;
+      }).indexOf(pid);
+      products.data.splice(index, 1);
+      $scope.data = products.data;
+    }).error(function (err) {
+      console.log(err);
+    });
   };
 
   $scope.editProduct = function (product) {

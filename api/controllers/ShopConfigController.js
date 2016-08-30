@@ -29,5 +29,13 @@ module.exports = {
 			}
 			return res.json(edited);
 		});
+	},
+	removeProduct: function (req, res) {
+		Product.remove(req.body.pid, function (err, removed) {
+			if (err) {
+				return res.status(400).json(err);
+			}
+			return res.status(204).end();
+		});
 	}
 }

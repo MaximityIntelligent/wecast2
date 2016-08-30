@@ -1,6 +1,10 @@
 module.exports = {
   identity: 'product',
   attributes: {
+    ad: {
+      type: 'string',
+      required: true
+    },
     pid: {
       type: 'integer',
       required: true,
@@ -13,12 +17,24 @@ module.exports = {
     description: {
       type: 'string'
     },
+    category: {
+      type: 'string',
+      defaultsTo: '其他'
+    },
+    subCategory: {
+      type: 'string',
+      defaultsTo: '其他'
+    },
     specification: {
       type: 'array',
       defaultsTo: []
     },
     imgUrl: {
       type: 'string'
+    },
+    deleted: {
+      type: 'boolean',
+      defaultsTo: false
     }
   }
 };
