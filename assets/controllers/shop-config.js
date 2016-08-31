@@ -32,56 +32,58 @@ app.factory('orders', ['$http', function ($http) {
   };
 
   output.getAll = function () {
-    return output.data = [
-      {
-        oid: 1000001,
-        done: false,
-        date: '2016-01-01 10:30:00',
-        address: '雅廉訪',
-        phone: '66778899',
-        list: [
-          {
-            item: {
-              pid: 100001,
-              name: 'A',
-              description: 'aaaaaaaaaaaaa',
-              specification: [
-                {sid: 1, label: 'A1', price: 10},
-                {sid: 2, label: 'A2', price: 20},
-                {sid: 3, label: 'A3', price: 30}
-              ],
-              imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
-            },
-            spec: 0,
-            value: 2
-          },
-          {
-            item: {
-              pid: 100002,
-              name: 'B',
-              description: 'bbbbbbbbb',
-              specification: [
-                {sid: 1, label: 'B1', price: 10},
-                {sid: 2, label: 'B2', price: 20},
-                {sid: 3, label: 'B3', price: 30}
-              ],
-              imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
-            },
-            spec: 0,
-            value: 1
-          }
-        ]
-      }
-    ]
+    return $http.get('/shopConfig/getOrders');
+    // return output.data = [
+    //   {
+    //     oid: 1000001,
+    //     done: false,
+    //     date: '2016-01-01 10:30:00',
+    //     address: '雅廉訪',
+    //     phone: '66778899',
+    //     list: [
+    //       {
+    //         item: {
+    //           pid: 100001,
+    //           name: 'A',
+    //           description: 'aaaaaaaaaaaaa',
+    //           specification: [
+    //             {sid: 1, label: 'A1', price: 10},
+    //             {sid: 2, label: 'A2', price: 20},
+    //             {sid: 3, label: 'A3', price: 30}
+    //           ],
+    //           imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
+    //         },
+    //         spec: 0,
+    //         value: 2
+    //       },
+    //       {
+    //         item: {
+    //           pid: 100002,
+    //           name: 'B',
+    //           description: 'bbbbbbbbb',
+    //           specification: [
+    //             {sid: 1, label: 'B1', price: 10},
+    //             {sid: 2, label: 'B2', price: 20},
+    //             {sid: 3, label: 'B3', price: 30}
+    //           ],
+    //           imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
+    //         },
+    //         spec: 0,
+    //         value: 1
+    //       }
+    //     ]
+    //   }
+    // ]
       
   };
 
   output.edit = function (order) {
-    var index = output.data.map(function (o) {
-      return o.oid;
-    }).indexOf(order.oid);
-    output.data[index] = order;
-  }
+    return $http.post('/shopConfig/editOrder', order);
+  };
+
+  output.remove = function (oid) {
+    return $http.post('/shopConfig/removeOrder', {ad: $scope.ad, oid: oid});
+  };
 
   return output;
 }]);
@@ -141,7 +143,7 @@ app.factory('products', ['$http', function ($http) {
   };
 
   output.remove = function (pid) {
-    return $http.post('/shopConfig/removeProduct', {pid: pid});
+    return $http.post('/shopConfig/removeProduct', {ad: $scope.ad, pid: pid});
   };
 
   output.edit = function (product) {
@@ -173,8 +175,11 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
 
   $scope.init = function () {
     $scope.view = 'product';
-    orders.getAll();
-    $scope.orderData = orders.data;
+    orders.getAll().success(function (data) {
+      orders.data = angular.copy(data);
+      $scope.orderData = orders.data;
+    });
+    
   };
 
   $scope.isView = function (view) {
@@ -184,8 +189,10 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   $scope.selectTab = function (index) {
     switch (index) {
       case 0: 
-        orders.getAll();
-        $scope.orderData = orders.data;
+        orders.getAll().success(function (data) {
+          orders.data = angular.copy(data);
+          $scope.orderData = orders.data;
+        });
         console.log('order');
         break;
       case 1: 
@@ -193,8 +200,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
           products.data = angular.copy(data);
           $scope.data = products.data;
           console.log(data);
-        });;
-        
+        });
         console.log('product');
         break;
       default:
@@ -290,6 +296,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   }
 
   $scope.createProduct = function (product) {
+    product.newEditTag = undefined;
     products.create(product).success(function (data) {
       products.data.push(data);
       $scope.data = products.data;
@@ -300,6 +307,21 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
       console.log(err);
     });
     
+  };
+
+  $scope.addCreateTag = function (tag) {
+    console.log(tag);
+    if (tag) {
+      if (!$scope.newProduct.tag) {
+        $scope.newProduct.tag = [];
+      }
+      $scope.newProduct.tag.push(tag);
+      $scope.newProduct.newEditTag = undefined;
+    }
+  };
+
+  $scope.removeCreateTag = function (index) {
+    $scope.newProduct.tag.splice(index, 1);
   };
 
   $scope.removeProduct = function(pid) {
@@ -315,6 +337,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   };
 
   $scope.editProduct = function (product) {
+    product.newEditTag = undefined;
     products.edit(product).success(function (data) {
       var index = products.data.map(function (p) {
         return p.pid;
@@ -329,10 +352,33 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
 
   };
 
-  $scope.editOrder = function (order) {
+  $scope.addEditTag = function (tag) {
+    console.log(tag);
+    if (tag) {
+      if (!$scope.selectProduct.tag) {
+        $scope.selectProduct.tag = [];
+      }
+      $scope.selectProduct.tag.push(tag);
+      $scope.selectProduct.newEditTag = undefined;
+    }
+  };
+
+  $scope.removeEditTag = function (index) {
+    $scope.selectProduct.tag.splice(index, 1);
+  };
+
+  $scope.doneOrder = function (order) {
     order.done = true;
-    orders.edit(order);
-    $scope.hideEditOrderForm();
+    orders.edit(order).success(function (data) {
+      var index = orders.data.map(function (o) {
+        return o.oid;
+      }).indexOf(order.oid);
+      orders.data[index] = order;
+      $scope.hideEditOrderForm();
+    }).error(function (err) {
+      console.log(err);
+    });
+    
   };
 
 }]);

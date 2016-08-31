@@ -1,35 +1,28 @@
 module.exports = {
-  identity: 'product',
+  identity: 'order',
   attributes: {
     ad: {
       type: 'string',
       required: true
     },
-    pid: {
+    oid: {
       type: 'integer',
       required: true
     },
-    name: {
+    done: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+    address: {
+      type: 'string'
+    },
+    phone: {
       type: 'string',
       required: true
     },
-    description: {
-      type: 'string'
-    },
-    category: {
-      type: 'string',
-      defaultsTo: '其他'
-    },
-    tag: {
+    list: {
       type: 'array',
       defaultsTo: []
-    },
-    specification: {
-      type: 'array',
-      defaultsTo: []
-    },
-    imgUrl: {
-      type: 'string'
     },
     deleted: {
       type: 'boolean',

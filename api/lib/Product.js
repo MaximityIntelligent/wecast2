@@ -14,16 +14,25 @@ Product.findAll = function (cb) {
 };
 
 Product.create = function (options, cb) {
-	product.create(options).exec(function (err, created) {
+	product.findOne({ad: options.ad, pid: options.pid}).exec(function (err, found) {
 		if (err) {
 			return cb(err);
 		}
-		return cb(null, created);
-	})
+		if (found) {
+			return cb({errMsg: 'dupes error'});
+		}
+		product.create(options).exec(function (err, created) {
+			if (err) {
+				return cb(err);
+			}
+			return cb(null, created);
+		});
+	});
+	
 };
 
 Product.edit = function (options, cb) {
-	product.update({pid: options.pid}, options).exec(function (err, edited) {
+	product.update({ad: options.ad, pid: options.pid}, options).exec(function (err, edited) {
 		if (err) {
 			return cb(err);
 		}
@@ -35,8 +44,8 @@ Product.edit = function (options, cb) {
 	})
 };
 
-Product.remove = function (pid, cb) {
-	product.findOne({pid: pid}).exec(function (err, productOne) {
+Product.remove = function (ad, pid, cb) {
+	product.findOne({ad: ad, pid: pid}).exec(function (err, productOne) {
 		if (err) {
 			return cb(err);
 		}

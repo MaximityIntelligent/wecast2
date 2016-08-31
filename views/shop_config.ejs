@@ -80,7 +80,7 @@
                               <table class="table table-hover">
                                 <thead>
                                   <tr>
-                                    <th>PID+SID</th>
+                                    <th>SID</th>
                                     <th>產品名稱</th>
                                     <th>規格</th>
                                     <th>數量</th>
@@ -101,7 +101,7 @@
                               </table>
                             </div>
                             <div class="form-group">
-                              <button class="btn btn-primary" type="button btn-primary" ng-click="editOrder(selectOrder)" ng-disabled="!editOrderForm.$valid"><span class="glyphicon glyphicon-ok"></span>完成訂單</button>
+                              <button class="btn btn-primary" type="button btn-primary" ng-click="doneOrder(selectOrder)" ng-disabled="!editOrderForm.$valid"><span class="glyphicon glyphicon-ok"></span>完成訂單</button>
                               <button class="btn btn-default" type="button btn-default" ng-click="hideEditOrderForm()"><span class="glyphicon glyphicon-remove"></span>取消</button>
                             </div> 
                             
@@ -164,6 +164,19 @@
                                 <span class="input-group-addon" id="category">產品分類</span>
                                 <select name="category" id="category" ng-model="newProduct.category" aria-describedby="category" class="form-control" required>
                                   <option ng-repeat="cat in category" value="{{cat}}">{{cat}}</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon" id="category">產品標籤</span>
+                                <span class="input-group-btn" ng-repeat="tag in newProduct.tag">
+                                  <button class="btn btn-info" type="button" ng-click="removeCreateTag($index)">{{tag}} <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
+                                </span>
+                                <input type="text" name="newEditTag" class="form-control" placeholder="new tag..." ng-model="newProduct.newEditTag">
+                                <span class="input-group-btn">
+                                  <button class="btn btn-success" type="button" ng-click="addCreateTag(newProduct.newEditTag)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                                </span>
                                 </select>
                               </div>
                             </div>
@@ -251,6 +264,19 @@
                                 <span class="input-group-addon" id="category">產品分類</span>
                                 <select name="category" id="category" ng-model="selectProduct.category" aria-describedby="category" class="form-control" required>
                                   <option ng-repeat="cat in category" value="{{cat}}">{{cat}}</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon" id="category">產品標籤</span>
+                                <span class="input-group-btn" ng-repeat="tag in selectProduct.tag">
+                                  <button class="btn btn-info" type="button" ng-click="removeEditTag($index)">{{tag}} <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
+                                </span>
+                                <input type="text" name="newEditTag" class="form-control" placeholder="new tag..." ng-model="selectProduct.newEditTag">
+                                <span class="input-group-btn">
+                                  <button class="btn btn-success" type="button" ng-click="addEditTag(selectProduct.newEditTag)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                                </span>
                                 </select>
                               </div>
                             </div>
