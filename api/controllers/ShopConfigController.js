@@ -7,7 +7,7 @@ var Product = require('../lib/Product');
 
 module.exports = {
 	getProducts: function (req, res) {
-		Product.findAll(function (err, products) {
+		Product.findAll(req.body, function (err, products) {
 			if (err) {
 				return res.status(400).json(err);
 			}

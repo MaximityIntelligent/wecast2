@@ -110,6 +110,10 @@ module.exports = {
     redeemCredit: {
       type: 'float',
       defaultsTo: 0
+    },
+    cart: {
+      type: 'array',
+      defaultsTo: []
     }
   }
 };

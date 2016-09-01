@@ -47,9 +47,39 @@ var host = 'lb.ibeacon-macau.com';
 var appid = 'wxbb0b299e260ac47f';
 var apps = 'shop';
 
+app.factory('products', ['$http', function ($http) {
+  var output = {
+    data: []
+  };
+
+  output.getAll = function (category) {
+    return $http.post('/shopConfig/getProducts', {category: category});
+  };
+
+  output.get = function (pid) {
+    return output.data.find(function (p) {
+      return p.pid = pid;
+    })
+  };
+
+  return output;
+}]);
+
+app.factory('users', ['$http', function ($http) {
+  var output = {
+    data: []
+  };
+
+  output.updateCart = function (openId, cart) {
+    return $http.post('/shop/updateCart', {openId: openId, ad: $scope.ad, cart: cart});
+  };
+  
+  return output;
+}]);
+
 app.controller('IndexCtrl', [
-'$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll',
-function($scope, $http, $timeout, $interval, $location, $anchorScroll){
+'$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll', 'products', 'users'
+function($scope, $http, $timeout, $interval, $location, $anchorScroll, products, users){
   $scope.selected = 0;
   $scope.views = [
     ['main'],
@@ -210,7 +240,11 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
   $scope.selectCategory = function (name) {
     $scope.selectedCategory = name;
-    $scope.pushView('items');
+    products.getAll(name).success(function (data) {
+      $scope.items = angular.copy(data);
+      $scope.pushView('items');
+    })
+    
   };
 
   $scope.selectItem = function (item) {
@@ -222,22 +256,23 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
   }
 
   $scope.addItem = function (item) {
-      item = item || {
-        id: '1237',
-        name: '四叉',
-        description: '四叉，分小，中，大等',
-        spec: [
-          {id: '12375', label: '小', price: 10},
-          {id: '12376', label: '中', price: 20},
-          {id: '12377', label: '大', price: 30}
-        ]
-      };
-      $scope.items.push(item);
+      // item = item || {
+      //   id: '1237',
+      //   name: '四叉',
+      //   description: '四叉，分小，中，大等',
+      //   spec: [
+      //     {id: '12375', label: '小', price: 10},
+      //     {id: '12376', label: '中', price: 20},
+      //     {id: '12377', label: '大', price: 30}
+      //   ]
+      // };
+      // $scope.items.push(item);
   }
 
 
 
   $scope.addCart = function (selectedItem) {
+    var tempCart = $scope.cart;
     var temp = {};
     temp.item = selectedItem.item;
     temp.spec = selectedItem.spec;
@@ -249,20 +284,27 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll){
 
     var index = $scope.cart.findIndex(function (item) {
 
-      return item.item.id == selectedItem.item.id && item.spec == selectedItem.spec;
+      return item.item.pid == selectedItem.item.pid && item.spec == selectedItem.spec;
     });
     if (index == -1) {
       $scope.cart.push(temp);
     } else {
       $scope.cart[index].value += selectedItem.value;
     }
-    console.log($scope.cart);
-    $scope.showToast = true;
-    $timeout(function () {
-        $scope.showToast = false;
-    }, 1000);
-    $scope.selectedItem = undefined;
-    $scope.popView();
+
+    users.updateCart($scope.openId, $scope.cart).success(function (data) {
+      console.log($scope.cart);
+      $scope.showToast = true;
+      $timeout(function () {
+          $scope.showToast = false;
+      }, 1000);
+      $scope.selectedItem = undefined;
+      $scope.popView();
+    }).error(function (err) {
+      console.log(err);
+      $scope.cart = tempCart;
+    });
+    
   };
 
   $scope.sumCart = function () {

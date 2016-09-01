@@ -9,6 +9,10 @@ module.exports = {
       type: 'integer',
       required: true
     },
+    openId: {
+      type: 'string',
+      required: true
+    },
     done: {
       type: 'boolean',
       defaultsTo: false

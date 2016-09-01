@@ -153,5 +153,22 @@ module.exports = {
 	      console.log('error: ' + JSON.stringify(err));
 	      return res.status(400).json(err);
 	    });
+	},
+	updateCart: function (req, res) {
+		User.auth(req.body.openId, req.body.ad, function (err, userOne) {
+			if (err) {
+				return res.status(400).json(err);
+			}
+			if (!userOne) {
+				return res.status(401).end();
+			}
+			userOne.cart = req.body.cart;
+			User.save(userOne, function (err, savedUser) {
+				if (err) {
+					return res.status(400).json(err);
+				}
+				return res.json(savedUser.cart);
+			})
+		});
 	}
 }

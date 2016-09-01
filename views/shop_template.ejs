@@ -88,8 +88,8 @@
                 <div class="weui_panel_bd">
                   <div class="weui_media_box weui_media_text">
                     <h4 class="weui_media_title">{{selectedItem.item.name}}</h4>
-                    <p class="weui_media_desc">商品總價：<font style="color: chocolate;" ng-show="selectedItem.value>=0">MOP {{selectedItem.item.spec[selectedItem.spec].price*(selectedItem.value)}}</font></p>
-                    <p class="weui_media_desc">商品單價：MOP {{selectedItem.item.spec[selectedItem.spec].price}}</p>
+                    <p class="weui_media_desc">商品總價：<font style="color: chocolate;" ng-show="selectedItem.value>=0">MOP {{selectedItem.item.specification[selectedItem.spec].price*(selectedItem.value)}}</font></p>
+                    <p class="weui_media_desc">商品單價：MOP {{selectedItem.item.specification[selectedItem.spec].price}}</p>
                   </div>
 
                 </div>
@@ -104,7 +104,7 @@
                         </div>
                         <div class="weui_cell_bd weui_cell_primary">
                           <select class="weui_select" ng-model="selectedItem.spec" convert-to-number>
-                            <option ng-repeat="sp in selectedItem.item.spec track by $index" value="{{$index}}">{{sp.label}} - 單價：MOP {{sp.price}}</option>
+                            <option ng-repeat="sp in selectedItem.item.specification track by $index" value="{{$index}}">{{sp.label}} - 單價：MOP {{sp.price}}</option>
                           </select>
                         </div>
                         

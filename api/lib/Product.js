@@ -4,8 +4,8 @@ function Product (){
 
 module.exports = Product;
 
-Product.findAll = function (cb) {
-	product.find().exec(function (err, products) {
+Product.findAll = function (options, cb) {
+	product.find(options).exec(function (err, products) {
 		if (err) {
 			return cb(err);
 		}
