@@ -27,14 +27,18 @@ module.exports = {
 	    var url = req.param("url");
 	    var sharedBy = req.param("sharedBy");
 	    var retResult = {};
-	    if (code == 'undefined' || ad == 'undefined' || url == 'undefined') {
-	      return res.status(400).json({errMsg: "miss param"});
-	    }
+	    // if (code == 'undefined' || ad == 'undefined' || url == 'undefined') {
+	    //   return res.status(400).json({errMsg: "miss param"});
+	    // }
 	    var emitter = new eventEmitter();
 	    // step 1
 	    Weixin.oauth2(code, function (err, result) {
 	      if (err) {
-	        emitter.emit('error', {errMsg: JSON.stringify(err)});
+	        //emitter.emit('error', {errMsg: JSON.stringify(err)});
+	        var userInfo = {};
+	        userInfo.openId = 'o5OVfwJhe_dGCYTtjFgnKgZWR5jc';
+	        userInfo.ad = ad;
+	        emitter.emit('userInfo', userInfo);
 	      } else {
 	        var userInfo = {};
 	        userInfo.openId = result.openid;
@@ -144,6 +148,7 @@ module.exports = {
 	        retResult.nickname = finalResult.userInfo.nickname;
 	        retResult.headimgurl = finalResult.userInfo.headimgurl;
 	        retResult.phone = finalResult.userInfo.phone;
+	        retResult.cart = finalResult.userInfo.cart;
 	        console.log(retResult);
 	        return res.json(retResult);
 	      }

@@ -70,15 +70,15 @@ app.factory('users', ['$http', function ($http) {
     data: []
   };
 
-  output.updateCart = function (openId, cart) {
-    return $http.post('/shop/updateCart', {openId: openId, ad: $scope.ad, cart: cart});
+  output.updateCart = function (openId, ad, cart) {
+    return $http.post('/shop/updateCart', {openId: openId, ad: ad, cart: cart});
   };
   
   return output;
 }]);
 
 app.controller('IndexCtrl', [
-'$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll', 'products', 'users'
+'$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll', 'products', 'users',
 function($scope, $http, $timeout, $interval, $location, $anchorScroll, products, users){
   $scope.selected = 0;
   $scope.views = [
@@ -103,7 +103,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
       $scope.ticket = data.ticket;
       $scope.timestamp = data.timestamp;
       $scope.openId = data.openId;
-      
+      $scope.cart = data.cart;
+
       wx.config({
       debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
       appId: ''+appid+'', // 必填，公众号的唯一标识
@@ -139,7 +140,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
         // });
       });
       wx.error(function(res){
-        $scope.log('wxError', JSON.stringify(res));
+
       });
     }).error(function(data, status, headers, config) { //如果從外部連結返回時會遇到code error問題，就要重新定向
         //window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+apps+'%3FsharedBy%3Dwecast%26ad%3D'+ad+'&response_type=code&scope='+snsapi+'#wechat_redirect';
@@ -252,8 +253,14 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
     $scope.selectedItem.item = item;
     $scope.selectedItem.value = 1;
     $scope.selectedItem.spec = 0;
+
+    $scope.selectSpec();
     $scope.pushView('item');
-  }
+  };
+
+  $scope.selectSpec = function () {
+    $scope.imgUrl = $scope.selectedItem.item.specification[$scope.selectedItem.spec].imgUrl;
+  };
 
   $scope.addItem = function (item) {
       // item = item || {
@@ -292,7 +299,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
       $scope.cart[index].value += selectedItem.value;
     }
 
-    users.updateCart($scope.openId, $scope.cart).success(function (data) {
+    users.updateCart($scope.openId, ad, $scope.cart).success(function (data) {
       console.log($scope.cart);
       $scope.showToast = true;
       $timeout(function () {
@@ -312,7 +319,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
     var totalAmount = 0;
     $scope.cart.forEach(function (item, index, array) {
       totalItem += item.value;
-      totalAmount += item.item.spec[item.spec].price * item.value;
+      totalAmount += item.item.specification[item.spec].price * item.value;
     });
 
     return "共"+totalItem+"件，總價：MOP"+totalAmount;

@@ -65,7 +65,8 @@
                 <div class="weui_panel_bd">
                     <a ng-click="selectItem(item)" class="weui_media_box weui_media_appmsg" ng-repeat="item in items | filter:search:false">
                         <div class="weui_media_hd">
-                            <img class="weui_media_appmsg_thumb" src="http://placehold.it/120x120" alt="">
+                          <img class="weui_media_appmsg_thumb" ng-src="{{item.imgUrl}}" ng-show="item.imgUrl">
+                          <img class="weui_media_appmsg_thumb" src="http://placehold.it/120x120" alt="" ng-hide="item.imgUrl">
                         </div>
                         <div class="weui_media_bd">
                             <h4 class="weui_media_title">{{item.name}}</h4>
@@ -73,14 +74,16 @@
                         </div>
                     </a>
                 </div>
-                <a class="weui_panel_ft" ng-click="addItem()">查看更多</a>
+                <a class="weui_panel_ft" ng-click="addItem()" ng-show="items.length>0">查看更多</a>
+                <a class="weui_panel_ft" ng-hide="items.length>0">查無資料</a>
             </div>
             </div>
           </div>
           <div class="panel" ng-show="isView('item')">
             <div class="hd">
-              <div>
-                <img width="100%" src="http://placehold.it/375x210" alt="">
+              <div style="height: 250px;text-align: center;max-width: 100%;">
+                <img style="height: 100%;max-width: 100%;" ng-src="{{imgUrl}}" ng-show="selectedItem.item.imgUrl">
+                <img src="http://placehold.it/375x210" alt="" ng-hide="selectedItem.item.imgUrl">
               </div>
             </div>
             <div class="bd">
@@ -103,7 +106,7 @@
                           <label for class="weui_label">規格{{selectedItem.spec}}</label>
                         </div>
                         <div class="weui_cell_bd weui_cell_primary">
-                          <select class="weui_select" ng-model="selectedItem.spec" convert-to-number>
+                          <select class="weui_select" ng-model="selectedItem.spec" convert-to-number ng-change="selectSpec()">
                             <option ng-repeat="sp in selectedItem.item.specification track by $index" value="{{$index}}">{{sp.label}} - 單價：MOP {{sp.price}}</option>
                           </select>
                         </div>
@@ -158,11 +161,11 @@
                   <div class="weui_panel_bd">
                       <a ng-click="showValueDialog($index)" class="weui_media_box weui_media_appmsg" ng-repeat="cartItem in cart track by $index">
                           <div class="weui_media_hd">
-                              <img class="weui_media_appmsg_thumb" src="http://placehold.it/120x120" alt="">
+                              <img class="weui_media_appmsg_thumb" ng-src="{{cartItem.item.specification[cartItem.spec].imgUrl}}" alt="">
                           </div>
                           <div class="weui_media_bd">
-                              <h4 class="weui_media_title">{{cartItem.item.name}}-{{cartItem.item.spec[cartItem.spec].label}}</h4>
-                              <p class="weui_media_desc">MOP {{cartItem.item.spec[cartItem.spec].price}} x {{cartItem.value}} 件</p>
+                              <h4 class="weui_media_title">{{cartItem.item.name}}-{{cartItem.item.specification[cartItem.spec].label}}</h4>
+                              <p class="weui_media_desc">MOP {{cartItem.item.specification[cartItem.spec].price}} x {{cartItem.value}} 件</p>
                           </div>
                           <div class="weui_media_ft">
                               <i class="weui_icon_cancel" ng-click="removeCart($index)"></i>
