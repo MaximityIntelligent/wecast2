@@ -81,7 +81,7 @@
           </div>
           <div class="panel" ng-show="isView('item')">
             <div class="hd">
-              <div style="height: 250px;text-align: center;max-width: 100%;">
+              <div style="height: 230px;text-align: center;max-width: 100%;">
                 <img style="height: 100%;max-width: 100%;" ng-src="{{imgUrl}}" ng-show="selectedItem.item.imgUrl">
                 <img src="http://placehold.it/375x210" alt="" ng-hide="selectedItem.item.imgUrl">
               </div>
@@ -103,7 +103,7 @@
                     <div class="weui_cells weui_cells_form">
                       <div class="weui_cell weui_cell_select weui_select_after">
                         <div class="weui_cell_hd">
-                          <label for class="weui_label">規格{{selectedItem.spec}}</label>
+                          <label for class="weui_label">規格</label>
                         </div>
                         <div class="weui_cell_bd weui_cell_primary">
                           <select class="weui_select" ng-model="selectedItem.spec" convert-to-number ng-change="selectSpec()">

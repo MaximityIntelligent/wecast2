@@ -338,7 +338,14 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
     if (!$scope.selectedCartItem.value || $scope.selectedCartItem.value < 1 || $scope.selectedCartItem.value > 999) {
       return;
     }
-    $scope.valueDialog = false;
+    users.updateCart($scope.openId, ad, $scope.cart).success(function (data) {
+      console.log($scope.cart);
+      $scope.valueDialog = false;
+    }).error(function (err) {
+      console.log(err);
+      $scope.valueDialog = false;
+    });
+    
     
   };
 
