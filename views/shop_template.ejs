@@ -121,7 +121,7 @@
                             <span class="input-group-btn">
                               <a class="weui_btn weui_btn_mini weui_btn_default" ng-click="selectedItem.value=selectedItem.value-1">－</a>
                             </span>
-                            <input class="weui_input" style="width: 20%;" type="number" placeholder="請輸入數量" min="1" max="999" name="value" required ng-model="selectedItem.value"></input>
+                            <input class="weui_input" style="width: 20%;text-align:center;vertical-align:super;" type="number" placeholder="請輸入數量" min="1" max="999" name="value" required ng-model="selectedItem.value"></input>
                             <span class="input-group-btn">
                               <a class="weui_btn weui_btn_mini weui_btn_default" ng-click="selectedItem.value=selectedItem.value+1">＋</a>
                             </span>
@@ -146,8 +146,8 @@
               </div>
             </div>
             <div class="bd">
-              <div class="weui_cells weui_cells_access" ng-show="cart.length>0">
-                <a ng-click="placeOrder(cart)" class="weui_cell">
+              <div class="weui_cells weui_cells_access" ng-show="user.cart.length>0">
+                <a ng-click="placeOrder(user.cart)" class="weui_cell">
                   <div class="weui_cell_bd weui_cell_primary">
                     <p style="font-size: 14px;">{{sumCart()}}</p>
                   </div>
@@ -159,7 +159,7 @@
               <div class="weui_panel weui_panel_access">
                   <div class="weui_panel_hd">清單</div>
                   <div class="weui_panel_bd">
-                      <a ng-click="showValueDialog($index)" class="weui_media_box weui_media_appmsg" ng-repeat="cartItem in cart track by $index">
+                      <a ng-click="showValueDialog($index)" class="weui_media_box weui_media_appmsg" ng-repeat="cartItem in user.cart track by $index">
                           <div class="weui_media_hd">
                               <img class="weui_media_appmsg_thumb" ng-src="{{cartItem.item.specification[cartItem.spec].imgUrl}}" alt="">
                           </div>
@@ -274,7 +274,7 @@
                       <span class="input-group-btn">
                         <a ng-click="selectedCartItem.value=selectedCartItem.value-1" class="weui_btn weui_btn_mini weui_btn_default">－</a>
                       </span>
-                      <input class="weui_input" style="width: 20%;" type="number" placeholder="請輸入數量" min="1" max="999" required ng-model="selectedCartItem.value"></input>
+                      <input class="weui_input" style="width: 20%;text-align:center;vertical-align:super;" type="number" placeholder="請輸入數量" min="1" max="999" required ng-model="selectedCartItem.value"></input>
                       <span class="input-group-btn">
                         <a ng-click="selectedCartItem.value=selectedCartItem.value+1" class="weui_btn weui_btn_mini weui_btn_default">＋</a>
                       </span>

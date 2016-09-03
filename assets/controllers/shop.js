@@ -77,9 +77,21 @@ app.factory('users', ['$http', function ($http) {
   return output;
 }]);
 
+app.factory('orders', ['$http', function ($http) {
+  var output = {
+    data: []
+  };
+
+  output.createOrder = function (openId, ad, order) {
+    return $http.post('/shop/createOrder', {openId: openId, ad: ad, order: order});
+  };
+  
+  return output;
+}]);
+
 app.controller('IndexCtrl', [
-'$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll', 'products', 'users',
-function($scope, $http, $timeout, $interval, $location, $anchorScroll, products, users){
+'$scope','$http', '$timeout', '$interval', '$location', '$anchorScroll', 'products', 'users', 'orders',
+function($scope, $http, $timeout, $interval, $location, $anchorScroll, products, users, orders){
   $scope.selected = 0;
   $scope.views = [
     ['main'],
@@ -89,8 +101,11 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   $scope.currentView = 'main';
   $scope.category = ['水喉','電力','鎖具','鋁窗','門','冷氣','油漆','泥水','木器','其他'];
   $scope.tabName = ['商城', '購物車', '我'];
-
-  $scope.cart = [];
+  $scope.user = {
+    cart: [],
+    orders: []
+  };
+  // $scope.cart = [];
 
   $scope.init = function () {
     var url = location.href.split('#')[0];
@@ -103,7 +118,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
       $scope.ticket = data.ticket;
       $scope.timestamp = data.timestamp;
       $scope.openId = data.openId;
-      $scope.cart = data.cart;
+      // $scope.cart = data.cart;
+      $scope.user = data.user;
 
       wx.config({
       debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -279,7 +295,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
 
 
   $scope.addCart = function (selectedItem) {
-    var tempCart = $scope.cart;
+    var tempCart = $scope.user.cart;
     var temp = {};
     temp.item = selectedItem.item;
     temp.spec = selectedItem.spec;
@@ -289,18 +305,18 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
       return;
     }
 
-    var index = $scope.cart.findIndex(function (item) {
+    var index = $scope.user.cart.findIndex(function (item) {
 
       return item.item.pid == selectedItem.item.pid && item.spec == selectedItem.spec;
     });
     if (index == -1) {
-      $scope.cart.push(temp);
+      $scope.user.cart.push(temp);
     } else {
-      $scope.cart[index].value += selectedItem.value;
+      $scope.user.cart[index].value += selectedItem.value;
     }
 
-    users.updateCart($scope.openId, ad, $scope.cart).success(function (data) {
-      console.log($scope.cart);
+    users.updateCart($scope.openId, ad, $scope.user.cart).success(function (data) {
+      console.log($scope.user.cart);
       $scope.showToast = true;
       $timeout(function () {
           $scope.showToast = false;
@@ -309,7 +325,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
       $scope.popView();
     }).error(function (err) {
       console.log(err);
-      $scope.cart = tempCart;
+      $scope.user.cart = tempCart;
     });
     
   };
@@ -317,7 +333,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   $scope.sumCart = function () {
     var totalItem = 0;
     var totalAmount = 0;
-    $scope.cart.forEach(function (item, index, array) {
+    $scope.user.cart.forEach(function (item, index, array) {
       totalItem += item.value;
       totalAmount += item.item.specification[item.spec].price * item.value;
     });
@@ -326,20 +342,20 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   }
 
   $scope.removeCart = function (index) {
-    $scope.cart.splice(index, 1);
+    $scope.user.cart.splice(index, 1);
   };
 
   $scope.showValueDialog = function (index) {
     $scope.valueDialog = true;
-    $scope.selectedCartItem = $scope.cart[index];
+    $scope.selectedCartItem = $scope.user.cart[index];
   };
 
   $scope.changeValue = function () {
     if (!$scope.selectedCartItem.value || $scope.selectedCartItem.value < 1 || $scope.selectedCartItem.value > 999) {
       return;
     }
-    users.updateCart($scope.openId, ad, $scope.cart).success(function (data) {
-      console.log($scope.cart);
+    users.updateCart($scope.openId, ad, $scope.user.cart).success(function (data) {
+      console.log($scope.user.cart);
       $scope.valueDialog = false;
     }).error(function (err) {
       console.log(err);
@@ -351,10 +367,13 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
 
   $scope.placeOrder = function (cart) {
     $scope.newOrder = {};
+    $scope.newOrder.ad = ad;
     $scope.newOrder.done = false;
     $scope.newOrder.date = new Date();
     $scope.newOrder.list = [].concat(cart);
-    $scope.newOrder.address = $scope.user.address[0];
+    if ($scope.user.address) {
+      $scope.newOrder.address = $scope.user.address[0];
+    } 
     $scope.newOrder.phone = $scope.user.phone;
     $scope.pushView('create_order');
   };
@@ -364,17 +383,25 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
       return;
     }
     if (order.newAddress) {
-      $scope.user.address.unshift(order.newAddress);
+      if ($scope.user.address) {
+        $scope.user.address.unshift(order.newAddress);
+      }
+      else $scope.user.address = [order.newAddress];
       order.address = order.newAddress;
     }
     $scope.user.phone = order.phone;
     console.log(order);
-    $scope.user.orders.unshift(order); 
+    orders.createOrder(order).success(function (data) {
+      $scope.user.orders.unshift(data);
+      $scope.user.cart = [];
+      $scope.popView();
+      $scope.selectTab(2);
+      $scope.pushView('mine_order');
+    }).error(function (err) {
+      console.log(err);
+    });
 
-    $scope.cart = [];
-    $scope.popView();
-    $scope.selectTab(2);
-    $scope.pushView('mine_order');
+    
   }
 
   $scope.valueValid = function () {

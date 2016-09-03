@@ -10,6 +10,7 @@ var WxToken = require('../lib/WxToken');
 var Merchant = require('../lib/Merchant');
 var Log = require('../lib/Log');
 var crypto = require('crypto');
+var Order = require('../lib/Order');
 
 var randomString = function(length) {
     var text = "";
@@ -149,6 +150,7 @@ module.exports = {
 	        retResult.headimgurl = finalResult.userInfo.headimgurl;
 	        retResult.phone = finalResult.userInfo.phone;
 	        retResult.cart = finalResult.userInfo.cart;
+	        retResult.user = finalResult.userInfo;
 	        console.log(retResult);
 	        return res.json(retResult);
 	      }
@@ -174,6 +176,38 @@ module.exports = {
 				}
 				return res.json(savedUser.cart);
 			})
+		});
+	},
+	createOrder: function (req, res) {
+		if (!req.body.openId || !req.body.ad || !req.body.order) {}
+		User.auth(req.body.openId, req.body.ad, function (err, userOne) {
+			if (err) {
+				return res.status(400).json(err);
+			}
+			if (!userOne) {
+				return res.status(401).end();
+			}
+			Order.create(req.body.order, function (err, created) {
+				if (err) {
+					return res.status(400).json(err);
+				}
+				if (userOne.address) {
+					if (userOne.address.indexOf(req.body.order.address) == -1) {
+						userOne.address.unshift(req.body.order.address);
+					}
+				} else {
+					userOne.address = [req.body.order.address];
+				}
+				userOne.phone = req.body.order.phone
+				userOne.cart = [];
+				User.save(userOne, function (err, savedUser) {
+					if (err) {
+						return res.status(400).json(err);
+					}
+					return res.json(created);
+				})
+			})
+			
 		});
 	}
 }

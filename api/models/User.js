@@ -114,6 +114,10 @@ module.exports = {
     cart: {
       type: 'array',
       defaultsTo: []
+    },
+    address: {
+      type: 'array',
+      defaultsTo: []
     }
   }
 };
