@@ -126,11 +126,20 @@ module.exports = {
 	      if (Object.keys(events) == 0) {
 	        emitter.emit('final', 'userInfo', eventResult.userInfo);
 	        emitter.emit('final', 'ticket', eventResult.ticket);
+
+	        Order.find({ where: {openId: eventResult.userInfo.openId, ad: eventResult.userInfo.ad}, sort: 'createdAt DESC' }, function (err, orders) {
+	        	if (err) {
+	        		emitter.emit('error', {errMsg: err});
+	        	} else {
+					emitter.emit('final', 'orders', orders);
+
+	        	}
+	        })
 	      }
 	    });
 
 	    // step3
-	    var finalEvents = {'userInfo': true, 'ticket': true};
+	    var finalEvents = {'userInfo': true, 'ticket': true, 'orders': true};
 	    var finalResult = {};
 	    emitter.on('final', function (event, result) {
 	      finalResult[event] = result;
@@ -149,7 +158,7 @@ module.exports = {
 	        retResult.nickname = finalResult.userInfo.nickname;
 	        retResult.headimgurl = finalResult.userInfo.headimgurl;
 	        retResult.phone = finalResult.userInfo.phone;
-	        retResult.cart = finalResult.userInfo.cart;
+	        retResult.orders = finalResult.orders;
 	        retResult.user = finalResult.userInfo;
 	        console.log(retResult);
 	        return res.json(retResult);
@@ -179,7 +188,9 @@ module.exports = {
 		});
 	},
 	createOrder: function (req, res) {
-		if (!req.body.openId || !req.body.ad || !req.body.order) {}
+		if (!req.body.openId || !req.body.ad || !req.body.order) {
+			return res.status(400).json({errMsg: 'param missing'});
+		}
 		User.auth(req.body.openId, req.body.ad, function (err, userOne) {
 			if (err) {
 				return res.status(400).json(err);
@@ -187,10 +198,13 @@ module.exports = {
 			if (!userOne) {
 				return res.status(401).end();
 			}
+			req.body.order.openId = userOne.openId;
+			req.body.order.ad = userOne.ad;
 			Order.create(req.body.order, function (err, created) {
 				if (err) {
 					return res.status(400).json(err);
 				}
+				console.log(created);
 				if (userOne.address) {
 					if (userOne.address.indexOf(req.body.order.address) == -1) {
 						userOne.address.unshift(req.body.order.address);
@@ -208,6 +222,25 @@ module.exports = {
 				})
 			})
 			
+		});
+	},
+	confirmRecived: function (req, res) {
+		if (!req.body.openId || !req.body.ad || !req.body.order) {
+			return res.status(400).json({errMsg: 'param missing'});
+		}
+		User.auth(req.body.openId, req.body.ad, function (err, userOne) {
+			if (err) {
+				return res.status(400).json(err);
+			}
+			if (!userOne) {
+				return res.status(401).end();
+			}
+			Order.done(req.body.order, function (err, done) {
+				if (err) {
+					return res.status(400).json(err);
+				}
+				return res.json(done);
+			});
 		});
 	}
 }

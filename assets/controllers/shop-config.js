@@ -81,8 +81,16 @@ app.factory('orders', ['$http', function ($http) {
     return $http.post('/shopConfig/editOrder', order);
   };
 
-  output.remove = function (oid) {
-    return $http.post('/shopConfig/removeOrder', {ad: $scope.ad, oid: oid});
+  output.remove = function (order) {
+    return $http.post('/shopConfig/removeOrder', {order: order, remark: remark});
+  };
+
+  output.nextStepOrder = function (order, remark) {
+    return $http.post('/shopConfig/nextStepOrder', {order: order, remark: remark});
+  };
+
+  output.prevStepOrder = function (order, remark) {
+    return $http.post('/shopConfig/prevStepOrder', {order: order, remark: remark});
   };
 
   return output;
@@ -162,16 +170,19 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
 
   $scope.orderFields = {
     name: ["狀態", "時間", "客戶", "總價"],
-    prop: ["date", "phone"]
+    prop: ["phone"]
   }
 
   $scope.fields = {
     name: ["PID", "產品名稱", "產品簡介", "售價"],
     prop: ["pid", "name", "description"]
-  }
+  };
   
   $scope.data = [];
   $scope.orderData = [];
+  $scope.orderLimit = 2;
+  $scope.orderCurrent = 0;
+  $scope.orderBegin = 0;
 
   $scope.init = function () {
     $scope.view = 'product';
@@ -206,6 +217,75 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
       default:
         break;
     }
+  };
+
+  $scope.orderNextPage = function () {
+    var max = Math.ceil($scope.orderData.length / $scope.orderLimit);
+    $scope.orderCurrent = Math.min(max-1, $scope.orderCurrent+1);
+    console.log($scope.orderCurrent);
+  };
+
+  $scope.orderPrevPage = function () {
+    $scope.orderCurrent = Math.max(0, $scope.orderCurrent-1);
+    console.log($scope.orderCurrent);
+  };
+
+  $scope.orderPages = function (orderData, orderLimit) {
+    var max = Math.ceil(orderData.length / orderLimit);
+    var pages = [];
+    for (var i = 0; i < max; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
+
+  $scope.localTimeString = function (date) {
+    var temp = new Date(date);
+    return temp.toLocaleString();
+  }
+
+  $scope.shippingText = function (shipping) {
+    var map = {
+      'pending': '待處理',
+      'ready': '準備中',
+      'shipping': '運送中',
+      'arrived': '已到達'
+    }
+    return map[shipping];
+  };
+
+  $scope.nextText = function (shipping) {
+    var map = {
+      'pending': '接受訂單',
+      'ready': '發送貨物',
+      'shipping': '交付貨物'
+    }
+    return map[shipping];
+  }
+  
+  $scope.prevText = function (shipping) {
+    var map = {
+      
+      'ready': '重新待處理',
+      'shipping': '重新準備',
+      'arrived': '重新運送'
+    }
+    return map[shipping];
+  };
+
+  $scope.recordClass = function (record) {
+    if (record.deleted) {
+      return 'list-group-item-danger';
+    }
+    if (record.done) {
+      return 'list-group-item-success';
+    }
+    if (record.nextStep) {
+      return 'list-group-item-info';
+    } else {
+      return 'list-group-item-warning';
+    }
+
   }
 
   $scope.priceRange = function (product) {
@@ -222,6 +302,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   $scope.sumOrder = function (order) {
     var totalItem = 0;
     var totalAmount = 0;
+    if (!order) {
+      return;
+    }
     order.list.forEach(function (item, index, array) {
       totalItem += item.value;
       totalAmount += item.item.specification[item.spec].price * item.value;
@@ -367,18 +450,29 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
     $scope.selectProduct.tag.splice(index, 1);
   };
 
-  $scope.doneOrder = function (order) {
-    order.done = true;
-    orders.edit(order).success(function (data) {
-      var index = orders.data.map(function (o) {
+  $scope.nextStepOrder = function (order, remark) {
+    orders.nextStepOrder(order, remark).success(function (data) {
+      var index = $scope.orderData.map(function (o) {
         return o.oid;
       }).indexOf(order.oid);
-      orders.data[index] = order;
-      $scope.hideEditOrderForm();
+      $scope.orderData[index] = data;
+      $scope.selectOrder = data;
+      console.log($scope.orderData);
     }).error(function (err) {
       console.log(err);
     });
-    
+  };
+
+  $scope.prevStepOrder = function (order, remark) {
+    orders.prevStepOrder(order, remark).success(function (data) {
+      var index = $scope.orderData.map(function (o) {
+        return o.oid;
+      }).indexOf(order.oid);
+      $scope.orderData[index] = data;
+      $scope.selectOrder = data;
+    }).error(function (err) {
+      console.log(err);
+    });
   };
 
 }]);

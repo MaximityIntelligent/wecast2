@@ -149,7 +149,7 @@
               <div class="weui_cells weui_cells_access" ng-show="user.cart.length>0">
                 <a ng-click="placeOrder(user.cart)" class="weui_cell">
                   <div class="weui_cell_bd weui_cell_primary">
-                    <p style="font-size: 14px;">{{sumCart()}}</p>
+                    <p style="font-size: 14px;">{{sumCart(user.cart)}}</p>
                   </div>
                   <div class="weui_cell_ft">
                     立即下單
@@ -219,6 +219,42 @@
             </div>
             <div class="bd">
               <div class="weui_cells weui_cells_access">
+                <div class="weui_cell" ng-show="user.headimgurl">
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <p>頭像</p>
+                  </div>
+                  <div class="weui_cell_ft">
+                    <img class="weui_avatar" ng-src="http://placehold.it/180x180" ng-hide="user.headimgurl">
+                  </div>
+                </div>
+                <div class="weui_cell">
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <p>名稱</p>
+                  </div>
+                  <div class="weui_cell_ft">
+                    {{user.nickname}}
+                  </div>
+                </div>
+                <div class="weui_cell">
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <p>我的電話</p>
+                  </div>
+                  <div class="weui_cell_ft">
+                    {{user.phone}}
+                  </div>
+                </div>
+                <div class="weui_cell weui_cell_select weui_select_after">
+                  <div class="weui_cell_hd">
+                    <label for class="weui_label">我的地址</label>
+                  </div>
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <select class="weui_select">
+                      <option ng-repeat="address in user.address">{{address}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="weui_cells weui_cells_access">
                 <div class="weui_cell" ng-click="pushView('mine_order')">
                   <div class="weui_cell_hd">
                     <img src="http://placehold.it/46x46" style="width:20px;margin-right:5px;display:block;">
@@ -230,15 +266,15 @@
                     更多
                   </div>
                 </div>
+                
+              </div>
+              <div class="weui_cells weui_cells_access">
                 <div class="weui_cell">
                   <div class="weui_cell_hd">
                     <img src="http://placehold.it/46x46" style="width:20px;margin-right:5px;display:block;">
                   </div>
                   <div class="weui_cell_bd weui_cell_primary">
-                    <p>我的資料</p>
-                  </div>
-                  <div class="weui_cell_ft">
-                    更多
+                    <p>設置</p>
                   </div>
                 </div>
               </div>
@@ -247,19 +283,78 @@
           <div class="panel" ng-show="isView('mine_order')">
             <div class="bd">
               <div class="weui_cells_title">所有訂單</div>
-              <div class="weui_cells weui_cells_access">
-                <div class="weui_cell" ng-repeat="order in user.orders">
-                  <div class="weui_cell_hd">
-                    <img src="http://placehold.it/46x46" style="width:20px;margin-right:5px;display:block;">
-                  </div>
+              <div class="weui_cells">
+                <div class="weui_cell" ng-show="user.orders.length>0">
                   <div class="weui_cell_bd weui_cell_primary">
-                    <p>{{order.date}}</p>
+                    <p> 訂單號 </p>
                   </div>
-                  <div class="weui_cell_ft" ng-click="order.done=true">
-                    <font ng-hide="order.done">未完成</font>
-                    <font ng-show="order.done">已完成</font>
+                  <div class="weui_cell_ft">
+                    狀態
                   </div>
                 </div>
+              </div>
+              <div class="weui_cells_title"></div>
+              <div class="weui_cells weui_cells_access">
+                
+                <div class="weui_cell" ng-repeat="order in user.orders | orderBy: ['done', '-createdAt']" ng-click="selectOrder(order)">
+                  <div class="weui_cell_hd">
+                    <i class="weui_icon_success_circle" ng-show="order.done"></i>
+                    <i class="weui_icon_waiting_circle" ng-hide="order.done"></i>
+                  </div>
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <p> {{order.oid}}</p>
+                  </div>
+                  <div class="weui_cell_ft">
+                    {{shippingText(order.shipping)}}
+                  </div>
+                </div>
+                <div class="weui_cell" ng-hide="user.orders.length>0">
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <p>查無資料</p>
+                  </div>
+                </div>
+              </div>
+              <div class="weui_cells_tips">
+                <i class="weui_icon_success_circle"></i> 已完成訂單，<i class="weui_icon_waiting_circle"></i> 未完成訂單
+              </div>
+            </div>
+          </div>
+          <div class="panel" ng-show="isView('order_detail')">
+            <div class="bd">
+              <div class="weui_cells weui_cells_access" ng-show="selectedOrder.list.length>0">
+                <a ng-click="confirmRecived(selectedOrder)" class="weui_cell" ng-hide="selectedOrder.done">
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <p style="font-size: 14px;">{{sumCart(selectedOrder.list)}}</p>
+                  </div>
+                  <div class="weui_cell_ft">
+                    確認收貨
+                  </div>
+                </a>
+                <a class="weui_cell" ng-show="selectedOrder.done">
+                  <div class="weui_cell_bd weui_cell_primary">
+                    <p style="font-size: 14px;">{{sumCart(selectedOrder.list)}}</p>
+                  </div>
+                  <div class="weui_cell_ft">
+                    已收貨
+                  </div>
+                </a>
+              </div>
+              <div class="weui_panel weui_panel_access">
+                  <div class="weui_panel_hd">清單</div>
+                  <div class="weui_panel_bd">
+                      <a ng-click="" class="weui_media_box weui_media_appmsg" ng-repeat="orderItem in selectedOrder.list track by $index">
+                          <div class="weui_media_hd">
+                              <img class="weui_media_appmsg_thumb" ng-src="{{orderItem.item.specification[orderItem.spec].imgUrl}}" alt="">
+                          </div>
+                          <div class="weui_media_bd">
+                              <h4 class="weui_media_title">{{orderItem.item.name}}-{{orderItem.item.specification[orderItem.spec].label}}</h4>
+                              <p class="weui_media_desc">MOP {{orderItem.item.specification[orderItem.spec].price}} x {{orderItem.value}} 件</p>
+                          </div>
+                          <div class="weui_media_ft">
+                              MOP {{orderItem.item.specification[orderItem.spec].price*orderItem.value}}
+                          </div>
+                      </a>
+                  </div>
               </div>
             </div>
           </div>

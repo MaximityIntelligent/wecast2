@@ -141,3 +141,9 @@ body{
 .enter{-webkit-animation:a .2s forwards;animation:a .2s forwards}
 .leave{-webkit-animation:b .25s forwards;animation:b .25s forwards}
 
+.weui_avatar {
+	width: 52px;
+    height: 52px;
+    border-radius: 4px;
+    vertical-align: middle;
+}

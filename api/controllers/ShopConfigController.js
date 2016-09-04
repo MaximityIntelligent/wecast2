@@ -4,6 +4,7 @@ var eventEmitter = require('events').EventEmitter;
 var sha1 = require('sha1');
 var User = require('../lib/User');
 var Product = require('../lib/Product');
+var Order = require('../lib/Order');
 
 module.exports = {
 	getProducts: function (req, res) {
@@ -55,11 +56,27 @@ module.exports = {
 		});
 	},
 	removeOrder: function (req, res) {
-		Order.remove(req.body.ad, req.body.oid, function (err, removed) {
+		Order.remove(req.body.order, req.body.remark, function (err, removed) {
 			if (err) {
 				return res.status(400).json(err);
 			}
-			return res.status(204).end();
+			return res.json(removed);
 		});
+	},
+	nextStepOrder: function (req, res) {
+		Order.nextStep(req.body.order, req.body.remark, function (err, updated) {
+			if (err) {
+				return res.status(400).json(err);
+			}
+			return res.json(updated);
+		})
+	},
+	prevStepOrder: function (req, res) {
+		Order.prevStep(req.body.order, req.body.remark, function (err, updated) {
+			if (err) {
+				return res.status(400).json(err);
+			}
+			return res.json(updated);
+		})
 	}
 }

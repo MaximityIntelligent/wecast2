@@ -31,6 +31,15 @@ module.exports = {
     deleted: {
       type: 'boolean',
       defaultsTo: false
+    },
+    shipping: {
+      type: 'string',
+      enum: ['pending', 'ready', 'shipping', 'arrived'],
+      defaultsTo: 'pending'
+    },
+    record: {
+      type: 'array',
+      defaultsTo: []
     }
   }
 };

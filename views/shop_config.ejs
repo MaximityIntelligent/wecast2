@@ -42,10 +42,19 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr ng-repeat="row in orderData | filter:orderSearch:false track by $index">
+                              <tr ng-repeat="row in orderData | filter:orderSearch:false | orderBy:['done', '-createdAt']:false | limitTo:orderLimit:(orderCurrent*orderLimit) track by $index">
                                 <td>
                                   <span class="glyphicon glyphicon-ok" style="color: green;" ng-show="row.done"></span>
                                   <span class="glyphicon glyphicon-remove" style="color: red;" ng-hide="row.done"></span>
+                                </td>
+                                <td>
+                                  {{shippingText(row.shipping)}}
+                                </td>
+                                <td>
+                                  {{row.oid}}
+                                </td>
+                                <td>
+                                  {{localTimeString(row.date)}}
                                 </td>
                                 <td ng-repeat="prop in orderFields.prop">{{row[prop]}}</td>
                                 <td>{{sumOrder(row)}}</td>
@@ -55,57 +64,96 @@
                                 </td>
                               </tr>
                             </tbody>
+
                           </table>
+                          <nav aria-label="Page navigation">
+                              <ul class="pagination pull-right">
+                                <li>
+                                  <a ng-click="orderPrevPage()" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                  </a>
+                                </li>
+                                <li ng-repeat="page in orderPages(orderData, orderLimit)"><a href="#">{{page+1}}</a></li>
+                                <li>
+                                  <a ng-click="orderNextPage()" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                  </a>
+                                </li>
+                              </ul>
+                            </nav>
                         </div>
-                        
+                        <hr>
                         <div ng-show="showEditOrder">
-                          <hr>
-                          <h3>處理訂單</h3>
-                          <form name="editOrderForm">
-                            <div class="form-group">
-                              <div class="input-group">
-                                <span class="input-group-addon" id="phone">客戶電話</span>
-                                <input type="text" name="phone" class="form-control" ng-model="selectOrder.phone" aria-describedby="phone" required disabled>
+                          <div class="col-md-6">
+                            <h3>處理訂單</h3>
+                            <form name="editOrderForm">
+                              <div class="form-group">
+                                <div class="input-group">
+                                  <span class="input-group-addon" id="phone">客戶電話</span>
+                                  <input type="text" name="phone" class="form-control" ng-model="selectOrder.phone" aria-describedby="phone" required disabled>
+                                </div>
+                                <div class="input-group">
+                                  <span class="input-group-addon" id="address">送貨地址</span>
+                                  <input type="text" name="address" class="form-control" ng-model="selectOrder.address" aria-describedby="address" required disabled>
+                                </div>
+                                <div class="input-group">
+                                  <span class="input-group-addon" id="date">訂單日期</span>
+                                  <input type="text" name="date" class="form-control" value="{{localTimeString(selectOrder.date)}}" aria-describedby="date" required disabled>
+                                </div>
                               </div>
-                              <div class="input-group">
-                                <span class="input-group-addon" id="address">送貨地址</span>
-                                <input type="text" name="address" class="form-control" ng-model="selectOrder.address" aria-describedby="address" required disabled>
+                              <div class="table-responsive">
+                                <table class="table table-hover">
+                                  <thead>
+                                    <tr>
+                                      <th>SID</th>
+                                      <th>產品名稱</th>
+                                      <th>規格</th>
+                                      <th>數量</th>
+                                      <th>單價</th>
+                                      <th>小計</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr ng-repeat="row in selectOrder.list track by $index">
+                                      <td>{{row.item.pid*100+row.item.specification[row.spec].sid}}</td>
+                                      <td>{{row.item.name}}</td>
+                                      <td>{{row.item.specification[row.spec].label}}</td>
+                                      <td>{{row.value}}</td>
+                                      <td>{{row.item.specification[row.spec].price}}</td>
+                                      <td>{{row.value*row.item.specification[row.spec].price}}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                                <div class="pull-right">
+                                  {{sumOrder(selectOrder)}}
+                                </div>
+                                
                               </div>
-                              <div class="input-group">
-                                <span class="input-group-addon" id="date">訂單日期</span>
-                                <input type="text" name="date" class="form-control" ng-model="selectOrder.date" aria-describedby="date" required disabled>
+                              <div class="form-group">
+                                <div class="input-group">
+                                  <span class="input-group-addon" id="remark">備註</span>
+                                  <input type="text" name="remark" class="form-control" ng-model="remark" aria-describedby="remark" required>
+                                </div>
+                                
+                              </div> 
+                              <div class="form-group">
+                                <button class="btn btn-primary" type="button btn-primary" ng-click="nextStepOrder(selectOrder, remark);remark=undefined" ng-disabled="!editOrderForm.$valid" ng-hide="selectOrder.shipping=='arrived'"><span class="glyphicon glyphicon-share-alt"></span>{{nextText(selectOrder.shipping)}}</button>
+                                <button class="btn btn-primary" type="button btn-primary" ng-click="prevStepOrder(selectOrder, remark);remark=undefined" ng-disabled="!editOrderForm.$valid" ng-hide="selectOrder.shipping=='pending'"><span class="glyphicon glyphicon-backward"></span>{{prevText(selectOrder.shipping)}}</button>
+                                <button class="btn btn-default" type="button btn-default" ng-click="hideEditOrderForm()"><span class="glyphicon glyphicon-remove"></span>取消</button>
                               </div>
-                            </div>
-                            <div class="table-responsive">
-                              <table class="table table-hover">
-                                <thead>
-                                  <tr>
-                                    <th>SID</th>
-                                    <th>產品名稱</th>
-                                    <th>規格</th>
-                                    <th>數量</th>
-                                    <th>單價</th>
-                                    <th>小計</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr ng-repeat="row in selectOrder.list track by $index">
-                                    <td>{{row.item.pid*100+row.item.specification[row.spec].sid}}</td>
-                                    <td>{{row.item.name}}</td>
-                                    <td>{{row.item.specification[row.spec].label}}</td>
-                                    <td>{{row.value}}</td>
-                                    <td>{{row.item.specification[row.spec].price}}</td>
-                                    <td>{{row.value*row.item.specification[row.spec].price}}</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                            <div class="form-group">
-                              <button class="btn btn-primary" type="button btn-primary" ng-click="doneOrder(selectOrder)" ng-disabled="!editOrderForm.$valid"><span class="glyphicon glyphicon-ok"></span>完成訂單</button>
-                              <button class="btn btn-default" type="button btn-default" ng-click="hideEditOrderForm()"><span class="glyphicon glyphicon-remove"></span>取消</button>
-                            </div> 
-                            
-                          </form>
+                            </form>
+                          </div> 
+                          <div class="col-md-6">
+                            <h3>訂單記錄</h3>
+                            <ul class="list-group">
+                              
+                              <li class="list-group-item" ng-class="recordClass(record)" ng-repeat="record in selectOrder.record">
+                                <span class="badge">{{localTimeString(record.date)}}</span>
+                                <h4 class="list-group-item-heading">{{record.action}}</h4>
+                                <p class="list-group-item-text">{{record.remark}}</p>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
                       </div>
                     </uib-tab>

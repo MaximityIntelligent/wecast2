@@ -86,6 +86,11 @@ app.factory('orders', ['$http', function ($http) {
     return $http.post('/shop/createOrder', {openId: openId, ad: ad, order: order});
   };
   
+  output.confirmRecived = function (openId, ad, order) {
+    console.log({openId: openId, ad: ad, order: order});
+    return $http.post('/shop/confirmRecived', {openId: openId, ad: ad, order: order});
+  }
+
   return output;
 }]);
 
@@ -118,8 +123,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
       $scope.ticket = data.ticket;
       $scope.timestamp = data.timestamp;
       $scope.openId = data.openId;
-      // $scope.cart = data.cart;
       $scope.user = data.user;
+      $scope.user.orders = data.orders;
 
       wx.config({
       debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -205,9 +210,14 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   
   };
 
-  $scope.titleText = function (view) {
-    console.log(view);
-    return $scope.viewsTitle[view];
+  $scope.shippingText = function (shipping) {
+    var map = {
+      'pending': '待處理',
+      'ready': '準備中',
+      'shipping': '運送中',
+      'arrived': '已到達'
+    }
+    return map[shipping];
   }
 
   $scope.isSelected = function (index) {
@@ -330,10 +340,11 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
     
   };
 
-  $scope.sumCart = function () {
+  $scope.sumCart = function (cart) {
     var totalItem = 0;
     var totalAmount = 0;
-    $scope.user.cart.forEach(function (item, index, array) {
+    cart = cart || [];
+    cart.forEach(function (item, index, array) {
       totalItem += item.value;
       totalAmount += item.item.specification[item.spec].price * item.value;
     });
@@ -367,14 +378,13 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
 
   $scope.placeOrder = function (cart) {
     $scope.newOrder = {};
-    $scope.newOrder.ad = ad;
     $scope.newOrder.done = false;
     $scope.newOrder.date = new Date();
     $scope.newOrder.list = [].concat(cart);
     if ($scope.user.address) {
       $scope.newOrder.address = $scope.user.address[0];
     } 
-    $scope.newOrder.phone = $scope.user.phone;
+    $scope.newOrder.phone = parseInt($scope.user.phone);
     $scope.pushView('create_order');
   };
 
@@ -391,7 +401,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
     }
     $scope.user.phone = order.phone;
     console.log(order);
-    orders.createOrder(order).success(function (data) {
+    orders.createOrder($scope.openId, ad, order).success(function (data) {
       $scope.user.orders.unshift(data);
       $scope.user.cart = [];
       $scope.popView();
@@ -399,9 +409,30 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
       $scope.pushView('mine_order');
     }).error(function (err) {
       console.log(err);
-    });
+    });   
+  };
 
-    
+  $scope.selectOrder = function (order) {
+    $scope.selectedOrder = order;
+    $scope.pushView('order_detail');
+  };
+
+  $scope.confirmRecived = function (order) {
+    // if (order.shipping != 'arrived') {
+    //   return;
+    // }
+    orders.confirmRecived($scope.openId, ad, order).success(function (data) {
+      var index = $scope.user.orders.findIndex(function (item) {
+        return item.oid == data.oid && item.ad == data.ad;
+      });
+      if (index >= 0) {
+        $scope.user.orders[index] = data;
+        $scope.selectedOrder = undefined;
+        $scope.popView();
+      }
+    }).error(function (err) {
+      console.log(err);
+    })
   }
 
   $scope.valueValid = function () {
