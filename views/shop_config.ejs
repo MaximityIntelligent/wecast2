@@ -29,7 +29,7 @@
                     <uib-tab index="0" heading="Order">
                       <div class="panel-elem">
                         <div class="input-group">
-                          <input type="text" class="form-control" ng-model="orderSearch" placeholder="Search for...">
+                          <input type="text" class="form-control" ng-model="orderSearch.$" placeholder="Search for...">
                           <span class="input-group-btn">
                             <button class="btn btn-default" type="button" ng-click="">搜尋</button>
                           </span>
@@ -38,11 +38,35 @@
                           <table class="table table-hover">
                             <thead>
                               <tr>
-                                <th ng-repeat="name in orderFields.name">{{name}}</th>
+                                <th>
+                                  <select class="form-control input-sm" ng-model="orderSearch.done">
+                                    <option value="">全部</option>
+                                    <option ng-value="false">未完成</option>
+                                    <option ng-value="true">已完成</option>
+                                  </select>
+                                </th>
+                                <th>
+                                  <select class="form-control input-sm" ng-model="orderSearch.shipping">
+                                    <option value="">全部</option>
+                                    <option value="pending">待處理</option>
+                                    <option value="ready">準備中</option>
+                                    <option value="shipping">運送中</option>
+                                    <option value="arrived">已到達</option>
+                                  </select>
+                                </th>
+                                <th>
+                                  <input type="text" class="form-control input-sm" ng-model="orderSearch.oid" placeholder="訂單號">
+                                </th>
+                                <th>時間</th>
+                                <th>
+                                  <input type="text" class="form-control input-sm" ng-model="orderSearch.phone" placeholder="客戶電話">
+                                </th>
+                                <th>訂單合計</th>
+                                <th>操作</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr ng-repeat="row in orderData | filter:orderSearch:false | orderBy:['done', '-createdAt']:false | limitTo:orderLimit:(orderCurrent*orderLimit) track by $index">
+                              <tr ng-repeat="row in orderData | filter:orderSearch:false | orderBy:['done', '-createdAt']:false | limitTo:orderLimit:(orderCurrent*orderLimit)">
                                 <td>
                                   <span class="glyphicon glyphicon-ok" style="color: green;" ng-show="row.done"></span>
                                   <span class="glyphicon glyphicon-remove" style="color: red;" ng-hide="row.done"></span>
@@ -67,20 +91,38 @@
 
                           </table>
                           <nav aria-label="Page navigation">
+                            <div>
+                              <ul class="pagination">
+                                <li>
+                                  <label for="mySelect">顯示</label>
+                                  <select name="mySelect" ng-model="orderLimit" convert-to-number ng-change="changeLimit(orderLimit)">
+                                    <option value="2">2</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                  </select>
+                                </li>
+                              </ul>
                               <ul class="pagination pull-right">
+                                
                                 <li>
                                   <a ng-click="orderPrevPage()" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                   </a>
                                 </li>
-                                <li ng-repeat="page in orderPages(orderData, orderLimit)"><a href="#">{{page+1}}</a></li>
+                                <li ng-repeat="page in orderPages((orderData|filter:orderSearch:false), orderLimit)" ng-class="{active: isCurrent(page)}">
+                                  <a ng-click="setCurrent(page)">{{page+1}}</a>
+
+                                </li>
                                 <li>
-                                  <a ng-click="orderNextPage()" aria-label="Next">
+                                  <a ng-click="orderNextPage((orderData|filter:orderSearch:false))" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                   </a>
                                 </li>
+
                               </ul>
-                            </nav>
+                            </div>
+                            
+                          </nav>
                         </div>
                         <hr>
                         <div ng-show="showEditOrder">

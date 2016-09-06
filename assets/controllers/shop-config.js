@@ -1,6 +1,19 @@
 var app = angular.module('shopconfig', ['ui.bootstrap']).config(['$httpProvider', function($httpProvider) {
     //$httpProvider.defaults.timeout = 130000;
-}]);
+}])
+.directive('convertToNumber', function() {
+  return {
+    require: 'ngModel',
+    link: function(scope, element, attrs, ngModel) {
+      ngModel.$parsers.push(function(val) {
+        return parseInt(val, 10);
+      });
+      ngModel.$formatters.push(function(val) {
+        return '' + val;
+      });
+    }
+  };
+});;
 
 var QueryString = function () {  //提取由公众號或分享LINK時的CODE參數
   // This function is anonymous, is executed immediately and
@@ -219,10 +232,10 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
     }
   };
 
-  $scope.orderNextPage = function () {
-    var max = Math.ceil($scope.orderData.length / $scope.orderLimit);
+  $scope.orderNextPage = function (filtered) {
+    var max = Math.ceil(filtered.length / $scope.orderLimit);
     $scope.orderCurrent = Math.min(max-1, $scope.orderCurrent+1);
-    console.log($scope.orderCurrent);
+    console.log($scope.orderCurrent + " " + $scope.orderLimit);
   };
 
   $scope.orderPrevPage = function () {
@@ -230,13 +243,34 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
     console.log($scope.orderCurrent);
   };
 
-  $scope.orderPages = function (orderData, orderLimit) {
-    var max = Math.ceil(orderData.length / orderLimit);
+  $scope.orderPages = function (filtered, orderLimit) {
+    var max = Math.ceil(filtered.length / orderLimit);
     var pages = [];
     for (var i = 0; i < max; i++) {
       pages.push(i);
     }
-    return pages;
+    var start = $scope.orderCurrent - 1;
+    start = Math.min(max-3, start);
+    // console.log(start+" "+max);
+    start = Math.max(0, start);
+    // console.log(start);
+    var end = Math.min(max, start+3);
+    // console.log(start+" "+end);
+    return pages.slice(start, end);
+  };
+
+  $scope.setCurrent = function (page) {
+    $scope.orderCurrent = page;
+    // console.log($scope.orderCurrent);
+  };
+
+  $scope.isCurrent = function (page) {
+    return $scope.orderCurrent == page;
+  };
+
+  $scope.changeLimit = function (limit) {
+    $scope.orderLimit = limit;
+    $scope.orderCurrent = 0;
   }
 
   $scope.localTimeString = function (date) {
