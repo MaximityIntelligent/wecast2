@@ -20,8 +20,8 @@ Order.find = function (options, cb) {
 			return cb(err);
 		}
 		return cb(null, orders);
-	})
-}
+	});
+};
 
 Order.create = function (options, cb) {
 	var today = new Date();

@@ -31,7 +31,7 @@
                         <div class="input-group">
                           <input type="text" class="form-control" ng-model="orderSearch.$" placeholder="Search for...">
                           <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" ng-click="">搜尋</button>
+                            <button class="btn btn-default" type="button" ng-click="getAllOrder()">全部訂單</button>
                           </span>
                         </div><!-- /input-group -->
                         <div class="table-responsive">
@@ -94,12 +94,13 @@
                             <div>
                               <ul class="pagination">
                                 <li>
-                                  <label for="mySelect">顯示</label>
+                                  <label for="mySelect">共{{(orderData|filter:orderSearch:false).length}}項，顯示</label>
                                   <select name="mySelect" ng-model="orderLimit" convert-to-number ng-change="changeLimit(orderLimit)">
-                                    <option value="2">2</option>
+                                    <option value="5">5</option>
                                     <option value="10">10</option>
                                     <option value="20">20</option>
                                   </select>
+                                  項
                                 </li>
                               </ul>
                               <ul class="pagination pull-right">
@@ -202,7 +203,7 @@
                     <uib-tab index="1" heading="Product" select="selectTab(1)">
                       <div class="panel-elem">
                         <div class="input-group">
-                          <input type="text" class="form-control" ng-model="search" placeholder="Search for...">
+                          <input type="text" class="form-control" ng-model="search.$" placeholder="Search for...">
                           <span class="input-group-btn">
                             <button class="btn btn-default" type="button" ng-click="showCreateForm()">Create</button>
                           </span>
@@ -211,11 +212,17 @@
                           <table class="table table-hover">
                             <thead>
                               <tr>
+                                <th>
+                                  <input type="text" class="form-control input-sm" ng-model="search.pid" placeholder="PID">
+                                </th>
+                                <th>
+                                  <input type="text" class="form-control input-sm" ng-model="search.name" placeholder="產品名稱">
+                                </th>
                                 <th ng-repeat="name in fields.name">{{name}}</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr ng-repeat="row in data | filter:search:false track by row.pid">
+                              <tr ng-repeat="row in data | filter:search:false | limitTo:productLimit:((productCurrent-1)*productLimit) track by row.pid">
                                 <td ng-repeat="prop in fields.prop">{{row[prop]}}</td>
                                 <td>{{priceRange(row)}}</td>
                                 <td>
@@ -225,6 +232,20 @@
                               </tr>
                             </tbody>
                           </table>
+                          <div>
+                            <ul class="pagination">
+                              <li>
+                                <label for="mySelect">共{{(data|filter:search:false).length}}項，顯示</label>
+                                <select name="mySelect" ng-model="productLimit" convert-to-number ng-change="changeProductLimit(productLimit)">
+                                  <option value="5">5</option>
+                                  <option value="10">10</option>
+                                  <option value="20">20</option>
+                                </select>
+                                項
+                              </li>
+                            </ul>
+                            <ul uib-pagination total-items="(data | filter:search:false).length" ng-model="productCurrent" max-size="maxSize" class="pagination-sm pull-right" boundary-links="true" force-ellipses="true" items-per-page="productLimit" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+                          </div>
                         </div>
                         
                         <div ng-show="showCreate">

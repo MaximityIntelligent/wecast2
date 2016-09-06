@@ -46,49 +46,11 @@ app.factory('orders', ['$http', function ($http) {
 
   output.getAll = function () {
     return $http.get('/shopConfig/getOrders');
-    // return output.data = [
-    //   {
-    //     oid: 1000001,
-    //     done: false,
-    //     date: '2016-01-01 10:30:00',
-    //     address: '雅廉訪',
-    //     phone: '66778899',
-    //     list: [
-    //       {
-    //         item: {
-    //           pid: 100001,
-    //           name: 'A',
-    //           description: 'aaaaaaaaaaaaa',
-    //           specification: [
-    //             {sid: 1, label: 'A1', price: 10},
-    //             {sid: 2, label: 'A2', price: 20},
-    //             {sid: 3, label: 'A3', price: 30}
-    //           ],
-    //           imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
-    //         },
-    //         spec: 0,
-    //         value: 2
-    //       },
-    //       {
-    //         item: {
-    //           pid: 100002,
-    //           name: 'B',
-    //           description: 'bbbbbbbbb',
-    //           specification: [
-    //             {sid: 1, label: 'B1', price: 10},
-    //             {sid: 2, label: 'B2', price: 20},
-    //             {sid: 3, label: 'B3', price: 30}
-    //           ],
-    //           imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
-    //         },
-    //         spec: 0,
-    //         value: 1
-    //       }
-    //     ]
-    //   }
-    // ]
-      
   };
+
+  output.getNotDone = function (ad) {
+    return $http.post('/shopConfig/getNotDone', {ad: ad});
+  }
 
   output.edit = function (order) {
     return $http.post('/shopConfig/editOrder', order);
@@ -187,19 +149,19 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   }
 
   $scope.fields = {
-    name: ["PID", "產品名稱", "產品簡介", "售價"],
+    name: ["產品簡介", "售價"],
     prop: ["pid", "name", "description"]
   };
   
   $scope.data = [];
   $scope.orderData = [];
-  $scope.orderLimit = 2;
+  $scope.orderLimit = 5;
   $scope.orderCurrent = 0;
   $scope.orderBegin = 0;
 
   $scope.init = function () {
     $scope.view = 'product';
-    orders.getAll().success(function (data) {
+    orders.getNotDone($scope.ad).success(function (data) {
       orders.data = angular.copy(data);
       $scope.orderData = orders.data;
     });
@@ -213,7 +175,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   $scope.selectTab = function (index) {
     switch (index) {
       case 0: 
-        orders.getAll().success(function (data) {
+        orders.getNotDone().success(function (data) {
           orders.data = angular.copy(data);
           $scope.orderData = orders.data;
         });
@@ -224,6 +186,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
           products.data = angular.copy(data);
           $scope.data = products.data;
           console.log(data);
+          $scope.productCurrent = 1;
+          $scope.maxSize = 3;
+          $scope.productLimit = 5;
         });
         console.log('product');
         break;
@@ -271,7 +236,12 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   $scope.changeLimit = function (limit) {
     $scope.orderLimit = limit;
     $scope.orderCurrent = 0;
-  }
+  };
+
+  $scope.changeProductLimit = function (limit) {
+    $scope.productLimit = limit;
+    $scope.productCurrent = 0;
+  };
 
   $scope.localTimeString = function (date) {
     var temp = new Date(date);
@@ -484,6 +454,13 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
     $scope.selectProduct.tag.splice(index, 1);
   };
 
+  $scope.getAllOrder = function () {
+    orders.getAll().success(function (data) {
+      orders.data = angular.copy(data);
+      $scope.orderData = orders.data;
+    });
+  };
+
   $scope.nextStepOrder = function (order, remark) {
     orders.nextStepOrder(order, remark).success(function (data) {
       var index = $scope.orderData.map(function (o) {
@@ -491,6 +468,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
       }).indexOf(order.oid);
       $scope.orderData[index] = data;
       $scope.selectOrder = data;
+      remark = undefined;
+      $scope.remark = undefined;
       console.log($scope.orderData);
     }).error(function (err) {
       console.log(err);
@@ -504,6 +483,8 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
       }).indexOf(order.oid);
       $scope.orderData[index] = data;
       $scope.selectOrder = data;
+      remark = undefined;
+      $scope.remark = undefined;
     }).error(function (err) {
       console.log(err);
     });

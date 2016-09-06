@@ -47,6 +47,14 @@ module.exports = {
 			return res.json(orders);
 		});
 	},
+	getNotDone: function (req, res) {
+		Order.find({ where: {done: false, ad: req.body.ad}, sort: 'createdAt DESC' },function (err, orders) {
+			if (err) {
+				return res.status(400).json(err);
+			}
+			return res.json(orders);
+		});
+	},
 	editOrder: function (req, res) {
 		Order.edit(req.body, function (err, edited) {
 			if (err) {
