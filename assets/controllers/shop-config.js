@@ -129,9 +129,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   
   $scope.data = [];
   $scope.orderData = [];
-  $scope.orderLimit = 5;
-  $scope.orderCurrent = 0;
-  $scope.orderBegin = 0;
+  
 
   $scope.init = function () {
 
@@ -147,6 +145,9 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
         orders.getNotDone($scope.ad).success(function (data) {
           orders.data = angular.copy(data);
           $scope.orderData = orders.data;
+          $scope.orderLimit = 10;
+          $scope.orderCurrent = 0;
+          $scope.orderBegin = 0;
         });
         console.log('order');
         break;
@@ -157,7 +158,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
           console.log(data);
           $scope.productCurrent = 1;
           $scope.maxSize = 3;
-          $scope.productLimit = 5;
+          $scope.productLimit = 10;
         });
         console.log('product');
         break;

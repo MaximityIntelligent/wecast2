@@ -26,10 +26,10 @@
                 <div class="panel-body">
                   
                   <uib-tabset active="active">
-                    <uib-tab index="0" heading="Order" select="selectTab(0)">
+                    <uib-tab index="0" heading="訂單" select="selectTab(0)">
                       <div class="panel-elem">
                         <div class="input-group">
-                          <input type="text" class="form-control" ng-model="orderSearch.$" placeholder="Search for...">
+                          <input type="text" class="form-control" ng-model="orderSearch.$" placeholder="搜尋...">
                           <span class="input-group-btn">
                             <button class="btn btn-default" type="button" ng-click="getAllOrder()">全部訂單</button>
                           </span>
@@ -96,9 +96,10 @@
                                 <li>
                                   <label for="mySelect">共{{(orderData|filter:orderSearch:false).length}}項，顯示</label>
                                   <select name="mySelect" ng-model="orderLimit" convert-to-number ng-change="changeLimit(orderLimit)">
-                                    <option value="5">5</option>
+                                    
                                     <option value="10">10</option>
-                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
                                   </select>
                                   項
                                 </li>
@@ -201,12 +202,12 @@
                         </div>
                       </div>
                     </uib-tab>
-                    <uib-tab index="1" heading="Product" select="selectTab(1)">
+                    <uib-tab index="1" heading="產品" select="selectTab(1)">
                       <div class="panel-elem">
                         <div class="input-group">
-                          <input type="text" class="form-control" ng-model="search.$" placeholder="Search for...">
+                          <input type="text" class="form-control" ng-model="search.$" placeholder="搜尋...">
                           <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" ng-click="showCreateForm()">Create</button>
+                            <button class="btn btn-default" type="button" ng-click="showCreateForm()">新增</button>
                           </span>
                         </div><!-- /input-group -->
                         <div class="table-responsive">
@@ -238,9 +239,10 @@
                               <li>
                                 <label for="mySelect">共{{(data|filter:search:false).length}}項，顯示</label>
                                 <select name="mySelect" ng-model="productLimit" convert-to-number ng-change="changeProductLimit(productLimit)">
-                                  <option value="5">5</option>
+                                  
                                   <option value="10">10</option>
-                                  <option value="20">20</option>
+                                  <option value="25">25</option>
+                                  <option value="50">50</option>
                                 </select>
                                 項
                               </li>
@@ -451,7 +453,7 @@
                       </div>
                       
                     </uib-tab>
-                    <uib-tab index="2" heading="Report" select="selectTab(2)">
+                    <uib-tab index="2" heading="報告" select="selectTab(2)">
                       <div class="panel-elem">
                         <hr>
                         <div class="form-group">
@@ -484,7 +486,7 @@
                             <tbody>
                               <tr ng-repeat="row in orderReport | orderBy:['month']:false">
                                 <td>
-                                  {{row.title+1}}月
+                                  {{row.title+1}}
                                 </td>
                                 <td>
                                   MOP ${{row.sum}}
