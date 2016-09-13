@@ -56,7 +56,7 @@ app.factory('orders', ['$http', function ($http) {
     return $http.post('/shopConfig/editOrder', order);
   };
 
-  output.remove = function (order) {
+  output.remove = function (order, remark) {
     return $http.post('/shopConfig/removeOrder', {order: order, remark: remark});
   };
 
@@ -68,6 +68,15 @@ app.factory('orders', ['$http', function ($http) {
     return $http.post('/shopConfig/prevStepOrder', {order: order, remark: remark});
   };
 
+  output.annualReport = function (year) {
+    return $http.post('/shopConfig/annualOrder', {year: year});
+  };
+
+  output.monthlyReport = function (year, month) {
+    return $http.post('/shopConfig/monthlyOrder', {year: year, month: month});
+    
+  };
+
   return output;
 }]);
 
@@ -77,41 +86,6 @@ app.factory('products', ['$http', function ($http) {
   };
 
   output.getAll = function () {
-    // output.data = [
-    //   {
-    //     pid: 100001,
-    //     name: 'A',
-    //     description: 'aaaaaaaaaaaaa',
-    //     specification: [
-    //       {sid: 10000101, label: 'A1', price: 10},
-    //       {sid: 10000102, label: 'A2', price: 20},
-    //       {sid: 10000103, label: 'A3', price: 30}
-    //     ],
-    //     imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
-    //   },
-    //   {
-    //     pid: 100002,
-    //     name: 'B',
-    //     description: 'bbbbbbbbb',
-    //     specification: [
-    //       {sid: 10000201, label: 'B1', price: 10},
-    //       {sid: 10000202, label: 'B2', price: 20},
-    //       {sid: 10000203, label: 'B3', price: 30}
-    //     ],
-    //     imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
-    //   },
-    //   {
-    //     pid: 100003,
-    //     name: 'C',
-    //     description: 'cccccccc',
-    //     specification: [
-    //       {sid: 10000301, label: 'C1', price: 10},
-    //       {sid: 10000302, label: 'C2', price: 20},
-    //       {sid: 10000303, label: 'C3', price: 30}
-    //     ],
-    //     imgUrl: 'https://community.uservoice.com/wp-content/uploads/iterative-product-development-800x533.jpg'
-    //   }
-    // ];
     return $http.get('/shopConfig/getProducts');
   };
 
@@ -160,12 +134,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   $scope.orderBegin = 0;
 
   $scope.init = function () {
-    $scope.view = 'product';
-    orders.getNotDone($scope.ad).success(function (data) {
-      orders.data = angular.copy(data);
-      $scope.orderData = orders.data;
-    });
-    
+
   };
 
   $scope.isView = function (view) {
@@ -175,7 +144,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   $scope.selectTab = function (index) {
     switch (index) {
       case 0: 
-        orders.getNotDone().success(function (data) {
+        orders.getNotDone($scope.ad).success(function (data) {
           orders.data = angular.copy(data);
           $scope.orderData = orders.data;
         });
@@ -191,6 +160,16 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
           $scope.productLimit = 5;
         });
         console.log('product');
+        break;
+      case 2:
+        var today = new Date();
+        $scope.year = today.getFullYear();
+        orders.annualReport($scope.year).success(function (data) {
+          $scope.orderReport = angular.copy(data);
+        }).error(function (err) {
+          
+        });
+        console.log('report');
         break;
       default:
         break;
@@ -488,6 +467,44 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
     }).error(function (err) {
       console.log(err);
     });
+  };
+
+  $scope.cancelOrder = function (order, remark) {
+    orders.remove(order, remark).success(function (data) {
+      var index = $scope.orderData.map(function (o) {
+        return o.oid;
+      }).indexOf(order.oid);
+      $scope.orderData.splice(index, 1);
+      $scope.hideEditOrderForm();
+    }).error(function (err) {
+      console.log(err);
+    })
+  }
+
+  $scope.changeYear = function (year) {
+    $scope.month = undefined;
+    orders.annualReport(year).success(function (data) {
+      $scope.orderReport = angular.copy(data);
+    }).error(function (err) {
+      console.log(err);
+    });
+  };
+
+  $scope.changeMonth = function (year, month) {
+    if (!month) {
+      orders.annualReport(year).success(function (data) {
+        $scope.orderReport = angular.copy(data);
+      }).error(function (err) {
+        console.log(err);
+      });
+    } else {
+      orders.monthlyReport(year, month).success(function (data) {
+        $scope.orderReport = angular.copy(data);
+      }).error(function (err) {
+        console.log(err);
+      });
+    }
+    
   };
 
 }]);

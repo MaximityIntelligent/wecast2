@@ -86,5 +86,67 @@ module.exports = {
 			}
 			return res.json(updated);
 		})
+	},
+	annualOrder: function (req, res) {
+		var start = new Date(req.body.year, 0 , 1);
+		var end = new Date(req.body.year, 11 , 31, 23, 59, 59, 999);
+		Order.find({where: {createdAt: {$gte: start, $lte:end}}}, function (err, orders) {
+			if (err) {
+				return res.status(400).json(err);
+			}
+			var groupBy = _.groupBy(orders, function(order){
+				return order.createdAt.getMonth();
+			});
+			var temp = {};
+			Object.keys(groupBy).forEach(function (element, index, array) {
+				temp[element] = {};
+				temp[element].count = groupBy[element].length;
+				temp[element].sum = groupBy[element].reduce(function (previousValue, currentValue, currentIndex, array) {
+					var totalAmount = 0;
+				    array[currentIndex].list.forEach(function (item, index, array) {
+				      totalAmount += item.item.specification[item.spec].price * item.value;
+				    });
+				    return previousValue + totalAmount;
+				}, 0);
+			});
+			var annual = [];
+			for (var i = 0; i < 12; i++) {
+				annual[i] = temp[i] || {sum: 0, count:0};
+				annual[i].title = i;
+			}
+			return res.json(annual);
+		});
+	},
+	monthlyOrder: function (req, res) {
+		var start = new Date(parseInt(req.body.year), parseInt(req.body.month), 1);
+		var end = new Date(parseInt(req.body.year), parseInt(req.body.month)+1, 0, 23, 59, 59, 999);
+		console.log(start);
+		console.log(end);
+		Order.find({where: {createdAt: {$gte: start, $lte:end}}}, function (err, orders) {
+			if (err) {
+				return res.status(400).json(err);
+			}
+			var groupBy = _.groupBy(orders, function(order){
+				return order.createdAt.getDate();
+			});
+			var temp = {};
+			Object.keys(groupBy).forEach(function (element, index, array) {
+				temp[element] = {};
+				temp[element].count = groupBy[element].length;
+				temp[element].sum = groupBy[element].reduce(function (previousValue, currentValue, currentIndex, array) {
+					var totalAmount = 0;
+				    array[currentIndex].list.forEach(function (item, index, array) {
+				      totalAmount += item.item.specification[item.spec].price * item.value;
+				    });
+				    return previousValue + totalAmount;
+				}, 0);
+			});
+			var annual = [];
+			for (var i = 0; i < 31; i++) {
+				annual[i] = temp[i] || {sum: 0, count:0};
+				annual[i].title = i;
+			}
+			return res.json(annual);
+		});
 	}
 }

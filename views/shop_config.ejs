@@ -26,7 +26,7 @@
                 <div class="panel-body">
                   
                   <uib-tabset active="active">
-                    <uib-tab index="0" heading="Order">
+                    <uib-tab index="0" heading="Order" select="selectTab(0)">
                       <div class="panel-elem">
                         <div class="input-group">
                           <input type="text" class="form-control" ng-model="orderSearch.$" placeholder="Search for...">
@@ -68,8 +68,9 @@
                             <tbody>
                               <tr ng-repeat="row in orderData | filter:orderSearch:false | orderBy:['done', '-createdAt']:false | limitTo:orderLimit:(orderCurrent*orderLimit)">
                                 <td>
-                                  <span class="glyphicon glyphicon-ok" style="color: green;" ng-show="row.done"></span>
-                                  <span class="glyphicon glyphicon-remove" style="color: red;" ng-hide="row.done"></span>
+                                  <span class="glyphicon glyphicon-ok" style="color: green;" ng-show="row.done&&!row.deleted"></span>
+                                  <span class="glyphicon glyphicon-hourglass" style="color: darkorange;" ng-show="!row.done&&!row.deleted"></span>
+                                  <span class="glyphicon glyphicon-remove" style="color: red;" ng-show="row.deleted"></span>
                                 </td>
                                 <td>
                                   {{shippingText(row.shipping)}}
@@ -84,7 +85,6 @@
                                 <td>{{sumOrder(row)}}</td>
                                 <td>
                                   <a ng-click="showEditOrderForm(row)"><span class="glyphicon glyphicon-pencil"></span></a>
-                                  <a ng-click=""><span class="glyphicon glyphicon-trash"></span></a>
                                 </td>
                               </tr>
                             </tbody>
@@ -152,8 +152,8 @@
                                       <th>產品名稱</th>
                                       <th>規格</th>
                                       <th>數量</th>
-                                      <th>單價</th>
-                                      <th>小計</th>
+                                      <th>單價(MOP)</th>
+                                      <th>小計(MOP)</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -179,10 +179,11 @@
                                 </div>
                                 
                               </div> 
-                              <div class="form-group">
+                              <div class="form-group" ng-hide="selectOrder.deleted || selectOrder.done">
                                 <button class="btn btn-primary" type="button btn-primary" ng-click="nextStepOrder(selectOrder, remark);remark=undefined" ng-disabled="!editOrderForm.$valid" ng-hide="selectOrder.shipping=='arrived'"><span class="glyphicon glyphicon-share-alt"></span>{{nextText(selectOrder.shipping)}}</button>
                                 <button class="btn btn-primary" type="button btn-primary" ng-click="prevStepOrder(selectOrder, remark);remark=undefined" ng-disabled="!editOrderForm.$valid" ng-hide="selectOrder.shipping=='pending'"><span class="glyphicon glyphicon-backward"></span>{{prevText(selectOrder.shipping)}}</button>
                                 <button class="btn btn-default" type="button btn-default" ng-click="hideEditOrderForm()"><span class="glyphicon glyphicon-remove"></span>取消</button>
+                                <button class="btn btn-danger" type="button btn-danger" ng-click="cancelOrder(selectOrder, remark)" ng-disabled="!editOrderForm.$valid"><span class="glyphicon glyphicon-trash"></span>取消訂單</button>
                               </div>
                             </form>
                           </div> 
@@ -450,8 +451,52 @@
                       </div>
                       
                     </uib-tab>
-                    <uib-tab index="2" heading="User">
-                      
+                    <uib-tab index="2" heading="Report" select="selectTab(2)">
+                      <div class="panel-elem">
+                        <hr>
+                        <div class="form-group">
+                          <label for="year">年份:</label>
+                          <select name="year" ng-model="year" convert-to-number ng-change="changeYear(year)">
+                            <option>2016</option>
+                          </select>
+                          <label for="year">月份:</label>
+                          <select name="month" ng-model="month" ng-change="changeMonth(year, month)">
+                            <option value="">全年</option>
+                            <option ng-repeat="m in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]" value="{{m}}">{{m+1}}</option>
+                          </select>
+                          {{year}}-{{month}}
+                        </div>
+                        <div class="table-responsive">
+                          <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th>
+                                  月份
+                                </th>
+                                <th>
+                                  營業額
+                                </th>
+                                <th>
+                                  訂單數
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr ng-repeat="row in orderReport | orderBy:['month']:false">
+                                <td>
+                                  {{row.title+1}}月
+                                </td>
+                                <td>
+                                  MOP ${{row.sum}}
+                                </td>
+                                <td>
+                                  {{row.count}} 單
+                                </td>
+                              </tr>
+                            </tbody>
+
+                          </table>
+                      </div>
                     </uib-tab>
 
                   </uib-tabset>

@@ -90,6 +90,9 @@ module.exports.routes = {
   },
   '/shop_config' : {
     view : 'shop_config'
+  },
+  '/splayer' : {
+    view : 'splayer'
   }
   /*,
   'api/initialization': {
