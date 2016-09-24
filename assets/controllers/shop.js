@@ -384,7 +384,14 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
   }
 
   $scope.removeCart = function (index) {
+    var temp = $scope.user.cart;
     $scope.user.cart.splice(index, 1);
+    users.updateCart($scope.openId, ad, $scope.user.cart).success(function (data) {
+      console.log($scope.user.cart);
+    }).error(function (err) {
+      console.log(err);
+      $scope.user.cart = temp;
+    });
   };
 
   $scope.showValueDialog = function (index) {
