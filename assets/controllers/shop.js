@@ -164,45 +164,45 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
 
       });
     }).error(function(data, status, headers, config) { //如果從外部連結返回時會遇到code error問題，就要重新定向
-        //window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+apps+'%3FsharedBy%3Dwecast%26ad%3D'+ad+'&response_type=code&scope='+snsapi+'#wechat_redirect';
-      $scope.openId = 'o5OVfwJhe_dGCYTtjFgnKgZWR5jc';
-      $scope.user = {
-        address: ['雅廉訪','高士德'],
-        orders: []
-      }
-      $scope.items = [
+        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+apps+'%3FsharedBy%3Dwecast%26ad%3D'+ad+'&response_type=code&scope='+snsapi+'#wechat_redirect';
+      // $scope.openId = 'o5OVfwJhe_dGCYTtjFgnKgZWR5jc';
+      // $scope.user = {
+      //   address: ['雅廉訪','高士德'],
+      //   orders: []
+      // }
+      // $scope.items = [
 
-      ];
-      $scope.addItem({
-        id: '1234',
-        name: '塑膠水喉',
-        description: '塑膠水喉，長度有分1尺，3尺，5尺等',
-        spec: [
-          {id: '12345', label: '1尺', price: 10},
-          {id: '12346', label: '3尺', price: 20},
-          {id: '12347', label: '5尺', price: 30}
-        ]
-      });
-      $scope.addItem({
-        id: '1235',
-        name: '銅水喉',
-        description: '銅水喉，長度有分1尺，3尺，5尺等',
-        spec: [
-          {id: '12355', label: '1尺', price: 10},
-          {id: '12356', label: '3尺', price: 20},
-          {id: '12357', label: '5尺', price: 30}
-        ]
-      });
-      $scope.addItem({
-        id: '1236',
-        name: '三叉',
-        description: '三叉，分小，中，大等',
-        spec: [
-          {id: '12365', label: '小', price: 10},
-          {id: '12366', label: '中', price: 20},
-          {id: '12367', label: '大', price: 30}
-        ]
-      });
+      // ];
+      // $scope.addItem({
+      //   id: '1234',
+      //   name: '塑膠水喉',
+      //   description: '塑膠水喉，長度有分1尺，3尺，5尺等',
+      //   spec: [
+      //     {id: '12345', label: '1尺', price: 10},
+      //     {id: '12346', label: '3尺', price: 20},
+      //     {id: '12347', label: '5尺', price: 30}
+      //   ]
+      // });
+      // $scope.addItem({
+      //   id: '1235',
+      //   name: '銅水喉',
+      //   description: '銅水喉，長度有分1尺，3尺，5尺等',
+      //   spec: [
+      //     {id: '12355', label: '1尺', price: 10},
+      //     {id: '12356', label: '3尺', price: 20},
+      //     {id: '12357', label: '5尺', price: 30}
+      //   ]
+      // });
+      // $scope.addItem({
+      //   id: '1236',
+      //   name: '三叉',
+      //   description: '三叉，分小，中，大等',
+      //   spec: [
+      //     {id: '12365', label: '小', price: 10},
+      //     {id: '12366', label: '中', price: 20},
+      //     {id: '12367', label: '大', price: 30}
+      //   ]
+      // });
 
       
 
