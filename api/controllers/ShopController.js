@@ -11,6 +11,7 @@ var Merchant = require('../lib/Merchant');
 var Log = require('../lib/Log');
 var crypto = require('crypto');
 var Order = require('../lib/Order');
+var Product = require('../lib/Product');
 
 var randomString = function(length) {
     var text = "";
@@ -241,6 +242,14 @@ module.exports = {
 				}
 				return res.json(done);
 			});
+		});
+	},
+	getProducts: function (req, res) {
+		Product.findAll(req.body, function (err, products) {
+			if (err) {
+				return res.status(400).json(err);
+			}
+			return res.json(products);
 		});
 	}
 }

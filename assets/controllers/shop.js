@@ -53,7 +53,7 @@ app.factory('products', ['$http', function ($http) {
   };
 
   output.getAll = function (category) {
-    return $http.post('/shopConfig/getProducts', {category: category});
+    return $http.post('/shop/getProducts', {category: category});
   };
 
   output.get = function (pid) {
@@ -104,8 +104,39 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
     ['mine']
   ];
   $scope.currentView = 'main';
-  $scope.category = ['水喉','電力','鎖具','鋁窗','門','冷氣','油漆','泥水','木器','其他'];
-  $scope.tabName = ['商城', '購物車', '我'];
+  $scope.category = [
+    { 
+      name: '水喉'
+    },{
+      name: '電力'
+    },{
+      name: '鎖具'
+    },{
+      name: '鋁窗'
+    },{
+      name: '門'
+    },{
+      name: '冷氣'
+    },{
+      name: '油漆'
+    },{
+      name: '泥水'
+    },{
+      name: '木器'
+    },{
+      name:'其他'
+    }];
+  $scope.tabItem = [
+    {
+      name: '商城',
+      imgUrl: '/images/shop/shop-tab.png'
+    }, {
+      name: '購物車',
+      imgUrl: '/images/shop/cart-tab.png'
+    }, {
+      name: '我',
+      imgUrl: '/images/shop/mine-tab.png'
+    }];
   $scope.user = {
     cart: [],
     orders: []
@@ -127,7 +158,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
       $scope.user.orders = data.orders;
 
       wx.config({
-      debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
       appId: ''+appid+'', // 必填，公众号的唯一标识
       timestamp: data.timestamp, // 必填，生成签名的时间戳
       nonceStr: data.noncestr, // 必填，生成签名的随机串
@@ -164,7 +195,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
 
       });
     }).error(function(data, status, headers, config) { //如果從外部連結返回時會遇到code error問題，就要重新定向
-        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+apps+'%3FsharedBy%3Dwecast%26ad%3D'+ad+'&response_type=code&scope='+snsapi+'#wechat_redirect';
+      window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri=http%3A%2F%2F'+host+'%2F'+apps+'%3FsharedBy%3Dwecast%26ad%3D'+ad+'&response_type=code&scope='+snsapi+'#wechat_redirect';
       // $scope.openId = 'o5OVfwJhe_dGCYTtjFgnKgZWR5jc';
       // $scope.user = {
       //   address: ['雅廉訪','高士德'],
@@ -238,7 +269,7 @@ function($scope, $http, $timeout, $interval, $location, $anchorScroll, products,
     if (index == $scope.selected && $scope.views[$scope.selected].length > 1) {
       return '返回';
     } else {
-      return $scope.tabName[index];
+      return $scope.tabItem[index].name;
     }
   }
 

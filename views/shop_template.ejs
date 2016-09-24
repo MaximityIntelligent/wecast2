@@ -23,17 +23,17 @@
           <div class="panel" ng-show="isView('main')">
             <div class="hd">
               <div class="card_title">
-                <h1>分類</h1>
+                <h3>分類</h3>
               </div>
             </div>
             <div class="bd">
               <div class="weui_grids">
-                  <a ng-click="selectCategory(name)" class="weui_grid" ng-repeat="name in category">
+                  <a ng-click="selectCategory(cate.name)" class="weui_grid" ng-repeat="cate in category">
                       <div class="weui_grid_icon">
                           <img src="http://placehold.it/56x56" alt="">
                       </div>
                       <p class="weui_grid_label">
-                          {{name}}
+                          {{cate.name}}
                       </p>
                   </a>
               </div>
@@ -42,7 +42,7 @@
           <div class="panel" ng-show="isView('items')">
             <div class="hd">
               <div class="card_title">
-                <h1>{{selectedCategory}}</h1>
+                <h3>{{selectedCategory}}</h3>
               </div>
             </div>
             <div class="bd">
@@ -224,7 +224,7 @@
                     <p>頭像</p>
                   </div>
                   <div class="weui_cell_ft">
-                    <img class="weui_avatar" ng-src="http://placehold.it/180x180" ng-hide="user.headimgurl">
+                    <img class="weui_avatar" ng-src="{{user.headimgurl}}">
                   </div>
                 </div>
                 <div class="weui_cell">
@@ -257,7 +257,7 @@
               <div class="weui_cells weui_cells_access">
                 <div class="weui_cell" ng-click="pushView('mine_order')">
                   <div class="weui_cell_hd">
-                    <img src="http://placehold.it/46x46" style="width:20px;margin-right:5px;display:block;">
+                    <img src="/images/shop/order-icon.png" style="width:20px;margin-right:5px;display:block;">
                   </div>
                   <div class="weui_cell_bd weui_cell_primary">
                     <p>我的訂單</p>
@@ -271,7 +271,7 @@
               <div class="weui_cells weui_cells_access">
                 <div class="weui_cell">
                   <div class="weui_cell_hd">
-                    <img src="http://placehold.it/46x46" style="width:20px;margin-right:5px;display:block;">
+                    <img src="/images/shop/setting-icon.png" style="width:20px;margin-right:5px;display:block;">
                   </div>
                   <div class="weui_cell_bd weui_cell_primary">
                     <p>設置</p>
@@ -403,9 +403,9 @@
           </div>
         </div>
         <div class="weui_tabbar">
-            <a class="weui_tabbar_item" ng-class="{weui_bar_item_on: isSelected($index)}" ng-click="selectTab($index)" ng-repeat="name in tabName track by $index">
+            <a class="weui_tabbar_item" ng-class="{weui_bar_item_on: isSelected($index)}" ng-click="selectTab($index)" ng-repeat="item in tabItem track by $index">
                 <div class="weui_tabbar_icon">
-                    <img src="http://placehold.it/56x56" alt="">
+                    <img ng-src="{{item.imgUrl}}" alt="">
                 </div>
                 <p class="weui_tabbar_label">{{tabLabel($index)}}</p>
             </a>
