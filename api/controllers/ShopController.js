@@ -35,11 +35,11 @@ module.exports = {
 	    // step 1
 	    Weixin.oauth2(code, function (err, result) {
 	      if (err) {
-	        //emitter.emit('error', {errMsg: JSON.stringify(err)});
-	        var userInfo = {};
-	        userInfo.openId = 'o5OVfwJhe_dGCYTtjFgnKgZWR5jc';
-	        userInfo.ad = ad;
-	        emitter.emit('userInfo', userInfo);
+	        emitter.emit('error', {errMsg: JSON.stringify(err)});
+	        // var userInfo = {};
+	        // userInfo.openId = 'o5OVfwJhe_dGCYTtjFgnKgZWR5jc';
+	        // userInfo.ad = ad;
+	        // emitter.emit('userInfo', userInfo);
 	      } else {
 	        var userInfo = {};
 	        userInfo.openId = result.openid;
