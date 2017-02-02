@@ -71,61 +71,63 @@ User.shareAd_c = function (sharedBy, sharedTo, ad, cb){ //按制share點擊獲�
       cb(null);
       return;
     }
-    this.userExists(sharedBy, ad, function(err, userExists){
+    user.findOne({openId: sharedBy, ad: ad}).exec(function(err, userOne){
       if(err){
         cb(err);
         return;
       }
-      if(!userExists){
+      if(!userOne){
         console.log(sharedBy + ad);
         cb({code: 400, msg: "User not found"});
         return;
-      }
-      share_c.findOne({sharedBy: sharedBy, advertisement_c: ad}).exec(function(err, shareOne){ //找尋是否原先已經加過分的function
-        if(err){
-          cb(err);
-          return;
-        }
-        if(!shareOne){ //如果沒有分享過的記錄
-          var sharedToArr = [];
-          sharedToArr.push(sharedTo)
-          share_c.create({sharedBy: sharedBy, sharedTo: sharedToArr, advertisement_c: ad}).exec(function(err){
-            if(err){
-              cb(err);
-              return;
-            }
-            User.incrementCredit(sharedBy, 1, ad, cb);
-            Log.create({action: "total_share_friends", openId: sharedBy, ad: ad}, function(err, results){
-              
-            });
+      }else {
+        share_c.findOne({sharedBy: sharedBy, advertisement_c: ad}).exec(function(err, shareOne){ //找尋是否原先已經加過分的function
+          if(err){
+            cb(err);
             return;
-          });
-        }else{ 
-          if(-1==shareOne.sharedTo.indexOf(sharedTo)){ //如果有記錄，找尋有沒有對應的follower
-            console.log("sharedTo not found");
-            var sharedToArr = shareOne.sharedTo;
-            sharedToArr.push(sharedTo);
-            shareOne.sharedTo = sharedToArr;
-            shareOne.save(function(err){
+          }
+          if(!shareOne){ //如果沒有分享過的記錄
+            var sharedToArr = [];
+            sharedToArr.push(sharedTo)
+            share_c.create({sharedBy: sharedBy, sharedTo: sharedToArr, advertisement_c: ad}).exec(function(err){
               if(err){
-                console.log("err");
                 cb(err);
                 return;
               }
               User.incrementCredit(sharedBy, 1, ad, cb);
               Log.create({action: "total_share_friends", openId: sharedBy, ad: ad}, function(err, results){
-                //res.json(results);
-
+                
               });
               return;
-            })
+            });
+          }else{ 
+            if(-1==shareOne.sharedTo.indexOf(sharedTo)){ //如果有記錄，找尋有沒有對應的follower
+              console.log("sharedTo not found");
+              var sharedToArr = shareOne.sharedTo;
+              sharedToArr.push(sharedTo);
+              shareOne.sharedTo = sharedToArr;
+              shareOne.save(function(err){
+                if(err){
+                  console.log("err");
+                  cb(err);
+                  return;
+                }
+                User.incrementCredit(sharedBy, 1, ad, cb);
+                Log.create({action: "total_share_friends", openId: sharedBy, ad: ad}, function(err, results){
+                  //res.json(results);
+
+                });
+                return;
+              })
+            }
+            cb(null);
           }
-          cb(null);
-        }
 
 
-      });
-    })
+        });
+      }
+    });
+
   })
   
 
