@@ -39,7 +39,7 @@ var adString = 'adBlueMan';
 var snsapi = 'snsapi_userinfo';
 var prizeCredit = {'prize1':15, 'prize2':30};
 var host = 'lb.ibeacon-macau.com';
-var appid = 'wxbb0b299e260ac47f';
+var appid = 'wxab261de543656952';
 var debug = false;
 
 app.controller('IndexCtrl', [

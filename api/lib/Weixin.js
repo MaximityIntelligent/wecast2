@@ -6,10 +6,13 @@ function Weixin (){
 
 module.exports = Weixin;
 
-Weixin.appid = 'wxbb0b299e260ac47f';
-Weixin.secret = 'e253fefab4788f5cdcbc14df76cbf9ca';
+// Weixin.appid = 'wxbb0b299e260ac47f'; //easywash
+// Weixin.secret = 'e253fefab4788f5cdcbc14df76cbf9ca';
+Weixin.appid = 'wxab261de543656952'; //Maximity
+Weixin.secret = '389f230302fe9c047ec56c39889b8843';
 Weixin.snsapi = 'snsapi_userinfo';
 Weixin.host = 'lb.ibeacon-macau.com'
+
 
 Weixin.oauth2 = function (code, cb) {
 	request.get('https://api.weixin.qq.com/sns/oauth2/access_token?appid='+Weixin.appid+'&secret='+Weixin.secret+'&code='+code+'&grant_type=authorization_code', function (err, res, result) {
