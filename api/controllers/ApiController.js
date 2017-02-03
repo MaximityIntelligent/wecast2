@@ -97,6 +97,7 @@ module.exports = {
     // step 1
     Weixin.oauth2(code, function (err, result) {
       if (err) {
+        console.log({errMsg: JSON.stringify(err)});
         emitter.emit('error', {errMsg: JSON.stringify(err)});
       } else {
         var userInfo = {};
@@ -114,6 +115,7 @@ module.exports = {
         if (result.scope == 'snsapi_userinfo') {
           Weixin.userinfo(result.access_token, userInfo.openId, function (err, result) {
             if (err) {
+              console.log({errMsg: JSON.stringify(err)});
               emitter.emit('error', {errMsg: JSON.stringify(err)});
             } else {
               if (result.nickname) {
@@ -154,12 +156,14 @@ module.exports = {
 
     emitter.on('userInfo', function (userInfo) {
         User.create(userInfo, function(err, userOne){
-          if(!userOne){
+          if(err){
+            console.log({errMsg: 'User create fail'});
             emitter.emit('error', {errMsg: 'User create fail'});
           } else {
           // console.log(sharedBy+openId+ad);
             User.shareAd_c(sharedBy, userOne.openId, ad, function(err){
               if(err) {
+                console.log({errMsg: err});
                 emitter.emit('error', {errMsg: err});
               } else {
                 emitter.emit('done', 'userInfo', userOne);
@@ -173,6 +177,7 @@ module.exports = {
 
     WxToken.validToken(function (err, wxTokenOne) {
       if (err) {
+        console.log({errMsg: err});
         emitter.emit('error', {errMsg: err});
       } else {
         emitter.emit('done', 'ticket', wxTokenOne);
