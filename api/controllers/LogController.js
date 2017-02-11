@@ -7,6 +7,7 @@
 var Log = require('../lib/Log');
 var moment = require('moment');
 var eventEmitter = require('events').EventEmitter;
+var User = require('../lib/User');
 
 module.exports = {
 	log: function(req, res){
